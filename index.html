@@ -13,79 +13,103 @@
 <style>
 :root{
   --bg:#f6f4ef; --card:#ffffff; --ink:#1f2421; --muted:#6b726d; --line:#e4e1d8;
-  --accent:#2f7d4f; --accent-soft:#e3f1e8; --warn:#b54a2c; --chip:#efece4; --done:#a6aba7;
+  --accent:#2f7d4f; --accent-soft:#e3f1e8; --warn:#b54a2c; --chip:#efece4; --done:#a6aba7; --star:#e0a100;
 }
 @media (prefers-color-scheme: dark){
   :root{ --bg:#141715; --card:#1d211f; --ink:#ecefe9; --muted:#9aa29c; --line:#2c312e;
-    --accent:#5cbf84; --accent-soft:#1f3328; --warn:#e07a5f; --chip:#262b28; --done:#5d645f; }
+    --accent:#5cbf84; --accent-soft:#1f3328; --warn:#e07a5f; --chip:#262b28; --done:#5d645f; --star:#f2c14e; }
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);
   font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-body{padding:env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 24px)}
-header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 16px 8px;
-  display:flex;align-items:center;gap:10px}
+body{padding:env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 84px)}
+button{font-family:inherit}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 16px 8px;display:flex;align-items:center;gap:10px}
 header h1{font-size:24px;margin:0;flex:1;letter-spacing:-.3px}
 .count{color:var(--muted);font-size:14px;font-weight:500}
-.iconbtn{border:0;background:var(--chip);color:var(--ink);width:40px;height:40px;border-radius:12px;
-  font-size:18px;display:grid;place-items:center;cursor:pointer;position:relative}
+.iconbtn{border:0;background:var(--chip);color:var(--ink);width:40px;height:40px;border-radius:12px;font-size:18px;display:grid;place-items:center;cursor:pointer;position:relative}
 .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--done)}
 .dot.ok{background:var(--accent)} .dot.err{background:var(--warn)} .dot.busy{background:#d9a93a}
 .addbar{position:sticky;top:60px;z-index:4;background:var(--bg);padding:0 16px 10px}
 .addrow{display:flex;gap:8px}
-.addrow input{flex:1;min-width:0;font-size:17px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);
-  background:var(--card);color:var(--ink);outline:none}
-.addrow input:focus{border-color:var(--accent)}
-.addrow button{border:0;background:var(--accent);color:#fff;font-size:24px;width:50px;border-radius:14px;cursor:pointer}
+.inp{min-width:0;font-size:17px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);outline:none}
+.inp:focus{border-color:var(--accent)}
+#addName{flex:1}
+#addQty{width:64px;text-align:center;padding:12px 6px}
+.addrow .plus{border:0;background:var(--accent);color:#fff;font-size:24px;width:50px;border-radius:14px;cursor:pointer}
 .chips{display:flex;gap:6px;overflow-x:auto;padding-top:8px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:0;background:var(--chip);color:var(--ink);padding:7px 12px;border-radius:999px;font-size:14px;cursor:pointer;white-space:nowrap}
-.chip small{color:var(--muted);margin-left:4px}
+.chip.sel{background:var(--accent);color:#fff}
+.chip.lbl{background:none;color:var(--muted);cursor:default;padding-left:2px}
+.wrap{flex-wrap:wrap;overflow:visible}
 main{padding:0 16px}
+.view{display:none} .view.on{display:block}
 .group h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:18px 4px 6px;font-weight:600}
 .list{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
 .item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
 .item:first-child{border-top:0}
-.check{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);background:transparent;cursor:pointer;
-  display:grid;place-items:center;color:#fff;font-size:15px;padding:0}
+.check{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);background:transparent;cursor:pointer;display:grid;place-items:center;color:#fff;font-size:15px;padding:0}
 .item.done .check{background:var(--accent);border-color:var(--accent)}
 .body{flex:1;min-width:0;cursor:pointer}
 .name{font-size:17px;overflow-wrap:anywhere}
-.item.done .name{color:var(--done);text-decoration:line-through}
+.detail{font-size:14px;color:var(--ink);opacity:.75}
 .note{font-size:13px;color:var(--muted)}
-.qty{flex:none;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:14px;padding:3px 9px;border-radius:999px}
+.item.done .name,.item.done .detail{color:var(--done);text-decoration:line-through}
+.qty{flex:none;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:14px;padding:3px 9px;border-radius:999px;white-space:nowrap}
 .item.done .qty{background:var(--chip);color:var(--done)}
 .offer{display:inline-block;margin-top:3px;font-size:12px;background:#fff3cf;color:#7a5600;padding:2px 8px;border-radius:8px}
+.star{color:var(--star)}
+.addsmall{flex:none;border:0;background:var(--accent-soft);color:var(--accent);width:38px;height:38px;border-radius:12px;font-size:22px;cursor:pointer}
 .donehead{display:flex;align-items:center;justify-content:space-between;margin:22px 4px 6px}
 .donehead h2{margin:0}
 .link{border:0;background:none;color:var(--warn);font-size:14px;cursor:pointer;padding:4px}
-.empty{text-align:center;color:var(--muted);padding:48px 20px}
+.empty{text-align:center;color:var(--muted);padding:40px 20px}
 .empty b{display:block;font-size:40px;margin-bottom:8px}
+.catsec{margin-top:6px}
+.catsec .chips{padding-top:0}
+.search{width:100%;margin:2px 0 4px}
+a.linkcard{display:flex;align-items:center;gap:12px;padding:14px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+a.linkcard:first-child{border-top:0}
+a.linkcard span{flex:1}
+a.linkcard small{display:block;color:var(--muted);font-size:13px}
+a.linkcard i{font-style:normal;color:var(--muted)}
+.intro{color:var(--muted);font-size:14px;margin:4px 4px 0}
+/* Tabbar */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--card);border-top:1px solid var(--line);
+  display:flex;padding:6px 6px calc(env(safe-area-inset-bottom) + 6px)}
+nav button{flex:1;border:0;background:none;color:var(--muted);font-size:11px;padding:4px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button b{font-size:21px;font-weight:400;line-height:1.2}
+nav button.on{color:var(--accent);font-weight:600}
 /* Sheets */
 .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:20;display:none}
 .backdrop.open{display:block}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--card);border-radius:20px 20px 0 0;
-  padding:18px 16px calc(env(safe-area-inset-bottom) + 18px);max-height:88vh;overflow:auto;transform:translateY(105%);
+  padding:18px 16px calc(env(safe-area-inset-bottom) + 18px);max-height:90vh;overflow:auto;transform:translateY(105%);
   transition:transform .22s ease,visibility .22s;visibility:hidden}
 .sheet.open{transform:none;visibility:visible}
-.sheet h3{margin:0 0 14px;font-size:20px}
+.sheethead{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sheethead h3{margin:0;font-size:20px;flex:1}
+.starbtn{border:0;background:var(--chip);border-radius:12px;width:44px;height:44px;font-size:22px;cursor:pointer;color:var(--muted)}
+.starbtn.on{color:var(--star)}
 label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .field{width:100%;font-size:16px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
-.stepper{display:flex;align-items:center;gap:10px}
-.stepper button{width:44px;height:44px;border-radius:12px;border:0;background:var(--chip);color:var(--ink);font-size:22px;cursor:pointer}
-.stepper span{min-width:40px;text-align:center;font-size:20px;font-weight:700}
+.qtyrow{display:flex;gap:8px;align-items:center}
+.qtyrow button{width:44px;height:44px;border-radius:12px;border:0;background:var(--chip);color:var(--ink);font-size:22px;cursor:pointer;flex:none}
+.qtyrow input{width:72px;text-align:center;font-size:18px;font-weight:700}
+.qtyrow select{flex:1}
 .row{display:flex;gap:8px;margin-top:18px}
-.btn{flex:1;border:0;border-radius:12px;padding:13px;font-size:16px;font-weight:600;cursor:pointer;background:var(--chip);color:var(--ink)}
+.btn{flex:1;border:0;border-radius:12px;padding:13px;font-size:16px;font-weight:600;cursor:pointer;background:var(--chip);color:var(--ink);text-align:center;text-decoration:none}
 .btn.primary{background:var(--accent);color:#fff}
 .btn.danger{background:transparent;color:var(--warn);border:1px solid var(--line)}
 .hint{font-size:13px;color:var(--muted);margin-top:6px}
+.offerlink{display:block;margin-top:14px;font-size:14px;color:var(--accent);text-decoration:none}
 .log{font:12px/1.5 ui-monospace,Menlo,monospace;background:var(--bg);border-radius:10px;padding:8px 10px;max-height:180px;overflow:auto;margin-top:6px}
 .log .e{color:var(--warn)}
 details{margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
 summary{cursor:pointer;font-weight:600}
-.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 20px);transform:translateX(-50%) translateY(120px);
-  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;transition:transform .2s;
-  display:flex;gap:12px;align-items:center;max-width:90vw}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 80px);transform:translateX(-50%) translateY(200px);
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;transition:transform .2s;display:flex;gap:12px;align-items:center;max-width:90vw}
 .toast.show{transform:translateX(-50%)}
 .toast button{border:0;background:none;color:var(--accent);font-weight:700;font-size:14px;cursor:pointer}
 .ver{text-align:center;color:var(--muted);font-size:12px;margin-top:16px}
@@ -94,37 +118,75 @@ summary{cursor:pointer;font-weight:600}
 <body>
 
 <header>
-  <h1>Einkauf <span class="count" id="count"></span></h1>
+  <h1 id="title">Einkauf <span class="count" id="count"></span></h1>
   <button class="iconbtn" id="syncBtn" title="Synchronisieren">⟳<span class="dot" id="syncDot"></span></button>
   <button class="iconbtn" id="settingsBtn" title="Einstellungen">⚙︎</button>
 </header>
 
-<div class="addbar">
-  <form class="addrow" id="addForm" autocomplete="off">
-    <input id="addInput" placeholder="z. B. 3x Melitta Kaffee ganze Bohne" enterkeyhint="done">
-    <button type="submit" aria-label="Hinzufügen">+</button>
-  </form>
-  <div class="chips" id="chips"></div>
-</div>
+<!-- LISTE -->
+<section class="view on" id="v-liste">
+  <div class="addbar">
+    <form class="addrow" id="addForm" autocomplete="off">
+      <input class="inp" id="addName" placeholder="Artikel" enterkeyhint="done">
+      <input class="inp" id="addQty" type="number" inputmode="numeric" min="1" max="999" value="1" aria-label="Menge">
+      <button type="submit" class="plus" aria-label="Hinzufügen">+</button>
+    </form>
+    <div class="chips" id="chips"></div>
+  </div>
+  <main id="listMain"></main>
+</section>
 
-<main id="main"></main>
+<!-- ARTIKEL -->
+<section class="view" id="v-artikel">
+  <div class="addbar"><input class="inp search" id="catSearch" placeholder="Artikel suchen …" autocomplete="off"></div>
+  <main id="catMain"></main>
+</section>
+
+<!-- FAVORITEN -->
+<section class="view" id="v-favoriten"><main id="favMain"></main></section>
+
+<!-- ANGEBOTE -->
+<section class="view" id="v-angebote"><main id="offMain"></main></section>
+
+<nav id="tabs">
+  <button data-tab="liste" class="on"><b>🧾</b>Liste</button>
+  <button data-tab="artikel"><b>📚</b>Artikel</button>
+  <button data-tab="favoriten"><b>⭐</b>Favoriten</button>
+  <button data-tab="angebote"><b>🏷</b>Angebote</button>
+</nav>
 
 <div class="backdrop" id="backdrop"></div>
 
-<!-- Artikel bearbeiten -->
-<div class="sheet" id="editSheet">
-  <h3>Artikel bearbeiten</h3>
-  <label>Name</label>
-  <input class="field" id="eName">
+<!-- Artikel-Blatt (hinzufügen & bearbeiten) -->
+<div class="sheet" id="itemSheet">
+  <div class="sheethead">
+    <h3 id="sTitle">Artikel</h3>
+    <button class="starbtn" id="sStar" title="Favorit">☆</button>
+  </div>
+  <label>Artikel</label>
+  <input class="field" id="sName" autocomplete="off">
+  <label>Genaue Bezeichnung</label>
+  <div class="chips wrap" id="sVariants"></div>
+  <input class="field" id="sDetail" placeholder="oder selbst eingeben, z. B. Melitta Bella Crema" autocomplete="off" style="margin-top:8px">
   <label>Menge</label>
-  <div class="stepper"><button id="eMinus">−</button><span id="eQty">1</span><button id="ePlus">+</button></div>
+  <div class="qtyrow">
+    <button id="sMinus" type="button">−</button>
+    <input class="field" id="sQty" type="number" inputmode="numeric" min="1" max="9999">
+    <button id="sPlus" type="button">+</button>
+    <select class="field" id="sUnit"></select>
+  </div>
   <label>Bereich im Markt</label>
-  <select class="field" id="eCat"></select>
-  <label>Notiz (Marke, Größe …)</label>
-  <input class="field" id="eNote" placeholder="optional">
-  <div class="row">
-    <button class="btn danger" id="eDelete">Löschen</button>
-    <button class="btn primary" id="eSave">Speichern</button>
+  <select class="field" id="sCat"></select>
+  <label>Notiz</label>
+  <input class="field" id="sNote" placeholder="optional" autocomplete="off">
+  <a class="offerlink" id="sOffer" target="_blank" rel="noopener">🔎 Angebote für diesen Artikel suchen</a>
+  <div class="row" id="sBtnsAdd">
+    <button class="btn" data-close>Abbrechen</button>
+    <button class="btn primary" id="sAdd">Auf die Liste</button>
+  </div>
+  <div class="row" id="sBtnsEdit">
+    <button class="btn danger" id="sDelete">Löschen</button>
+    <button class="btn primary" id="sSave">Speichern</button>
   </div>
 </div>
 
@@ -154,7 +216,7 @@ summary{cursor:pointer;font-weight:600}
     <input type="file" id="importFile" accept=".json,application/json" hidden>
     <div class="row"><button class="btn danger" id="favReset">„Häufig gekauft“ leeren</button></div>
   </details>
-  <div class="row"><button class="btn" id="setClose">Schließen</button></div>
+  <div class="row"><button class="btn" data-close>Schließen</button></div>
   <div class="ver" id="ver"></div>
 </div>
 
@@ -162,9 +224,9 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.0';
+const APP_VERSION = 'v1.1';
 const DATA_FILE = 'einkaufsliste.json';
-const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log';
+const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
 
 const CATS = [
@@ -172,7 +234,7 @@ const CATS = [
   ['brot',    '🥖 Brot & Backwaren'],
   ['kuehl',   '🧀 Kühlregal & Molkerei'],
   ['fleisch', '🥩 Fleisch, Wurst & Fisch'],
-  ['vorrat',  '🥫 Vorrat & Konserven'],
+  ['vorrat',  '🥫 Vorrat & Backzutaten'],
   ['kaffee',  '☕ Kaffee, Tee & Frühstück'],
   ['suess',   '🍫 Süßes & Snacks'],
   ['getraenk','🥤 Getränke'],
@@ -182,212 +244,473 @@ const CATS = [
 ];
 const CAT_ORDER = Object.fromEntries(CATS.map((c, i) => [c[0], i]));
 const CAT_NAME  = Object.fromEntries(CATS);
+const UNITS = [['', '× (Stück)'], ['Pck.', 'Packung'], ['g', 'Gramm'], ['kg', 'Kilo'], ['ml', 'Milliliter'], ['l', 'Liter'],
+               ['Fl.', 'Flasche'], ['Kiste', 'Kiste'], ['Dose', 'Dose'], ['Glas', 'Glas'], ['Bund', 'Bund'], ['Netz', 'Netz'], ['Becher', 'Becher']];
+
+/* Grundauswahl: Artikel mit typischen Bezeichnungen und Standard-Einheit */
+const CATALOG = {
+  obst: [
+    ['Äpfel', ['Elstar','Braeburn','Pink Lady','Jonagold','Granny Smith'], 'kg'],
+    ['Bananen', ['Bio','Fairtrade'], ''], ['Birnen', ['Williams','Conference'], ''],
+    ['Zitronen', ['Bio','unbehandelt'], ''], ['Orangen', ['Saftorangen','Navel'], 'Netz'],
+    ['Weintrauben', ['hell','dunkel','kernlos'], ''], ['Erdbeeren', [], ''], ['Heidelbeeren', [], ''],
+    ['Tomaten', ['Rispe','Cherry','Strauch','Fleisch'], ''], ['Gurke', ['Salatgurke','Mini-Gurken'], ''],
+    ['Paprika', ['rot','gelb','grün','Mix'], ''], ['Kartoffeln', ['festkochend','vorwiegend festkochend','mehligkochend','Drillinge'], 'kg'],
+    ['Zwiebeln', ['gelb','rot','Lauchzwiebeln'], 'Netz'], ['Knoblauch', [], ''],
+    ['Möhren', ['Bund','lose'], 'kg'], ['Salat', ['Eisberg','Kopfsalat','Feldsalat','Rucola','Romana'], ''],
+    ['Champignons', ['weiß','braun'], ''], ['Zucchini', [], ''], ['Brokkoli', [], ''],
+    ['Avocado', ['reif'], ''], ['Kräuter', ['Petersilie','Schnittlauch','Basilikum','Dill'], 'Bund']
+  ],
+  brot: [
+    ['Brot', ['Vollkorn','Mischbrot','Roggen','Dinkel','Weißbrot'], ''], ['Brötchen', ['Kaiser','Körner','Aufback'], ''],
+    ['Toast', ['Butter','Vollkorn','American Sandwich'], 'Pck.'], ['Baguette', ['Aufback'], ''],
+    ['Croissants', [], ''], ['Knäckebrot', [], 'Pck.'], ['Kuchen', [], '']
+  ],
+  kuehl: [
+    ['Milch', ['3,5 %','1,5 %','laktosefrei','H-Milch 3,5 %','H-Milch 1,5 %','Hafermilch'], 'l'],
+    ['Butter', ['Süßrahm','Sauerrahm','Kerrygold','Streichzart'], 'Pck.'], ['Margarine', ['Rama','Lätta'], 'Becher'],
+    ['Eier', ['Freiland','Bio','Bodenhaltung','6er','10er'], 'Pck.'],
+    ['Joghurt', ['Natur','Griechisch','Frucht','3,8 %','1,5 %'], 'Becher'], ['Quark', ['Mager','20 %','40 %'], 'Becher'],
+    ['Sahne', ['Schlagsahne','Kochsahne','Sprühsahne'], 'Becher'], ['Schmand', ['Schmand','Crème fraîche','Saure Sahne'], 'Becher'],
+    ['Käse', ['Gouda Scheiben','Gouda am Stück','Emmentaler','Mozzarella','Feta','Parmesan','Reibekäse','Frischkäse'], 'Pck.'],
+    ['Pudding', ['Schoko','Vanille'], 'Becher'], ['Hefe', ['frisch','Trockenhefe'], 'Pck.']
+  ],
+  fleisch: [
+    ['Hackfleisch', ['gemischt','Rind','Schwein'], 'g'], ['Hähnchen', ['Brustfilet','Schenkel','ganz','Geschnetzeltes'], 'g'],
+    ['Schnitzel', ['Schwein','Pute'], ''], ['Steak', ['Rind','Schwein','Hüfte'], ''],
+    ['Aufschnitt', ['Salami','Kochschinken','Lyoner','Mortadella','Geflügel'], 'Pck.'],
+    ['Schinken', ['Kochschinken','Rohschinken','Schinkenwürfel'], 'Pck.'], ['Würstchen', ['Wiener','Bratwurst','Bockwurst','Grillwurst'], 'Pck.'],
+    ['Speck', ['Bacon','Würfel'], 'Pck.'], ['Lachs', ['Filet','Räucherlachs'], 'Pck.'], ['Fisch', ['Seelachs','Forelle','Hering'], '']
+  ],
+  vorrat: [
+    ['Mehl', ['Type 405','Type 550','Type 1050','Dinkel 630','Vollkorn'], 'kg'],
+    ['Zucker', ['weiß','braun','Puderzucker','Gelierzucker','Vanillezucker'], 'kg'],
+    ['Salz', ['Jodsalz','Meersalz','grob'], 'Pck.'], ['Pfeffer', ['schwarz gemahlen','Körner','bunt'], ''],
+    ['Öl', ['Sonnenblumenöl','Rapsöl','Olivenöl','Bratöl'], 'Fl.'], ['Essig', ['Balsamico','Weißwein','Apfelessig'], 'Fl.'],
+    ['Nudeln', ['Spaghetti','Penne','Fusilli','Bandnudeln','Lasagne','Spätzle'], 'Pck.'],
+    ['Reis', ['Basmati','Langkorn','Jasmin','Milchreis','Kochbeutel'], 'Pck.'],
+    ['Tomaten (Dose)', ['gehackt','passiert','Tomatenmark'], 'Dose'], ['Brühe', ['Gemüse','Rind','Huhn'], 'Glas'],
+    ['Backpulver', [], 'Pck.'], ['Haferflocken', ['zart','kernig'], 'Pck.'], ['Müsli', ['Früchte','Schoko','Knusper'], 'Pck.'],
+    ['Senf', ['mittelscharf','süß','Dijon'], ''], ['Ketchup', [], 'Fl.'], ['Mayonnaise', [], ''],
+    ['Konserven', ['Mais','Kidneybohnen','Erbsen & Möhren','Thunfisch','Würstchen'], 'Dose']
+  ],
+  kaffee: [
+    ['Kaffee', ['ganze Bohne','gemahlen','Espresso','Pads','Kapseln','löslich','entkoffeiniert'], 'Pck.'],
+    ['Tee', ['Schwarz','Grün','Pfefferminz','Kamille','Früchte','Kräuter'], 'Pck.'],
+    ['Kakao', [], 'Pck.'], ['Marmelade', ['Erdbeer','Kirsch','Aprikose','Himbeer'], 'Glas'],
+    ['Honig', ['flüssig','cremig'], 'Glas'], ['Nuss-Nougat-Creme', [], 'Glas'], ['Cornflakes', [], 'Pck.'],
+    ['Kaffeesahne', ['Kondensmilch','Kaffeesahne','Kaffeeweißer'], ''], ['Filtertüten', ['Größe 4','Größe 2'], 'Pck.']
+  ],
+  suess: [
+    ['Schokolade', ['Vollmilch','Zartbitter','Nuss','Weiß'], ''], ['Chips', ['Paprika','gesalzen','Sour Cream'], 'Pck.'],
+    ['Kekse', ['Butterkekse','Schokokekse'], 'Pck.'], ['Gummibärchen', [], 'Pck.'], ['Nüsse', ['Erdnüsse','Studentenfutter','Cashew','Walnüsse'], 'Pck.'],
+    ['Salzstangen', [], 'Pck.'], ['Eis', ['Vanille','Schoko','Stieleis'], '']
+  ],
+  getraenk: [
+    ['Wasser', ['still','medium','spritzig'], 'Kiste'], ['Saft', ['Apfel','Orange','Multivitamin','Traube'], 'Fl.'],
+    ['Apfelschorle', [], 'Kiste'], ['Cola', ['normal','Zero','light'], 'Fl.'], ['Limonade', ['Orange','Zitrone'], 'Fl.'],
+    ['Bier', ['Pils','Alt','Kölsch','Weizen','alkoholfrei'], 'Kiste'], ['Wein', ['Rot','Weiß','Rosé'], 'Fl.'], ['Sekt', [], 'Fl.']
+  ],
+  tk: [
+    ['Pizza', ['Margherita','Salami','Thunfisch','Speciale'], ''], ['Pommes', ['Backofen','Fritteuse'], 'Pck.'],
+    ['TK-Gemüse', ['Erbsen','Spinat','Brokkoli','Kaisergemüse','Rahmspinat'], 'Pck.'],
+    ['Fischstäbchen', [], 'Pck.'], ['TK-Kräuter', ['Petersilie','Schnittlauch','8-Kräuter'], 'Pck.'], ['Eiswürfel', [], 'Pck.']
+  ],
+  drogerie: [
+    ['Toilettenpapier', ['3-lagig','4-lagig'], 'Pck.'], ['Küchenrolle', [], 'Pck.'], ['Taschentücher', [], 'Pck.'],
+    ['Spülmittel', [], 'Fl.'], ['Spülmaschinentabs', [], 'Pck.'], ['Waschmittel', ['Pulver','flüssig','Color','Pods'], 'Pck.'],
+    ['Weichspüler', [], 'Fl.'], ['Müllbeutel', ['10 l','35 l','60 l','Gelber Sack'], 'Pck.'],
+    ['Zahnpasta', [], ''], ['Duschgel', [], ''], ['Shampoo', [], ''], ['Deo', [], ''], ['Seife', ['flüssig','Stück'], ''],
+    ['Alufolie', [], ''], ['Frischhaltefolie', [], ''], ['Backpapier', [], ''], ['Batterien', ['AA','AAA','9V'], 'Pck.'], ['Reiniger', ['Allzweck','Bad','Glas','WC'], 'Fl.']
+  ]
+};
 
 const CAT_WORDS = {
-  obst: ['apfel','äpfel','banane','birne','tomate','gurke','salat','zwiebel','kartoffel','möhre','karotte','paprika','zitrone','orange','traube','beere','erdbeer','pilz','champignon','knoblauch','lauch','zucchini','brokkoli','obst','gemüse','avocado','kräuter','petersilie','schnittlauch','kiwi','mandarine'],
+  obst: ['apfel','äpfel','banane','birne','tomate','gurke','salat','zwiebel','kartoffel','möhre','karotte','paprika','zitrone','orange','traube','beere','pilz','champignon','knoblauch','lauch','zucchini','brokkoli','obst','gemüse','avocado','kräuter','petersilie','schnittlauch','kiwi','mandarine'],
   brot: ['brot','brötchen','toast','baguette','croissant','kuchen','laugen','semmel','zwieback'],
-  kuehl: ['milch','joghurt','quark','käse','butter','sahne','schmand','eier','ei ','margarine','frischkäse','mozzarella','pudding','skyr','kefir','buttermilch','gouda','parmesan','feta'],
-  fleisch: ['fleisch','wurst','schinken','salami','hähnchen','huhn','hack','steak','schnitzel','fisch','lachs','thunfisch','aufschnitt','bacon','speck','würstchen','frikadelle','pute'],
-  vorrat: ['nudel','spaghetti','reis','mehl','zucker','salz','öl','essig','konserve','dose','tomatenmark','passata','linsen','bohnen','mais','brühe','gewürz','pfeffer','senf','ketchup','mayo','soße','sauce','haferflocken','müsli'],
-  kaffee: ['kaffee','tee','kakao','marmelade','honig','nutella','cornflakes','melitta','jacobs','tchibo','dallmayr','espresso','filter','pads','kapseln'],
-  suess: ['schokolade','chips','keks','gummi','bonbon','süß','snack','nüsse','erdnüsse','riegel','haribo','eis am stiel','praline'],
-  getraenk: ['wasser','saft','cola','bier','wein','sprudel','limo','fanta','sekt','schorle','getränk','apfelschorle','sprite','mineral'],
-  tk: ['tk ','tiefkühl','pizza','eis','pommes','spinat tk','fischstäbchen','gefroren'],
-  drogerie: ['klopapier','toilettenpapier','küchenrolle','spülmittel','waschmittel','zahnpasta','zahnbürste','shampoo','duschgel','seife','deo','taschentücher','müllbeutel','spülmaschine','tabs','creme','rasier','alufolie','frischhaltefolie','backpapier','batterie','schwamm','weichspüler','reiniger']
+  kuehl: ['milch','joghurt','quark','käse','butter','sahne','schmand','eier','margarine','frischkäse','mozzarella','pudding','skyr','kefir','gouda','parmesan','feta'],
+  fleisch: ['fleisch','wurst','schinken','salami','hähnchen','huhn','hack','steak','schnitzel','fisch','lachs','aufschnitt','bacon','speck','würstchen','frikadelle','pute'],
+  vorrat: ['nudel','spaghetti','reis','mehl','zucker','salz','öl','essig','konserve','dose','tomatenmark','passata','linsen','bohnen','mais','brühe','gewürz','pfeffer','senf','ketchup','mayo','soße','sauce','haferflocken','müsli','backpulver'],
+  kaffee: ['kaffee','tee','kakao','marmelade','honig','nutella','cornflakes','melitta','jacobs','tchibo','dallmayr','espresso','pads','kapseln'],
+  suess: ['schokolade','chips','keks','gummi','bonbon','snack','nüsse','riegel','haribo'],
+  getraenk: ['wasser','saft','cola','bier','wein','sprudel','limo','fanta','sekt','schorle','getränk','sprite'],
+  tk: ['tiefkühl','tk-','pizza','pommes','fischstäbchen'],
+  drogerie: ['klopapier','toilettenpapier','küchenrolle','spülmittel','waschmittel','zahnpasta','zahnbürste','shampoo','duschgel','seife','deo','taschentücher','müllbeutel','tabs','creme','alufolie','folie','backpapier','batterie','schwamm','weichspüler','reiniger']
 };
+
+const OFFER_LINKS = [
+  ['EDEKA', 'Wochenangebote – deinen Markt auswählen', 'https://www.edeka.de/eh/angebote.jsp'],
+  ['marktguru', 'Alle Prospekte und Angebote in deiner Nähe', 'https://www.marktguru.de/'],
+  ['kaufDA', 'Prospekte aller Händler', 'https://www.kaufda.de/'],
+  ['ALDI SÜD', 'Aktuelle Angebote', 'https://www.aldi-sued.de/de/angebote.html'],
+  ['Lidl', 'Angebote der Woche', 'https://www.lidl.de/'],
+  ['REWE', 'Angebote', 'https://www.rewe.de/angebote/'],
+  ['Kaufland', 'Angebote', 'https://www.kaufland.de/angebote/'],
+  ['Netto', 'Angebote', 'https://www.netto-online.de/angebote'],
+  ['PENNY', 'Angebote', 'https://www.penny.de/angebote']
+];
+const offerUrl = q => 'https://www.marktguru.de/search/' + encodeURIComponent(q);
 
 /* ---------- State ---------- */
 let data = loadData();
 let cfg  = loadJSON(LS_CFG, { owner: '1965-chris', repo: 'Einkaufsliste', token: '', branch: 'main' });
 let remoteSha = null;
-let syncing = false, syncQueued = false, pushTimer = null, lastPullOk = false;
-let editingId = null, editQty = 1;
+let syncing = false, syncQueued = false, pushTimer = null;
+let sheetMode = 'add', editingId = null, sheetStar = false, selVariant = '';
 
 function loadJSON(key, fallback) {
   try { const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; } catch { return fallback; }
 }
+function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: (d.favs && typeof d.favs === 'object') ? d.favs : {} };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
 function now() { return Date.now(); }
 function norm(s) { return String(s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
-function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+function keyOf(name, detail) { return norm(name) + '|' + norm(detail); }
+function cap(s) { s = String(s || '').trim(); return s.charAt(0).toUpperCase() + s.slice(1); }
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+function clampQty(q) { q = parseInt(q, 10); return Math.max(1, Math.min(9999, isNaN(q) ? 1 : q)); }
+function qtyLabel(i) {
+  const u = i.unit || '';
+  if (!u) return (i.qty || 1) > 1 ? `${i.qty}×` : '';
+  return `${i.qty || 1} ${u}`;
+}
 
-/* ---------- Parsing & Kategorien ---------- */
-function parseInput(text) {
-  let t = text.trim().replace(/\s+/g, ' ');
-  let qty = 1, m;
-  const unit = /^(g|gr|gramm|kg|kilo|ml|l|liter|cl|pfund|pack|packung)\b/i; // „500 g Hack“ ist keine Stückzahl
-  if ((m = t.match(/^(\d{1,3})\s*[x×*]?\s+(.+)$/i)) && !unit.test(m[2])) { qty = +m[1]; t = m[2]; }
-  else if ((m = t.match(/^(.+?)\s+[x×*]\s*(\d{1,3})$/i)) || (m = t.match(/^(.+?)\s+(\d{1,3})\s*[x×]$/i))) { qty = +m[2]; t = m[1]; }
-  qty = Math.max(1, Math.min(999, qty || 1));
-  return { name: t.charAt(0).toUpperCase() + t.slice(1), qty };
+/* ---------- Katalog ---------- */
+const CAT_INDEX = {};   // norm(Artikel) -> {name, variants, unit, cat}
+Object.entries(CATALOG).forEach(([cat, arts]) => arts.forEach(([name, variants, unit]) => {
+  CAT_INDEX[norm(name)] = { name, variants, unit, cat };
+}));
+function articleInfo(name) {
+  const k = norm(name);
+  const base = CAT_INDEX[k];
+  const cu = data.custom[k];
+  const variants = [...(base ? base.variants : []), ...((cu && cu.variants) || []).filter(v => !(base && base.variants.some(b => norm(b) === norm(v))))];
+  return { name: base ? base.name : (cu ? cu.name : cap(name)), variants, unit: base ? base.unit : (cu ? cu.unit || '' : ''), cat: base ? base.cat : (cu ? cu.cat : null) };
 }
 function guessCat(name) {
-  const fav = data.favs[norm(name)];
+  const info = articleInfo(name);
+  if (info.cat) return info.cat;
+  const fav = Object.values(data.favs).find(f => norm(f.name) === norm(name));
   if (fav && fav.cat) return fav.cat;
   const n = ' ' + norm(name) + ' ';
-  for (const [cat, words] of Object.entries(CAT_WORDS)) {
-    if (words.some(w => n.includes(w))) return cat;
-  }
+  for (const [cat, words] of Object.entries(CAT_WORDS)) if (words.some(w => n.includes(w))) return cat;
   return 'sonst';
+}
+function rememberArticle(name, detail, cat, unit) {
+  const k = norm(name);
+  const isBase = !!CAT_INDEX[k];
+  const cu = data.custom[k] || { name: cap(name), variants: [], cat, unit };
+  let changed = !data.custom[k] && !isBase;
+  if (!isBase) { if (cu.cat !== cat) { cu.cat = cat; changed = true; } if (cu.unit !== unit) { cu.unit = unit; changed = true; } }
+  const d = String(detail || '').trim();
+  if (d && !articleInfo(name).variants.some(v => norm(v) === norm(d))) { cu.variants = [...(cu.variants || []), d]; changed = true; }
+  if (changed) { cu.updatedAt = now(); data.custom[k] = cu; }
+}
+
+/* ---------- Text-Eingabe ---------- */
+function parseInput(text) {
+  let t = text.trim().replace(/\s+/g, ' ');
+  let qty = 0, m;
+  const unit = /^(g|gr|gramm|kg|kilo|ml|l|liter|cl|pfund)\b/i;
+  if ((m = t.match(/^(\d{1,3})\s*[x×*]?\s+(.+)$/i)) && !unit.test(m[2])) { qty = +m[1]; t = m[2]; }
+  else if ((m = t.match(/^(.+?)\s+[x×*]\s*(\d{1,3})$/i)) || (m = t.match(/^(.+?)\s+(\d{1,3})\s*[x×]$/i))) { qty = +m[2]; t = m[1]; }
+  return { name: cap(t), qty };
 }
 
 /* ---------- Aktionen ---------- */
 function liveItems() { return data.items.filter(i => !i.deleted); }
 
-function addItem(text) {
-  const { name, qty } = parseInput(text);
+function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '' }) {
+  name = cap(name); detail = String(detail || '').trim();
   if (!name) return;
-  const key = norm(name);
-  const existing = liveItems().find(i => norm(i.name) === key && !i.checked);
-  if (existing) {
-    existing.qty += qty; existing.updatedAt = now();
-    toast(`${existing.name}: jetzt ${existing.qty}×`);
+  cat = cat || guessCat(name);
+  const k = keyOf(name, detail);
+  const same = liveItems().filter(i => keyOf(i.name, i.detail) === k);
+  const open = same.find(i => !i.checked && (i.unit || '') === unit);
+  if (open) {
+    open.qty = clampQty((open.qty || 1) + qty); open.updatedAt = now();
+    toast(`${open.name}: jetzt ${qtyLabel(open) || '1×'}`);
   } else {
-    const done = liveItems().find(i => norm(i.name) === key && i.checked);
-    if (done) { done.checked = false; done.qty = qty; done.updatedAt = now(); }
-    else data.items.push({ id: uid(), name, qty, cat: guessCat(name), note: data.favs[key]?.note || '', checked: false, updatedAt: now() });
+    const done = same.find(i => i.checked);
+    if (done) Object.assign(done, { checked: false, qty: clampQty(qty), unit, cat, note: note || done.note || '', updatedAt: now() });
+    else data.items.push({ id: uid(), name, detail, qty: clampQty(qty), unit, cat, note, checked: false, updatedAt: now() });
+    toast(`${name}${detail ? ' – ' + detail : ''} hinzugefügt`);
   }
-  bumpFav(name);
+  bumpFav(name, detail, cat, unit);
+  rememberArticle(name, detail, cat, unit);
   commit();
 }
-function bumpFav(name, cat, note) {
-  const key = norm(name);
-  const f = data.favs[key] || { name, count: 0 };
-  f.name = name; f.count = (f.count || 0) + 1; f.last = now();
-  if (cat) f.cat = cat;
-  if (note !== undefined) f.note = note;
-  if (!f.cat) f.cat = guessCat(name);
-  data.favs[key] = f;
+function bumpFav(name, detail, cat, unit) {
+  const k = keyOf(name, detail);
+  const f = data.favs[k] || { count: 0 };
+  Object.assign(f, { name, detail, cat, unit, count: (f.count || 0) + 1, last: now() });
+  data.favs[k] = f;
 }
-function toggle(id) {
-  const it = data.items.find(i => i.id === id); if (!it) return;
-  it.checked = !it.checked; it.updatedAt = now(); commit();
+function setStar(name, detail, on, extra = {}) {
+  const k = keyOf(name, detail);
+  data.stars[k] = { ...(data.stars[k] || {}), name, detail, ...extra, on, updatedAt: now() };
 }
-function removeItem(id, silent) {
+function isStar(name, detail) { const s = data.stars[keyOf(name, detail)]; return !!(s && s.on); }
+function toggle(id) { const it = data.items.find(i => i.id === id); if (!it) return; it.checked = !it.checked; it.updatedAt = now(); commit(); }
+function removeItem(id) {
   const it = data.items.find(i => i.id === id); if (!it) return;
   it.deleted = true; it.updatedAt = now(); commit();
-  if (!silent) toast(`„${it.name}“ gelöscht`, () => { it.deleted = false; it.updatedAt = now(); commit(); });
+  toast(`„${it.name}“ gelöscht`, () => { it.deleted = false; it.updatedAt = now(); commit(); });
 }
 function clearDone() {
-  const done = liveItems().filter(i => i.checked);
-  if (!done.length) return;
-  const t = now();
-  done.forEach(i => { i.deleted = true; i.updatedAt = t; });
-  commit();
+  const done = liveItems().filter(i => i.checked); if (!done.length) return;
+  const t = now(); done.forEach(i => { i.deleted = true; i.updatedAt = t; }); commit();
   toast(`${done.length} erledigte entfernt`, () => { done.forEach(i => { i.deleted = false; i.updatedAt = now(); }); commit(); });
 }
-function commit() { saveLocal(); render(); schedulePush(); }
+function commit() { saveLocal(); renderAll(); schedulePush(); }
 
 /* ---------- Render ---------- */
 const $ = id => document.getElementById(id);
+let currentTab = loadJSON(LS_TAB, 'liste');
 
-function render() {
+function renderAll() { renderList(); renderChips(); renderCatalog(); renderFavs(); renderOffers(); }
+
+function itemHtml(i) {
+  const offer = i.offer ? `<div class="offer">🏷 ${esc(i.offer)}</div>` : '';
+  const q = qtyLabel(i);
+  return `<div class="item${i.checked ? ' done' : ''}" data-id="${i.id}">
+    <button class="check" data-act="toggle" aria-label="abhaken">${i.checked ? '✓' : ''}</button>
+    <div class="body" data-act="edit"><div class="name">${isStar(i.name, i.detail) ? '<span class="star">★</span> ' : ''}${esc(i.name)}</div>${i.detail ? `<div class="detail">${esc(i.detail)}</div>` : ''}${i.note ? `<div class="note">${esc(i.note)}</div>` : ''}${offer}</div>
+    ${q ? `<span class="qty">${esc(q)}</span>` : ''}
+  </div>`;
+}
+function renderList() {
   const items = liveItems();
-  const open = items.filter(i => !i.checked);
-  const done = items.filter(i => i.checked);
+  const open = items.filter(i => !i.checked), done = items.filter(i => i.checked);
   $('count').textContent = open.length ? `· ${open.length}` : '';
-  const main = $('main');
-  if (!items.length) {
-    main.innerHTML = '<div class="empty"><b>🧺</b>Die Liste ist leer.<br>Oben etwas eintragen oder unten aus „Häufig gekauft“ antippen.</div>';
-  } else {
+  let html = '';
+  if (!items.length) html = '<div class="empty"><b>🧺</b>Die Liste ist leer.<br>Oben eintragen, unter „Artikel“ auswählen oder aus den Favoriten antippen.</div>';
+  else {
     const groups = {};
     open.forEach(i => (groups[i.cat] = groups[i.cat] || []).push(i));
-    let html = '';
     Object.keys(groups).sort((a, b) => (CAT_ORDER[a] ?? 99) - (CAT_ORDER[b] ?? 99)).forEach(cat => {
-      const list = groups[cat].sort((a, b) => a.name.localeCompare(b.name, 'de'));
+      const list = groups[cat].sort((a, b) => a.name.localeCompare(b.name, 'de') || String(a.detail || '').localeCompare(b.detail || '', 'de'));
       html += `<section class="group"><h2>${esc(CAT_NAME[cat] || CAT_NAME.sonst)}</h2><div class="list">${list.map(itemHtml).join('')}</div></section>`;
     });
     if (!open.length) html += '<div class="empty"><b>✅</b>Alles erledigt!</div>';
-    if (done.length) {
-      html += `<section class="group"><div class="donehead"><h2>Im Wagen (${done.length})</h2><button class="link" data-act="cleardone">Alle entfernen</button></div>`
-           + `<div class="list">${done.sort((a, b) => b.updatedAt - a.updatedAt).map(itemHtml).join('')}</div></section>`;
-    }
-    main.innerHTML = html;
+    if (done.length) html += `<section class="group"><div class="donehead"><h2>Im Wagen (${done.length})</h2><button class="link" data-act="cleardone">Alle entfernen</button></div>`
+      + `<div class="list">${done.sort((a, b) => b.updatedAt - a.updatedAt).map(itemHtml).join('')}</div></section>`;
   }
-  renderChips();
-}
-function itemHtml(i) {
-  const offer = i.offer ? `<div class="offer">🏷 ${esc(i.offer)}</div>` : '';
-  return `<div class="item${i.checked ? ' done' : ''}" data-id="${i.id}">
-    <button class="check" data-act="toggle" aria-label="abhaken">${i.checked ? '✓' : ''}</button>
-    <div class="body" data-act="edit"><div class="name">${esc(i.name)}</div>${i.note ? `<div class="note">${esc(i.note)}</div>` : ''}${offer}</div>
-    ${i.qty > 1 ? `<span class="qty">${i.qty}×</span>` : ''}
-  </div>`;
-}
-function renderChips() {
-  const q = norm($('addInput').value);
-  const onList = new Set(liveItems().filter(i => !i.checked).map(i => norm(i.name)));
-  let favs = Object.entries(data.favs).filter(([k]) => !onList.has(k));
-  if (q) favs = favs.filter(([k]) => k.includes(parseInput(q).name.toLowerCase()) && k !== q);
-  favs.sort((a, b) => (b[1].count - a[1].count) || (b[1].last - a[1].last));
-  favs = favs.slice(0, q ? 8 : 15);
-  $('chips').innerHTML = favs.length
-    ? (q ? '' : '<span class="chip" style="background:none;color:var(--muted);cursor:default;padding-left:2px">Häufig:</span>')
-      + favs.map(([k, f]) => `<button class="chip" data-fav="${esc(k)}">${esc(f.name)}</button>`).join('')
-    : '';
+  $('listMain').innerHTML = html;
 }
 
-/* ---------- Events ---------- */
+/* Vorschläge unter dem Eingabefeld */
+function suggestions(q) {
+  const n = norm(q); const out = new Map();
+  const add = (name, detail, label) => { const k = keyOf(name, detail); if (!out.has(k)) out.set(k, { name, detail, label }); };
+  Object.values(data.stars).filter(s => s.on && (norm(s.name).includes(n) || norm(s.detail).includes(n))).forEach(s => add(s.name, s.detail, '★ '));
+  Object.values(data.favs).filter(f => norm(f.name).includes(n) || norm(f.detail).includes(n)).sort((a, b) => b.count - a.count).forEach(f => add(f.name, f.detail, ''));
+  Object.values(CAT_INDEX).filter(a => norm(a.name).includes(n)).forEach(a => add(a.name, '', ''));
+  Object.values(data.custom).filter(a => norm(a.name).includes(n)).forEach(a => add(a.name, '', ''));
+  return [...out.values()].slice(0, 10);
+}
+function renderChips() {
+  const q = parseInput($('addName').value).name;
+  let html = '';
+  if (q) {
+    html = suggestions(q).map(s => `<button class="chip" data-sug="${esc(s.name)}" data-detail="${esc(s.detail || '')}">${s.label}${esc(s.name)}${s.detail ? ' · ' + esc(s.detail) : ''}</button>`).join('');
+  } else {
+    const onList = new Set(liveItems().filter(i => !i.checked).map(i => keyOf(i.name, i.detail)));
+    const stars = Object.entries(data.stars).filter(([k, s]) => s.on && !onList.has(k));
+    if (stars.length) html = '<span class="chip lbl">⭐</span>' + stars.slice(0, 15).map(([k, s]) => `<button class="chip" data-quick="${esc(k)}">${esc(s.name)}${s.detail ? ' · ' + esc(s.detail) : ''}</button>`).join('');
+  }
+  $('chips').innerHTML = html;
+}
+
+/* Artikel-Katalog */
+function renderCatalog() {
+  const n = norm($('catSearch').value);
+  let html = '';
+  CATS.forEach(([cat, label]) => {
+    const names = new Map();
+    (CATALOG[cat] || []).forEach(([name]) => names.set(norm(name), name));
+    Object.values(data.custom).filter(c => (c.cat || 'sonst') === cat && !CAT_INDEX[norm(c.name)]).forEach(c => names.set(norm(c.name), c.name));
+    let list = [...names.values()];
+    if (n) list = list.filter(x => norm(x).includes(n));
+    if (!list.length) return;
+    list.sort((a, b) => a.localeCompare(b, 'de'));
+    html += `<section class="group catsec"><h2>${esc(label)}</h2><div class="chips wrap">${list.map(x => `<button class="chip" data-art="${esc(x)}">${esc(x)}</button>`).join('')}</div></section>`;
+  });
+  if (n && !html) html = `<div class="empty">Nichts gefunden.<br><br><button class="btn primary" data-art="${esc(cap($('catSearch').value))}">„${esc(cap($('catSearch').value))}“ als neuen Artikel anlegen</button></div>`;
+  $('catMain').innerHTML = html;
+}
+
+/* Favoriten */
+function renderFavs() {
+  const stars = Object.entries(data.stars).filter(([, s]) => s.on).sort((a, b) => (CAT_ORDER[a[1].cat] ?? 99) - (CAT_ORDER[b[1].cat] ?? 99) || a[1].name.localeCompare(b[1].name, 'de'));
+  let html = '<p class="intro">Tippe auf ＋, um einen Favoriten direkt auf die Liste zu setzen. Favoriten markierst du mit dem ☆ im Artikel.</p>';
+  if (stars.length) {
+    html += `<section class="group"><h2>Meine Favoriten</h2><div class="list">` + stars.map(([k, s]) => `
+      <div class="item" data-star="${esc(k)}">
+        <div class="body" data-act="starEdit"><div class="name"><span class="star">★</span> ${esc(s.name)}</div>${s.detail ? `<div class="detail">${esc(s.detail)}</div>` : ''}</div>
+        ${qtyLabel({ qty: s.qty || 1, unit: s.unit }) ? `<span class="qty">${esc(qtyLabel({ qty: s.qty || 1, unit: s.unit }))}</span>` : ''}
+        <button class="addsmall" data-act="starAdd" aria-label="auf die Liste">＋</button>
+      </div>`).join('') + '</div></section>';
+  } else html += '<div class="empty"><b>⭐</b>Noch keine Favoriten.<br>Öffne einen Artikel und tippe oben rechts auf ☆.</div>';
+  const often = Object.entries(data.favs).filter(([k]) => !(data.stars[k] && data.stars[k].on)).sort((a, b) => b[1].count - a[1].count).slice(0, 20);
+  if (often.length) html += `<section class="group"><h2>Häufig gekauft</h2><div class="chips wrap">${often.map(([k, f]) => `<button class="chip" data-often="${esc(k)}">${esc(f.name)}${f.detail ? ' · ' + esc(f.detail) : ''} <small style="color:var(--muted)">${f.count}×</small></button>`).join('')}</div></section>`;
+  $('favMain').innerHTML = html;
+}
+
+/* Angebote */
+function renderOffers() {
+  let html = '<p class="intro">Prospekte zum Stöbern. Die Links öffnen sich im Browser.</p>';
+  html += `<section class="group"><h2>Prospekte</h2><div class="list">${OFFER_LINKS.map(([n, s, u]) => `<a class="linkcard" href="${u}" target="_blank" rel="noopener"><span><b>${esc(n)}</b><small>${esc(s)}</small></span><i>↗</i></a>`).join('')}</div></section>`;
+  const open = liveItems().filter(i => !i.checked);
+  if (open.length) {
+    html += `<section class="group"><h2>Angebote für deine Liste suchen</h2><div class="list">${open.sort((a, b) => a.name.localeCompare(b.name, 'de')).map(i => {
+      const q = (i.detail ? i.name + ' ' + i.detail : i.name);
+      return `<a class="linkcard" href="${offerUrl(q)}" target="_blank" rel="noopener"><span>${esc(i.name)}${i.detail ? `<small>${esc(i.detail)}</small>` : ''}</span><i>🔎</i></a>`;
+    }).join('')}</div></section>`;
+  }
+  $('offMain').innerHTML = html;
+}
+
+/* ---------- Tabs ---------- */
+function showTab(t) {
+  currentTab = t; localStorage.setItem(LS_TAB, JSON.stringify(t));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'v-' + t));
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  window.scrollTo(0, 0);
+}
+$('tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) showTab(b.dataset.tab); });
+
+/* ---------- Artikel-Blatt ---------- */
+$('sCat').innerHTML = CATS.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
+$('sUnit').innerHTML = UNITS.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
+function openSheet(id) { $('backdrop').classList.add('open'); $(id).classList.add('open'); }
+function closeSheets() { $('backdrop').classList.remove('open'); document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open')); }
+$('backdrop').addEventListener('click', closeSheets);
+document.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeSheets(); });
+
+function renderVariants() {
+  const info = articleInfo($('sName').value);
+  const cur = $('sDetail').value.trim();
+  selVariant = info.variants.find(v => norm(v) === norm(cur)) || '';
+  $('sVariants').innerHTML = info.variants.length
+    ? info.variants.map(v => `<button type="button" class="chip${norm(v) === norm(cur) ? ' sel' : ''}" data-var="${esc(v)}">${esc(v)}</button>`).join('')
+    : '<span class="hint" style="margin:0">Keine Vorschläge – einfach selbst eingeben.</span>';
+}
+function updateSheetExtras() {
+  const name = $('sName').value.trim(), detail = $('sDetail').value.trim();
+  sheetStar = isStar(name, detail);
+  $('sStar').textContent = sheetStar ? '★' : '☆';
+  $('sStar').classList.toggle('on', sheetStar);
+  $('sOffer').href = offerUrl(name + (detail ? ' ' + detail : ''));
+}
+function openItemSheet(mode, src) {
+  sheetMode = mode; editingId = mode === 'edit' ? src.id : null;
+  const info = articleInfo(src.name || '');
+  $('sTitle').textContent = mode === 'edit' ? 'Artikel bearbeiten' : (info.name || 'Neuer Artikel');
+  $('sName').value = info.name || '';
+  $('sDetail').value = src.detail || '';
+  $('sQty').value = src.qty || 1;
+  $('sUnit').value = src.unit !== undefined ? src.unit : info.unit;
+  if (mode === 'add' && !src.qty && ['g','ml'].includes($('sUnit').value)) $('sQty').value = 500;
+  $('sCat').value = src.cat || guessCat(info.name || '');
+  $('sNote').value = src.note || '';
+  $('sBtnsAdd').style.display = mode === 'add' ? 'flex' : 'none';
+  $('sBtnsEdit').style.display = mode === 'edit' ? 'flex' : 'none';
+  renderVariants(); updateSheetExtras();
+  openSheet('itemSheet');
+}
+$('sVariants').addEventListener('click', e => {
+  const b = e.target.closest('[data-var]'); if (!b) return;
+  $('sDetail').value = norm(b.dataset.var) === norm($('sDetail').value) ? '' : b.dataset.var;
+  renderVariants(); updateSheetExtras();
+});
+$('sDetail').addEventListener('input', () => { renderVariants(); updateSheetExtras(); });
+$('sName').addEventListener('change', () => {
+  const info = articleInfo($('sName').value);
+  if (info.cat) $('sCat').value = info.cat;
+  renderVariants(); updateSheetExtras();
+});
+$('sMinus').onclick = () => { $('sQty').value = Math.max(1, clampQty($('sQty').value) - stepFor()); };
+$('sPlus').onclick  = () => { const q = clampQty($('sQty').value), s = stepFor(); $('sQty').value = (q === 1 && s > 1) ? s : q + s; };
+function stepFor() { const u = $('sUnit').value; return (u === 'g' || u === 'ml') ? 100 : 1; }
+$('sStar').onclick = () => {
+  const name = cap($('sName').value), detail = $('sDetail').value.trim();
+  if (!name) return;
+  setStar(name, detail, !sheetStar, { cat: $('sCat').value, unit: $('sUnit').value, qty: clampQty($('sQty').value) });
+  rememberArticle(name, detail, $('sCat').value, $('sUnit').value);
+  commit(); updateSheetExtras();
+  toast(sheetStar ? '★ Als Favorit gemerkt' : 'Favorit entfernt');
+};
+function sheetValues() {
+  return { name: cap($('sName').value), detail: $('sDetail').value.trim(), qty: clampQty($('sQty').value),
+           unit: $('sUnit').value, cat: $('sCat').value, note: $('sNote').value.trim() };
+}
+$('sAdd').onclick = () => { const v = sheetValues(); if (!v.name) return; closeSheets(); addItem(v); };
+$('sSave').onclick = () => {
+  const it = data.items.find(i => i.id === editingId); if (!it) return closeSheets();
+  const v = sheetValues(); if (!v.name) return;
+  const wasStar = isStar(it.name, it.detail);
+  if (wasStar && keyOf(it.name, it.detail) !== keyOf(v.name, v.detail)) { setStar(it.name, it.detail, false); setStar(v.name, v.detail, true, { cat: v.cat, unit: v.unit, qty: v.qty }); }
+  Object.assign(it, v, { updatedAt: now() });
+  rememberArticle(v.name, v.detail, v.cat, v.unit);
+  const f = data.favs[keyOf(v.name, v.detail)]; if (f) Object.assign(f, { cat: v.cat, unit: v.unit });
+  const s = data.stars[keyOf(v.name, v.detail)]; if (s && s.on) Object.assign(s, { cat: v.cat, unit: v.unit, updatedAt: now() });
+  closeSheets(); commit();
+};
+$('sDelete').onclick = () => { closeSheets(); removeItem(editingId); };
+
+/* ---------- Events Liste ---------- */
 $('addForm').addEventListener('submit', e => {
   e.preventDefault();
-  const v = $('addInput').value;
-  if (v.trim()) { addItem(v); $('addInput').value = ''; renderChips(); }
+  const p = parseInput($('addName').value); if (!p.name) return;
+  const fieldQty = clampQty($('addQty').value);
+  const qty = fieldQty > 1 ? fieldQty : (p.qty || 1);
+  const info = articleInfo(p.name);
+  // Zähl-Einheiten (Packung, Flasche …) übernehmen, Gewichts-/Volumen-Einheiten nicht
+  const countUnit = ['g','kg','ml','l'].includes(info.unit) ? '' : (info.unit || '');
+  addItem({ name: info.name, qty, unit: countUnit });
+  $('addName').value = ''; $('addQty').value = 1; renderChips();
 });
-$('addInput').addEventListener('input', renderChips);
+$('addName').addEventListener('input', renderChips);
 $('chips').addEventListener('click', e => {
-  const b = e.target.closest('[data-fav]'); if (!b) return;
-  const f = data.favs[b.dataset.fav]; if (!f) return;
-  const typed = parseInput($('addInput').value || '');
-  addItem((typed.qty > 1 ? typed.qty + ' ' : '') + f.name);
-  $('addInput').value = ''; renderChips();
+  const s = e.target.closest('[data-sug]');
+  if (s) { openItemSheet('add', { name: s.dataset.sug, detail: s.dataset.detail, qty: clampQty($('addQty').value) }); $('addName').value = ''; $('addQty').value = 1; renderChips(); return; }
+  const q = e.target.closest('[data-quick]');
+  if (q) { const st = data.stars[q.dataset.quick]; if (st) addItem({ name: st.name, detail: st.detail, qty: st.qty || 1, unit: st.unit || '', cat: st.cat }); }
 });
-$('main').addEventListener('click', e => {
+$('listMain').addEventListener('click', e => {
   const act = e.target.closest('[data-act]'); if (!act) return;
   if (act.dataset.act === 'cleardone') return clearDone();
   const id = e.target.closest('.item')?.dataset.id;
   if (act.dataset.act === 'toggle') toggle(id);
-  if (act.dataset.act === 'edit') openEdit(id);
+  if (act.dataset.act === 'edit') { const it = data.items.find(i => i.id === id); if (it) openItemSheet('edit', it); }
 });
-
-/* ---------- Bearbeiten ---------- */
-$('eCat').innerHTML = CATS.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
-function openSheet(id) { $('backdrop').classList.add('open'); $(id).classList.add('open'); }
-function closeSheets() { $('backdrop').classList.remove('open'); document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open')); }
-$('backdrop').addEventListener('click', closeSheets);
-
-function openEdit(id) {
-  const it = data.items.find(i => i.id === id); if (!it) return;
-  editingId = id; editQty = it.qty;
-  $('eName').value = it.name; $('eQty').textContent = editQty; $('eCat').value = it.cat; $('eNote').value = it.note || '';
-  openSheet('editSheet');
-}
-$('eMinus').onclick = () => { editQty = Math.max(1, editQty - 1); $('eQty').textContent = editQty; };
-$('ePlus').onclick  = () => { editQty = Math.min(999, editQty + 1); $('eQty').textContent = editQty; };
-$('eSave').onclick = () => {
-  const it = data.items.find(i => i.id === editingId); if (!it) return closeSheets();
-  const name = $('eName').value.trim() || it.name;
-  it.name = name; it.qty = editQty; it.cat = $('eCat').value; it.note = $('eNote').value.trim(); it.updatedAt = now();
-  const f = data.favs[norm(name)];
-  if (f) { f.cat = it.cat; f.note = it.note; } else bumpFav(name, it.cat, it.note);
-  closeSheets(); commit();
-};
-$('eDelete').onclick = () => { closeSheets(); removeItem(editingId); };
+$('catSearch').addEventListener('input', renderCatalog);
+$('catMain').addEventListener('click', e => { const b = e.target.closest('[data-art]'); if (b) openItemSheet('add', { name: b.dataset.art }); });
+$('favMain').addEventListener('click', e => {
+  const o = e.target.closest('[data-often]');
+  if (o) { const f = data.favs[o.dataset.often]; if (f) openItemSheet('add', { name: f.name, detail: f.detail, unit: f.unit, cat: f.cat }); return; }
+  const row = e.target.closest('[data-star]'); if (!row) return;
+  const s = data.stars[row.dataset.star]; if (!s) return;
+  const act = e.target.closest('[data-act]')?.dataset.act;
+  if (act === 'starAdd') addItem({ name: s.name, detail: s.detail, qty: s.qty || 1, unit: s.unit || '', cat: s.cat });
+  else openItemSheet('add', { name: s.name, detail: s.detail, qty: s.qty || 1, unit: s.unit || '', cat: s.cat });
+});
 
 /* ---------- Toast ---------- */
 let toastTimer;
 function toast(text, undo) {
   $('toastText').textContent = text;
-  const btn = $('toastBtn');
-  btn.hidden = !undo;
+  const btn = $('toastBtn'); btn.hidden = !undo;
   btn.onclick = () => { $('toast').classList.remove('show'); undo && undo(); };
   $('toast').classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => $('toast').classList.remove('show'), undo ? 5000 : 2200);
+  toastTimer = setTimeout(() => $('toast').classList.remove('show'), undo ? 5000 : 2000);
 }
 
 /* ---------- GitHub-Sync ---------- */
@@ -433,6 +756,11 @@ async function gh(method, body, attempt = 0) {
   return res;
 }
 
+function mergeByUpdated(a, b) {
+  const out = { ...obj(b) };
+  Object.entries(obj(a)).forEach(([k, v]) => { const r = out[k]; if (!r || (v.updatedAt || 0) > (r.updatedAt || 0)) out[k] = v; });
+  return out;
+}
 function mergeData(local, remote) {
   const byId = new Map();
   [...(remote.items || []), ...(local.items || [])].forEach(it => {
@@ -441,39 +769,45 @@ function mergeData(local, remote) {
   });
   const cutoff = now() - TOMBSTONE_DAYS * 864e5;
   const items = [...byId.values()].filter(i => !(i.deleted && (i.updatedAt || 0) < cutoff));
-  const favs = { ...(remote.favs || {}) };
-  Object.entries(local.favs || {}).forEach(([k, f]) => {
+  const favs = { ...obj(remote.favs) };
+  Object.entries(obj(local.favs)).forEach(([k, f]) => {
     const r = favs[k];
     if (!r) favs[k] = f;
-    else {
-      const newer = (f.last || 0) >= (r.last || 0) ? f : r;
-      favs[k] = { ...newer, count: Math.max(f.count || 0, r.count || 0) };
-    }
+    else { const newer = (f.last || 0) >= (r.last || 0) ? f : r; favs[k] = { ...newer, count: Math.max(f.count || 0, r.count || 0) }; }
   });
-  return { items, favs };
+  const stars = mergeByUpdated(local.stars, remote.stars);
+  const custom = mergeByUpdated(local.custom, remote.custom);
+  // eigene Bezeichnungen beider Seiten zusammenführen
+  Object.keys(custom).forEach(k => {
+    const vs = new Map();
+    [...((obj(local.custom)[k] || {}).variants || []), ...((obj(remote.custom)[k] || {}).variants || [])].forEach(v => { if (!vs.has(norm(v))) vs.set(norm(v), v); });
+    custom[k] = { ...custom[k], variants: [...vs.values()] };
+  });
+  return { items, favs, stars, custom };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
-  const sortKeys = o => Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
+  const sortKeys = o => (o && typeof o === 'object' && !Array.isArray(o)) ? Object.keys(o).sort().reduce((r, k) => (r[k] = sortKeys(o[k]), r), {}) : o;
+  const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: Object.keys(d.favs || {}).sort().map(k => [k, sortKeys(d.favs[k])])
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
-  const parsed = JSON.parse(b64decode(j.content || ''));
-  return { items: parsed.items || [], favs: parsed.favs || {} };
+  const p = JSON.parse(b64decode(j.content || ''));
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom) };
 }
 async function push() {
-  const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), items: data.items, favs: data.favs };
+  const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
   const body = { message: 'Einkaufsliste aktualisiert', content: b64encode(JSON.stringify(payload, null, 1)), branch: cfg.branch || 'main' };
   if (remoteSha) body.sha = remoteSha;
   const res = await gh('PUT', body);
@@ -482,7 +816,6 @@ async function push() {
   const j = await res.json(); remoteSha = j.content?.sha || null;
   return 'ok';
 }
-
 async function sync(reason) {
   if (!syncConfigured()) { setDot(''); return; }
   if (syncing) { syncQueued = true; return; }
@@ -490,11 +823,10 @@ async function sync(reason) {
   try {
     for (let round = 0; round < 3; round++) {
       const remote = await pull();
-      lastPullOk = true;
       const merged = mergeData(data, remote);
       const localChanged = !sameData(merged, data);
       const remoteChanged = !sameData(merged, remote);
-      if (localChanged) { data = merged; saveLocal(); render(); }
+      if (localChanged) { data = merged; saveLocal(); renderAll(); }
       if (!remoteChanged) { log(`${reason}: aktuell` + (localChanged ? ' (Änderungen geladen)' : '')); break; }
       const r = await push();
       if (r === 'ok') { log(`${reason}: gespeichert` + (localChanged ? ' + Änderungen geladen' : '')); break; }
@@ -502,7 +834,6 @@ async function sync(reason) {
     }
     setDot('ok');
   } catch (err) {
-    lastPullOk = false;
     setDot('err'); log(`${reason}: ${err.message}`, true);
   } finally {
     syncing = false;
@@ -511,12 +842,9 @@ async function sync(reason) {
 }
 function schedulePush() {
   if (!syncConfigured()) return;
-  setDot('busy');
-  clearTimeout(pushTimer);
+  setDot('busy'); clearTimeout(pushTimer);
   pushTimer = setTimeout(() => sync('Änderung'), 1500);
 }
-
-// Regelmäßig nachsehen, ob der andere etwas geändert hat (nur wenn die App sichtbar ist)
 setInterval(() => { if (document.visibilityState === 'visible') sync('Abgleich'); }, 30000);
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') sync('App geöffnet'); });
 $('syncBtn').onclick = () => {
@@ -530,10 +858,7 @@ function openSettings() {
   renderLog(); openSheet('setSheet');
 }
 $('settingsBtn').onclick = openSettings;
-$('setClose').onclick = closeSheets;
-function readCfgForm() {
-  return { owner: $('gOwner').value.trim(), repo: $('gRepo').value.trim(), token: $('gToken').value.trim(), branch: cfg.branch || 'main' };
-}
+function readCfgForm() { return { owner: $('gOwner').value.trim(), repo: $('gRepo').value.trim(), token: $('gToken').value.trim(), branch: cfg.branch || 'main' }; }
 $('gSave').onclick = () => {
   cfg = readCfgForm(); localStorage.setItem(LS_CFG, JSON.stringify(cfg));
   remoteSha = null; closeSheets(); toast('Gespeichert'); sync('Einrichtung');
@@ -549,7 +874,7 @@ $('gTest').onclick = async () => {
   cfg = old;
 };
 $('exportBtn').onclick = () => {
-  const blob = new Blob([JSON.stringify({ app: 'Einkaufsliste', version: APP_VERSION, items: data.items, favs: data.favs }, null, 1)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify({ app: 'Einkaufsliste', version: APP_VERSION, ...data }, null, 1)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'einkaufsliste-' + new Date().toISOString().slice(0, 10) + '.json';
@@ -560,15 +885,12 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: j.favs || {} });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
 };
-$('favReset').onclick = () => {
-  if (!confirm('„Häufig gekauft“ wirklich leeren?')) return;
-  data.favs = {}; commit();
-};
+$('favReset').onclick = () => { if (!confirm('„Häufig gekauft“ wirklich leeren?')) return; data.favs = {}; commit(); };
 
 /* ---------- Icon, Manifest, Service Worker ---------- */
 (function setupPwa() {
@@ -588,8 +910,8 @@ $('favReset').onclick = () => {
 })();
 
 $('ver').textContent = 'Einkaufsliste ' + APP_VERSION;
-render();
-setDot(syncConfigured() ? '' : '');
+showTab(['liste','artikel','favoriten','angebote'].includes(currentTab) ? currentTab : 'liste');
+renderAll();
 sync('Start');
 </script>
 </body>
