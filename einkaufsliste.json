@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.1",
- "savedAt": "2026-10-07T13:02:36.282Z",
+ "savedAt": "2026-10-07T13:03:29.224Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -99,6 +99,15 @@
    "qty": 2,
    "on": true,
    "updatedAt": 1791378030619
+  },
+  "coca cola|": {
+   "name": "Coca Cola",
+   "detail": "",
+   "cat": "getraenk",
+   "unit": "",
+   "qty": 1,
+   "on": true,
+   "updatedAt": 1791378207319
   }
  },
  "custom": {
