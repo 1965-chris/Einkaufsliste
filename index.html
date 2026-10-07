@@ -108,6 +108,11 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .offerrow{display:flex;gap:8px;margin-top:8px}
 .offerrow .field{flex:1;min-width:0}
 .offer.old{background:var(--chip);color:var(--muted);text-decoration:line-through}
+.sortbar{display:flex;align-items:center;gap:8px;padding-top:8px}
+.seg{display:flex;background:var(--chip);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;color:var(--muted);font-size:13px;padding:6px 12px;border-radius:8px;cursor:pointer}
+.seg button.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.group h2 .sub{text-transform:none;letter-spacing:0;font-weight:500;margin-left:6px}
 .shopcard{padding:12px 14px;border-top:1px solid var(--line)}
 .shopcard:first-child{border-top:0}
 .shopcard .sum{float:right;font-weight:700;color:var(--accent)}
@@ -141,6 +146,10 @@ summary{cursor:pointer;font-weight:600}
       <button type="submit" class="plus" aria-label="Hinzufügen">+</button>
     </form>
     <div class="chips" id="chips"></div>
+    <div class="sortbar">
+      <div class="seg" id="sortSeg"><button data-sort="cat">Nach Bereich</button><button data-sort="shop">Nach Händler</button></div>
+    </div>
+    <div class="chips" id="shopFilter"></div>
   </div>
   <main id="listMain"></main>
 </section>
@@ -246,7 +255,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.2';
+const APP_VERSION = 'v1.3';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -517,6 +526,10 @@ function commit() { saveLocal(); renderAll(); schedulePush(); }
 /* ---------- Render ---------- */
 const $ = id => document.getElementById(id);
 let currentTab = loadJSON(LS_TAB, 'liste');
+let sortMode = loadJSON('ekl-sort', 'cat');      // nur auf diesem Gerät
+let shopFilter = loadJSON('ekl-shopfilter', ''); // '' = alle
+const NO_SHOP = '—';
+function shopOf(i) { const o = offerOf(i); return (o && o.shop && !offerExpired(o)) ? o.shop : NO_SHOP; }
 
 function renderAll() { renderList(); renderChips(); renderCatalog(); renderFavs(); renderOffers(); }
 
@@ -537,18 +550,53 @@ function renderList() {
   let html = '';
   if (!items.length) html = '<div class="empty"><b>🧺</b>Die Liste ist leer.<br>Oben eintragen, unter „Artikel“ auswählen oder aus den Favoriten antippen.</div>';
   else {
-    const groups = {};
-    open.forEach(i => (groups[i.cat] = groups[i.cat] || []).push(i));
-    Object.keys(groups).sort((a, b) => (CAT_ORDER[a] ?? 99) - (CAT_ORDER[b] ?? 99)).forEach(cat => {
-      const list = groups[cat].sort((a, b) => a.name.localeCompare(b.name, 'de') || String(a.detail || '').localeCompare(b.detail || '', 'de'));
-      html += `<section class="group"><h2>${esc(CAT_NAME[cat] || CAT_NAME.sonst)}</h2><div class="list">${list.map(itemHtml).join('')}</div></section>`;
-    });
+    const byName = (a, b) => a.name.localeCompare(b.name, 'de') || String(a.detail || '').localeCompare(b.detail || '', 'de');
+    const byCat = (a, b) => ((CAT_ORDER[a.cat] ?? 99) - (CAT_ORDER[b.cat] ?? 99)) || byName(a, b);
+    if (sortMode === 'shop') {
+      const groups = {};
+      open.forEach(i => { const s = shopOf(i); (groups[s] = groups[s] || []).push(i); });
+      let shops = Object.keys(groups).filter(s => s !== NO_SHOP).sort((a, b) => groups[b].length - groups[a].length || a.localeCompare(b, 'de'));
+      if (groups[NO_SHOP]) shops.push(NO_SHOP);
+      // Im Markt: dessen Angebote zuerst, dazu alles ohne Händler – nur andere Händler ausblenden
+      if (shopFilter && groups[shopFilter]) shops = shopFilter === NO_SHOP ? [NO_SHOP] : [shopFilter, ...(groups[NO_SHOP] ? [NO_SHOP] : [])];
+      shops.forEach(s => {
+        const list = groups[s].sort(byCat);
+        const sum = list.reduce((t, i) => { const o = offerOf(i); return t + (o && o.price != null && s !== NO_SHOP ? o.price * (['g','kg','ml','l'].includes(i.unit) ? 1 : (i.qty || 1)) : 0); }, 0);
+        const title = s === NO_SHOP ? '🛒 Ohne Händler' : '🏪 ' + s;
+        html += `<section class="group"><h2>${esc(title)}<span class="sub">${list.length} Artikel${sum ? ' · ' + esc(fmtPrice(sum)) : ''}</span></h2><div class="list">${list.map(itemHtml).join('')}</div></section>`;
+      });
+    } else {
+      const groups = {};
+      open.forEach(i => (groups[i.cat] = groups[i.cat] || []).push(i));
+      Object.keys(groups).sort((a, b) => (CAT_ORDER[a] ?? 99) - (CAT_ORDER[b] ?? 99)).forEach(cat => {
+        const list = groups[cat].sort(byName);
+        html += `<section class="group"><h2>${esc(CAT_NAME[cat] || CAT_NAME.sonst)}</h2><div class="list">${list.map(itemHtml).join('')}</div></section>`;
+      });
+    }
     if (!open.length) html += '<div class="empty"><b>✅</b>Alles erledigt!</div>';
     if (done.length) html += `<section class="group"><div class="donehead"><h2>Im Wagen (${done.length})</h2><button class="link" data-act="cleardone">Alle entfernen</button></div>`
       + `<div class="list">${done.sort((a, b) => b.updatedAt - a.updatedAt).map(itemHtml).join('')}</div></section>`;
   }
   $('listMain').innerHTML = html;
+  renderSortBar(open);
 }
+function renderSortBar(open) {
+  document.querySelectorAll('#sortSeg button').forEach(b => b.classList.toggle('on', b.dataset.sort === sortMode));
+  const shops = [...new Set(open.map(shopOf))];
+  const named = shops.filter(s => s !== NO_SHOP).sort((a, b) => a.localeCompare(b, 'de'));
+  if (shopFilter && !shops.includes(shopFilter)) shopFilter = '';
+  if (sortMode !== 'shop' || !named.length) { $('shopFilter').innerHTML = ''; return; }
+  const opts = [['', 'Alle'], ...named.map(s => [s, s]), ...(shops.includes(NO_SHOP) ? [[NO_SHOP, 'Ohne Händler']] : [])];
+  $('shopFilter').innerHTML = '<span class="chip lbl">Ich bin bei:</span>' + opts.map(([v, l]) => `<button class="chip${v === shopFilter ? ' sel' : ''}" data-filter="${esc(v)}">${esc(l)}</button>`).join('');
+}
+$('sortSeg').addEventListener('click', e => {
+  const b = e.target.closest('[data-sort]'); if (!b) return;
+  sortMode = b.dataset.sort; localStorage.setItem('ekl-sort', JSON.stringify(sortMode)); renderList();
+});
+$('shopFilter').addEventListener('click', e => {
+  const b = e.target.closest('[data-filter]'); if (!b) return;
+  shopFilter = b.dataset.filter; localStorage.setItem('ekl-shopfilter', JSON.stringify(shopFilter)); renderList();
+});
 
 /* Vorschläge unter dem Eingabefeld */
 function suggestions(q) {
