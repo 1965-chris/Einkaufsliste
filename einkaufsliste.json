@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.1",
- "savedAt": "2026-10-07T13:03:31.271Z",
+ "savedAt": "2026-10-07T13:03:56.362Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -50,12 +50,12 @@
    "id": "muy4a4d5k5z0fo",
    "name": "Coca Cola",
    "detail": "",
-   "qty": 1,
-   "unit": "",
+   "qty": 4,
+   "unit": "Pck.",
    "cat": "getraenk",
    "note": "1,25l 6er Tray",
    "checked": false,
-   "updatedAt": 1791378209402
+   "updatedAt": 1791378234524
   }
  ],
  "favs": {
@@ -86,7 +86,7 @@
    "name": "Coca Cola",
    "detail": "",
    "cat": "getraenk",
-   "unit": "",
+   "unit": "Pck.",
    "last": 1791378120857
   }
  },
@@ -104,10 +104,10 @@
    "name": "Coca Cola",
    "detail": "",
    "cat": "getraenk",
-   "unit": "",
+   "unit": "Pck.",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791378209402
+   "updatedAt": 1791378234524
   }
  },
  "custom": {
@@ -115,8 +115,8 @@
    "name": "Coca Cola",
    "variants": [],
    "cat": "getraenk",
-   "unit": "",
-   "updatedAt": 1791378120857
+   "unit": "Pck.",
+   "updatedAt": 1791378234524
   }
  }
 }
