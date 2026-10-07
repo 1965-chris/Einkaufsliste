@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Einkauf">
+<meta name="theme-color" content="#f6f4ef">
+<title>Einkaufsliste</title>
+<link rel="apple-touch-icon" id="appleIcon">
+<style>
+:root{
+  --bg:#f6f4ef; --card:#ffffff; --ink:#1f2421; --muted:#6b726d; --line:#e4e1d8;
+  --accent:#2f7d4f; --accent-soft:#e3f1e8; --warn:#b54a2c; --chip:#efece4; --done:#a6aba7;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#141715; --card:#1d211f; --ink:#ecefe9; --muted:#9aa29c; --line:#2c312e;
+    --accent:#5cbf84; --accent-soft:#1f3328; --warn:#e07a5f; --chip:#262b28; --done:#5d645f; }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{padding:env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 24px)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 16px 8px;
+  display:flex;align-items:center;gap:10px}
+header h1{font-size:24px;margin:0;flex:1;letter-spacing:-.3px}
+.count{color:var(--muted);font-size:14px;font-weight:500}
+.iconbtn{border:0;background:var(--chip);color:var(--ink);width:40px;height:40px;border-radius:12px;
+  font-size:18px;display:grid;place-items:center;cursor:pointer;position:relative}
+.dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--done)}
+.dot.ok{background:var(--accent)} .dot.err{background:var(--warn)} .dot.busy{background:#d9a93a}
+.addbar{position:sticky;top:60px;z-index:4;background:var(--bg);padding:0 16px 10px}
+.addrow{display:flex;gap:8px}
+.addrow input{flex:1;min-width:0;font-size:17px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);outline:none}
+.addrow input:focus{border-color:var(--accent)}
+.addrow button{border:0;background:var(--accent);color:#fff;font-size:24px;width:50px;border-radius:14px;cursor:pointer}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-top:8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:0;background:var(--chip);color:var(--ink);padding:7px 12px;border-radius:999px;font-size:14px;cursor:pointer;white-space:nowrap}
+.chip small{color:var(--muted);margin-left:4px}
+main{padding:0 16px}
+.group h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:18px 4px 6px;font-weight:600}
+.list{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.check{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);background:transparent;cursor:pointer;
+  display:grid;place-items:center;color:#fff;font-size:15px;padding:0}
+.item.done .check{background:var(--accent);border-color:var(--accent)}
+.body{flex:1;min-width:0;cursor:pointer}
+.name{font-size:17px;overflow-wrap:anywhere}
+.item.done .name{color:var(--done);text-decoration:line-through}
+.note{font-size:13px;color:var(--muted)}
+.qty{flex:none;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:14px;padding:3px 9px;border-radius:999px}
+.item.done .qty{background:var(--chip);color:var(--done)}
+.offer{display:inline-block;margin-top:3px;font-size:12px;background:#fff3cf;color:#7a5600;padding:2px 8px;border-radius:8px}
+.donehead{display:flex;align-items:center;justify-content:space-between;margin:22px 4px 6px}
+.donehead h2{margin:0}
+.link{border:0;background:none;color:var(--warn);font-size:14px;cursor:pointer;padding:4px}
+.empty{text-align:center;color:var(--muted);padding:48px 20px}
+.empty b{display:block;font-size:40px;margin-bottom:8px}
+/* Sheets */
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:20;display:none}
+.backdrop.open{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--card);border-radius:20px 20px 0 0;
+  padding:18px 16px calc(env(safe-area-inset-bottom) + 18px);max-height:88vh;overflow:auto;transform:translateY(105%);
+  transition:transform .22s ease,visibility .22s;visibility:hidden}
+.sheet.open{transform:none;visibility:visible}
+.sheet h3{margin:0 0 14px;font-size:20px}
+label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
+.field{width:100%;font-size:16px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.stepper{display:flex;align-items:center;gap:10px}
+.stepper button{width:44px;height:44px;border-radius:12px;border:0;background:var(--chip);color:var(--ink);font-size:22px;cursor:pointer}
+.stepper span{min-width:40px;text-align:center;font-size:20px;font-weight:700}
+.row{display:flex;gap:8px;margin-top:18px}
+.btn{flex:1;border:0;border-radius:12px;padding:13px;font-size:16px;font-weight:600;cursor:pointer;background:var(--chip);color:var(--ink)}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.danger{background:transparent;color:var(--warn);border:1px solid var(--line)}
+.hint{font-size:13px;color:var(--muted);margin-top:6px}
+.log{font:12px/1.5 ui-monospace,Menlo,monospace;background:var(--bg);border-radius:10px;padding:8px 10px;max-height:180px;overflow:auto;margin-top:6px}
+.log .e{color:var(--warn)}
+details{margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 20px);transform:translateX(-50%) translateY(120px);
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;transition:transform .2s;
+  display:flex;gap:12px;align-items:center;max-width:90vw}
+.toast.show{transform:translateX(-50%)}
+.toast button{border:0;background:none;color:var(--accent);font-weight:700;font-size:14px;cursor:pointer}
+.ver{text-align:center;color:var(--muted);font-size:12px;margin-top:16px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Einkauf <span class="count" id="count"></span></h1>
+  <button class="iconbtn" id="syncBtn" title="Synchronisieren">⟳<span class="dot" id="syncDot"></span></button>
+  <button class="iconbtn" id="settingsBtn" title="Einstellungen">⚙︎</button>
+</header>
+
+<div class="addbar">
+  <form class="addrow" id="addForm" autocomplete="off">
+    <input id="addInput" placeholder="z. B. 3x Melitta Kaffee ganze Bohne" enterkeyhint="done">
+    <button type="submit" aria-label="Hinzufügen">+</button>
+  </form>
+  <div class="chips" id="chips"></div>
+</div>
+
+<main id="main"></main>
+
+<div class="backdrop" id="backdrop"></div>
+
+<!-- Artikel bearbeiten -->
+<div class="sheet" id="editSheet">
+  <h3>Artikel bearbeiten</h3>
+  <label>Name</label>
+  <input class="field" id="eName">
+  <label>Menge</label>
+  <div class="stepper"><button id="eMinus">−</button><span id="eQty">1</span><button id="ePlus">+</button></div>
+  <label>Bereich im Markt</label>
+  <select class="field" id="eCat"></select>
+  <label>Notiz (Marke, Größe …)</label>
+  <input class="field" id="eNote" placeholder="optional">
+  <div class="row">
+    <button class="btn danger" id="eDelete">Löschen</button>
+    <button class="btn primary" id="eSave">Speichern</button>
+  </div>
+</div>
+
+<!-- Einstellungen -->
+<div class="sheet" id="setSheet">
+  <h3>Einstellungen</h3>
+  <b>Gemeinsamer Sync über GitHub</b>
+  <div class="hint">Die Liste wird als <code>einkaufsliste.json</code> im Repo gespeichert. Beide Handys brauchen dieselben Angaben.</div>
+  <label>GitHub-Benutzer</label><input class="field" id="gOwner" autocapitalize="off" autocorrect="off">
+  <label>Repository</label><input class="field" id="gRepo" autocapitalize="off" autocorrect="off">
+  <label>Token (Fine-grained, nur dieses Repo, „Contents: Read and write“)</label>
+  <input class="field" id="gToken" type="password" autocapitalize="off" autocorrect="off">
+  <div class="row">
+    <button class="btn" id="gTest">Verbindung testen</button>
+    <button class="btn primary" id="gSave">Speichern</button>
+  </div>
+  <details>
+    <summary>Sync-Verlauf</summary>
+    <div class="log" id="syncLog"></div>
+  </details>
+  <details>
+    <summary>Daten</summary>
+    <div class="row">
+      <button class="btn" id="exportBtn">Exportieren</button>
+      <button class="btn" id="importBtn">Importieren</button>
+    </div>
+    <input type="file" id="importFile" accept=".json,application/json" hidden>
+    <div class="row"><button class="btn danger" id="favReset">„Häufig gekauft“ leeren</button></div>
+  </details>
+  <div class="row"><button class="btn" id="setClose">Schließen</button></div>
+  <div class="ver" id="ver"></div>
+</div>
+
+<div class="toast" id="toast"><span id="toastText"></span><button id="toastBtn" hidden>Rückgängig</button></div>
+
+<script>
+'use strict';
+const APP_VERSION = 'v1.0';
+const DATA_FILE = 'einkaufsliste.json';
+const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log';
+const TOMBSTONE_DAYS = 30;
+
+const CATS = [
+  ['obst',    '🥦 Obst & Gemüse'],
+  ['brot',    '🥖 Brot & Backwaren'],
+  ['kuehl',   '🧀 Kühlregal & Molkerei'],
+  ['fleisch', '🥩 Fleisch, Wurst & Fisch'],
+  ['vorrat',  '🥫 Vorrat & Konserven'],
+  ['kaffee',  '☕ Kaffee, Tee & Frühstück'],
+  ['suess',   '🍫 Süßes & Snacks'],
+  ['getraenk','🥤 Getränke'],
+  ['tk',      '🧊 Tiefkühl'],
+  ['drogerie','🧴 Drogerie & Haushalt'],
+  ['sonst',   '🛒 Sonstiges']
+];
+const CAT_ORDER = Object.fromEntries(CATS.map((c, i) => [c[0], i]));
+const CAT_NAME  = Object.fromEntries(CATS);
+
+const CAT_WORDS = {
+  obst: ['apfel','äpfel','banane','birne','tomate','gurke','salat','zwiebel','kartoffel','möhre','karotte','paprika','zitrone','orange','traube','beere','erdbeer','pilz','champignon','knoblauch','lauch','zucchini','brokkoli','obst','gemüse','avocado','kräuter','petersilie','schnittlauch','kiwi','mandarine'],
+  brot: ['brot','brötchen','toast','baguette','croissant','kuchen','laugen','semmel','zwieback'],
+  kuehl: ['milch','joghurt','quark','käse','butter','sahne','schmand','eier','ei ','margarine','frischkäse','mozzarella','pudding','skyr','kefir','buttermilch','gouda','parmesan','feta'],
+  fleisch: ['fleisch','wurst','schinken','salami','hähnchen','huhn','hack','steak','schnitzel','fisch','lachs','thunfisch','aufschnitt','bacon','speck','würstchen','frikadelle','pute'],
+  vorrat: ['nudel','spaghetti','reis','mehl','zucker','salz','öl','essig','konserve','dose','tomatenmark','passata','linsen','bohnen','mais','brühe','gewürz','pfeffer','senf','ketchup','mayo','soße','sauce','haferflocken','müsli'],
+  kaffee: ['kaffee','tee','kakao','marmelade','honig','nutella','cornflakes','melitta','jacobs','tchibo','dallmayr','espresso','filter','pads','kapseln'],
+  suess: ['schokolade','chips','keks','gummi','bonbon','süß','snack','nüsse','erdnüsse','riegel','haribo','eis am stiel','praline'],
+  getraenk: ['wasser','saft','cola','bier','wein','sprudel','limo','fanta','sekt','schorle','getränk','apfelschorle','sprite','mineral'],
+  tk: ['tk ','tiefkühl','pizza','eis','pommes','spinat tk','fischstäbchen','gefroren'],
+  drogerie: ['klopapier','toilettenpapier','küchenrolle','spülmittel','waschmittel','zahnpasta','zahnbürste','shampoo','duschgel','seife','deo','taschentücher','müllbeutel','spülmaschine','tabs','creme','rasier','alufolie','frischhaltefolie','backpapier','batterie','schwamm','weichspüler','reiniger']
+};
+
+/* ---------- State ---------- */
+let data = loadData();
+let cfg  = loadJSON(LS_CFG, { owner: '1965-chris', repo: 'Einkaufsliste', token: '', branch: 'main' });
+let remoteSha = null;
+let syncing = false, syncQueued = false, pushTimer = null, lastPullOk = false;
+let editingId = null, editQty = 1;
+
+function loadJSON(key, fallback) {
+  try { const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; } catch { return fallback; }
+}
+function loadData() {
+  const d = loadJSON(LS_DATA, null) || {};
+  return { items: Array.isArray(d.items) ? d.items : [], favs: (d.favs && typeof d.favs === 'object') ? d.favs : {} };
+}
+function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+function now() { return Date.now(); }
+function norm(s) { return String(s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+
+/* ---------- Parsing & Kategorien ---------- */
+function parseInput(text) {
+  let t = text.trim().replace(/\s+/g, ' ');
+  let qty = 1, m;
+  const unit = /^(g|gr|gramm|kg|kilo|ml|l|liter|cl|pfund|pack|packung)\b/i; // „500 g Hack“ ist keine Stückzahl
+  if ((m = t.match(/^(\d{1,3})\s*[x×*]?\s+(.+)$/i)) && !unit.test(m[2])) { qty = +m[1]; t = m[2]; }
+  else if ((m = t.match(/^(.+?)\s+[x×*]\s*(\d{1,3})$/i)) || (m = t.match(/^(.+?)\s+(\d{1,3})\s*[x×]$/i))) { qty = +m[2]; t = m[1]; }
+  qty = Math.max(1, Math.min(999, qty || 1));
+  return { name: t.charAt(0).toUpperCase() + t.slice(1), qty };
+}
+function guessCat(name) {
+  const fav = data.favs[norm(name)];
+  if (fav && fav.cat) return fav.cat;
+  const n = ' ' + norm(name) + ' ';
+  for (const [cat, words] of Object.entries(CAT_WORDS)) {
+    if (words.some(w => n.includes(w))) return cat;
+  }
+  return 'sonst';
+}
+
+/* ---------- Aktionen ---------- */
+function liveItems() { return data.items.filter(i => !i.deleted); }
+
+function addItem(text) {
+  const { name, qty } = parseInput(text);
+  if (!name) return;
+  const key = norm(name);
+  const existing = liveItems().find(i => norm(i.name) === key && !i.checked);
+  if (existing) {
+    existing.qty += qty; existing.updatedAt = now();
+    toast(`${existing.name}: jetzt ${existing.qty}×`);
+  } else {
+    const done = liveItems().find(i => norm(i.name) === key && i.checked);
+    if (done) { done.checked = false; done.qty = qty; done.updatedAt = now(); }
+    else data.items.push({ id: uid(), name, qty, cat: guessCat(name), note: data.favs[key]?.note || '', checked: false, updatedAt: now() });
+  }
+  bumpFav(name);
+  commit();
+}
+function bumpFav(name, cat, note) {
+  const key = norm(name);
+  const f = data.favs[key] || { name, count: 0 };
+  f.name = name; f.count = (f.count || 0) + 1; f.last = now();
+  if (cat) f.cat = cat;
+  if (note !== undefined) f.note = note;
+  if (!f.cat) f.cat = guessCat(name);
+  data.favs[key] = f;
+}
+function toggle(id) {
+  const it = data.items.find(i => i.id === id); if (!it) return;
+  it.checked = !it.checked; it.updatedAt = now(); commit();
+}
+function removeItem(id, silent) {
+  const it = data.items.find(i => i.id === id); if (!it) return;
+  it.deleted = true; it.updatedAt = now(); commit();
+  if (!silent) toast(`„${it.name}“ gelöscht`, () => { it.deleted = false; it.updatedAt = now(); commit(); });
+}
+function clearDone() {
+  const done = liveItems().filter(i => i.checked);
+  if (!done.length) return;
+  const t = now();
+  done.forEach(i => { i.deleted = true; i.updatedAt = t; });
+  commit();
+  toast(`${done.length} erledigte entfernt`, () => { done.forEach(i => { i.deleted = false; i.updatedAt = now(); }); commit(); });
+}
+function commit() { saveLocal(); render(); schedulePush(); }
+
+/* ---------- Render ---------- */
+const $ = id => document.getElementById(id);
+
+function render() {
+  const items = liveItems();
+  const open = items.filter(i => !i.checked);
+  const done = items.filter(i => i.checked);
+  $('count').textContent = open.length ? `· ${open.length}` : '';
+  const main = $('main');
+  if (!items.length) {
+    main.innerHTML = '<div class="empty"><b>🧺</b>Die Liste ist leer.<br>Oben etwas eintragen oder unten aus „Häufig gekauft“ antippen.</div>';
+  } else {
+    const groups = {};
+    open.forEach(i => (groups[i.cat] = groups[i.cat] || []).push(i));
+    let html = '';
+    Object.keys(groups).sort((a, b) => (CAT_ORDER[a] ?? 99) - (CAT_ORDER[b] ?? 99)).forEach(cat => {
+      const list = groups[cat].sort((a, b) => a.name.localeCompare(b.name, 'de'));
+      html += `<section class="group"><h2>${esc(CAT_NAME[cat] || CAT_NAME.sonst)}</h2><div class="list">${list.map(itemHtml).join('')}</div></section>`;
+    });
+    if (!open.length) html += '<div class="empty"><b>✅</b>Alles erledigt!</div>';
+    if (done.length) {
+      html += `<section class="group"><div class="donehead"><h2>Im Wagen (${done.length})</h2><button class="link" data-act="cleardone">Alle entfernen</button></div>`
+           + `<div class="list">${done.sort((a, b) => b.updatedAt - a.updatedAt).map(itemHtml).join('')}</div></section>`;
+    }
+    main.innerHTML = html;
+  }
+  renderChips();
+}
+function itemHtml(i) {
+  const offer = i.offer ? `<div class="offer">🏷 ${esc(i.offer)}</div>` : '';
+  return `<div class="item${i.checked ? ' done' : ''}" data-id="${i.id}">
+    <button class="check" data-act="toggle" aria-label="abhaken">${i.checked ? '✓' : ''}</button>
+    <div class="body" data-act="edit"><div class="name">${esc(i.name)}</div>${i.note ? `<div class="note">${esc(i.note)}</div>` : ''}${offer}</div>
+    ${i.qty > 1 ? `<span class="qty">${i.qty}×</span>` : ''}
+  </div>`;
+}
+function renderChips() {
+  const q = norm($('addInput').value);
+  const onList = new Set(liveItems().filter(i => !i.checked).map(i => norm(i.name)));
+  let favs = Object.entries(data.favs).filter(([k]) => !onList.has(k));
+  if (q) favs = favs.filter(([k]) => k.includes(parseInput(q).name.toLowerCase()) && k !== q);
+  favs.sort((a, b) => (b[1].count - a[1].count) || (b[1].last - a[1].last));
+  favs = favs.slice(0, q ? 8 : 15);
+  $('chips').innerHTML = favs.length
+    ? (q ? '' : '<span class="chip" style="background:none;color:var(--muted);cursor:default;padding-left:2px">Häufig:</span>')
+      + favs.map(([k, f]) => `<button class="chip" data-fav="${esc(k)}">${esc(f.name)}</button>`).join('')
+    : '';
+}
+
+/* ---------- Events ---------- */
+$('addForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = $('addInput').value;
+  if (v.trim()) { addItem(v); $('addInput').value = ''; renderChips(); }
+});
+$('addInput').addEventListener('input', renderChips);
+$('chips').addEventListener('click', e => {
+  const b = e.target.closest('[data-fav]'); if (!b) return;
+  const f = data.favs[b.dataset.fav]; if (!f) return;
+  const typed = parseInput($('addInput').value || '');
+  addItem((typed.qty > 1 ? typed.qty + ' ' : '') + f.name);
+  $('addInput').value = ''; renderChips();
+});
+$('main').addEventListener('click', e => {
+  const act = e.target.closest('[data-act]'); if (!act) return;
+  if (act.dataset.act === 'cleardone') return clearDone();
+  const id = e.target.closest('.item')?.dataset.id;
+  if (act.dataset.act === 'toggle') toggle(id);
+  if (act.dataset.act === 'edit') openEdit(id);
+});
+
+/* ---------- Bearbeiten ---------- */
+$('eCat').innerHTML = CATS.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
+function openSheet(id) { $('backdrop').classList.add('open'); $(id).classList.add('open'); }
+function closeSheets() { $('backdrop').classList.remove('open'); document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open')); }
+$('backdrop').addEventListener('click', closeSheets);
+
+function openEdit(id) {
+  const it = data.items.find(i => i.id === id); if (!it) return;
+  editingId = id; editQty = it.qty;
+  $('eName').value = it.name; $('eQty').textContent = editQty; $('eCat').value = it.cat; $('eNote').value = it.note || '';
+  openSheet('editSheet');
+}
+$('eMinus').onclick = () => { editQty = Math.max(1, editQty - 1); $('eQty').textContent = editQty; };
+$('ePlus').onclick  = () => { editQty = Math.min(999, editQty + 1); $('eQty').textContent = editQty; };
+$('eSave').onclick = () => {
+  const it = data.items.find(i => i.id === editingId); if (!it) return closeSheets();
+  const name = $('eName').value.trim() || it.name;
+  it.name = name; it.qty = editQty; it.cat = $('eCat').value; it.note = $('eNote').value.trim(); it.updatedAt = now();
+  const f = data.favs[norm(name)];
+  if (f) { f.cat = it.cat; f.note = it.note; } else bumpFav(name, it.cat, it.note);
+  closeSheets(); commit();
+};
+$('eDelete').onclick = () => { closeSheets(); removeItem(editingId); };
+
+/* ---------- Toast ---------- */
+let toastTimer;
+function toast(text, undo) {
+  $('toastText').textContent = text;
+  const btn = $('toastBtn');
+  btn.hidden = !undo;
+  btn.onclick = () => { $('toast').classList.remove('show'); undo && undo(); };
+  $('toast').classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $('toast').classList.remove('show'), undo ? 5000 : 2200);
+}
+
+/* ---------- GitHub-Sync ---------- */
+function syncConfigured() { return !!(cfg.owner && cfg.repo && cfg.token); }
+function setDot(state) { $('syncDot').className = 'dot ' + (state || ''); }
+function log(msg, isErr) {
+  const l = loadJSON(LS_LOG, []);
+  const t = new Date().toLocaleString('de-DE', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  l.unshift({ t, msg, e: !!isErr });
+  localStorage.setItem(LS_LOG, JSON.stringify(l.slice(0, 20)));
+  renderLog();
+}
+function renderLog() {
+  const l = loadJSON(LS_LOG, []);
+  $('syncLog').innerHTML = l.length ? l.map(x => `<div class="${x.e ? 'e' : ''}">${esc(x.t)} – ${esc(x.msg)}</div>`).join('') : 'Noch keine Einträge.';
+}
+function b64encode(str) {
+  const bytes = new TextEncoder().encode(str); let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function b64decode(b64) {
+  const bin = atob(b64.replace(/\s/g, ''));
+  return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+}
+async function gh(method, body, attempt = 0) {
+  const url = `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${DATA_FILE}`
+            + (method === 'GET' ? `?ref=${encodeURIComponent(cfg.branch || 'main')}&t=${Date.now()}` : '');
+  let res;
+  try {
+    res = await fetch(url, {
+      method, cache: 'no-store',
+      headers: { 'Authorization': 'Bearer ' + cfg.token, 'Accept': 'application/vnd.github+json', ...(body ? { 'Content-Type': 'application/json' } : {}) },
+      body: body ? JSON.stringify(body) : undefined
+    });
+  } catch (err) {
+    if (attempt < 2) { await new Promise(r => setTimeout(r, 800 * (attempt + 1))); return gh(method, body, attempt + 1); }
+    throw new Error('Keine Verbindung');
+  }
+  if ((res.status === 429 || res.status >= 500) && attempt < 2) {
+    await new Promise(r => setTimeout(r, 1500 * (attempt + 1))); return gh(method, body, attempt + 1);
+  }
+  return res;
+}
+
+function mergeData(local, remote) {
+  const byId = new Map();
+  [...(remote.items || []), ...(local.items || [])].forEach(it => {
+    const prev = byId.get(it.id);
+    if (!prev || (it.updatedAt || 0) > (prev.updatedAt || 0)) byId.set(it.id, it);
+  });
+  const cutoff = now() - TOMBSTONE_DAYS * 864e5;
+  const items = [...byId.values()].filter(i => !(i.deleted && (i.updatedAt || 0) < cutoff));
+  const favs = { ...(remote.favs || {}) };
+  Object.entries(local.favs || {}).forEach(([k, f]) => {
+    const r = favs[k];
+    if (!r) favs[k] = f;
+    else {
+      const newer = (f.last || 0) >= (r.last || 0) ? f : r;
+      favs[k] = { ...newer, count: Math.max(f.count || 0, r.count || 0) };
+    }
+  });
+  return { items, favs };
+}
+// Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
+function canon(d) {
+  const sortKeys = o => Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
+  return JSON.stringify({
+    items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
+    favs: Object.keys(d.favs || {}).sort().map(k => [k, sortKeys(d.favs[k])])
+  });
+}
+function sameData(a, b) { return canon(a) === canon(b); }
+
+async function pull() {
+  const res = await gh('GET');
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {} }; }
+  if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
+  if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
+  const j = await res.json();
+  remoteSha = j.sha;
+  const parsed = JSON.parse(b64decode(j.content || ''));
+  return { items: parsed.items || [], favs: parsed.favs || {} };
+}
+async function push() {
+  const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), items: data.items, favs: data.favs };
+  const body = { message: 'Einkaufsliste aktualisiert', content: b64encode(JSON.stringify(payload, null, 1)), branch: cfg.branch || 'main' };
+  if (remoteSha) body.sha = remoteSha;
+  const res = await gh('PUT', body);
+  if (res.status === 409 || res.status === 422) return 'conflict';
+  if (!res.ok) throw new Error('Speichern fehlgeschlagen (' + res.status + ')');
+  const j = await res.json(); remoteSha = j.content?.sha || null;
+  return 'ok';
+}
+
+async function sync(reason) {
+  if (!syncConfigured()) { setDot(''); return; }
+  if (syncing) { syncQueued = true; return; }
+  syncing = true; setDot('busy');
+  try {
+    for (let round = 0; round < 3; round++) {
+      const remote = await pull();
+      lastPullOk = true;
+      const merged = mergeData(data, remote);
+      const localChanged = !sameData(merged, data);
+      const remoteChanged = !sameData(merged, remote);
+      if (localChanged) { data = merged; saveLocal(); render(); }
+      if (!remoteChanged) { log(`${reason}: aktuell` + (localChanged ? ' (Änderungen geladen)' : '')); break; }
+      const r = await push();
+      if (r === 'ok') { log(`${reason}: gespeichert` + (localChanged ? ' + Änderungen geladen' : '')); break; }
+      if (round === 2) throw new Error('Konflikt nicht lösbar – bitte erneut versuchen');
+    }
+    setDot('ok');
+  } catch (err) {
+    lastPullOk = false;
+    setDot('err'); log(`${reason}: ${err.message}`, true);
+  } finally {
+    syncing = false;
+    if (syncQueued) { syncQueued = false; sync('Nachgereicht'); }
+  }
+}
+function schedulePush() {
+  if (!syncConfigured()) return;
+  setDot('busy');
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(() => sync('Änderung'), 1500);
+}
+
+// Regelmäßig nachsehen, ob der andere etwas geändert hat (nur wenn die App sichtbar ist)
+setInterval(() => { if (document.visibilityState === 'visible') sync('Abgleich'); }, 30000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') sync('App geöffnet'); });
+$('syncBtn').onclick = () => {
+  if (!syncConfigured()) { openSettings(); toast('Bitte zuerst GitHub einrichten'); return; }
+  sync('Manuell');
+};
+
+/* ---------- Einstellungen ---------- */
+function openSettings() {
+  $('gOwner').value = cfg.owner || ''; $('gRepo').value = cfg.repo || ''; $('gToken').value = cfg.token || '';
+  renderLog(); openSheet('setSheet');
+}
+$('settingsBtn').onclick = openSettings;
+$('setClose').onclick = closeSheets;
+function readCfgForm() {
+  return { owner: $('gOwner').value.trim(), repo: $('gRepo').value.trim(), token: $('gToken').value.trim(), branch: cfg.branch || 'main' };
+}
+$('gSave').onclick = () => {
+  cfg = readCfgForm(); localStorage.setItem(LS_CFG, JSON.stringify(cfg));
+  remoteSha = null; closeSheets(); toast('Gespeichert'); sync('Einrichtung');
+};
+$('gTest').onclick = async () => {
+  const old = cfg; cfg = readCfgForm();
+  try {
+    const res = await gh('GET');
+    if (res.ok) toast('✓ Verbindung ok, Liste gefunden');
+    else if (res.status === 404) toast('✓ Repo erreichbar – Liste wird beim ersten Speichern angelegt');
+    else toast('✗ Fehler ' + res.status + (res.status === 401 ? ' – Token prüfen' : ''));
+  } catch (e) { toast('✗ ' + e.message); }
+  cfg = old;
+};
+$('exportBtn').onclick = () => {
+  const blob = new Blob([JSON.stringify({ app: 'Einkaufsliste', version: APP_VERSION, items: data.items, favs: data.favs }, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'einkaufsliste-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+};
+$('importBtn').onclick = () => $('importFile').click();
+$('importFile').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const j = JSON.parse(await f.text());
+    data = mergeData(data, { items: j.items || [], favs: j.favs || {} });
+    commit(); toast('Importiert und zusammengeführt');
+  } catch { toast('Datei konnte nicht gelesen werden'); }
+  e.target.value = '';
+};
+$('favReset').onclick = () => {
+  if (!confirm('„Häufig gekauft“ wirklich leeren?')) return;
+  data.favs = {}; commit();
+};
+
+/* ---------- Icon, Manifest, Service Worker ---------- */
+(function setupPwa() {
+  const c = document.createElement('canvas'); c.width = c.height = 180;
+  const x = c.getContext('2d');
+  x.fillStyle = '#2f7d4f'; x.fillRect(0, 0, 180, 180);
+  x.font = '110px -apple-system, "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+  x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('🛒', 90, 98);
+  const icon = c.toDataURL('image/png');
+  $('appleIcon').href = icon;
+  const manifest = { name: 'Einkaufsliste', short_name: 'Einkauf', start_url: location.href.split('#')[0].split('?')[0],
+    display: 'standalone', background_color: '#f6f4ef', theme_color: '#f6f4ef', icons: [{ src: icon, sizes: '180x180', type: 'image/png' }] };
+  const link = document.createElement('link'); link.rel = 'manifest';
+  link.href = 'data:application/manifest+json,' + encodeURIComponent(JSON.stringify(manifest));
+  document.head.appendChild(link);
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+
+$('ver').textContent = 'Einkaufsliste ' + APP_VERSION;
+render();
+setDot(syncConfigured() ? '' : '');
+sync('Start');
+</script>
+</body>
+</html>
