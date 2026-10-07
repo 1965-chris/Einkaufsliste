@@ -113,6 +113,15 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .seg button{border:0;background:none;color:var(--muted);font-size:13px;padding:6px 12px;border-radius:8px;cursor:pointer}
 .seg button.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
 .group h2 .sub{text-transform:none;letter-spacing:0;font-weight:500;margin-left:6px}
+.infohead{text-align:center;padding:4px 0 10px}
+.infohead .logo{font-size:44px;line-height:1}
+.infohead h3{margin:6px 0 2px}
+.infohead .hint{margin:0}
+.credit{text-align:center;font-size:14px;color:var(--muted);margin:14px 0 4px;line-height:1.6}
+.credit b{color:var(--ink)}
+.changes{margin:10px 0 0;padding-left:20px}
+.changes li{margin:4px 0}
+.badge{display:inline-block;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .shopcard{padding:12px 14px;border-top:1px solid var(--line)}
 .shopcard:first-child{border-top:0}
 .shopcard .sum{float:right;font-weight:700;color:var(--accent)}
@@ -133,6 +142,7 @@ summary{cursor:pointer;font-weight:600}
 
 <header>
   <h1 id="title">Einkauf <span class="count" id="count"></span></h1>
+  <button class="iconbtn" id="infoBtn" title="Info">ℹ️</button>
   <button class="iconbtn" id="syncBtn" title="Synchronisieren">⟳<span class="dot" id="syncDot"></span></button>
   <button class="iconbtn" id="settingsBtn" title="Einstellungen">⚙︎</button>
 </header>
@@ -221,6 +231,21 @@ summary{cursor:pointer;font-weight:600}
   </div>
 </div>
 
+<!-- Info -->
+<div class="sheet" id="infoSheet">
+  <div class="infohead">
+    <div class="logo">🛒</div>
+    <h3>Einkaufsliste</h3>
+    <div class="hint" id="infoVer"></div>
+  </div>
+  <label>Version</label>
+  <select class="field" id="verSelect"></select>
+  <div class="hint" id="verDate" style="margin-top:8px"></div>
+  <ul class="changes" id="verChanges"></ul>
+  <div class="credit">Entwickelt von <b>Christian Mättig</b><br>in Kooperation mit <b>Claude</b> (Anthropic)</div>
+  <div class="row"><button class="btn primary" data-close>Schließen</button></div>
+</div>
+
 <!-- Einstellungen -->
 <div class="sheet" id="setSheet">
   <h3>Einstellungen</h3>
@@ -255,7 +280,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.3';
+const APP_VERSION = 'v1.4';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1016,6 +1041,51 @@ $('importFile').onchange = async e => {
 };
 $('favReset').onclick = () => { if (!confirm('„Häufig gekauft“ wirklich leeren?')) return; data.favs = {}; commit(); };
 
+/* ---------- Info & Versionen ---------- */
+const CHANGELOG = [
+  ['v1.4', '07.10.2026', [
+    'ℹ️-Feld oben rechts mit Versionsübersicht',
+    'Auswahl der Versionsnummer mit den Änderungen je Version',
+    'Nach einem Update werden die Neuerungen einmal automatisch angezeigt'
+  ]],
+  ['v1.3', '07.10.2026', [
+    'Liste wahlweise nach Bereich oder nach Händler sortieren',
+    'Pro Händler Anzahl der Artikel und Summe der Angebotspreise',
+    '„Ich bin bei:“ zeigt nur den gewählten Markt plus Artikel ohne Händler'
+  ]],
+  ['v1.2', '07.10.2026', [
+    'Angebot zum Artikel eintragen: Markt, Preis und „gültig bis“',
+    'Gelbes Angebots-Schild in der Liste, abgelaufene Angebote durchgestrichen',
+    'Reiter Angebote: „Deine Liste im Angebot“ mit Summe pro Markt'
+  ]],
+  ['v1.1', '07.10.2026', [
+    'Menge in eigenem Feld, mit Einheit (Packung, Gramm, Kiste …)',
+    'Grundauswahl mit rund 130 Standardartikeln und genauen Bezeichnungen',
+    'Eigene Bezeichnungen werden gemerkt',
+    'Favoriten mit ☆ markieren und mit ＋ auf die Liste setzen',
+    'Reiter Angebote mit Prospekt-Links und marktguru-Suche'
+  ]],
+  ['v1.0', '07.10.2026', [
+    'Erste Version: Liste mit Bereichen im Markt, Abhaken, „Im Wagen“',
+    'Gemeinsamer Sync über GitHub (einkaufsliste.json)',
+    'Offline nutzbar als App auf dem Homescreen'
+  ]]
+];
+function renderVersion(v) {
+  const e = CHANGELOG.find(c => c[0] === v) || CHANGELOG[0];
+  $('verDate').textContent = 'Veröffentlicht am ' + e[1] + (e[0] === APP_VERSION ? ' · installiert' : '');
+  $('verChanges').innerHTML = e[2].map(x => `<li>${esc(x)}</li>`).join('');
+}
+function openInfo() {
+  $('infoVer').innerHTML = 'Version ' + esc(APP_VERSION) + '<span class="badge">aktuell</span>';
+  $('verSelect').innerHTML = CHANGELOG.map(([v, d]) => `<option value="${v}">${v} – ${d}${v === APP_VERSION ? ' (aktuell)' : ''}</option>`).join('');
+  $('verSelect').value = APP_VERSION;
+  renderVersion(APP_VERSION);
+  openSheet('infoSheet');
+}
+$('verSelect').onchange = () => renderVersion($('verSelect').value);
+$('infoBtn').onclick = openInfo;
+
 /* ---------- Icon, Manifest, Service Worker ---------- */
 (function setupPwa() {
   const c = document.createElement('canvas'); c.width = c.height = 180;
@@ -1037,6 +1107,14 @@ $('ver').textContent = 'Einkaufsliste ' + APP_VERSION;
 showTab(['liste','artikel','favoriten','angebote'].includes(currentTab) ? currentTab : 'liste');
 renderAll();
 sync('Start');
+// Nach einem Update einmal die Neuerungen zeigen
+(function () {
+  const seen = loadJSON('ekl-seen-version', null);
+  if (seen !== APP_VERSION) {
+    localStorage.setItem('ekl-seen-version', JSON.stringify(APP_VERSION));
+    if (seen) setTimeout(openInfo, 400);
+  }
+})();
 </script>
 </body>
 </html>
