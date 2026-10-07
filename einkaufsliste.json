@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.1",
- "savedAt": "2026-10-07T13:03:29.224Z",
+ "savedAt": "2026-10-07T13:03:31.271Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -55,7 +55,7 @@
    "cat": "getraenk",
    "note": "1,25l 6er Tray",
    "checked": false,
-   "updatedAt": 1791378154461
+   "updatedAt": 1791378209402
   }
  ],
  "favs": {
@@ -107,7 +107,7 @@
    "unit": "",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791378207319
+   "updatedAt": 1791378209402
   }
  },
  "custom": {
