@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.6",
- "savedAt": "2026-10-07T22:37:55.292Z",
+ "savedAt": "2026-10-07T22:38:05.629Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -103,8 +103,9 @@
    "cat": "fleisch",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1791411509959
+   "checked": true,
+   "updatedAt": 1791412685492,
+   "deleted": true
   },
   {
    "id": "muyo98bmktmzmg",
@@ -115,8 +116,9 @@
    "cat": "sonst",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1791411671650
+   "checked": true,
+   "updatedAt": 1791412685492,
+   "deleted": true
   },
   {
    "id": "muyo99fe7bwlhm",
@@ -127,8 +129,9 @@
    "cat": "kaffee",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1791411673082
+   "checked": true,
+   "updatedAt": 1791412685492,
+   "deleted": true
   },
   {
    "id": "muyoupjoperrgw",
@@ -139,8 +142,9 @@
    "cat": "fleisch",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1791412673748
+   "checked": true,
+   "updatedAt": 1791412685492,
+   "deleted": true
   },
   {
    "id": "muyouqf0b24oro",
