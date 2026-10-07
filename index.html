@@ -285,7 +285,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.5';
+const APP_VERSION = 'v1.6';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -514,10 +514,89 @@ function parseInput(text) {
   return { name: cap(t), qty };
 }
 
+/* ---------- Gesprochene Eingabe (Siri) ---------- */
+const NUM_WORDS = { ein:1, eine:1, einen:1, einem:1, einer:1, eins:1, zwei:2, drei:3, vier:4, 'fünf':5, fuenf:5, sechs:6, sieben:7, acht:8, neun:9, zehn:10, elf:11, 'zwölf':12, zwoelf:12, zwanzig:20, 'dreißig':30, 'fünfzig':50, hundert:100, paar:2 };
+const UNIT_WORDS = [
+  [/^(packungen|packung|päckchen|pakete|paket|pck\.?|tüten|tüte)$/, 'Pck.'],
+  [/^(liter|l)$/, 'l'], [/^(milliliter|ml)$/, 'ml'],
+  [/^(kilogramm|kilo|kg)$/, 'kg'], [/^(gramm|g|gr)$/, 'g'],
+  [/^(flaschen|flasche|fl\.?)$/, 'Fl.'], [/^(kisten|kiste|kasten|kästen)$/, 'Kiste'],
+  [/^(dosen|dose)$/, 'Dose'], [/^(gläser|glas)$/, 'Glas'], [/^(becher)$/, 'Becher'],
+  [/^(bund|bunde)$/, 'Bund'], [/^(netze|netz)$/, 'Netz'], [/^(stück|stk\.?)$/, '']
+];
+function splitSpoken(text) {
+  let t = ' ' + String(text || '').toLowerCase().replace(/[.!?]+/g, ' ').replace(/\s+/g, ' ') + ' ';
+  // Füllwörter und Befehls-Floskeln entfernen
+  t = t.replace(/\b(hey siri|hey claude|bitte|noch|auch|mal|wir brauchen|ich brauche|brauchen|kaufen)\b/g, ' ')
+       .replace(/\b(setze?|setz|schreib(e)?|füge?|füg|pack(e)?|trag(e)?)\b/g, ' ')
+       .replace(/\b(auf|zu|in|an)\s+(die|der|den|meine|unsere)?\s*(einkaufs)?liste( hinzu| ein| drauf)?\b/g, ' ')
+       .replace(/\b(hinzu|drauf|dazu|ein)\s*$/g, ' ');
+  return t.split(/,|;|\bund\b|\bsowie\b|\bplus\b/).map(s => s.trim()).filter(Boolean);
+}
+function matchArticle(text) {
+  // liefert {name, detail} anhand Katalog, eigener Artikel und Favoriten
+  const n = norm(text);
+  const pool = [];
+  Object.values(data.stars).filter(s => s.on).forEach(s => pool.push({ name: s.name, detail: s.detail || '', unit: s.unit, cat: s.cat }));
+  Object.values(data.favs).forEach(f => pool.push({ name: f.name, detail: f.detail || '', unit: f.unit, cat: f.cat }));
+  // 1) exakter Treffer Artikel + Bezeichnung
+  const exact = pool.find(p => norm(p.name + ' ' + p.detail) === n || (!p.detail && norm(p.name) === n));
+  if (exact) return { ...exact, known: true };
+  const arts = [...Object.values(CAT_INDEX), ...Object.values(data.custom)];
+  // 2) beginnt mit Artikelname -> Rest ist Bezeichnung („Kaffee ganze Bohne“)
+  const starts = arts.filter(a => n === norm(a.name) || n.startsWith(norm(a.name) + ' ')).sort((a, b) => b.name.length - a.name.length)[0];
+  if (starts) {
+    const rest = text.trim().slice(starts.name.length).trim();
+    const v = (articleInfo(starts.name).variants || []).find(x => norm(x) === norm(rest));
+    return { name: starts.name, detail: v || cap(rest) };
+  }
+  // 2b) endet mit Artikelname als eigenes Wort -> Vorderteil ist Bezeichnung („Melitta Kaffee“)
+  const ends = arts.filter(a => n.endsWith(' ' + norm(a.name))).sort((a, b) => b.name.length - a.name.length)[0];
+  if (ends) {
+    const pre = text.trim().slice(0, text.trim().length - ends.name.length).trim();
+    const v = (articleInfo(ends.name).variants || []).find(x => norm(x) === norm(pre));
+    return { name: ends.name, detail: v || pre.split(' ').map(cap).join(' ') };
+  }
+  // 3) zusammengesetztes Wort mit bekannter Bezeichnung („Gemüsebrühe“ -> Brühe / Gemüse)
+  for (const a of arts) {
+    const an = norm(a.name);
+    if (n.length > an.length && n.endsWith(an)) {
+      const pre = n.slice(0, n.length - an.length).replace(/[-\s]+$/, '');
+      const v = (articleInfo(a.name).variants || []).find(x => norm(x) === pre);
+      if (v) return { name: a.name, detail: v };
+    }
+  }
+  return { name: cap(text.trim()), detail: '' };
+}
+function parseSpoken(text) {
+  return splitSpoken(text).map(part => {
+    let words = part.split(' '), qty = 0, unit = null;
+    const w0 = words[0];
+    if (/^\d+([,.]\d+)?$/.test(w0)) { qty = Math.round(parseFloat(w0.replace(',', '.'))); words.shift(); }
+    else if (NUM_WORDS[w0] !== undefined) { qty = NUM_WORDS[w0]; words.shift(); }
+    if (words.length > 1) {
+      const u = UNIT_WORDS.find(([re]) => re.test(words[0]));
+      if (u) { unit = u[1]; words.shift(); }
+    }
+    words = words.filter(w => !/^(der|die|das|den|von|vom)$/.test(w));
+    const rest = words.join(' ').trim();
+    if (!rest) return null;
+    const m = matchArticle(rest);
+    const info = articleInfo(m.name);
+    if (unit === null) unit = m.unit !== undefined && m.known ? (m.unit || '') : (['g','kg','ml','l'].includes(info.unit) ? '' : (info.unit || ''));
+    if (!qty) qty = (unit === 'g' || unit === 'ml') ? 500 : 1;
+    return { name: m.name, detail: m.detail || '', qty, unit, cat: m.cat };
+  }).filter(Boolean);
+}
+function spokenLabel(it) {
+  const q = it.unit ? `${it.qty} ${it.unit}` : (it.qty > 1 ? `${it.qty}×` : '');
+  return (q ? q + ' ' : '') + it.name + (it.detail ? ' ' + it.detail : '');
+}
+
 /* ---------- Aktionen ---------- */
 function liveItems() { return data.items.filter(i => !i.deleted); }
 
-function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '', offer = null }) {
+function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '', offer = null }, opts = {}) {
   name = cap(name); detail = String(detail || '').trim();
   if (!name) return;
   cat = cat || guessCat(name);
@@ -526,16 +605,16 @@ function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '', offer 
   const open = same.find(i => !i.checked && (i.unit || '') === unit);
   if (open) {
     open.qty = clampQty((open.qty || 1) + qty); if (offer) open.offer = offer; open.updatedAt = now();
-    toast(`${open.name}: jetzt ${qtyLabel(open) || '1×'}`);
+    if (!opts.silent) toast(`${open.name}: jetzt ${qtyLabel(open) || '1×'}`);
   } else {
     const done = same.find(i => i.checked);
     if (done) Object.assign(done, { checked: false, qty: clampQty(qty), unit, cat, note: note || done.note || '', offer, updatedAt: now() });
     else data.items.push({ id: uid(), name, detail, qty: clampQty(qty), unit, cat, note, offer, checked: false, updatedAt: now() });
-    toast(`${name}${detail ? ' – ' + detail : ''} hinzugefügt`);
+    if (!opts.silent) toast(`${name}${detail ? ' – ' + detail : ''} hinzugefügt`);
   }
   bumpFav(name, detail, cat, unit);
   rememberArticle(name, detail, cat, unit);
-  commit();
+  if (!opts.nocommit) commit();
 }
 function bumpFav(name, detail, cat, unit) {
   const k = keyOf(name, detail);
@@ -982,11 +1061,45 @@ async function push() {
   const j = await res.json(); remoteSha = j.content?.sha || null;
   return 'ok';
 }
+/* Siri-Eingang: Kurzbefehl legt Textdateien in eingang/ ab */
+async function ghPath(method, path, body) {
+  const url = `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${path}`
+            + (method === 'GET' ? `?ref=${encodeURIComponent(cfg.branch || 'main')}&t=${Date.now()}` : '');
+  return fetch(url, { method, cache: 'no-store',
+    headers: { 'Authorization': 'Bearer ' + cfg.token, 'Accept': 'application/vnd.github+json', ...(body ? { 'Content-Type': 'application/json' } : {}) },
+    body: body ? JSON.stringify(body) : undefined });
+}
+async function processInbox() {
+  const res = await ghPath('GET', 'eingang');
+  if (res.status === 404) return 0;
+  if (!res.ok) throw new Error('Eingang nicht lesbar (' + res.status + ')');
+  const files = (await res.json()).filter(f => f.type === 'file' && !f.name.startsWith('.')).sort((a, b) => a.name.localeCompare(b.name));
+  const added = [];
+  for (const f of files) {
+    const r = await ghPath('GET', f.path);
+    if (!r.ok) continue;
+    const j = await r.json();
+    let text = '';
+    try { text = b64decode(j.content || ''); } catch { text = ''; }
+    // erst löschen – nur wer das Löschen schafft, übernimmt den Eintrag (keine Doppelten bei zwei Handys)
+    const del = await ghPath('DELETE', f.path, { message: 'Eingang übernommen', sha: j.sha, branch: cfg.branch || 'main' });
+    if (!del.ok) continue;
+    parseSpoken(text).forEach(it => { addItem(it, { silent: true, nocommit: true }); added.push(spokenLabel(it)); });
+  }
+  if (added.length) {
+    saveLocal(); renderAll();
+    log('🎤 Siri: ' + added.join(', '));
+    toast('🎤 Per Siri: ' + added.join(', '));
+  }
+  return added.length;
+}
+
 async function sync(reason) {
   if (!syncConfigured()) { setDot(''); return; }
   if (syncing) { syncQueued = true; return; }
   syncing = true; setDot('busy');
   try {
+    try { await processInbox(); } catch (e) { log('Eingang: ' + e.message, true); }
     for (let round = 0; round < 3; round++) {
       const remote = await pull();
       const merged = mergeData(data, remote);
@@ -1060,6 +1173,12 @@ $('favReset').onclick = () => { if (!confirm('„Häufig gekauft“ wirklich lee
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.6', '07.10.2026', [
+    '🎤 Siri-Eingang: „Hey Siri, Einkaufsliste“ – Artikel per Sprache auf die Liste',
+    'Versteht Mengen und Einheiten („zwei Packungen Butter“) und mehrere Artikel mit „und“',
+    'Erkennt Bezeichnungen, z. B. „Gemüsebrühe“ → Brühe · Gemüse',
+    'Per Siri hinzugefügte Artikel erscheinen im Sync-Verlauf mit 🎤'
+  ]],
   ['v1.5', '07.10.2026', [
     'Angebote mit Zeitraum „von – bis“ (z. B. 05.10.–10.10.)',
     'Beim Antippen eines Markts wird automatisch die Prospektwoche Mo–Sa eingetragen',
