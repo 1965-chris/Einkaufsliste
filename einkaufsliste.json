@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.3",
- "savedAt": "2026-10-07T19:38:10.880Z",
+ "savedAt": "2026-10-07T19:38:57.559Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -77,6 +77,22 @@
    },
    "checked": false,
    "updatedAt": 1791401888877
+  },
+  {
+   "id": "muyigk1e3ltp6h",
+   "name": "Pizza",
+   "detail": "Diavolo",
+   "qty": 2,
+   "unit": "",
+   "cat": "tk",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.79,
+    "until": "2026-10-15"
+   },
+   "checked": false,
+   "updatedAt": 1791401935730
   }
  ],
  "favs": {
@@ -117,6 +133,14 @@
    "cat": "tk",
    "unit": "",
    "last": 1791401873024
+  },
+  "pizza|diavolo": {
+   "count": 1,
+   "name": "Pizza",
+   "detail": "Diavolo",
+   "cat": "tk",
+   "unit": "",
+   "last": 1791401935730
   }
  },
  "stars": {
@@ -155,6 +179,15 @@
    "cat": "getraenk",
    "unit": "Pck.",
    "updatedAt": 1791378234524
+  },
+  "pizza": {
+   "name": "Pizza",
+   "variants": [
+    "Diavolo"
+   ],
+   "cat": "tk",
+   "unit": "",
+   "updatedAt": 1791401935731
   }
  }
 }
