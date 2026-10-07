@@ -1,0 +1,76 @@
+{
+ "app": "Einkaufsliste",
+ "version": "v1.1",
+ "savedAt": "2026-10-07T11:10:25.873Z",
+ "items": [
+  {
+   "id": "muxyqy0rf0vqk2",
+   "name": "Melita Barista Ganze Bohnen",
+   "qty": 1,
+   "cat": "vorrat",
+   "note": "",
+   "checked": true,
+   "updatedAt": 1791368849834,
+   "deleted": true
+  },
+  {
+   "id": "muxyrhcc23trl4",
+   "name": "Melita Barista Ganze Bohnen",
+   "qty": 1,
+   "cat": "vorrat",
+   "note": "",
+   "checked": false,
+   "updatedAt": 1791369944353,
+   "deleted": true
+  },
+  {
+   "id": "muxzehzyijaonw",
+   "name": "Kaffee",
+   "detail": "ganze Bohne",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "kaffee",
+   "note": "Melita Café Crema",
+   "checked": false,
+   "updatedAt": 1791369990667,
+   "deleted": true
+  },
+  {
+   "id": "muy02tupwreamy",
+   "name": "Butter",
+   "detail": "",
+   "qty": 2,
+   "unit": "Pck.",
+   "cat": "kuehl",
+   "note": "",
+   "checked": false,
+   "updatedAt": 1791371062177
+  }
+ ],
+ "favs": {
+  "melita barista ganze bohnen": {
+   "name": "Melita Barista Ganze Bohnen",
+   "count": 2,
+   "last": 1791368853132,
+   "cat": "vorrat"
+  },
+  "kaffee|ganze bohne": {
+   "count": 1,
+   "name": "Kaffee",
+   "detail": "ganze Bohne",
+   "cat": "kaffee",
+   "unit": "Pck.",
+   "last": 1791369927070
+  },
+  "butter|": {
+   "count": 1,
+   "name": "Butter",
+   "detail": "",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "last": 1791371062177
+  }
+ },
+ "stars": {},
+ "custom": {}
+}
