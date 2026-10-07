@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.7",
- "savedAt": "2026-10-07T22:50:26.907Z",
+ "savedAt": "2026-10-07T22:50:32.032Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -44,7 +44,8 @@
    "cat": "kuehl",
    "note": "",
    "checked": false,
-   "updatedAt": 1791378030619
+   "updatedAt": 1791413429949,
+   "offer": null
   },
   {
    "id": "muy4a4d5k5z0fo",
@@ -259,7 +260,7 @@
    "unit": "Pck.",
    "qty": 2,
    "on": true,
-   "updatedAt": 1791378030619
+   "updatedAt": 1791413429949
   },
   "coca cola|": {
    "name": "Coca Cola",
