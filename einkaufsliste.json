@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
- "version": "v1.3",
- "savedAt": "2026-10-07T19:38:57.559Z",
+ "version": "v1.6",
+ "savedAt": "2026-10-07T22:18:30.376Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -93,6 +93,18 @@
    },
    "checked": false,
    "updatedAt": 1791401935730
+  },
+  {
+   "id": "muyo5rk7znkq3g",
+   "name": "Salami",
+   "detail": "",
+   "qty": 1,
+   "unit": "",
+   "cat": "fleisch",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791411509959
   }
  ],
  "favs": {
@@ -141,6 +153,14 @@
    "cat": "tk",
    "unit": "",
    "last": 1791401935730
+  },
+  "salami|": {
+   "count": 1,
+   "name": "Salami",
+   "detail": "",
+   "cat": "fleisch",
+   "unit": "",
+   "last": 1791411509959
   }
  },
  "stars": {
@@ -188,6 +208,13 @@
    "cat": "tk",
    "unit": "",
    "updatedAt": 1791401935731
+  },
+  "salami": {
+   "name": "Salami",
+   "variants": [],
+   "cat": "fleisch",
+   "unit": "",
+   "updatedAt": 1791411509959
   }
  }
 }
