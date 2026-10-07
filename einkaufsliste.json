@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.7",
- "savedAt": "2026-10-07T22:58:23.226Z",
+ "savedAt": "2026-10-07T22:58:43.804Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -76,12 +76,12 @@
    "offer": {
     "shop": "ALDI",
     "price": 1.79,
-    "from": "",
-    "until": "2026-10-15",
+    "from": "2026-10-12",
+    "until": "2026-10-17",
     "special": true
    },
    "checked": false,
-   "updatedAt": 1791413417628
+   "updatedAt": 1791413921672
   },
   {
    "id": "muyigk1e3ltp6h",
@@ -280,7 +280,7 @@
    "unit": "",
    "qty": 2,
    "on": true,
-   "updatedAt": 1791413417629
+   "updatedAt": 1791413921672
   },
   "pizza|diavolo": {
    "name": "Pizza",
@@ -375,6 +375,17 @@
    "price": 1.79,
    "special": true,
    "updatedAt": 1791413901032
+  },
+  "pizza|thunfisch|aldi|2026-10-12": {
+   "id": "pizza|thunfisch|aldi|2026-10-12",
+   "key": "pizza|thunfisch",
+   "name": "Pizza",
+   "detail": "Thunfisch",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.79,
+   "special": true,
+   "updatedAt": 1791413921672
   }
  }
 }
