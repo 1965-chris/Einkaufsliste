@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.6",
- "savedAt": "2026-10-07T22:18:30.376Z",
+ "savedAt": "2026-10-07T22:21:13.499Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -105,6 +105,30 @@
    "offer": null,
    "checked": false,
    "updatedAt": 1791411509959
+  },
+  {
+   "id": "muyo98bmktmzmg",
+   "name": "Sellerie",
+   "detail": "",
+   "qty": 1,
+   "unit": "",
+   "cat": "sonst",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791411671650
+  },
+  {
+   "id": "muyo99fe7bwlhm",
+   "name": "Kakao",
+   "detail": "",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "kaffee",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791411673082
   }
  ],
  "favs": {
@@ -161,6 +185,22 @@
    "cat": "fleisch",
    "unit": "",
    "last": 1791411509959
+  },
+  "sellerie|": {
+   "count": 1,
+   "name": "Sellerie",
+   "detail": "",
+   "cat": "sonst",
+   "unit": "",
+   "last": 1791411671650
+  },
+  "kakao|": {
+   "count": 1,
+   "name": "Kakao",
+   "detail": "",
+   "cat": "kaffee",
+   "unit": "Pck.",
+   "last": 1791411673082
   }
  },
  "stars": {
@@ -215,6 +255,13 @@
    "cat": "fleisch",
    "unit": "",
    "updatedAt": 1791411509959
+  },
+  "sellerie": {
+   "name": "Sellerie",
+   "variants": [],
+   "cat": "sonst",
+   "unit": "",
+   "updatedAt": 1791411671650
   }
  }
 }
