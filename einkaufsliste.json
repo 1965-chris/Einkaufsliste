@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.7",
- "savedAt": "2026-10-07T22:50:19.745Z",
+ "savedAt": "2026-10-07T22:50:26.907Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -55,11 +55,13 @@
    "cat": "getraenk",
    "note": "1,25l 6er Tray",
    "checked": false,
-   "updatedAt": 1791379002351,
+   "updatedAt": 1791413424644,
    "offer": {
     "shop": "Lidl",
     "price": 5.94,
-    "until": "2026-10-17"
+    "from": "",
+    "until": "2026-10-17",
+    "special": true
    }
   },
   {
@@ -266,7 +268,7 @@
    "unit": "Pck.",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791379002351
+   "updatedAt": 1791413424644
   },
   "pizza|thunfisch": {
    "name": "Pizza",
@@ -328,6 +330,17 @@
    "price": 1.79,
    "special": true,
    "updatedAt": 1791413417628
+  },
+  "coca cola||lidl|2026-10-08": {
+   "id": "coca cola||lidl|2026-10-08",
+   "key": "coca cola|",
+   "name": "Coca Cola",
+   "detail": "",
+   "date": "2026-10-08",
+   "shop": "Lidl",
+   "price": 5.94,
+   "special": true,
+   "updatedAt": 1791413424644
   }
  }
 }
