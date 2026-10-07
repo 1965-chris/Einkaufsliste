@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.3",
- "savedAt": "2026-10-07T13:16:01.460Z",
+ "savedAt": "2026-10-07T13:16:44.149Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -55,10 +55,10 @@
    "cat": "getraenk",
    "note": "1,25l 6er Tray",
    "checked": false,
-   "updatedAt": 1791378958606,
+   "updatedAt": 1791379002351,
    "offer": {
     "shop": "Lidl",
-    "price": 0.99,
+    "price": 5.94,
     "until": "2026-10-17"
    }
   }
@@ -112,7 +112,7 @@
    "unit": "Pck.",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791378958606
+   "updatedAt": 1791379002351
   }
  },
  "custom": {
