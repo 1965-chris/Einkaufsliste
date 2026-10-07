@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -20,6 +20,7 @@
     --accent:#5cbf84; --accent-soft:#1f3328; --warn:#e07a5f; --chip:#262b28; --done:#5d645f; --star:#f2c14e; }
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html,body{margin:0;background:var(--bg);color:var(--ink);
   font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
 body{padding:env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 84px)}
@@ -123,6 +124,28 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .changes{margin:10px 0 0;padding-left:20px}
 .changes li{margin:4px 0}
 .badge{display:inline-block;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.chk{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink);margin:10px 0 0}
+.chk input{width:20px;height:20px;accent-color:var(--accent)}
+.offer.plain{background:var(--chip);color:var(--muted)}
+.pricehead{display:flex;align-items:center;gap:8px;margin:10px 0 4px}
+.pricehead h3{margin:0;font-size:20px;flex:1}
+.back{border:0;background:var(--chip);color:var(--ink);border-radius:10px;padding:7px 12px;font-size:14px;cursor:pointer}
+.chartbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 8px 6px;margin-top:8px}
+.chartbox svg{display:block;width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);padding:6px 6px 2px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.stat small{display:block;color:var(--muted);font-size:12px}
+.stat b{font-size:17px}
+.prow{display:flex;align-items:center;gap:10px;padding:11px 14px;border-top:1px solid var(--line)}
+.prow:first-child{border-top:0}
+.prow .pd{width:78px;color:var(--muted);font-size:14px}
+.prow .ps{flex:1}
+.prow .pp{font-weight:700}
+.sp{display:inline-block;font-size:11px;font-weight:700;background:#fff3cf;color:#7a5600;border-radius:6px;padding:1px 6px;margin-left:6px}
+.pdel{border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer;padding:2px 4px}
+.addprice{width:100%;margin-top:14px}
 .shopcard{padding:12px 14px;border-top:1px solid var(--line)}
 .shopcard:first-child{border-top:0}
 .shopcard .sum{float:right;font-weight:700;color:var(--accent)}
@@ -177,11 +200,15 @@ summary{cursor:pointer;font-weight:600}
 <!-- ANGEBOTE -->
 <section class="view" id="v-angebote"><main id="offMain"></main></section>
 
+<!-- PREISE -->
+<section class="view" id="v-preise"><main id="priceMain"></main></section>
+
 <nav id="tabs">
   <button data-tab="liste" class="on"><b>🧾</b>Liste</button>
   <button data-tab="artikel"><b>📚</b>Artikel</button>
   <button data-tab="favoriten"><b>⭐</b>Favoriten</button>
   <button data-tab="angebote"><b>🏷</b>Angebote</button>
+  <button data-tab="preise"><b>📈</b>Preise</button>
 </nav>
 
 <div class="backdrop" id="backdrop"></div>
@@ -216,6 +243,8 @@ summary{cursor:pointer;font-weight:600}
       <input class="field" id="sShop" placeholder="Markt" autocomplete="off">
       <input class="field" id="sPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
     </div>
+    <label class="chk"><input type="checkbox" id="sSpecial" checked> Sonderangebot (Prospekt)</label>
+    <div id="sDates">
     <div class="offerrow" style="align-items:center">
       <span class="hint" style="margin:0;width:34px">von</span>
       <input class="field" id="sFrom" type="date">
@@ -224,6 +253,8 @@ summary{cursor:pointer;font-weight:600}
       <span class="hint" style="margin:0;width:34px">bis</span>
       <input class="field" id="sUntil" type="date">
     </div>
+    </div>
+    <a class="offerlink" id="sHistory" href="#" style="display:none">📈 Preisverlauf ansehen</a>
     <div style="text-align:right"><button type="button" class="link" id="sOfferClear">Angebot entfernen</button></div>
   </div>
   <div class="row" id="sBtnsAdd">
@@ -233,6 +264,29 @@ summary{cursor:pointer;font-weight:600}
   <div class="row" id="sBtnsEdit">
     <button class="btn danger" id="sDelete">Löschen</button>
     <button class="btn primary" id="sSave">Speichern</button>
+  </div>
+</div>
+
+<!-- Preis erfassen -->
+<div class="sheet" id="priceSheet">
+  <h3>Preis erfassen</h3>
+  <label>Artikel</label>
+  <input class="field" id="pName" list="pArticles" autocomplete="off" placeholder="z. B. Kaffee">
+  <datalist id="pArticles"></datalist>
+  <label>Genaue Bezeichnung</label>
+  <input class="field" id="pDetail" autocomplete="off" placeholder="optional, z. B. Melitta ganze Bohne">
+  <label>Markt</label>
+  <div class="chips wrap" id="pShops" style="padding-top:0"></div>
+  <div class="offerrow">
+    <input class="field" id="pShop" placeholder="Markt" autocomplete="off">
+    <input class="field" id="pPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
+  </div>
+  <label>Datum</label>
+  <input class="field" id="pDate" type="date">
+  <label class="chk"><input type="checkbox" id="pSpecial"> Sonderangebot</label>
+  <div class="row">
+    <button class="btn" data-close>Abbrechen</button>
+    <button class="btn primary" id="pSave">Speichern</button>
   </div>
 </div>
 
@@ -285,7 +339,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.6';
+const APP_VERSION = 'v1.7';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -456,7 +510,7 @@ function loadJSON(key, fallback) {
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom) };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -648,13 +702,13 @@ let shopFilter = loadJSON('ekl-shopfilter', ''); // '' = alle
 const NO_SHOP = '—';
 function shopOf(i) { const o = offerOf(i); return (o && o.shop && !offerExpired(o)) ? o.shop : NO_SHOP; }
 
-function renderAll() { renderList(); renderChips(); renderCatalog(); renderFavs(); renderOffers(); }
+function renderAll() { renderList(); renderChips(); renderCatalog(); renderFavs(); renderOffers(); renderPrices(); }
 
 function itemHtml(i) {
   const o = offerOf(i);
-  const state = offerExpired(o) ? ' old' : offerUpcoming(o) ? ' soon' : '';
+  const state = !o ? '' : offerExpired(o) ? ' old' : offerUpcoming(o) ? ' soon' : (o.special === false ? ' plain' : '');
   const suffix = offerExpired(o) ? ' (abgelaufen)' : '';
-  const offer = o ? `<div class="offer${state}">${offerUpcoming(o) ? '🕒' : '🏷'} ${esc(offerText(o))}${esc(suffix)}</div>` : '';
+  const offer = o ? `<div class="offer${state}">${offerUpcoming(o) ? '🕒' : o.special === false ? '🏪' : '🏷'} ${esc(offerText(o))}${esc(suffix)}</div>` : '';
   const q = qtyLabel(i);
   return `<div class="item${i.checked ? ' done' : ''}" data-id="${i.id}">
     <button class="check" data-act="toggle" aria-label="abhaken">${i.checked ? '✓' : ''}</button>
@@ -831,6 +885,7 @@ function updateSheetExtras() {
   $('sStar').textContent = sheetStar ? '★' : '☆';
   $('sStar').classList.toggle('on', sheetStar);
   $('sOffer').href = offerUrl(name + (detail ? ' ' + detail : ''));
+  $('sHistory').style.display = priceEntries(keyOf(cap(name), detail)).length ? 'block' : 'none';
 }
 function openItemSheet(mode, src) {
   sheetMode = mode; editingId = mode === 'edit' ? src.id : null;
@@ -844,6 +899,7 @@ function openItemSheet(mode, src) {
   $('sCat').value = src.cat || guessCat(info.name || '');
   $('sNote').value = src.note || '';
   const o = offerOf(src) || {};
+  $('sSpecial').checked = o.special !== false; syncSpecial();
   $('sShop').value = o.shop || ''; $('sPrice').value = o.price != null ? String(o.price).replace('.', ',') : ''; $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
   renderShops();
   $('sBtnsAdd').style.display = mode === 'add' ? 'flex' : 'none';
@@ -881,27 +937,36 @@ function sheetOffer() {
   const shop = $('sShop').value.trim(), price = parsePrice($('sPrice').value);
   let from = $('sFrom').value, until = $('sUntil').value;
   if (from && until && from > until) [from, until] = [until, from];
-  return (shop || price != null) ? { shop, price, from, until } : null;
+  const special = $('sSpecial').checked;
+  if (!special) { from = ''; until = ''; }
+  return (shop || price != null) ? { shop, price, from, until, special } : null;
 }
 $('sShops').addEventListener('click', e => {
   const b = e.target.closest('[data-shop]'); if (!b) return;
   $('sShop').value = b.dataset.shop;
-  if (!$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
+  if ($('sSpecial').checked && !$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
   renderShops(); $('sPrice').focus();
 });
 $('sShop').addEventListener('input', renderShops);
-$('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sFrom').value = ''; $('sUntil').value = ''; renderShops(); };
+$('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sFrom').value = ''; $('sUntil').value = ''; $('sSpecial').checked = true; syncSpecial(); renderShops(); };
+function syncSpecial() { $('sDates').style.display = $('sSpecial').checked ? '' : 'none'; }
+$('sSpecial').onchange = () => {
+  syncSpecial();
+  if ($('sSpecial').checked && $('sShop').value && !$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
+};
+$('sHistory').onclick = e => { e.preventDefault(); const k = keyOf(cap($('sName').value), $('sDetail').value.trim()); closeSheets(); openPrices(k); };
 function sheetValues() {
   return { name: cap($('sName').value), detail: $('sDetail').value.trim(), qty: clampQty($('sQty').value),
            unit: $('sUnit').value, cat: $('sCat').value, note: $('sNote').value.trim(), offer: sheetOffer() };
 }
-$('sAdd').onclick = () => { const v = sheetValues(); if (!v.name) return; closeSheets(); addItem(v); };
+$('sAdd').onclick = () => { const v = sheetValues(); if (!v.name) return; closeSheets(); recordPrice(v.name, v.detail, v.offer); addItem(v); };
 $('sSave').onclick = () => {
   const it = data.items.find(i => i.id === editingId); if (!it) return closeSheets();
   const v = sheetValues(); if (!v.name) return;
   const wasStar = isStar(it.name, it.detail);
   if (wasStar && keyOf(it.name, it.detail) !== keyOf(v.name, v.detail)) { setStar(it.name, it.detail, false); setStar(v.name, v.detail, true, { cat: v.cat, unit: v.unit, qty: v.qty }); }
   Object.assign(it, v, { updatedAt: now() });
+  recordPrice(v.name, v.detail, v.offer);
   rememberArticle(v.name, v.detail, v.cat, v.unit);
   const f = data.favs[keyOf(v.name, v.detail)]; if (f) Object.assign(f, { cat: v.cat, unit: v.unit });
   const s = data.stars[keyOf(v.name, v.detail)]; if (s && s.on) Object.assign(s, { cat: v.cat, unit: v.unit, updatedAt: now() });
@@ -1022,13 +1087,15 @@ function mergeData(local, remote) {
   });
   const stars = mergeByUpdated(local.stars, remote.stars);
   const custom = mergeByUpdated(local.custom, remote.custom);
+  const prices = mergeByUpdated(local.prices, remote.prices);
+  Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
   // eigene Bezeichnungen beider Seiten zusammenführen
   Object.keys(custom).forEach(k => {
     const vs = new Map();
     [...((obj(local.custom)[k] || {}).variants || []), ...((obj(remote.custom)[k] || {}).variants || [])].forEach(v => { if (!vs.has(norm(v))) vs.set(norm(v), v); });
     custom[k] = { ...custom[k], variants: [...vs.values()] };
   });
-  return { items, favs, stars, custom };
+  return { items, favs, stars, custom, prices };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
@@ -1036,20 +1103,20 @@ function canon(d) {
   const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom)
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
   const p = JSON.parse(b64decode(j.content || ''));
-  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom) };
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices) };
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
@@ -1164,15 +1231,159 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom) });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
 };
 $('favReset').onclick = () => { if (!confirm('„Häufig gekauft“ wirklich leeren?')) return; data.favs = {}; commit(); };
 
+/* ---------- Preisverlauf ---------- */
+const SHOP_COLORS = { edeka: '#2b6cd4', aldi: '#e07b00', lidl: '#00897b', rewe: '#d0312d', kaufland: '#8e44ad', netto: '#7cb342', penny: '#e84393', dm: '#0f9bb5', rossmann: '#a0522d' };
+const EXTRA_COLORS = ['#5b6b7a', '#7a8f2e', '#b36b9e', '#3d8b8b'];
+function shopColor(s, all) {
+  const k = norm(s); if (SHOP_COLORS[k]) return SHOP_COLORS[k];
+  const others = all.filter(x => !SHOP_COLORS[norm(x)]);
+  return EXTRA_COLORS[Math.max(0, others.indexOf(s)) % EXTRA_COLORS.length];
+}
+let priceKey = null, priceShop = '';
+function priceEntries(key) {
+  return Object.values(data.prices || {}).filter(e => !e.deleted && (!key || e.key === key));
+}
+function recordPrice(name, detail, offer, dateOverride) {
+  if (!offer || offer.price == null || !offer.shop) return;
+  name = cap(name); detail = String(detail || '').trim();
+  const key = keyOf(name, detail);
+  const date = dateOverride || offer.from || todayStr();
+  const id = key + '|' + norm(offer.shop) + '|' + date;
+  const special = offer.special !== false;
+  const prev = data.prices[id];
+  if (prev && !prev.deleted && prev.price === offer.price && prev.special === special && prev.shop === offer.shop) return;
+  data.prices[id] = { id, key, name, detail, date, shop: offer.shop, price: offer.price, special, updatedAt: now() };
+}
+function openPrices(key) { priceKey = key || null; priceShop = ''; renderPrices(); showTab('preise'); }
+
+function priceChart(list, shops) {
+  const W = 340, H = 190, L = 44, R = 12, T = 12, B = 30;
+  const t = s => new Date(s + 'T12:00:00').getTime();
+  let x0 = Math.min(...list.map(e => t(e.date))), x1 = Math.max(...list.map(e => t(e.date)));
+  if (x1 - x0 < 6 * 864e5) { const m = (x0 + x1) / 2; x0 = m - 3 * 864e5; x1 = m + 3 * 864e5; }
+  let y0 = Math.min(...list.map(e => e.price)), y1 = Math.max(...list.map(e => e.price));
+  const pad = Math.max((y1 - y0) * 0.15, y1 * 0.05, 0.1); y0 = Math.max(0, y0 - pad); y1 = y1 + pad;
+  const X = v => L + (v - x0) / (x1 - x0) * (W - L - R), Y = v => T + (1 - (v - y0) / (y1 - y0)) * (H - T - B);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Preisverlauf">`;
+  for (let i = 0; i <= 3; i++) {
+    const v = y0 + (y1 - y0) * i / 3, y = Y(v);
+    s += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`;
+    s += `<text x="${L - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${v.toFixed(2).replace('.', ',')}</text>`;
+  }
+  const fd = v => new Date(v).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+  s += `<text x="${L}" y="${H - 8}" font-size="10" fill="var(--muted)">${fd(x0)}</text>`;
+  s += `<text x="${W - R}" y="${H - 8}" text-anchor="end" font-size="10" fill="var(--muted)">${fd(x1)}</text>`;
+  shops.forEach(sh => {
+    const pts = list.filter(e => e.shop === sh).sort((a, b) => a.date.localeCompare(b.date));
+    const c = shopColor(sh, shops);
+    if (pts.length > 1) s += `<polyline fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" points="${pts.map(e => X(t(e.date)) + ',' + Y(e.price)).join(' ')}"/>`;
+    pts.forEach(e => {
+      const cx = X(t(e.date)), cy = Y(e.price);
+      s += e.special
+        ? `<circle cx="${cx}" cy="${cy}" r="6.5" fill="${c}" stroke="#f2c14e" stroke-width="3"/>`
+        : `<circle cx="${cx}" cy="${cy}" r="4.5" fill="var(--card)" stroke="${c}" stroke-width="2.5"/>`;
+    });
+  });
+  return s + '</svg>';
+}
+
+function renderPrices() {
+  const all = priceEntries();
+  let html = '';
+  if (!priceKey) {
+    const groups = {};
+    all.forEach(e => (groups[e.key] = groups[e.key] || []).push(e));
+    const keys = Object.keys(groups).sort((a, b) => {
+      const la = groups[a].reduce((m, e) => e.date > m ? e.date : m, ''), lb = groups[b].reduce((m, e) => e.date > m ? e.date : m, '');
+      return lb.localeCompare(la);
+    });
+    html += '<p class="intro">Preise entstehen automatisch, wenn du beim Artikel ein Angebot mit Preis einträgst. Normalpreise erfasst du mit „＋ Preis erfassen“.</p>';
+    if (keys.length) {
+      html += `<section class="group"><h2>Artikel mit Preisen</h2><div class="list">${keys.map(k => {
+        const g = groups[k].sort((a, b) => b.date.localeCompare(a.date));
+        const min = Math.min(...g.map(e => e.price));
+        return `<div class="item" data-pkey="${esc(k)}"><div class="body"><div class="name">${esc(g[0].name)}</div>${g[0].detail ? `<div class="detail">${esc(g[0].detail)}</div>` : ''}<div class="note">${g.length} Preis${g.length > 1 ? 'e' : ''} · Tiefstpreis ${esc(fmtPrice(min))}</div></div><span class="qty">${esc(fmtPrice(g[0].price))}</span></div>`;
+      }).join('')}</div></section>`;
+    } else html += '<div class="empty"><b>📈</b>Noch keine Preise erfasst.</div>';
+    html += '<button class="btn primary addprice" data-act="addprice">＋ Preis erfassen</button>';
+    $('priceMain').innerHTML = html; return;
+  }
+  const entries = priceEntries(priceKey);
+  if (!entries.length) { priceKey = null; return renderPrices(); }
+  const shops = [...new Set(entries.map(e => e.shop))].sort((a, b) => a.localeCompare(b, 'de'));
+  if (priceShop && !shops.includes(priceShop)) priceShop = '';
+  const shown = entries.filter(e => !priceShop || e.shop === priceShop).sort((a, b) => b.date.localeCompare(a.date));
+  const showShops = priceShop ? [priceShop] : shops;
+  const normal = shown.filter(e => !e.special), special = shown.filter(e => e.special);
+  const avg = normal.length ? normal.reduce((t, e) => t + e.price, 0) / normal.length : null;
+  const min = Math.min(...shown.map(e => e.price));
+  const minE = shown.find(e => e.price === min);
+  html += `<div class="pricehead"><button class="back" data-act="pback">‹ Alle</button><h3>${esc(entries[0].name)}${entries[0].detail ? ' <span class="hint" style="font-size:15px">' + esc(entries[0].detail) + '</span>' : ''}</h3></div>`;
+  html += `<div class="chips">${[['', 'Alle'], ...shops.map(s => [s, s])].map(([v, l]) => `<button class="chip${v === priceShop ? ' sel' : ''}" data-pshop="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
+  html += `<div class="chartbox">${priceChart(shown, showShops)}<div class="legend">${showShops.map(s => `<span><i style="background:${shopColor(s, shops)}"></i>${esc(s)}</span>`).join('')}<span><i style="background:#888;box-shadow:0 0 0 2px #f2c14e"></i>Sonderpreis</span><span><i style="background:transparent;border:2px solid #888;width:6px;height:6px"></i>Normalpreis</span></div></div>`;
+  html += `<div class="stats">
+    <div class="stat"><small>Tiefstpreis</small><b>${esc(fmtPrice(min))}</b><small>${esc(minE.shop)}${minE.special ? ' · Angebot' : ''}</small></div>
+    <div class="stat"><small>Ø Normalpreis</small><b>${avg != null ? esc(fmtPrice(avg)) : '–'}</b><small>${normal.length} Wert${normal.length === 1 ? '' : 'e'}</small></div>
+    <div class="stat"><small>Sonderpreise</small><b>${special.length}</b><small>von ${shown.length}</small></div>
+  </div>`;
+  html += `<section class="group"><h2>Alle Preise</h2><div class="list">${shown.map(e => `<div class="prow"><span class="pd">${esc(fmtDay(e.date))}${e.date.slice(0, 4) !== todayStr().slice(0, 4) ? e.date.slice(2, 4) : ''}</span><span class="ps"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${shopColor(e.shop, shops)};margin-right:6px"></i>${esc(e.shop)}${e.special ? '<span class="sp">Angebot</span>' : ''}</span><span class="pp">${esc(fmtPrice(e.price))}</span><button class="pdel" data-pdel="${esc(e.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
+  html += '<button class="btn primary addprice" data-act="addprice">＋ Preis erfassen</button>';
+  $('priceMain').innerHTML = html;
+}
+$('priceMain').addEventListener('click', e => {
+  const k = e.target.closest('[data-pkey]'); if (k) { priceKey = k.dataset.pkey; priceShop = ''; renderPrices(); window.scrollTo(0, 0); return; }
+  const s = e.target.closest('[data-pshop]'); if (s) { priceShop = s.dataset.pshop; renderPrices(); return; }
+  const d = e.target.closest('[data-pdel]');
+  if (d) {
+    const en = data.prices[d.dataset.pdel]; if (!en) return;
+    en.deleted = true; en.updatedAt = now(); commit();
+    toast('Preis gelöscht', () => { en.deleted = false; en.updatedAt = now(); commit(); });
+    return;
+  }
+  const a = e.target.closest('[data-act]'); if (!a) return;
+  if (a.dataset.act === 'pback') { priceKey = null; renderPrices(); }
+  if (a.dataset.act === 'addprice') openPriceSheet();
+});
+function openPriceSheet() {
+  const ex = priceKey ? priceEntries(priceKey)[0] : null;
+  $('pName').value = ex ? ex.name : ''; $('pDetail').value = ex ? ex.detail : '';
+  $('pShop').value = priceShop || ''; $('pPrice').value = ''; $('pDate').value = todayStr(); $('pSpecial').checked = false;
+  const names = new Set([...Object.values(CAT_INDEX).map(a => a.name), ...Object.values(data.custom).map(a => a.name)]);
+  $('pArticles').innerHTML = [...names].sort((a, b) => a.localeCompare(b, 'de')).map(n => `<option value="${esc(n)}">`).join('');
+  renderPShops(); openSheet('priceSheet');
+}
+function renderPShops() {
+  const cur = norm($('pShop').value);
+  $('pShops').innerHTML = SHOPS.map(s => `<button type="button" class="chip${norm(s) === cur ? ' sel' : ''}" data-shop="${s}">${s}</button>`).join('');
+}
+$('pShops').addEventListener('click', e => { const b = e.target.closest('[data-shop]'); if (!b) return; $('pShop').value = b.dataset.shop; renderPShops(); $('pPrice').focus(); });
+$('pShop').addEventListener('input', renderPShops);
+$('pSave').onclick = () => {
+  const name = cap($('pName').value), detail = $('pDetail').value.trim(), shop = $('pShop').value.trim(), price = parsePrice($('pPrice').value);
+  if (!name || !shop || price == null) { toast('Bitte Artikel, Markt und Preis angeben'); return; }
+  const date = $('pDate').value || todayStr();
+  recordPrice(name, detail, { shop, price, special: $('pSpecial').checked }, date);
+  priceKey = keyOf(name, detail);
+  closeSheets(); commit(); toast('Preis gespeichert');
+};
+
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.7', '08.10.2026', [
+    'Ansicht lässt sich nicht mehr versehentlich zoomen',
+    'Neuer Reiter 📈 Preise: Preisverlauf je Artikel als Diagramm',
+    'Filter nach Händler oder alle, Sonderpreise gelb markiert',
+    'Tiefstpreis, Ø Normalpreis und Anzahl Sonderpreise auf einen Blick',
+    'Preise werden automatisch aus Angeboten übernommen, Normalpreise per „＋ Preis erfassen“',
+    'Angebotskasten: Häkchen „Sonderangebot“ – ohne Häkchen ist es ein Normalpreis'
+  ]],
   ['v1.6', '07.10.2026', [
     '🎤 Siri-Eingang: „Hey Siri, Einkaufsliste“ – Artikel per Sprache auf die Liste',
     'Versteht Mengen und Einheiten („zwei Packungen Butter“) und mehrere Artikel mit „und“',
@@ -1244,8 +1455,13 @@ $('infoBtn').onclick = openInfo;
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
 
+// Zoomen per Zwei-Finger-Geste und Doppeltipp verhindern
+document.addEventListener('gesturestart', e => e.preventDefault());
+document.addEventListener('gesturechange', e => e.preventDefault());
+let lastTouch = 0;
+document.addEventListener('touchend', e => { const t = Date.now(); if (t - lastTouch < 300 && !e.target.closest('input,textarea,select')) e.preventDefault(); lastTouch = t; }, { passive: false });
 $('ver').textContent = 'Einkaufsliste ' + APP_VERSION;
-showTab(['liste','artikel','favoriten','angebote'].includes(currentTab) ? currentTab : 'liste');
+showTab(['liste','artikel','favoriten','angebote','preise'].includes(currentTab) ? currentTab : 'liste');
 renderAll();
 sync('Start');
 // Nach einem Update einmal die Neuerungen zeigen
