@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.3",
- "savedAt": "2026-10-07T19:37:54.890Z",
+ "savedAt": "2026-10-07T19:38:08.509Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -137,6 +137,15 @@
    "qty": 1,
    "on": true,
    "updatedAt": 1791379002351
+  },
+  "pizza|thunfisch": {
+   "name": "Pizza",
+   "detail": "Thunfisch",
+   "cat": "tk",
+   "unit": "",
+   "qty": 2,
+   "on": true,
+   "updatedAt": 1791401886540
   }
  },
  "custom": {
