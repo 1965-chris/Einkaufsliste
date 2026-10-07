@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.6",
- "savedAt": "2026-10-07T22:21:13.499Z",
+ "savedAt": "2026-10-07T22:37:55.292Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -129,6 +129,30 @@
    "offer": null,
    "checked": false,
    "updatedAt": 1791411673082
+  },
+  {
+   "id": "muyoupjoperrgw",
+   "name": "Schinken",
+   "detail": "",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "fleisch",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791412673748
+  },
+  {
+   "id": "muyouqf0b24oro",
+   "name": "Tomatenmark",
+   "detail": "",
+   "qty": 1,
+   "unit": "",
+   "cat": "obst",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791412674876
   }
  ],
  "favs": {
@@ -201,6 +225,22 @@
    "cat": "kaffee",
    "unit": "Pck.",
    "last": 1791411673082
+  },
+  "schinken|": {
+   "count": 1,
+   "name": "Schinken",
+   "detail": "",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "last": 1791412673748
+  },
+  "tomatenmark|": {
+   "count": 1,
+   "name": "Tomatenmark",
+   "detail": "",
+   "cat": "obst",
+   "unit": "",
+   "last": 1791412674876
   }
  },
  "stars": {
@@ -262,6 +302,13 @@
    "cat": "sonst",
    "unit": "",
    "updatedAt": 1791411671650
+  },
+  "tomatenmark": {
+   "name": "Tomatenmark",
+   "variants": [],
+   "cat": "obst",
+   "unit": "",
+   "updatedAt": 1791412674876
   }
  }
 }
