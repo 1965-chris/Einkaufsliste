@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.1",
- "savedAt": "2026-10-07T13:00:32.277Z",
+ "savedAt": "2026-10-07T13:02:02.701Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -45,6 +45,17 @@
    "note": "",
    "checked": false,
    "updatedAt": 1791378030619
+  },
+  {
+   "id": "muy4a4d5k5z0fo",
+   "name": "Coca Cola",
+   "detail": "",
+   "qty": 1,
+   "unit": "",
+   "cat": "getraenk",
+   "note": "",
+   "checked": false,
+   "updatedAt": 1791378120857
   }
  ],
  "favs": {
@@ -69,6 +80,14 @@
    "cat": "kuehl",
    "unit": "Pck.",
    "last": 1791371062177
+  },
+  "coca cola|": {
+   "count": 1,
+   "name": "Coca Cola",
+   "detail": "",
+   "cat": "getraenk",
+   "unit": "",
+   "last": 1791378120857
   }
  },
  "stars": {
@@ -82,5 +101,13 @@
    "updatedAt": 1791378030619
   }
  },
- "custom": {}
+ "custom": {
+  "coca cola": {
+   "name": "Coca Cola",
+   "variants": [],
+   "cat": "getraenk",
+   "unit": "",
+   "updatedAt": 1791378120857
+  }
+ }
 }
