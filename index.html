@@ -103,6 +103,15 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .btn.primary{background:var(--accent);color:#fff}
 .btn.danger{background:transparent;color:var(--warn);border:1px solid var(--line)}
 .hint{font-size:13px;color:var(--muted);margin-top:6px}
+.offerbox{margin-top:16px;padding:12px;border-radius:14px;background:var(--bg);border:1px dashed var(--line)}
+.offerbox b{font-size:15px}
+.offerrow{display:flex;gap:8px;margin-top:8px}
+.offerrow .field{flex:1;min-width:0}
+.offer.old{background:var(--chip);color:var(--muted);text-decoration:line-through}
+.shopcard{padding:12px 14px;border-top:1px solid var(--line)}
+.shopcard:first-child{border-top:0}
+.shopcard .sum{float:right;font-weight:700;color:var(--accent)}
+.shopcard ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:14px}
 .offerlink{display:block;margin-top:14px;font-size:14px;color:var(--accent);text-decoration:none}
 .log{font:12px/1.5 ui-monospace,Menlo,monospace;background:var(--bg);border-radius:10px;padding:8px 10px;max-height:180px;overflow:auto;margin-top:6px}
 .log .e{color:var(--warn)}
@@ -179,7 +188,20 @@ summary{cursor:pointer;font-weight:600}
   <select class="field" id="sCat"></select>
   <label>Notiz</label>
   <input class="field" id="sNote" placeholder="optional" autocomplete="off">
-  <a class="offerlink" id="sOffer" target="_blank" rel="noopener">🔎 Angebote für diesen Artikel suchen</a>
+  <div class="offerbox">
+    <b>🏷 Angebot</b>
+    <a class="offerlink" id="sOffer" target="_blank" rel="noopener" style="margin-top:4px">🔎 bei marktguru suchen</a>
+    <div class="chips wrap" id="sShops" style="padding-top:8px"></div>
+    <div class="offerrow">
+      <input class="field" id="sShop" placeholder="Markt" autocomplete="off">
+      <input class="field" id="sPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
+    </div>
+    <div class="offerrow" style="align-items:center">
+      <span class="hint" style="margin:0;white-space:nowrap">gültig bis</span>
+      <input class="field" id="sUntil" type="date">
+      <button type="button" class="link" id="sOfferClear">entfernen</button>
+    </div>
+  </div>
   <div class="row" id="sBtnsAdd">
     <button class="btn" data-close>Abbrechen</button>
     <button class="btn primary" id="sAdd">Auf die Liste</button>
@@ -224,7 +246,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.1';
+const APP_VERSION = 'v1.2';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -350,6 +372,29 @@ const OFFER_LINKS = [
   ['PENNY', 'Angebote', 'https://www.penny.de/angebote']
 ];
 const offerUrl = q => 'https://www.marktguru.de/search/' + encodeURIComponent(q);
+const SHOPS = ['EDEKA', 'ALDI', 'Lidl', 'REWE', 'Kaufland', 'Netto', 'PENNY', 'dm', 'Rossmann'];
+
+/* ---------- Angebote ---------- */
+function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function nextSaturday() {
+  const d = new Date(); d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7));
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function parsePrice(s) { const n = parseFloat(String(s || '').replace(/[^\d,.-]/g, '').replace(',', '.')); return isNaN(n) ? null : Math.round(n * 100) / 100; }
+function fmtPrice(n) { return n == null ? '' : n.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+function offerOf(i) {
+  const o = i.offer;
+  if (!o) return null;
+  if (typeof o === 'string') return { shop: o, price: null, until: '' };   // aus v1.0/v1.1
+  return o.shop || o.price != null ? o : null;
+}
+function offerExpired(o) { return !!(o && o.until && o.until < todayStr()); }
+function offerText(o) {
+  const parts = [o.shop, fmtPrice(o.price)].filter(Boolean).join(' ');
+  if (!o.until) return parts;
+  const d = new Date(o.until + 'T12:00:00');
+  return parts + ' · bis ' + d.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' });
+}
 
 /* ---------- State ---------- */
 let data = loadData();
@@ -425,7 +470,7 @@ function parseInput(text) {
 /* ---------- Aktionen ---------- */
 function liveItems() { return data.items.filter(i => !i.deleted); }
 
-function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '' }) {
+function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '', offer = null }) {
   name = cap(name); detail = String(detail || '').trim();
   if (!name) return;
   cat = cat || guessCat(name);
@@ -433,12 +478,12 @@ function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '' }) {
   const same = liveItems().filter(i => keyOf(i.name, i.detail) === k);
   const open = same.find(i => !i.checked && (i.unit || '') === unit);
   if (open) {
-    open.qty = clampQty((open.qty || 1) + qty); open.updatedAt = now();
+    open.qty = clampQty((open.qty || 1) + qty); if (offer) open.offer = offer; open.updatedAt = now();
     toast(`${open.name}: jetzt ${qtyLabel(open) || '1×'}`);
   } else {
     const done = same.find(i => i.checked);
-    if (done) Object.assign(done, { checked: false, qty: clampQty(qty), unit, cat, note: note || done.note || '', updatedAt: now() });
-    else data.items.push({ id: uid(), name, detail, qty: clampQty(qty), unit, cat, note, checked: false, updatedAt: now() });
+    if (done) Object.assign(done, { checked: false, qty: clampQty(qty), unit, cat, note: note || done.note || '', offer, updatedAt: now() });
+    else data.items.push({ id: uid(), name, detail, qty: clampQty(qty), unit, cat, note, offer, checked: false, updatedAt: now() });
     toast(`${name}${detail ? ' – ' + detail : ''} hinzugefügt`);
   }
   bumpFav(name, detail, cat, unit);
@@ -476,7 +521,8 @@ let currentTab = loadJSON(LS_TAB, 'liste');
 function renderAll() { renderList(); renderChips(); renderCatalog(); renderFavs(); renderOffers(); }
 
 function itemHtml(i) {
-  const offer = i.offer ? `<div class="offer">🏷 ${esc(i.offer)}</div>` : '';
+  const o = offerOf(i);
+  const offer = o ? `<div class="offer${offerExpired(o) ? ' old' : ''}">🏷 ${esc(offerText(o))}${offerExpired(o) ? ' (abgelaufen)' : ''}</div>` : '';
   const q = qtyLabel(i);
   return `<div class="item${i.checked ? ' done' : ''}" data-id="${i.id}">
     <button class="check" data-act="toggle" aria-label="abhaken">${i.checked ? '✓' : ''}</button>
@@ -567,6 +613,17 @@ function renderOffers() {
   let html = '<p class="intro">Prospekte zum Stöbern. Die Links öffnen sich im Browser.</p>';
   html += `<section class="group"><h2>Prospekte</h2><div class="list">${OFFER_LINKS.map(([n, s, u]) => `<a class="linkcard" href="${u}" target="_blank" rel="noopener"><span><b>${esc(n)}</b><small>${esc(s)}</small></span><i>↗</i></a>`).join('')}</div></section>`;
   const open = liveItems().filter(i => !i.checked);
+  const byShop = {};
+  open.forEach(i => { const o = offerOf(i); if (o && !offerExpired(o) && o.shop) (byShop[o.shop] = byShop[o.shop] || []).push({ i, o }); });
+  const shops = Object.keys(byShop).sort((a, b) => byShop[b].length - byShop[a].length);
+  if (shops.length) {
+    html = `<section class="group"><h2>Deine Liste im Angebot</h2><div class="list">${shops.map(s => {
+      const rows = byShop[s];
+      const sum = rows.reduce((t, r) => t + (r.o.price != null ? r.o.price * (r.i.unit && ['g','kg','ml','l'].includes(r.i.unit) ? 1 : (r.i.qty || 1)) : 0), 0);
+      return `<div class="shopcard"><span class="sum">${sum ? fmtPrice(sum) : ''}</span><b>${esc(s)}</b> <span class="hint">· ${rows.length} Artikel</span>
+        <ul>${rows.map(r => `<li>${esc(qtyLabel(r.i) ? qtyLabel(r.i) + ' ' : '')}${esc(r.i.name)}${r.i.detail ? ' – ' + esc(r.i.detail) : ''}${r.o.price != null ? ' · ' + esc(fmtPrice(r.o.price)) : ''}</li>`).join('')}</ul></div>`;
+    }).join('')}</div></section>` + html;
+  }
   if (open.length) {
     html += `<section class="group"><h2>Angebote für deine Liste suchen</h2><div class="list">${open.sort((a, b) => a.name.localeCompare(b.name, 'de')).map(i => {
       const q = (i.detail ? i.name + ' ' + i.detail : i.name);
@@ -619,6 +676,9 @@ function openItemSheet(mode, src) {
   if (mode === 'add' && !src.qty && ['g','ml'].includes($('sUnit').value)) $('sQty').value = 500;
   $('sCat').value = src.cat || guessCat(info.name || '');
   $('sNote').value = src.note || '';
+  const o = offerOf(src) || {};
+  $('sShop').value = o.shop || ''; $('sPrice').value = o.price != null ? String(o.price).replace('.', ',') : ''; $('sUntil').value = o.until || '';
+  renderShops();
   $('sBtnsAdd').style.display = mode === 'add' ? 'flex' : 'none';
   $('sBtnsEdit').style.display = mode === 'edit' ? 'flex' : 'none';
   renderVariants(); updateSheetExtras();
@@ -646,9 +706,25 @@ $('sStar').onclick = () => {
   commit(); updateSheetExtras();
   toast(sheetStar ? '★ Als Favorit gemerkt' : 'Favorit entfernt');
 };
+function renderShops() {
+  const cur = norm($('sShop').value);
+  $('sShops').innerHTML = SHOPS.map(s => `<button type="button" class="chip${norm(s) === cur ? ' sel' : ''}" data-shop="${s}">${s}</button>`).join('');
+}
+function sheetOffer() {
+  const shop = $('sShop').value.trim(), price = parsePrice($('sPrice').value), until = $('sUntil').value;
+  return (shop || price != null) ? { shop, price, until } : null;
+}
+$('sShops').addEventListener('click', e => {
+  const b = e.target.closest('[data-shop]'); if (!b) return;
+  $('sShop').value = b.dataset.shop;
+  if (!$('sUntil').value) $('sUntil').value = nextSaturday();
+  renderShops(); $('sPrice').focus();
+});
+$('sShop').addEventListener('input', renderShops);
+$('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sUntil').value = ''; renderShops(); };
 function sheetValues() {
   return { name: cap($('sName').value), detail: $('sDetail').value.trim(), qty: clampQty($('sQty').value),
-           unit: $('sUnit').value, cat: $('sCat').value, note: $('sNote').value.trim() };
+           unit: $('sUnit').value, cat: $('sCat').value, note: $('sNote').value.trim(), offer: sheetOffer() };
 }
 $('sAdd').onclick = () => { const v = sheetValues(); if (!v.name) return; closeSheets(); addItem(v); };
 $('sSave').onclick = () => {
