@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.7",
- "savedAt": "2026-10-07T22:50:32.032Z",
+ "savedAt": "2026-10-07T22:55:12.657Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -279,6 +279,15 @@
    "qty": 2,
    "on": true,
    "updatedAt": 1791413417629
+  },
+  "pizza|diavolo": {
+   "name": "Pizza",
+   "detail": "Diavolo",
+   "cat": "tk",
+   "unit": "",
+   "qty": 2,
+   "on": true,
+   "updatedAt": 1791413710249
   }
  },
  "custom": {
