@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.7",
- "savedAt": "2026-10-07T22:55:29.862Z",
+ "savedAt": "2026-10-07T22:58:23.226Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -94,12 +94,12 @@
    "offer": {
     "shop": "ALDI",
     "price": 1.79,
-    "from": "",
-    "until": "2026-10-15",
+    "from": "2026-10-12",
+    "until": "2026-10-17",
     "special": true
    },
    "checked": false,
-   "updatedAt": 1791413727712
+   "updatedAt": 1791413901032
   },
   {
    "id": "muyo5rk7znkq3g",
@@ -289,7 +289,7 @@
    "unit": "",
    "qty": 2,
    "on": true,
-   "updatedAt": 1791413727713
+   "updatedAt": 1791413901032
   }
  },
  "custom": {
@@ -364,6 +364,17 @@
    "price": 1.79,
    "special": true,
    "updatedAt": 1791413727713
+  },
+  "pizza|diavolo|aldi|2026-10-12": {
+   "id": "pizza|diavolo|aldi|2026-10-12",
+   "key": "pizza|diavolo",
+   "name": "Pizza",
+   "detail": "Diavolo",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.79,
+   "special": true,
+   "updatedAt": 1791413901032
   }
  }
 }
