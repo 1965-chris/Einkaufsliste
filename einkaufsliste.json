@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.10",
- "savedAt": "2026-10-08T09:25:35.733Z",
+ "savedAt": "2026-10-08T09:25:38.085Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -237,7 +237,8 @@
    "detail": "",
    "cat": "sonst",
    "unit": "",
-   "last": 1791411671650
+   "last": 1791451535941,
+   "deleted": true
   },
   "kakao|": {
    "count": 1,
