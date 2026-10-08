@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.10",
- "savedAt": "2026-10-08T09:25:07.672Z",
+ "savedAt": "2026-10-08T09:25:22.931Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -252,7 +252,8 @@
    "detail": "",
    "cat": "fleisch",
    "unit": "Pck.",
-   "last": 1791412673748
+   "last": 1791451520793,
+   "deleted": true
   },
   "tomatenmark|": {
    "count": 2,
