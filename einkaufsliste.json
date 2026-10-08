@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.13",
- "savedAt": "2026-10-08T18:46:16.887Z",
+ "savedAt": "2026-10-08T18:49:26.736Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -540,6 +540,24 @@
    },
    "deposit": null,
    "updatedAt": 1791485175002
+  },
+  "zucker||penny|2026-10-08": {
+   "id": "zucker||penny|2026-10-08",
+   "key": "zucker|",
+   "name": "Zucker",
+   "detail": "",
+   "date": "2026-10-08",
+   "shop": "PENNY",
+   "price": 1.49,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1791485364554
   }
  }
 }
