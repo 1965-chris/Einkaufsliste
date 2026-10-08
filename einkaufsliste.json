@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.8",
- "savedAt": "2026-10-08T08:38:47.341Z",
+ "savedAt": "2026-10-08T08:39:11.406Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -347,7 +347,8 @@
    "shop": "ALDI",
    "price": 1.79,
    "special": true,
-   "updatedAt": 1791413417628
+   "updatedAt": 1791448748567,
+   "deleted": true
   },
   "coca cola||lidl|2026-10-08": {
    "id": "coca cola||lidl|2026-10-08",
