@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.10",
- "savedAt": "2026-10-08T09:25:22.931Z",
+ "savedAt": "2026-10-08T09:25:28.869Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -261,7 +261,8 @@
    "detail": "",
    "cat": "obst",
    "unit": "",
-   "last": 1791412784660
+   "last": 1791451526773,
+   "deleted": true
   }
  },
  "stars": {
