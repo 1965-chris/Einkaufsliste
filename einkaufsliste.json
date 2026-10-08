@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.13",
- "savedAt": "2026-10-08T18:42:43.679Z",
+ "savedAt": "2026-10-08T18:46:16.887Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -522,6 +522,24 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791483852445
+  },
+  "zucker||aldi|2026-10-08": {
+   "id": "zucker||aldi|2026-10-08",
+   "key": "zucker|",
+   "name": "Zucker",
+   "detail": "",
+   "date": "2026-10-08",
+   "shop": "ALDI",
+   "price": 1.69,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1791485175002
   }
  }
 }
