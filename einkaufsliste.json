@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.11",
- "savedAt": "2026-10-08T09:36:54.417Z",
+ "savedAt": "2026-10-08T09:37:20.199Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -307,7 +307,8 @@
    "detail": "",
    "cat": "drogerie",
    "unit": "Pck.",
-   "last": 1791452213628
+   "last": 1791452238044,
+   "deleted": true
   }
  },
  "stars": {
