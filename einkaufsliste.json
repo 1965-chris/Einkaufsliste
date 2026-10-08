@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.11",
- "savedAt": "2026-10-08T09:36:17.472Z",
+ "savedAt": "2026-10-08T09:36:54.417Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -185,6 +185,18 @@
    "checked": false,
    "updatedAt": 1791452165525,
    "deleted": true
+  },
+  {
+   "id": "muzce6pn1exufe",
+   "name": "Toilettenpapier",
+   "detail": "",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "drogerie",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791452213627
   }
  ],
  "favs": {
@@ -290,13 +302,12 @@
    "deleted": true
   },
   "toilettenpapier|": {
-   "count": 1,
+   "count": 2,
    "name": "Toilettenpapier",
    "detail": "",
    "cat": "drogerie",
    "unit": "Pck.",
-   "last": 1791452175003,
-   "deleted": true
+   "last": 1791452213628
   }
  },
  "stars": {
