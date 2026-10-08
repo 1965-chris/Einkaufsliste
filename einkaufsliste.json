@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.15",
- "savedAt": "2026-10-08T21:47:56.941Z",
+ "savedAt": "2026-10-08T21:57:17.687Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -225,6 +225,28 @@
    "checked": true,
    "updatedAt": 1791494633997,
    "deleted": true
+  },
+  {
+   "id": "mv02uawa8rm1uc",
+   "name": "Küchenrolle",
+   "detail": "KOKETT 3-lagig 4 Rollen a 64 Blatt",
+   "qty": 2,
+   "unit": "Pck.",
+   "cat": "drogerie",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.95,
+    "from": "2026-10-12",
+    "until": "2026-10-17",
+    "type": "angebot",
+    "special": true,
+    "pack": null,
+    "deposit": null,
+    "regular": 2.65
+   },
+   "checked": false,
+   "updatedAt": 1791496635562
   }
  ],
  "favs": {
@@ -350,6 +372,14 @@
    "unit": "Becher",
    "last": 1791496074767,
    "deleted": true
+  },
+  "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt": {
+   "count": 1,
+   "name": "Küchenrolle",
+   "detail": "KOKETT 3-lagig 4 Rollen a 64 Blatt",
+   "cat": "drogerie",
+   "unit": "Pck.",
+   "last": 1791496635564
   }
  },
  "stars": {
@@ -480,6 +510,15 @@
    "cat": "kuehl",
    "unit": "Becher",
    "updatedAt": 1791494621604
+  },
+  "küchenrolle": {
+   "name": "Küchenrolle",
+   "variants": [
+    "KOKETT 3-lagig 4 Rollen a 64 Blatt"
+   ],
+   "cat": "drogerie",
+   "unit": "Pck.",
+   "updatedAt": 1791496635564
   }
  },
  "prices": {
@@ -658,6 +697,35 @@
    "deposit": null,
    "note": "Vergleichspreis",
    "updatedAt": 1791494621604
+  },
+  "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt|aldi|2026-10-12": {
+   "id": "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt|aldi|2026-10-12",
+   "key": "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt",
+   "name": "Küchenrolle",
+   "detail": "KOKETT 3-lagig 4 Rollen a 64 Blatt",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.95,
+   "type": "angebot",
+   "special": true,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791496635562
+  },
+  "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt|aldi|2026-10-12|statt": {
+   "id": "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt|aldi|2026-10-12|statt",
+   "key": "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt",
+   "name": "Küchenrolle",
+   "detail": "KOKETT 3-lagig 4 Rollen a 64 Blatt",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 2.65,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "note": "Vergleichspreis",
+   "updatedAt": 1791496635562
   }
  }
 }
