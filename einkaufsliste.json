@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.10",
- "savedAt": "2026-10-08T09:25:32.863Z",
+ "savedAt": "2026-10-08T09:25:35.733Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -245,7 +245,8 @@
    "detail": "",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1791411673082
+   "last": 1791451533638,
+   "deleted": true
   },
   "schinken|": {
    "count": 1,
