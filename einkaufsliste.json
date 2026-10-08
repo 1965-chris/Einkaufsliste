@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.12",
- "savedAt": "2026-10-08T18:21:14.498Z",
+ "savedAt": "2026-10-08T18:23:00.788Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -369,6 +369,15 @@
    "note": "",
    "on": false,
    "updatedAt": 1791451505592
+  },
+  "nudeln|spaghetti": {
+   "name": "Nudeln",
+   "detail": "Spaghetti",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "qty": 1,
+   "on": true,
+   "updatedAt": 1791483778546
   }
  },
  "custom": {
