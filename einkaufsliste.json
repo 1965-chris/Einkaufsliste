@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.14",
- "savedAt": "2026-10-08T21:19:11.145Z",
+ "savedAt": "2026-10-08T21:23:43.684Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -198,6 +198,32 @@
    "checked": false,
    "updatedAt": 1791452599144,
    "deleted": true
+  },
+  {
+   "id": "mv01n4x0751ump",
+   "name": "Joghurt",
+   "detail": "Landliebe versch. Sorten",
+   "qty": 1,
+   "unit": "Becher",
+   "cat": "kuehl",
+   "note": "",
+   "offer": {
+    "shop": "EDEKA",
+    "price": 0.49,
+    "from": "2026-10-05",
+    "until": "2026-10-10",
+    "type": "angebot",
+    "special": true,
+    "pack": {
+     "n": 1,
+     "size": 0.15,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": 0.79
+   },
+   "checked": false,
+   "updatedAt": 1791494621604
   }
  ],
  "favs": {
@@ -310,6 +336,14 @@
    "unit": "Pck.",
    "last": 1791452238044,
    "deleted": true
+  },
+  "joghurt|landliebe versch. sorten": {
+   "count": 1,
+   "name": "Joghurt",
+   "detail": "Landliebe versch. Sorten",
+   "cat": "kuehl",
+   "unit": "Becher",
+   "last": 1791494621604
   }
  },
  "stars": {
@@ -431,6 +465,15 @@
    "cat": "vorrat",
    "unit": "",
    "updatedAt": 1791450616952
+  },
+  "joghurt": {
+   "name": "Joghurt",
+   "variants": [
+    "Landliebe versch. Sorten"
+   ],
+   "cat": "kuehl",
+   "unit": "Becher",
+   "updatedAt": 1791494621604
   }
  },
  "prices": {
@@ -572,6 +615,43 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791485823671
+  },
+  "joghurt|landliebe versch. sorten|edeka|2026-10-05": {
+   "id": "joghurt|landliebe versch. sorten|edeka|2026-10-05",
+   "key": "joghurt|landliebe versch. sorten",
+   "name": "Joghurt",
+   "detail": "Landliebe versch. Sorten",
+   "date": "2026-10-05",
+   "shop": "EDEKA",
+   "price": 0.49,
+   "type": "angebot",
+   "special": true,
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1791494621604
+  },
+  "joghurt|landliebe versch. sorten|edeka|2026-10-05|statt": {
+   "id": "joghurt|landliebe versch. sorten|edeka|2026-10-05|statt",
+   "key": "joghurt|landliebe versch. sorten",
+   "name": "Joghurt",
+   "detail": "Landliebe versch. Sorten",
+   "date": "2026-10-05",
+   "shop": "EDEKA",
+   "price": 0.79,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "note": "Vergleichspreis",
+   "updatedAt": 1791494621604
   }
  }
 }
