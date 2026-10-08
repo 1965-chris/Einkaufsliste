@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.13",
- "savedAt": "2026-10-08T18:49:26.736Z",
+ "savedAt": "2026-10-08T18:57:05.898Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -558,6 +558,20 @@
    },
    "deposit": null,
    "updatedAt": 1791485364554
+  },
+  "zucker|gut & günstig|edeka|2026-10-08": {
+   "id": "zucker|gut & günstig|edeka|2026-10-08",
+   "key": "zucker|gut & günstig",
+   "name": "Zucker",
+   "detail": "Gut & Günstig",
+   "date": "2026-10-08",
+   "shop": "EDEKA",
+   "price": 0.89,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791485823671
   }
  }
 }
