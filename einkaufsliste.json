@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.8",
- "savedAt": "2026-10-08T08:38:19.899Z",
+ "savedAt": "2026-10-08T08:38:47.341Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -358,7 +358,8 @@
    "shop": "Lidl",
    "price": 5.94,
    "special": true,
-   "updatedAt": 1791413424644
+   "updatedAt": 1791448725263,
+   "deleted": true
   },
   "pizza|diavolo|aldi|2026-10-08": {
    "id": "pizza|diavolo|aldi|2026-10-08",
