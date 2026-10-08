@@ -243,7 +243,7 @@ summary{cursor:pointer;font-weight:600}
   <select class="field" id="sCat"></select>
   <label>Notiz</label>
   <input class="field" id="sNote" placeholder="optional" autocomplete="off">
-  <div class="offerbox">
+  <div class="offerbox" id="sOfferBox">
     <b>🏷 Preis / Angebot</b>
     <a class="offerlink" id="sOffer" target="_blank" rel="noopener" style="margin-top:4px">🔎 bei marktguru suchen</a>
     <div class="chips wrap" id="sShops" style="padding-top:8px"></div>
@@ -266,9 +266,16 @@ summary{cursor:pointer;font-weight:600}
     <a class="offerlink" id="sHistory" href="#" style="display:none">📈 Preisverlauf ansehen</a>
     <div style="text-align:right"><button type="button" class="link" id="sOfferClear">Angebot entfernen</button></div>
   </div>
-  <div class="row" id="sBtnsAdd">
-    <button class="btn" data-close>Abbrechen</button>
-    <button class="btn primary" id="sAdd">Auf die Liste</button>
+  <div id="sBtnsAdd">
+    <div class="row">
+      <button class="btn" data-close>Abbrechen</button>
+      <button class="btn primary" id="sAdd">Auf die Liste</button>
+    </div>
+    <button class="btn" id="sFavOnly" style="width:100%;margin-top:8px">⭐ Nur als Favorit speichern</button>
+  </div>
+  <div class="row" id="sBtnsFav">
+    <button class="btn danger" id="sFavDel">Favorit entfernen</button>
+    <button class="btn primary" id="sFavSave">⭐ Favorit speichern</button>
   </div>
   <div class="row" id="sBtnsEdit">
     <button class="btn danger" id="sDelete">Löschen</button>
@@ -349,7 +356,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.8';
+const APP_VERSION = 'v1.9';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -851,7 +858,8 @@ function renderCatalog() {
 /* Favoriten */
 function renderFavs() {
   const stars = Object.entries(data.stars).filter(([, s]) => s.on).sort((a, b) => (CAT_ORDER[a[1].cat] ?? 99) - (CAT_ORDER[b[1].cat] ?? 99) || a[1].name.localeCompare(b[1].name, 'de'));
-  let html = '<p class="intro">Tippe auf ＋, um einen Favoriten direkt auf die Liste zu setzen. Favoriten markierst du mit dem ☆ im Artikel.</p>';
+  let html = '<button class="btn primary addprice" data-act="newFav" style="margin-top:6px">＋ Neuer Favorit</button>';
+  html += '<p class="intro">Favoriten landen erst auf der Liste, wenn du auf ＋ tippst. Antippen des Namens zum Bearbeiten.</p>';
   if (stars.length) {
     html += `<section class="group"><h2>Meine Favoriten</h2><div class="list">` + stars.map(([k, s]) => `
       <div class="item" data-star="${esc(k)}">
@@ -859,7 +867,7 @@ function renderFavs() {
         ${qtyLabel({ qty: s.qty || 1, unit: s.unit }) ? `<span class="qty">${esc(qtyLabel({ qty: s.qty || 1, unit: s.unit }))}</span>` : ''}
         <button class="addsmall" data-act="starAdd" aria-label="auf die Liste">＋</button>
       </div>`).join('') + '</div></section>';
-  } else html += '<div class="empty"><b>⭐</b>Noch keine Favoriten.<br>Öffne einen Artikel und tippe oben rechts auf ☆.</div>';
+  } else html += '<div class="empty"><b>⭐</b>Noch keine Favoriten.<br>Lege oben einen an oder tippe im Artikel auf ☆.</div>';
   const often = Object.entries(data.favs).filter(([k]) => !(data.stars[k] && data.stars[k].on)).sort((a, b) => b[1].count - a[1].count).slice(0, 20);
   if (often.length) html += `<section class="group"><h2>Häufig gekauft</h2><div class="chips wrap">${often.map(([k, f]) => `<button class="chip" data-often="${esc(k)}">${esc(f.name)}${f.detail ? ' · ' + esc(f.detail) : ''} <small style="color:var(--muted)">${f.count}×</small></button>`).join('')}</div></section>`;
   $('favMain').innerHTML = html;
@@ -926,8 +934,9 @@ function updateSheetExtras() {
 }
 function openItemSheet(mode, src) {
   sheetMode = mode; editingId = mode === 'edit' ? src.id : null;
+  favEditKey = mode === 'fav' && src.name ? keyOf(src.name, src.detail) : null;
   const info = articleInfo(src.name || '');
-  $('sTitle').textContent = mode === 'edit' ? 'Artikel bearbeiten' : (info.name || 'Neuer Artikel');
+  $('sTitle').textContent = mode === 'edit' ? 'Artikel bearbeiten' : mode === 'fav' ? (favEditKey ? 'Favorit bearbeiten' : 'Neuer Favorit') : (info.name || 'Neuer Artikel');
   $('sName').value = info.name || '';
   $('sDetail').value = src.detail || '';
   $('sQty').value = src.qty || 1;
@@ -941,8 +950,13 @@ function openItemSheet(mode, src) {
   $('sPackBox').open = !!(o.pack || o.deposit) || $('sCat').value === 'getraenk';
   $('sShop').value = o.shop || ''; $('sPrice').value = o.price != null ? String(o.price).replace('.', ',') : ''; $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
   renderShops();
-  $('sBtnsAdd').style.display = mode === 'add' ? 'flex' : 'none';
+  $('sBtnsAdd').style.display = mode === 'add' ? 'block' : 'none';
   $('sBtnsEdit').style.display = mode === 'edit' ? 'flex' : 'none';
+  $('sBtnsFav').style.display = mode === 'fav' ? 'flex' : 'none';
+  $('sFavDel').style.display = favEditKey ? '' : 'none';
+  $('sOfferBox').style.display = mode === 'fav' ? 'none' : '';
+  $('sStar').style.visibility = mode === 'fav' ? 'hidden' : 'visible';
+  variantsFor = norm($('sName').value);
   renderVariants(); updateSheetExtras();
   openSheet('itemSheet');
 }
@@ -952,14 +966,44 @@ $('sVariants').addEventListener('click', e => {
   renderVariants(); updateSheetExtras();
 });
 $('sDetail').addEventListener('input', () => { renderVariants(); updateSheetExtras(); });
-$('sName').addEventListener('change', () => {
+// Beim Tippen des Namens Bereich, Einheit und Bezeichnungen nachziehen –
+// aber nur wenn sich der Name wirklich geändert hat (sonst geht der erste Tipp auf eine Bezeichnung verloren)
+let variantsFor = null;
+function onNameChanged() {
+  const n = norm($('sName').value);
+  if (n === variantsFor) return;
+  variantsFor = n;
   const info = articleInfo($('sName').value);
   if (info.cat) $('sCat').value = info.cat;
+  if (sheetMode !== 'edit' && info.unit !== undefined && CAT_INDEX[n]) $('sUnit').value = ['g', 'kg', 'ml', 'l'].includes(info.unit) && clampQty($('sQty').value) < 50 ? '' : info.unit;
   renderVariants(); updateSheetExtras();
-});
+}
+$('sName').addEventListener('input', onNameChanged);
+$('sName').addEventListener('change', onNameChanged);
 $('sMinus').onclick = () => { $('sQty').value = Math.max(1, clampQty($('sQty').value) - stepFor()); };
 $('sPlus').onclick  = () => { const q = clampQty($('sQty').value), s = stepFor(); $('sQty').value = (q === 1 && s > 1) ? s : q + s; };
 function stepFor() { const u = $('sUnit').value; return (u === 'g' || u === 'ml') ? 100 : 1; }
+/* Favorit speichern, ohne ihn auf die Liste zu setzen */
+let favEditKey = null;
+function saveFavoriteFromSheet() {
+  const name = cap($('sName').value), detail = $('sDetail').value.trim();
+  if (!name) { toast('Bitte einen Artikel eingeben'); return; }
+  const cat = $('sCat').value, unit = $('sUnit').value, qty = clampQty($('sQty').value);
+  if (favEditKey && favEditKey !== keyOf(name, detail)) {
+    const old = data.stars[favEditKey]; if (old) { old.on = false; old.updatedAt = now(); }
+  }
+  setStar(name, detail, true, { cat, unit, qty, note: $('sNote').value.trim() });
+  rememberArticle(name, detail, cat, unit);
+  closeSheets(); commit();
+  toast('⭐ ' + name + (detail ? ' · ' + detail : '') + ' als Favorit gespeichert');
+}
+$('sFavOnly').onclick = saveFavoriteFromSheet;
+$('sFavSave').onclick = saveFavoriteFromSheet;
+$('sFavDel').onclick = () => {
+  const s = data.stars[favEditKey]; if (!s) return closeSheets();
+  s.on = false; s.updatedAt = now(); closeSheets(); commit();
+  toast('Favorit entfernt', () => { s.on = true; s.updatedAt = now(); commit(); });
+};
 $('sStar').onclick = () => {
   const name = cap($('sName').value), detail = $('sDetail').value.trim();
   if (!name) return;
@@ -1100,13 +1144,14 @@ $('listMain').addEventListener('click', e => {
 $('catSearch').addEventListener('input', renderCatalog);
 $('catMain').addEventListener('click', e => { const b = e.target.closest('[data-art]'); if (b) openItemSheet('add', { name: b.dataset.art }); });
 $('favMain').addEventListener('click', e => {
+  if (e.target.closest('[data-act="newFav"]')) { openItemSheet('fav', {}); return; }
   const o = e.target.closest('[data-often]');
   if (o) { const f = data.favs[o.dataset.often]; if (f) openItemSheet('add', { name: f.name, detail: f.detail, unit: f.unit, cat: f.cat }); return; }
   const row = e.target.closest('[data-star]'); if (!row) return;
   const s = data.stars[row.dataset.star]; if (!s) return;
   const act = e.target.closest('[data-act]')?.dataset.act;
-  if (act === 'starAdd') addItem({ name: s.name, detail: s.detail, qty: s.qty || 1, unit: s.unit || '', cat: s.cat });
-  else openItemSheet('add', { name: s.name, detail: s.detail, qty: s.qty || 1, unit: s.unit || '', cat: s.cat });
+  if (act === 'starAdd') addItem({ name: s.name, detail: s.detail, qty: s.qty || 1, unit: s.unit || '', cat: s.cat, note: s.note || '' });
+  else openItemSheet('fav', { name: s.name, detail: s.detail, qty: s.qty || 1, unit: s.unit || '', cat: s.cat, note: s.note || '' });
 });
 
 /* ---------- Toast ---------- */
@@ -1489,6 +1534,11 @@ $('pSave').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.9', '08.10.2026', [
+    'Favoriten anlegen, ohne dass sie auf die Liste kommen',
+    'Reiter Favoriten: „＋ Neuer Favorit“, Antippen zum Bearbeiten oder Entfernen',
+    'Im Artikelfenster: „⭐ Nur als Favorit speichern“'
+  ]],
   ['v1.8', '08.10.2026', [
     'Preisart wählbar: Normalpreis, 🏷 Angebot oder 📱 App-Preis',
     'Pfand beim Preis erfassen – Händler-Summen zeigen den Pfand extra',
