@@ -212,7 +212,9 @@ summary{cursor:pointer;font-weight:600}
 
 <!-- ARTIKEL -->
 <section class="view" id="v-artikel">
-  <div class="addbar"><input class="inp search" id="catSearch" placeholder="Artikel suchen …" autocomplete="off"></div>
+  <div class="addbar">
+    <div class="addrow"><input class="inp search" id="catSearch" placeholder="Artikel suchen …" autocomplete="off" style="flex:1;margin:0"><button type="button" class="plus" id="newArt" aria-label="Neuer Artikel">+</button></div>
+  </div>
   <main id="catMain"></main>
 </section>
 
@@ -292,7 +294,11 @@ summary{cursor:pointer;font-weight:600}
       <button class="btn" data-close>Abbrechen</button>
       <button class="btn primary" id="sAdd">Auf die Liste</button>
     </div>
-    <button class="btn" id="sFavOnly" style="width:100%;margin-top:8px">⭐ Nur als Favorit speichern</button>
+    <div class="row" style="margin-top:8px">
+      <button class="btn" id="sFavOnly">⭐ Nur Favorit</button>
+      <button class="btn" id="sArtOnly">📚 Nur Artikel</button>
+    </div>
+    <div style="text-align:center;margin-top:10px"><button type="button" class="link" id="sArtDel">🗑 Eigenen Artikel löschen</button></div>
   </div>
   <div id="sBtnsOften">
     <div class="row">
@@ -433,7 +439,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.14';
+const APP_VERSION = 'v1.15';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -710,7 +716,7 @@ Object.entries(CATALOG).forEach(([cat, arts]) => arts.forEach(([name, variants, 
 function articleInfo(name) {
   const k = norm(name);
   const base = CAT_INDEX[k];
-  const cu = data.custom[k];
+  const cu = data.custom[k] && !data.custom[k].deleted ? data.custom[k] : null;
   const variants = [...(base ? base.variants : []), ...((cu && cu.variants) || []).filter(v => !(base && base.variants.some(b => norm(b) === norm(v))))];
   return { name: base ? base.name : (cu ? cu.name : cap(name)), variants, unit: base ? base.unit : (cu ? cu.unit || '' : ''), cat: base ? base.cat : (cu ? cu.cat : null) };
 }
@@ -728,13 +734,16 @@ function guessCat(name) {
 function rememberArticle(name, detail, cat, unit) {
   const k = norm(name);
   const isBase = !!CAT_INDEX[k];
-  const cu = data.custom[k] || { name: cap(name), variants: [], cat, unit };
-  let changed = !data.custom[k] && !isBase;
+  const prev = data.custom[k] && !data.custom[k].deleted ? data.custom[k] : null;
+  const cu = prev || { name: cap(name), variants: [], cat, unit };
+  let changed = !prev && !isBase;
   if (!isBase) { if (cu.cat !== cat) { cu.cat = cat; changed = true; } if (cu.unit !== unit) { cu.unit = unit; changed = true; } }
   const d = String(detail || '').trim();
   if (d && !articleInfo(name).variants.some(v => norm(v) === norm(d))) { cu.variants = [...(cu.variants || []), d]; changed = true; }
-  if (changed) { cu.updatedAt = now(); data.custom[k] = cu; }
+  if (changed) { delete cu.deleted; cu.updatedAt = now(); data.custom[k] = cu; }
+  return changed;
 }
+function customArts() { return Object.values(data.custom).filter(c => !c.deleted); }
 
 /* ---------- Text-Eingabe ---------- */
 function parseInput(text) {
@@ -774,7 +783,7 @@ function matchArticle(text) {
   // 1) exakter Treffer Artikel + Bezeichnung
   const exact = pool.find(p => norm(p.name + ' ' + p.detail) === n || (!p.detail && norm(p.name) === n));
   if (exact) return { ...exact, known: true };
-  const arts = [...Object.values(CAT_INDEX), ...Object.values(data.custom)];
+  const arts = [...Object.values(CAT_INDEX), ...customArts()];
   // 2) beginnt mit Artikelname -> Rest ist Bezeichnung („Kaffee ganze Bohne“)
   const starts = arts.filter(a => n === norm(a.name) || n.startsWith(norm(a.name) + ' ')).sort((a, b) => b.name.length - a.name.length)[0];
   if (starts) {
@@ -959,7 +968,7 @@ function suggestions(q) {
   Object.values(data.stars).filter(s => s.on && (norm(s.name).includes(n) || norm(s.detail).includes(n))).forEach(s => add(s.name, s.detail, '★ '));
   Object.values(data.favs).filter(f => !f.deleted && (norm(f.name).includes(n) || norm(f.detail).includes(n))).sort((a, b) => b.count - a.count).forEach(f => add(f.name, f.detail, ''));
   Object.values(CAT_INDEX).filter(a => norm(a.name).includes(n)).forEach(a => add(a.name, '', ''));
-  Object.values(data.custom).filter(a => norm(a.name).includes(n)).forEach(a => add(a.name, '', ''));
+  customArts().filter(a => norm(a.name).includes(n)).forEach(a => add(a.name, '', ''));
   return [...out.values()].slice(0, 10);
 }
 function renderChips() {
@@ -982,14 +991,15 @@ function renderCatalog() {
   CATS.forEach(([cat, label]) => {
     const names = new Map();
     (CATALOG[cat] || []).forEach(([name]) => names.set(norm(name), name));
-    Object.values(data.custom).filter(c => (c.cat || 'sonst') === cat && !CAT_INDEX[norm(c.name)]).forEach(c => names.set(norm(c.name), c.name));
+    customArts().filter(c => (c.cat || 'sonst') === cat && !CAT_INDEX[norm(c.name)]).forEach(c => names.set(norm(c.name), c.name));
     let list = [...names.values()];
     if (n) list = list.filter(x => norm(x).includes(n));
     if (!list.length) return;
     list.sort((a, b) => a.localeCompare(b, 'de'));
     html += `<section class="group catsec"><h2>${esc(label)}</h2><div class="chips wrap">${list.map(x => `<button class="chip" data-art="${esc(x)}">${esc(x)}</button>`).join('')}</div></section>`;
   });
-  if (n && !html) html = `<div class="empty">Nichts gefunden.<br><br><button class="btn primary" data-art="${esc(cap($('catSearch').value))}">„${esc(cap($('catSearch').value))}“ als neuen Artikel anlegen</button></div>`;
+  html = '<p class="intro" style="margin-top:0">Antippen zum Auf-die-Liste-Setzen, als Favorit merken oder nur im Katalog speichern. Mit ＋ legst du einen neuen Artikel an.</p>' + html;
+  if (n && !html.includes('catsec')) html = `<div class="empty">Nichts gefunden.<br><br><button class="btn primary" data-art="${esc(cap($('catSearch').value))}">„${esc(cap($('catSearch').value))}“ als neuen Artikel anlegen</button></div>`;
   $('catMain').innerHTML = html;
 }
 
@@ -1095,6 +1105,7 @@ function openItemSheet(mode, src) {
   $('sBtnsFav').style.display = mode === 'fav' ? 'flex' : 'none';
   $('sBtnsOften').style.display = mode === 'often' ? 'block' : 'none';
   $('sFavDel').style.display = favEditKey ? '' : 'none';
+  updateArtDel();
   $('sOfferBox').style.display = mode === 'fav' ? 'none' : '';
   $('sStar').style.visibility = mode === 'fav' ? 'hidden' : 'visible';
   variantsFor = norm($('sName').value);
@@ -1120,6 +1131,7 @@ function onNameChanged() {
   renderVariants(); updateSheetExtras();
 }
 $('sName').addEventListener('input', onNameChanged);
+$('sName').addEventListener('input', updateArtDel);
 $('sName').addEventListener('change', onNameChanged);
 $('sMinus').onclick = () => { $('sQty').value = Math.max(1, clampQty($('sQty').value) - stepFor()); };
 $('sPlus').onclick  = () => { const q = clampQty($('sQty').value), s = stepFor(); $('sQty').value = (q === 1 && s > 1) ? s : q + s; };
@@ -1139,6 +1151,25 @@ function saveFavoriteFromSheet() {
   toast('⭐ ' + name + (detail ? ' · ' + detail : '') + ' als Favorit gespeichert');
 }
 $('sFavOnly').onclick = saveFavoriteFromSheet;
+
+/* Artikel nur im Katalog speichern – ohne Liste, ohne Favorit */
+function isOwnArticle(name) { const k = norm(name); return !!(k && !CAT_INDEX[k] && data.custom[k] && !data.custom[k].deleted); }
+function updateArtDel() { $('sArtDel').parentElement.style.display = sheetMode === 'add' && isOwnArticle($('sName').value) ? '' : 'none'; }
+$('sArtOnly').onclick = () => {
+  const v = sheetValues(); if (!v.name) { toast('Bitte einen Artikel eingeben'); return; }
+  const isNew = !CAT_INDEX[norm(v.name)] && !isOwnArticle(v.name);
+  const changed = rememberArticle(v.name, v.detail, v.cat, v.unit);
+  recordPrice(v.name, v.detail, v.offer);
+  closeSheets(); commit();
+  toast(isNew ? '📚 „' + v.name + '“ im Katalog angelegt' : changed ? '📚 „' + v.name + '“ gespeichert' + (v.detail ? ' (mit „' + v.detail + '“)' : '') : '📚 „' + v.name + '“ steht schon im Katalog');
+};
+$('sArtDel').onclick = () => {
+  const k = norm($('sName').value), c = data.custom[k]; if (!c) return;
+  if (!confirm('Eigenen Artikel „' + c.name + '“ aus dem Katalog löschen? Liste, Favoriten und Preise bleiben erhalten.')) return;
+  c.deleted = true; c.updatedAt = now(); closeSheets(); commit();
+  toast('„' + c.name + '“ aus dem Katalog gelöscht', () => { delete c.deleted; c.updatedAt = now(); commit(); });
+};
+$('newArt').onclick = () => { openItemSheet('add', { name: cap($('catSearch').value.trim()) }); if (!$('sName').value) $('sTitle').textContent = 'Neuer Artikel'; setTimeout(() => { if (!$('sName').value) $('sName').focus(); }, 250); };
 
 /* „Häufig gekauft“ bearbeiten */
 let oftenKey = null;
@@ -1723,7 +1754,7 @@ function openPriceSheet() {
   const lastPack = priceKey ? priceEntries(priceKey).filter(e => e.pack).sort((a, b) => b.date.localeCompare(a.date))[0] : null;
   writePack('p', lastPack ? lastPack.pack : null, lastPack ? lastPack.deposit : null);
   $('pPackBox').open = !!lastPack;
-  const names = new Set([...Object.values(CAT_INDEX).map(a => a.name), ...Object.values(data.custom).map(a => a.name)]);
+  const names = new Set([...Object.values(CAT_INDEX).map(a => a.name), ...customArts().map(a => a.name)]);
   $('pArticles').innerHTML = [...names].sort((a, b) => a.localeCompare(b, 'de')).map(n => `<option value="${esc(n)}">`).join('');
   renderPShops(); renderPSearch(); openSheet('priceSheet');
 }
@@ -1930,7 +1961,7 @@ function updateSaving(px) {
 function suggestArticle(lines) {
   const joined = lines.join(' ').replace(/\s+/g, ' ').trim();
   const lj = ' ' + joined.toLowerCase() + ' ';
-  const arts = [...Object.values(CAT_INDEX), ...Object.values(data.custom)];
+  const arts = [...Object.values(CAT_INDEX), ...customArts()];
   const wordHit = w => new RegExp('(^|[\\s\\-])' + w.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([\\s\\-]|$)').test(lj.trim());
   // 1) Artikelname kommt als Wort vor („Butter“, „Pizza“, „Cola“)
   let best = arts.filter(a => a.name && wordHit(a.name.replace(/\s*\(.*\)/, ''))).sort((a, b) => b.name.length - a.name.length)[0];
@@ -2068,6 +2099,11 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.15', '08.10.2026', [
+    'Artikel nur im Katalog speichern – ohne Liste und ohne Favorit („📚 Nur Artikel“)',
+    'Reiter Artikel: ＋ für neuen Artikel, Hinweis zur Bedienung',
+    'Eigene Artikel lassen sich wieder aus dem Katalog löschen'
+  ]],
   ['v1.14', '08.10.2026', [
     '📷 Angebot aus Bild lesen: Foto oder Screenshot vom Prospekt/Preisschild – wird nur auf dem Handy gelesen, nichts gespeichert',
     'Alternativ Text einfügen (iPhone: Bild lange drücken → Text kopieren)',
