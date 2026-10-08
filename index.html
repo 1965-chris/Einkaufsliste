@@ -158,6 +158,11 @@ details.packbox summary{font-size:14px;color:var(--accent);padding:4px 0}
 .shopcard:first-child{border-top:0}
 .shopcard .sum{float:right;font-weight:700;color:var(--accent)}
 .shopcard ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:14px}
+.searchrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.searchrow a{font-size:13px;text-decoration:none;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:999px}
+.linkedit{display:flex;gap:6px;align-items:center;margin-top:8px}
+.linkedit b{width:78px;font-size:14px;font-weight:600}
+.linkedit input{flex:1;min-width:0;font-size:13px;padding:8px 10px}
 .offerlink{display:block;margin-top:14px;font-size:14px;color:var(--accent);text-decoration:none}
 .log{font:12px/1.5 ui-monospace,Menlo,monospace;background:var(--bg);border-radius:10px;padding:8px 10px;max-height:180px;overflow:auto;margin-top:6px}
 .log .e{color:var(--warn)}
@@ -246,6 +251,7 @@ summary{cursor:pointer;font-weight:600}
   <div class="offerbox" id="sOfferBox">
     <b>🏷 Preis / Angebot</b>
     <a class="offerlink" id="sOffer" target="_blank" rel="noopener" style="margin-top:4px">🔎 bei marktguru suchen</a>
+    <div class="searchrow" id="sSearch"></div>
     <div class="chips wrap" id="sShops" style="padding-top:8px"></div>
     <div class="offerrow">
       <input class="field" id="sShop" placeholder="Markt" autocomplete="off">
@@ -307,6 +313,7 @@ summary{cursor:pointer;font-weight:600}
     <input class="field" id="pShop" placeholder="Markt" autocomplete="off">
     <input class="field pricefield" id="pPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
   </div>
+  <div class="searchrow" id="pSearch"></div>
   <label>Datum</label>
   <input class="field" id="pDate" type="date">
   <div id="pTypeBox"></div>
@@ -346,6 +353,11 @@ summary{cursor:pointer;font-weight:600}
     <button class="btn primary" id="gSave">Speichern</button>
   </div>
   <details>
+    <summary>Händler-Suchlinks</summary>
+    <div class="hint">So hinterlegst du einen direkten Link: Auf der Seite des Händlers nach <b>spaghetti</b> suchen, die Adresse der Ergebnisseite kopieren und hier einfügen. Leer lassen = Google-Suche auf der Händlerseite.</div>
+    <div id="linkEdit"></div>
+  </details>
+  <details>
     <summary>Sync-Verlauf</summary>
     <div class="log" id="syncLog"></div>
   </details>
@@ -366,7 +378,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.12';
+const APP_VERSION = 'v1.13';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -493,6 +505,17 @@ const OFFER_LINKS = [
 ];
 const offerUrl = q => 'https://www.marktguru.de/search/' + encodeURIComponent(q);
 const SHOPS = ['EDEKA', 'ALDI', 'Lidl', 'REWE', 'Kaufland', 'Netto', 'PENNY', 'dm', 'Rossmann'];
+const SHOP_SITES = { EDEKA: 'edeka.de', ALDI: 'aldi-sued.de', Lidl: 'lidl.de', REWE: 'rewe.de', Kaufland: 'kaufland.de', Netto: 'netto-online.de', PENNY: 'penny.de', dm: 'dm.de', Rossmann: 'rossmann.de' };
+const LS_SEARCH = 'ekl-search';
+let searchLinks = (() => { try { return JSON.parse(localStorage.getItem(LS_SEARCH)) || {}; } catch { return {}; } })();
+function shopSearchUrl(shop, q) {
+  const tpl = searchLinks[shop];
+  if (tpl && tpl.includes('{q}')) return tpl.replace('{q}', encodeURIComponent(q));
+  return 'https://www.google.com/search?q=' + encodeURIComponent('site:' + SHOP_SITES[shop] + ' ' + q);
+}
+function searchChips(q) {
+  return q ? '<span class="hint" style="margin:0;align-self:center;width:100%">Preis beim Händler nachsehen:</span>' + SHOPS.map(s => `<a href="${esc(shopSearchUrl(s, q))}" target="_blank" rel="noopener">🔎 ${esc(s)}</a>`).join('') : '';
+}
 
 /* ---------- Angebote ---------- */
 function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
@@ -548,22 +571,32 @@ const PACKS = [
   { id: 'k20x05', label: 'Kiste 20 × 0,5 l', n: 20, size: 0.5, dep: 3.10 },
   { id: 'k24x033', label: 'Kiste 24 × 0,33 l', n: 24, size: 0.33, dep: 3.42 },
   { id: 's6x033', label: 'Sixpack 6 × 0,33 l', n: 6, size: 0.33, dep: 0.48 },
-  { id: 'f15', label: 'Flasche 1,5 l', n: 1, size: 1.5, dep: 0.25 }
+  { id: 'f15', label: 'Flasche 1,5 l', n: 1, size: 1.5, dep: 0.25 },
+  { id: 'g250', label: '250 g', n: 1, size: 0.25, u: 'kg', dep: 0 },
+  { id: 'g500', label: '500 g', n: 1, size: 0.5, u: 'kg', dep: 0 },
+  { id: 'kg1', label: '1 kg', n: 1, size: 1, u: 'kg', dep: 0 }
 ];
 const PRICE_TYPES = [['normal', 'Normalpreis'], ['angebot', '🏷 Angebot'], ['app', '📱 App-Preis']];
 function offerType(o) { return !o ? 'normal' : (o.type || (o.special === false ? 'normal' : 'angebot')); }
-function packLitres(p) { return p && p.n > 0 && p.size > 0 ? Math.round(p.n * p.size * 1000) / 1000 : null; }
+function packUnit(p) { return p && p.u === 'kg' ? 'kg' : 'l'; }
+function packLitres(p) { return p && p.n > 0 && p.size > 0 ? Math.round(p.n * p.size * 1000) / 1000 : null; }   // Grundmenge in l bzw. kg
+function fmtAmount(v, u) { return u === 'kg' ? (v < 1 ? fmtNum(v * 1000, 0) + ' g' : fmtNum(v) + ' kg') : (v < 0.1 ? fmtNum(v * 1000, 0) + ' ml' : fmtNum(v) + ' l'); }
 function fmtNum(n, d = 2) { return n.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: d }); }
-function packLabel(p) { if (!p) return ''; const k = PACKS.find(x => x.n === p.n && x.size === p.size); return k ? k.label : `${p.n} × ${fmtNum(p.size)} l`; }
+function packLabel(p) {
+  if (!p) return '';
+  const u = packUnit(p);
+  const k = PACKS.find(x => x.n === p.n && x.size === p.size && packUnit(x) === u);
+  return k ? k.label : (p.n > 1 ? p.n + ' × ' : '') + fmtAmount(p.size, u);
+}
 function perLitre(price, p) { const l = packLitres(p); return l && price != null ? price / l : null; }
-function fmtPerLitre(v) { return v == null ? '' : v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €/l'; }
+function fmtPerLitre(v, u) { return v == null ? '' : v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €/' + (u === 'kg' ? 'kg' : 'l'); }
 function depositOf(o) { return o && o.deposit > 0 ? o.deposit : 0; }
 function lineFactor(i) { return ['g', 'kg', 'ml', 'l'].includes(i.unit) ? 1 : (i.qty || 1); }
 
 function offerText(o) {
   let parts = [o.shop, fmtPrice(o.price)].filter(Boolean).join(' ');
   if (depositOf(o)) parts += ' + ' + fmtPrice(o.deposit) + ' Pfand';
-  const pl = perLitre(o.price, o.pack); if (pl != null) parts += ' · ' + fmtPerLitre(pl);
+  const pl = perLitre(o.price, o.pack); if (pl != null) parts += ' · ' + fmtPerLitre(pl, packUnit(o.pack));
   let when = '';
   if (o.from && o.until) when = fmtDay(o.from) + '–' + fmtDay(o.until);
   else if (o.until) when = 'bis ' + fmtDay(o.until, true);
@@ -979,6 +1012,7 @@ function updateSheetExtras() {
   $('sStar').textContent = sheetStar ? '★' : '☆';
   $('sStar').classList.toggle('on', sheetStar);
   $('sOffer').href = offerUrl(name + (detail ? ' ' + detail : ''));
+  $('sSearch').innerHTML = searchChips((name + (detail ? ' ' + detail : '')).trim());
   $('sHistory').style.display = priceEntries(keyOf(cap(name), detail)).length ? 'block' : 'none';
 }
 function openItemSheet(mode, src) {
@@ -1120,9 +1154,9 @@ $('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''
 /* Preisart-Umschalter und Gebinde/Pfand – für Artikel- und Preisfenster */
 function typeSegHtml(px) { return `<div class="seg typeseg" id="${px}Type">${PRICE_TYPES.map(([v, l]) => `<button type="button" data-type="${v}">${l}</button>`).join('')}</div>`; }
 function packBoxHtml(px) {
-  return `<details class="packbox" id="${px}PackBox"><summary>🍾 Gebinde & Pfand</summary>
+  return `<details class="packbox" id="${px}PackBox"><summary>📦 Packungsgröße & Pfand</summary>
     <div class="chips wrap" id="${px}Packs" style="padding-top:6px">${PACKS.map(p => `<button type="button" class="chip" data-pack="${p.id}">${p.label}</button>`).join('')}</div>
-    <div class="offerrow" style="align-items:center"><input class="field" id="${px}PackN" placeholder="Anzahl" inputmode="numeric" style="max-width:86px"><span>×</span><input class="field" id="${px}PackSize" placeholder="Liter" inputmode="decimal" style="max-width:96px"><span>l</span></div>
+    <div class="offerrow" style="align-items:center"><input class="field" id="${px}PackN" placeholder="Anzahl" inputmode="numeric" style="max-width:86px"><span>×</span><input class="field" id="${px}PackSize" placeholder="Menge" inputmode="decimal" style="max-width:90px"><select class="field" id="${px}PackU" style="max-width:76px;padding:11px 6px"><option value="l">l</option><option value="ml">ml</option><option value="kg">kg</option><option value="g">g</option></select></div>
     <div class="offerrow" style="align-items:center"><span style="width:100px;font-size:14px">Pfand gesamt</span><input class="field pricefield" id="${px}Deposit" placeholder="€" inputmode="decimal"></div>
     <div class="hint" id="${px}PackInfo"></div>
   </details>`;
@@ -1136,19 +1170,34 @@ function setType(px, v) {
   if (px === 's') $('sDates').style.display = v === 'normal' ? 'none' : '';
 }
 function readPack(px) {
-  const n = parseInt($(px + 'PackN').value, 10), size = parseDecimal($(px + 'PackSize').value);
-  return n > 0 && size > 0 ? { n, size } : null;
+  let n = parseInt($(px + 'PackN').value, 10), size = parseDecimal($(px + 'PackSize').value);
+  const su = $(px + 'PackU').value;
+  if (!(size > 0)) return null;
+  if (!(n > 0)) n = 1;
+  if (su === 'ml' || su === 'g') size = size / 1000;
+  const p = { n, size: Math.round(size * 100000) / 100000 };
+  if (su === 'kg' || su === 'g') p.u = 'kg';
+  return p;
 }
 function writePack(px, pack, dep) {
-  $(px + 'PackN').value = pack ? pack.n : ''; $(px + 'PackSize').value = pack ? String(pack.size).replace('.', ',') : '';
+  $(px + 'PackN').value = pack ? pack.n : '';
+  if (pack) {
+    const u = packUnit(pack), small = u === 'kg' ? pack.size < 1 : pack.size < 0.1;
+    $(px + 'PackU').value = u === 'kg' ? (small ? 'g' : 'kg') : (small ? 'ml' : 'l');
+    $(px + 'PackSize').value = fmtNum(small ? pack.size * 1000 : pack.size, 3);
+  } else {
+    $(px + 'PackSize').value = '';
+    const cat = px === 's' ? $('sCat').value : guessCat($('pName').value || '');
+    $(px + 'PackU').value = cat === 'getraenk' ? 'l' : 'g';
+  }
   $(px + 'Deposit').value = dep > 0 ? String(dep.toFixed(2)).replace('.', ',') : '';
   updatePackInfo(px);
 }
 function updatePackInfo(px) {
   const pack = readPack(px), price = parsePrice($(px + 'Price').value);
-  const l = packLitres(pack);
-  $(px + 'PackInfo').textContent = l ? `= ${fmtNum(l)} l${price != null ? ' · ' + fmtPerLitre(price / l) : ''}` : '';
-  $(px + 'Packs').querySelectorAll('[data-pack]').forEach(b => { const k = PACKS.find(x => x.id === b.dataset.pack); b.classList.toggle('sel', !!(pack && k.n === pack.n && k.size === pack.size)); });
+  const l = packLitres(pack), u = packUnit(pack);
+  $(px + 'PackInfo').textContent = l ? `= ${fmtAmount(l, u)}${price != null ? ' · ' + fmtPerLitre(price / l, u) : ''}` : '';
+  $(px + 'Packs').querySelectorAll('[data-pack]').forEach(b => { const k = PACKS.find(x => x.id === b.dataset.pack); b.classList.toggle('sel', !!(pack && k.n === pack.n && k.size === pack.size && packUnit(k) === u)); });
   const box = $(px + 'PackBox');
   if (pack || $(px + 'Deposit').value) box.open = true;
 }
@@ -1162,15 +1211,16 @@ function parseDecimal(s) { const n = parseFloat(String(s || '').replace(',', '.'
   $(px + 'Packs').addEventListener('click', e => {
     const b = e.target.closest('[data-pack]'); if (!b) return;
     const k = PACKS.find(x => x.id === b.dataset.pack);
-    $(px + 'PackN').value = k.n; $(px + 'PackSize').value = String(k.size).replace('.', ',');
-    if (!$(px + 'Deposit').value) $(px + 'Deposit').value = k.dep.toFixed(2).replace('.', ',');
+    writePack(px, { n: k.n, size: k.size, ...(k.u ? { u: k.u } : {}) }, parsePrice($(px + 'Deposit').value));
+    if (!$(px + 'Deposit').value && k.dep) $(px + 'Deposit').value = k.dep.toFixed(2).replace('.', ',');
     // Mengeneinheit passend setzen: 4 Trays statt 4 Flaschen
-    if (px === 's' && ['', 'Fl.', 'Kiste', 'Tray', 'Pck.'].includes($('sUnit').value)) {
+    if (px === 's' && !k.u && ['', 'Fl.', 'Kiste', 'Tray', 'Pck.'].includes($('sUnit').value)) {
       $('sUnit').value = k.id.startsWith('t') ? 'Tray' : k.id.startsWith('k') ? 'Kiste' : k.id.startsWith('s') ? 'Pck.' : 'Fl.';
     }
     updatePackInfo(px);
   });
   [px + 'PackN', px + 'PackSize', px + 'Price', px + 'Deposit'].forEach(id => $(id).addEventListener('input', () => updatePackInfo(px)));
+  $(px + 'PackU').addEventListener('change', () => updatePackInfo(px));
 });
 $('sCat').addEventListener('change', () => { if ($('sCat').value === 'getraenk') $('sPackBox').open = true; });
 $('sHistory').onclick = e => { e.preventDefault(); const k = keyOf(cap($('sName').value), $('sDetail').value.trim()); closeSheets(); openPrices(k); };
@@ -1419,7 +1469,23 @@ $('syncBtn').onclick = () => {
 };
 
 /* ---------- Einstellungen ---------- */
+function renderLinkEdit() {
+  $('linkEdit').innerHTML = SHOPS.map(s => `<div class="linkedit"><b>${esc(s)}</b><input class="field" data-link="${esc(s)}" placeholder="Google-Suche" value="${esc((searchLinks[s] || '').replace('{q}', 'spaghetti'))}" autocapitalize="off" autocorrect="off"></div>`).join('');
+}
+$('linkEdit').addEventListener('change', e => {
+  const inp = e.target.closest('[data-link]'); if (!inp) return;
+  const v = inp.value.trim();
+  if (!v) delete searchLinks[inp.dataset.link];
+  else {
+    const i = v.toLowerCase().lastIndexOf('spaghetti');
+    if (i < 0) { toast('Bitte zuerst auf der Händlerseite nach „spaghetti“ suchen'); return; }
+    searchLinks[inp.dataset.link] = v.slice(0, i) + '{q}' + v.slice(i + 9);
+  }
+  localStorage.setItem(LS_SEARCH, JSON.stringify(searchLinks));
+  toast(v ? inp.dataset.link + ': direkter Suchlink gespeichert' : inp.dataset.link + ': wieder Google-Suche');
+});
 function openSettings() {
+  renderLinkEdit();
   $('gOwner').value = cfg.owner || ''; $('gRepo').value = cfg.repo || ''; $('gToken').value = cfg.token || '';
   renderLog(); openSheet('setSheet');
 }
@@ -1486,7 +1552,8 @@ function recordPrice(name, detail, offer, dateOverride) {
 function openPrices(key) { priceKey = key || null; priceShop = ''; renderPrices(); showTab('preise'); }
 
 let priceBasis = 'price';
-function pval(e) { return priceBasis === 'l' ? perLitre(e.price, e.pack) : e.price; }
+let basisUnit = 'l';
+function pval(e) { return priceBasis === 'l' ? (e.pack && packUnit(e.pack) === basisUnit ? perLitre(e.price, e.pack) : null) : e.price; }
 function priceChart(list, shops) {
   list = list.filter(e => pval(e) != null);
   const W = 340, H = 190, L = 44, R = 12, T = 12, B = 30;
@@ -1546,10 +1613,13 @@ function renderPrices() {
   if (priceShop && !shops.includes(priceShop)) priceShop = '';
   const shown = entries.filter(e => !priceShop || e.shop === priceShop).sort((a, b) => b.date.localeCompare(a.date));
   const showShops = priceShop ? [priceShop] : shops;
-  const hasPack = shown.some(e => perLitre(e.price, e.pack) != null);
+  const unitCount = {};
+  shown.forEach(e => { if (perLitre(e.price, e.pack) != null) unitCount[packUnit(e.pack)] = (unitCount[packUnit(e.pack)] || 0) + 1; });
+  const hasPack = Object.keys(unitCount).length > 0;
   if (!hasPack) priceBasis = 'price';
+  else basisUnit = Object.keys(unitCount).sort((a, b) => unitCount[b] - unitCount[a])[0];
   const basisList = shown.filter(e => pval(e) != null);
-  const fmtV = v => priceBasis === 'l' ? fmtPerLitre(v) : fmtPrice(v);
+  const fmtV = v => priceBasis === 'l' ? fmtPerLitre(v, basisUnit) : fmtPrice(v);
   const normal = basisList.filter(e => offerType(e) === 'normal');
   const nAng = shown.filter(e => offerType(e) === 'angebot').length, nApp = shown.filter(e => offerType(e) === 'app').length;
   const avg = normal.length ? normal.reduce((t, e) => t + pval(e), 0) / normal.length : null;
@@ -1557,14 +1627,14 @@ function renderPrices() {
   const minE = basisList.find(e => pval(e) === min);
   html += `<div class="pricehead"><button class="back" data-act="pback">‹ Alle</button><h3>${esc(entries[0].name)}${entries[0].detail ? ' <span class="hint" style="font-size:15px">' + esc(entries[0].detail) + '</span>' : ''}</h3></div>`;
   html += `<div class="chips">${[['', 'Alle'], ...shops.map(s => [s, s])].map(([v, l]) => `<button class="chip${v === priceShop ? ' sel' : ''}" data-pshop="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
-  if (hasPack) html += `<div class="seg" style="margin-top:8px;display:inline-flex">${[['price', 'Packungspreis'], ['l', 'Literpreis €/l']].map(([v, l]) => `<button data-basis="${v}" class="${v === priceBasis ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  if (hasPack) html += `<div class="seg" style="margin-top:8px;display:inline-flex">${[['price', 'Packungspreis'], ['l', 'Grundpreis €/' + basisUnit]].map(([v, l]) => `<button data-basis="${v}" class="${v === priceBasis ? 'on' : ''}">${l}</button>`).join('')}</div>`;
   html += `<div class="chartbox">${priceChart(shown, showShops)}<div class="legend">${showShops.map(s => `<span><i style="background:${shopColor(s, shops)}"></i>${esc(s)}</span>`).join('')}<span><i style="background:#888;box-shadow:0 0 0 2px #f2c14e"></i>Angebot</span><span><i style="background:#888;box-shadow:0 0 0 2px #8b6cff"></i>App-Preis</span><span><i style="background:transparent;border:2px solid #888;width:6px;height:6px"></i>Normalpreis</span></div></div>`;
   html += `<div class="stats">
     <div class="stat"><small>Tiefstpreis</small><b>${esc(fmtV(min))}</b><small>${esc(minE.shop)}${offerType(minE) === 'angebot' ? ' · Angebot' : offerType(minE) === 'app' ? ' · App' : ''}</small></div>
     <div class="stat"><small>Ø Normalpreis</small><b>${avg != null ? esc(fmtV(avg)) : '–'}</b><small>${normal.length} Wert${normal.length === 1 ? '' : 'e'}</small></div>
     <div class="stat"><small>Angebote · App</small><b>${nAng} · ${nApp}</b><small>von ${shown.length}</small></div>
   </div>`;
-  html += `<section class="group"><h2>Alle Preise</h2><div class="list">${shown.map(e => `<div class="prow"><span class="pd">${esc(fmtDay(e.date))}${e.date.slice(0, 4) !== todayStr().slice(0, 4) ? e.date.slice(2, 4) : ''}</span><span class="ps"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${shopColor(e.shop, shops)};margin-right:6px"></i>${esc(e.shop)}${offerType(e) === 'angebot' ? '<span class="sp">Angebot</span>' : offerType(e) === 'app' ? '<span class="sp app">📱 App</span>' : ''}${e.pack ? `<span class="pmeta">${esc(packLabel(e.pack))}${perLitre(e.price, e.pack) != null ? ' · ' + esc(fmtPerLitre(perLitre(e.price, e.pack))) : ''}</span>` : ''}</span><span class="pp">${esc(fmtPrice(e.price))}${e.deposit ? `<span class="pmeta">+ ${esc(fmtPrice(e.deposit))} Pfand</span>` : ''}</span><button class="pdel" data-pdel="${esc(e.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
+  html += `<section class="group"><h2>Alle Preise</h2><div class="list">${shown.map(e => `<div class="prow"><span class="pd">${esc(fmtDay(e.date))}${e.date.slice(0, 4) !== todayStr().slice(0, 4) ? e.date.slice(2, 4) : ''}</span><span class="ps"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${shopColor(e.shop, shops)};margin-right:6px"></i>${esc(e.shop)}${offerType(e) === 'angebot' ? '<span class="sp">Angebot</span>' : offerType(e) === 'app' ? '<span class="sp app">📱 App</span>' : ''}${e.pack ? `<span class="pmeta">${esc(packLabel(e.pack))}${perLitre(e.price, e.pack) != null ? ' · ' + esc(fmtPerLitre(perLitre(e.price, e.pack), packUnit(e.pack))) : ''}</span>` : ''}</span><span class="pp">${esc(fmtPrice(e.price))}${e.deposit ? `<span class="pmeta">+ ${esc(fmtPrice(e.deposit))} Pfand</span>` : ''}</span><button class="pdel" data-pdel="${esc(e.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
   html += '<button class="btn primary addprice" data-act="addprice">＋ Preis erfassen</button>';
   $('priceMain').innerHTML = html;
 }
@@ -1592,7 +1662,7 @@ function openPriceSheet() {
   $('pPackBox').open = !!lastPack;
   const names = new Set([...Object.values(CAT_INDEX).map(a => a.name), ...Object.values(data.custom).map(a => a.name)]);
   $('pArticles').innerHTML = [...names].sort((a, b) => a.localeCompare(b, 'de')).map(n => `<option value="${esc(n)}">`).join('');
-  renderPShops(); openSheet('priceSheet');
+  renderPShops(); renderPSearch(); openSheet('priceSheet');
 }
 function renderPShops() {
   const cur = norm($('pShop').value);
@@ -1600,6 +1670,8 @@ function renderPShops() {
 }
 $('pShops').addEventListener('click', e => { const b = e.target.closest('[data-shop]'); if (!b) return; $('pShop').value = b.dataset.shop; renderPShops(); $('pPrice').focus(); });
 $('pShop').addEventListener('input', renderPShops);
+function renderPSearch() { $('pSearch').innerHTML = searchChips(($('pName').value + ' ' + $('pDetail').value).trim()); }
+$('pName').addEventListener('input', renderPSearch); $('pDetail').addEventListener('input', renderPSearch);
 $('pSave').onclick = () => {
   const name = cap($('pName').value), detail = $('pDetail').value.trim(), shop = $('pShop').value.trim(), price = parsePrice($('pPrice').value);
   if (!name || !shop || price == null) { toast('Bitte Artikel, Markt und Preis angeben'); return; }
@@ -1612,6 +1684,12 @@ $('pSave').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.13', '08.10.2026', [
+    'Im Artikel- und Preisfenster: 🔎 Suche direkt beim Händler (ALDI, EDEKA, Lidl, REWE …)',
+    'Händler-Suchlinks in den Einstellungen anpassbar – einfach die Ergebnisseite einer „spaghetti“-Suche einfügen',
+    'Packungsgröße jetzt auch in g / kg / ml: Grundpreis €/kg wie im Laden (z. B. 500 g · 1,38 €/kg)',
+    'Preisverlauf: Umschalter „Grundpreis €/kg“ bzw. „€/l“ für den fairen Vergleich verschiedener Packungsgrößen'
+  ]],
   ['v1.12', '08.10.2026', [
     'Hinweis-Leiste (z. B. nach dem Löschen) verschwindet jetzt vollständig und blitzt nicht mehr am unteren Rand hervor'
   ]],
