@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.9",
- "savedAt": "2026-10-08T09:04:58.434Z",
+ "savedAt": "2026-10-08T09:09:14.946Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -299,6 +299,16 @@
    "qty": 2,
    "on": true,
    "updatedAt": 1791413901032
+  },
+  "melita barista ganze bohnen|": {
+   "name": "Melita Barista Ganze Bohnen",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "",
+   "qty": 1,
+   "note": "",
+   "on": true,
+   "updatedAt": 1791450552445
   }
  },
  "custom": {
@@ -338,6 +348,13 @@
    "cat": "obst",
    "unit": "",
    "updatedAt": 1791412674876
+  },
+  "melita barista ganze bohnen": {
+   "name": "Melita Barista Ganze Bohnen",
+   "variants": [],
+   "cat": "vorrat",
+   "unit": "",
+   "updatedAt": 1791450552445
   }
  },
  "prices": {
