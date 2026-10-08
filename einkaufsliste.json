@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
- "version": "v1.7",
- "savedAt": "2026-10-07T23:02:50.896Z",
+ "version": "v1.8",
+ "savedAt": "2026-10-08T08:38:19.899Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -52,17 +52,23 @@
    "name": "Coca Cola",
    "detail": "",
    "qty": 4,
-   "unit": "Pck.",
+   "unit": "Tray",
    "cat": "getraenk",
    "note": "1,25l 6er Tray / mit App",
    "checked": false,
-   "updatedAt": 1791414168751,
+   "updatedAt": 1791448697781,
    "offer": {
     "shop": "Lidl",
     "price": 5.94,
     "from": "2026-10-12",
     "until": "2026-10-17",
-    "special": true
+    "type": "app",
+    "special": true,
+    "pack": {
+     "n": 6,
+     "size": 1.25
+    },
+    "deposit": 1.5
    }
   },
   {
@@ -194,7 +200,7 @@
    "name": "Coca Cola",
    "detail": "",
    "cat": "getraenk",
-   "unit": "Pck.",
+   "unit": "Tray",
    "last": 1791378120857
   },
   "pizza|thunfisch": {
@@ -268,10 +274,10 @@
    "name": "Coca Cola",
    "detail": "",
    "cat": "getraenk",
-   "unit": "Pck.",
+   "unit": "Tray",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791414168752
+   "updatedAt": 1791448697781
   },
   "pizza|thunfisch": {
    "name": "Pizza",
@@ -297,8 +303,8 @@
    "name": "Coca Cola",
    "variants": [],
    "cat": "getraenk",
-   "unit": "Pck.",
-   "updatedAt": 1791378234524
+   "unit": "Tray",
+   "updatedAt": 1791448697781
   },
   "pizza": {
    "name": "Pizza",
@@ -395,8 +401,14 @@
    "date": "2026-10-12",
    "shop": "Lidl",
    "price": 5.94,
+   "type": "app",
    "special": true,
-   "updatedAt": 1791414168751
+   "pack": {
+    "n": 6,
+    "size": 1.25
+   },
+   "deposit": 1.5,
+   "updatedAt": 1791448697781
   }
  }
 }
