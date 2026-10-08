@@ -158,6 +158,14 @@ details.packbox summary{font-size:14px;color:var(--accent);padding:4px 0}
 .shopcard:first-child{border-top:0}
 .shopcard .sum{float:right;font-weight:700;color:var(--accent)}
 .shopcard ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:14px}
+.camera{border:0;background:var(--chip);font-size:22px;width:50px;border-radius:14px;cursor:pointer}
+.readbtns{display:flex;gap:8px;margin-top:6px}
+.readbtns .btn{font-size:15px}
+#rText{width:100%;min-height:90px;font-size:15px;resize:vertical}
+.rstatus{font-size:14px;color:var(--muted);margin-top:8px;min-height:20px}
+.saving{font-size:14px;color:var(--accent);font-weight:600;margin-top:6px}
+#rPreview{display:none}
+.rawtext{white-space:pre-wrap;font:12px/1.4 ui-monospace,Menlo,monospace;background:var(--bg);border-radius:10px;padding:8px;max-height:160px;overflow:auto}
 .searchrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .searchrow a{font-size:13px;text-decoration:none;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:999px}
 .linkedit{display:flex;gap:6px;align-items:center;margin-top:8px}
@@ -191,6 +199,7 @@ summary{cursor:pointer;font-weight:600}
       <input class="inp" id="addName" placeholder="Artikel" enterkeyhint="done">
       <input class="inp" id="addQty" type="number" inputmode="numeric" min="1" max="999" value="1" aria-label="Menge">
       <button type="submit" class="plus" aria-label="Hinzufügen">+</button>
+      <button type="button" class="camera" id="readBtn" aria-label="Angebot aus Bild lesen">📷</button>
     </form>
     <div class="chips" id="chips"></div>
     <div class="sortbar">
@@ -252,11 +261,17 @@ summary{cursor:pointer;font-weight:600}
     <b>🏷 Preis / Angebot</b>
     <a class="offerlink" id="sOffer" target="_blank" rel="noopener" style="margin-top:4px">🔎 bei marktguru suchen</a>
     <div class="searchrow" id="sSearch"></div>
+    <button type="button" class="btn" id="sRead" style="width:100%;margin-top:10px">📷 Angebot aus Bild / Text lesen</button>
     <div class="chips wrap" id="sShops" style="padding-top:8px"></div>
     <div class="offerrow">
       <input class="field" id="sShop" placeholder="Markt" autocomplete="off">
       <input class="field pricefield" id="sPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
     </div>
+    <div class="offerrow" style="align-items:center">
+      <span style="width:120px;font-size:14px">statt (Vergleich)</span>
+      <input class="field pricefield" id="sRegular" placeholder="€" inputmode="decimal" autocomplete="off">
+    </div>
+    <div class="saving" id="sSaving"></div>
     <div id="sTypeBox"></div>
     <div id="sDates">
     <div class="offerrow" style="align-items:center">
@@ -324,6 +339,46 @@ summary{cursor:pointer;font-weight:600}
   </div>
 </div>
 
+<!-- Angebot aus Bild / Text lesen -->
+<div class="sheet" id="readSheet" style="z-index:22">
+  <h3>📷 Angebot lesen</h3>
+  <div class="hint">Das Bild wird nur auf dem Handy gelesen – es wird nicht gespeichert und nicht hochgeladen.</div>
+  <input type="file" id="rFile" accept="image/*" hidden>
+  <div class="readbtns">
+    <button class="btn primary" id="rPick">📷 Foto / Bild wählen</button>
+  </div>
+  <label>oder Text einfügen (Bild lange drücken → Text markieren → Kopieren)</label>
+  <textarea class="field" id="rText" placeholder="Hier einfügen …"></textarea>
+  <div class="readbtns"><button class="btn" id="rParse">Text auswerten</button></div>
+  <div class="rstatus" id="rStatus"></div>
+  <div id="rPreview">
+    <label>Artikel</label>
+    <input class="field" id="rName" autocomplete="off">
+    <label>Bezeichnung</label>
+    <input class="field" id="rDetail" autocomplete="off">
+    <label>Markt</label>
+    <div class="chips wrap" id="rShops" style="padding-top:0"></div>
+    <div class="offerrow">
+      <input class="field" id="rShop" placeholder="Markt" autocomplete="off">
+      <input class="field pricefield" id="rPrice" placeholder="Preis €" inputmode="decimal" style="max-width:110px">
+    </div>
+    <div class="offerrow" style="align-items:center">
+      <span style="width:120px;font-size:14px">statt (Vergleich)</span>
+      <input class="field pricefield" id="rRegular" placeholder="€" inputmode="decimal">
+    </div>
+    <div class="saving" id="rSaving"></div>
+    <div id="rTypeBox"></div>
+    <div class="offerrow" style="align-items:center"><span class="hint" style="margin:0;width:34px">von</span><input class="field" id="rFrom" type="date"></div>
+    <div class="offerrow" style="align-items:center"><span class="hint" style="margin:0;width:34px">bis</span><input class="field" id="rUntil" type="date"></div>
+    <div id="rPackUI"></div>
+    <details><summary>Erkannter Text</summary><div class="rawtext" id="rRaw"></div></details>
+  </div>
+  <div class="row">
+    <button class="btn" id="rCancel">Abbrechen</button>
+    <button class="btn primary" id="rApply" disabled>Übernehmen</button>
+  </div>
+</div>
+
 <!-- Info -->
 <div class="sheet" id="infoSheet">
   <div class="infohead">
@@ -378,7 +433,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.13';
+const APP_VERSION = 'v1.14';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -595,6 +650,7 @@ function lineFactor(i) { return ['g', 'kg', 'ml', 'l'].includes(i.unit) ? 1 : (i
 
 function offerText(o) {
   let parts = [o.shop, fmtPrice(o.price)].filter(Boolean).join(' ');
+  if (o.regular > 0 && o.price != null && o.regular > o.price) parts += ' statt ' + fmtPrice(o.regular) + ' (−' + Math.round((1 - o.price / o.regular) * 100) + ' %)';
   if (depositOf(o)) parts += ' + ' + fmtPrice(o.deposit) + ' Pfand';
   const pl = perLitre(o.price, o.pack); if (pl != null) parts += ' · ' + fmtPerLitre(pl, packUnit(o.pack));
   let when = '';
@@ -1032,7 +1088,7 @@ function openItemSheet(mode, src) {
   setType('s', o.shop || o.price != null ? offerType(o) : (mode === 'often' ? 'normal' : 'angebot'));
   writePack('s', o.pack || null, o.deposit);
   $('sPackBox').open = !!(o.pack || o.deposit) || $('sCat').value === 'getraenk';
-  $('sShop').value = o.shop || ''; $('sPrice').value = fmtPriceInput(o.price ?? null); $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
+  $('sShop').value = o.shop || ''; $('sPrice').value = fmtPriceInput(o.price ?? null); $('sRegular').value = fmtPriceInput(o.regular ?? null); updateSaving('s'); $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
   renderShops();
   $('sBtnsAdd').style.display = mode === 'add' ? 'block' : 'none';
   $('sBtnsEdit').style.display = mode === 'edit' ? 'flex' : 'none';
@@ -1135,7 +1191,8 @@ function sheetOffer() {
   const type = getType('s');
   if (type === 'normal') { from = ''; until = ''; }
   const pack = readPack('s'), deposit = parsePrice($('sDeposit').value);
-  return (shop || price != null) ? { shop, price, from, until, type, special: type !== 'normal', pack, deposit: deposit || null } : null;
+  const regular = parsePrice($('sRegular').value);
+  return (shop || price != null) ? { shop, price, from, until, type, special: type !== 'normal', pack, deposit: deposit || null, regular: regular && price != null && regular > price ? regular : null } : null;
 }
 $('sShops').addEventListener('click', e => {
   const b = e.target.closest('[data-shop]'); if (!b) return;
@@ -1149,7 +1206,7 @@ $('sShops').addEventListener('click', e => {
   renderShops(); $('sPrice').focus();
 });
 $('sShop').addEventListener('input', renderShops);
-$('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sFrom').value = ''; $('sUntil').value = ''; setType('s', 'angebot'); writePack('s', null, null); renderShops(); };
+$('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sRegular').value = ''; updateSaving('s'); $('sFrom').value = ''; $('sUntil').value = ''; setType('s', 'angebot'); writePack('s', null, null); renderShops(); };
 
 /* Preisart-Umschalter und Gebinde/Pfand – für Artikel- und Preisfenster */
 function typeSegHtml(px) { return `<div class="seg typeseg" id="${px}Type">${PRICE_TYPES.map(([v, l]) => `<button type="button" data-type="${v}">${l}</button>`).join('')}</div>`; }
@@ -1161,8 +1218,8 @@ function packBoxHtml(px) {
     <div class="hint" id="${px}PackInfo"></div>
   </details>`;
 }
-$('sTypeBox').innerHTML = typeSegHtml('s'); $('pTypeBox').innerHTML = typeSegHtml('p');
-$('sPackUI').innerHTML = packBoxHtml('s'); $('pPackUI').innerHTML = packBoxHtml('p');
+$('sTypeBox').innerHTML = typeSegHtml('s'); $('pTypeBox').innerHTML = typeSegHtml('p'); $('rTypeBox').innerHTML = typeSegHtml('r');
+$('sPackUI').innerHTML = packBoxHtml('s'); $('pPackUI').innerHTML = packBoxHtml('p'); $('rPackUI').innerHTML = packBoxHtml('r');
 function getType(px) { return $(px + 'Type').dataset.val || 'angebot'; }
 function setType(px, v) {
   $(px + 'Type').dataset.val = v;
@@ -1202,7 +1259,7 @@ function updatePackInfo(px) {
   if (pack || $(px + 'Deposit').value) box.open = true;
 }
 function parseDecimal(s) { const n = parseFloat(String(s || '').replace(',', '.')); return isNaN(n) ? null : n; }
-['s', 'p'].forEach(px => {
+['s', 'p', 'r'].forEach(px => {
   $(px + 'Type').addEventListener('click', e => {
     const b = e.target.closest('[data-type]'); if (!b) return;
     setType(px, b.dataset.type);
@@ -1548,6 +1605,12 @@ function recordPrice(name, detail, offer, dateOverride) {
   if (prev && !prev.deleted && prev.price === offer.price && offerType(prev) === type && prev.shop === offer.shop
       && JSON.stringify(prev.pack || null) === JSON.stringify(pack) && (prev.deposit || null) === deposit) return;
   data.prices[id] = { id, key, name, detail, date, shop: offer.shop, price: offer.price, type, special, pack, deposit, updatedAt: now() };
+  // Vergleichspreis („statt“) als Normalpreis in den Verlauf
+  if (offer.regular > 0 && special) {
+    const rid = id + '|statt', rp = data.prices[rid];
+    if (!(rp && !rp.deleted && rp.price === offer.regular))
+      data.prices[rid] = { id: rid, key, name, detail, date, shop: offer.shop, price: offer.regular, type: 'normal', special: false, pack, deposit, note: 'Vergleichspreis', updatedAt: now() };
+  }
 }
 function openPrices(key) { priceKey = key || null; priceShop = ''; renderPrices(); showTab('preise'); }
 
@@ -1682,8 +1745,336 @@ $('pSave').onclick = () => {
   closeSheets(); commit(); toast('Preis gespeichert');
 };
 
+/* ---------- Angebot aus Text lesen (Prospekt, Preisschild, Screenshot) ---------- */
+function parseOfferText(raw) {
+  const res = { name: '', detail: '', shop: '', price: null, regular: null, percent: null, pack: null, deposit: null, from: '', until: '', type: 'angebot', unitPrice: null, unitBase: '' };
+  let text = String(raw || '').replace(/\r/g, '').replace(/[–—]/g, '-').replace(/€/g, ' € ').replace(/[ \t]+/g, ' ');
+  // typische Lesefehler der Texterkennung ausbügeln
+  text = text
+    .replace(/(\d)\s?:\s?(\d{2})(?!\d)/g, '$1.$2')          // 49:99 → 49.99
+    .replace(/(\d)-(\d{2})(?![\d%])(?!\s?-?\s?(kg|g|ml|l)\b)/g, '$1.$2') // 8-94 → 8.94
+    .replace(/(\d)\s?\|/g, '$1 l')                          // 1,25 | → 1,25 l
+    .replace(/\b[oO](?=[,.]\d{2}\b)/g, '0');                 // o,79 → 0,79
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  const all = lines.join('\n');
+  const low = all.toLowerCase();
+
+  // Händler
+  const shopNames = [['edeka', 'EDEKA'], ['aldi', 'ALDI'], ['lidl', 'Lidl'], ['rewe', 'REWE'], ['kaufland', 'Kaufland'], ['netto', 'Netto'], ['penny', 'PENNY'], ['rossmann', 'Rossmann'], [' dm ', 'dm'], ['dm-', 'dm']];
+  for (const [k, v] of shopNames) if ((' ' + low + ' ').includes(k)) { res.shop = v; break; }
+  // App-Preis
+  if (/\bapp\b|app-preis|mit der app|lidl plus|coupon|payback|appp?reis/i.test(all)) res.type = 'app';
+
+  // Preis-Token finden (mit Position)
+  const toks = [];
+  const re = /(?<![\d,.])(?:(\d{1,3})\s?[,.]\s?(\d{2})|(\d{1,3})\s?[,.]\s?-{1,2}|-\s?[,.]\s?(\d{2}))(?![\d%])/g;
+  let m;
+  while ((m = re.exec(all))) {
+    let v = null;
+    if (m[1] != null) v = +(m[1] + '.' + m[2]);
+    else if (m[3] != null) v = +m[3];
+    else if (m[4] != null) v = +('0.' + m[4]);
+    if (v == null || v <= 0 || v > 500) continue;
+    // Datum wie „13.10.“ oder „13.10.2026“ ist kein Preis
+    if (m[1] != null && /^\s?\./.test(all.slice(m.index + m[0].length, m.index + m[0].length + 2)) && +m[2] <= 12 && +m[1] <= 31) continue;
+    toks.push({ v, i: m.index, end: m.index + m[0].length, raw: m[0], role: '' });
+  }
+  const before = (t, n = 28) => low.slice(Math.max(0, t.i - n), t.i);
+  const after = (t, n = 14) => low.slice(t.end, t.end + n);
+
+  // Grundpreis: „(1 kg = 12.99)“, „1 l = 0,79“, „1,38 €/1 kg“, „100 g = 0.76“
+  toks.forEach(t => {
+    const b = before(t, 14), a = after(t, 10);
+    let mm;
+    if ((mm = b.match(/(1|100)\s?(kg|g|l|ml|liter)\s?=\s?$/))) {
+      t.role = 'unit';
+      const base = /kg|^g$/.test(mm[2]) || mm[2] === 'g' ? 'kg' : 'l';
+      const per100 = mm[1] === '100';
+      res.unitPrice = per100 ? Math.round(t.v * 10 * 100) / 100 : t.v; res.unitBase = base;
+    } else if ((mm = a.match(/^\s?€?\s?\/\s?(1\s?)?(kg|l|liter|100\s?g|100\s?ml)/))) {
+      t.role = 'unit';
+      const u = mm[2].replace(/\s/g, '');
+      res.unitBase = /kg|g/.test(u) ? 'kg' : 'l';
+      res.unitPrice = /^100/.test(u) ? Math.round(t.v * 10 * 100) / 100 : t.v;
+    }
+  });
+  // Pfand
+  toks.forEach(t => { if (!t.role && (/pfand/.test(after(t, 12)) || /pfand\s?$/.test(before(t, 10)))) { t.role = 'deposit'; res.deposit = t.v; } });
+  // Vergleichspreis: statt / UVP / bisher / vorher / Normalpreis / regulär / durchgestrichen
+  const regKw = /(statt|uvp|unverb|bisher|vorher|normalpreis|regul|ursprüngl|einzelpreis|früher)[^\d]{0,12}$/;
+  toks.forEach(t => { if (!t.role && regKw.test(before(t, 22))) { t.role = 'regular'; res.regular = t.v; } });
+  // „UVP 894“ – Komma beim Durchstreichen verloren
+  if (res.regular == null) {
+    const mr = low.match(/(statt|uvp|bisher|vorher|normalpreis)\D{0,6}(\d{3,4})(?![\d,.])/);
+    if (mr) res.regular = +mr[2] / 100;
+  }
+
+  // Prozent-Rabatt
+  const pm = all.match(/-\s?(\d{1,2})\s?%/);
+  if (pm) res.percent = +pm[1];
+
+  // Angebotspreis: übrige Preise
+  const rest = toks.filter(t => !t.role);
+  if (rest.length) {
+    let cand = rest;
+    if (res.regular != null) cand = rest.filter(t => t.v < res.regular).length ? rest.filter(t => t.v < res.regular) : rest;
+    // häufig steht der Aktionspreis zuletzt bzw. ist der kleinere von zwei Preisen
+    if (res.regular == null && cand.length >= 2) {
+      const sorted = [...cand].sort((a, b) => a.v - b.v);
+      res.price = sorted[0].v;
+      const hi = sorted[sorted.length - 1].v;
+      if (hi > res.price * 1.05 && hi < res.price * 4) res.regular = hi;
+    } else res.price = cand[cand.length - 1].v;
+  }
+  if (res.price == null && res.regular != null && res.percent) res.price = Math.round(res.regular * (1 - res.percent / 100) * 100) / 100;
+  if (res.regular == null && res.price != null && res.percent && res.percent < 90) res.regular = Math.round(res.price / (1 - res.percent / 100) * 100) / 100;
+  // Durchgestrichene Preise werden oft verlesen (19.99 → 49.99): mit dem Prozentwert gegenprüfen
+  if (res.regular != null && res.price != null && res.percent) {
+    const expect = res.price / (1 - res.percent / 100);
+    if (Math.abs(res.regular - expect) / expect > 0.06) {
+      const s = res.regular.toFixed(2), subs = { '4': '1', '7': '1', '1': '7', '8': '3', '3': '8', '5': '6', '6': '5', '0': '9', '9': '0' };
+      let fixed = null;
+      for (let i = 0; i < s.length && !fixed; i++) {
+        const r = subs[s[i]]; if (!r) continue;
+        const v = +(s.slice(0, i) + r + s.slice(i + 1));
+        if (Math.abs(v - expect) / expect <= 0.06) fixed = v;
+      }
+      res.regular = fixed ?? Math.round(expect * 100) / 100;
+      res.regularGuessed = !fixed;
+    }
+  }
+  // ohne Prozentangabe: unplausibel hoher Vergleichspreis (mehr als 2,5-fach) → häufig 1 als 4/7 verlesen
+  if (res.regular != null && res.price != null && !res.percent && res.regular / res.price > 2.5) {
+    const s = res.regular.toFixed(2), subs = { '4': '1', '7': '1', '9': '1', '8': '3' };
+    for (let i = 0; i < s.length; i++) {
+      const r = subs[s[i]]; if (!r) continue;
+      const v = +(s.slice(0, i) + r + s.slice(i + 1));
+      if (v / res.price >= 1.05 && v / res.price <= 2.2) { res.regular = v; res.regularGuessed = true; break; }
+    }
+  }
+  if (res.regular != null && res.price != null && res.regular <= res.price) res.regular = null;
+
+  // Packungsgröße: „6 x 1,25 l“, „500 g“, „1-kg-Packg.“, „0,7-l-Fl.“
+  let pk = all.match(/(\d{1,2})\s?[x×]\s?(\d{1,4}(?:[,.]\d{1,3})?)\s?-?\s?(kg|g|ml|l)\b/i);
+  if (pk) res.pack = mkPack(+pk[1], pk[2], pk[3]);
+  else {
+    const reS = /(?<![\d,.=])(\d{1,4}(?:[,.]\d{1,3})?)\s?-?\s?(kg|g|ml|l|liter)\b(?!\s?=)/gi;
+    let s;
+    while ((s = reS.exec(all))) {
+      const ctxB = all.slice(Math.max(0, s.index - 3), s.index);
+      if (/=\s?$|\/\s?$/.test(ctxB)) continue;                 // Teil einer Grundpreisangabe
+      if (/^1$|^100$/.test(s[1]) && /^\s?-?\s?(kg|g|l|ml)\s?=/.test(all.slice(s.index + s[1].length))) continue;
+      res.pack = mkPack(1, s[1], s[2]); break;
+    }
+  }
+  if (!res.pack && res.unitPrice && res.price) {
+    const amt = res.price / res.unitPrice;
+    if (amt > 0.02 && amt < 30) res.pack = { n: 1, size: Math.round(amt * 1000) / 1000, ...(res.unitBase === 'kg' ? { u: 'kg' } : {}) };
+  }
+
+  // Zeitraum
+  const dates = [];
+  const dre = /(\d{1,2})\.\s?(\d{1,2})\.(?:\s?(\d{2,4}))?/g;
+  let d;
+  while ((d = dre.exec(all))) {
+    const dd = +d[1], mo = +d[2];
+    if (dd < 1 || dd > 31 || mo < 1 || mo > 12) continue;
+    let y = d[3] ? +d[3] : new Date().getFullYear();
+    if (y < 100) y += 2000;
+    const iso = y + '-' + String(mo).padStart(2, '0') + '-' + String(dd).padStart(2, '0');
+    if (!dates.some(x => x.iso === iso)) dates.push({ iso, i: d.index });   // doppelt gelesene Daten nur einmal
+  }
+  if (dates.length) {
+    const ctx = di => low.slice(Math.max(0, dates[di].i - 14), dates[di].i);
+    if (dates.length >= 2) { res.from = dates[0].iso; res.until = dates[dates.length - 1].iso; if (res.from > res.until) [res.from, res.until] = [res.until, res.from]; }
+    else if (/bis/.test(ctx(0))) res.until = dates[0].iso;
+    else res.from = dates[0].iso;
+  }
+
+  // Produktname: Zeilen mit Buchstaben, ohne Preise/Schlüsselwörter
+  const skip = /(statt|uvp|pfand|kg\s?=|l\s?=|g\s?=|€|%|gültig|ab mo|ab di|ab mi|ab do|ab fr|ab sa|angebot|aktion|preis|sparen|spare|je\b|nur\b|zzgl|inkl|packung|packg|stück|stk|aus der|unser|knaller|super|tiefpreis|coupon|app|lidl plus|vegetarisch|vegan|verfügbar|kühlregal|mo\.|di\.|mi\.|do\.|fr\.|sa\.)/i;
+  const nameLines = lines.filter(l => {
+    const letters = (l.match(/[a-zäöüß]/gi) || []).length;
+    if (letters < 3 || letters < l.length * 0.5) return false;
+    if (skip.test(l)) return false;
+    if (shopNames.some(([k]) => l.toLowerCase().trim() === k.trim())) return false;
+    return true;
+  }).map(l => l.replace(/\s*\d+(?:[,.]\d+)?\s?-?\s?(kg|g|ml|l)\b.*$/i, '').replace(/[^\p{L}\d &'.,-]/gu, '').trim()).filter(l => l.length >= 3);
+  res.nameLines = [...new Set(nameLines)].slice(0, 4);
+  return res;
+}
+function mkPack(n, sz, u) {
+  let size = parseFloat(String(sz).replace(',', '.'));
+  u = u.toLowerCase();
+  if (u === 'ml' || u === 'g') size /= 1000;
+  const p = { n: n || 1, size: Math.round(size * 100000) / 100000 };
+  if (u === 'kg' || u === 'g') p.u = 'kg';
+  return size > 0 ? p : null;
+}
+
+/* passende Mengeneinheit zur erkannten Packung: 6 × 1,25 l → Tray, 12 × 0,7 l → Kiste */
+function packCountUnit(p) {
+  if (!p || p.u === 'kg' || !(p.n > 1)) return '';
+  const k = PACKS.find(x => !x.u && x.n === p.n && x.size === p.size);
+  if (k) return k.id.startsWith('t') ? 'Tray' : k.id.startsWith('k') ? 'Kiste' : 'Pck.';
+  return p.n >= 12 ? 'Kiste' : 'Tray';
+}
+/* Saving-Anzeige */
+function updateSaving(px) {
+  const p = parsePrice($(px + 'Price').value), r = parsePrice($(px + 'Regular').value);
+  $(px + 'Saving').textContent = p != null && r != null && r > p ? `💰 spart ${fmtPrice(r - p)} (−${Math.round((1 - p / r) * 100)} %)` : '';
+}
+['s', 'r'].forEach(px => [px + 'Price', px + 'Regular'].forEach(id => $(id).addEventListener('input', () => updateSaving(px))));
+
+/* Artikel aus erkannten Zeilen vorschlagen */
+function suggestArticle(lines) {
+  const joined = lines.join(' ').replace(/\s+/g, ' ').trim();
+  const lj = ' ' + joined.toLowerCase() + ' ';
+  const arts = [...Object.values(CAT_INDEX), ...Object.values(data.custom)];
+  const wordHit = w => new RegExp('(^|[\\s\\-])' + w.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([\\s\\-]|$)').test(lj.trim());
+  // 1) Artikelname kommt als Wort vor („Butter“, „Pizza“, „Cola“)
+  let best = arts.filter(a => a.name && wordHit(a.name.replace(/\s*\(.*\)/, ''))).sort((a, b) => b.name.length - a.name.length)[0];
+  // 2) Zusammengesetzt („Coca-Cola“ → Cola, „Gemüsebrühe“ → Brühe)
+  if (!best) best = arts.filter(a => a.name && a.name.length >= 4 && lj.includes(a.name.toLowerCase())).sort((a, b) => b.name.length - a.name.length)[0];
+  // 3) Bezeichnung passt („Spaghetti“ → Nudeln, „ganze Bohne“ → Kaffee)
+  let viaVar = null;
+  if (!best) {
+    // längste passende Bezeichnung als ganzes Wort gewinnt („ganze Bohne“ → Kaffee, nicht „ganz“ → Hähnchen)
+    const hits = [];
+    arts.forEach(a => (articleInfo(a.name).variants || []).forEach(v => { if (v.length >= 4 && wordHit(v)) hits.push([a, v]); }));
+    hits.sort((x, y) => y[1].length - x[1].length);
+    if (hits.length) { best = hits[0][0]; viaVar = hits[0][1]; }
+  }
+  if (!best) return { name: lines[0] || '', detail: lines.slice(1).join(' ') };
+  const nm = best.name.replace(/\s*\(.*\)/, '');
+  let detail = viaVar ? joined : joined.replace(new RegExp('(^|\\s)' + nm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?=\\s|$)', 'i'), ' ');
+  detail = detail.replace(/\s+/g, ' ').trim();
+  return { name: best.name, detail: detail.length > 60 ? detail.slice(0, 60) : detail };
+}
+
+/* Texterkennung auf dem Gerät (Tesseract) – Bild wird nur gelesen, nie gespeichert */
+let ocrWorker = null, readMode = 'new';
+function loadScript(src) { return new Promise((ok, err) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => err(new Error('Lesepaket konnte nicht geladen werden – Internet?')); document.head.appendChild(s); }); }
+async function getOcr(status) {
+  if (ocrWorker) return ocrWorker;
+  status('Lesepaket wird geladen … (nur beim ersten Mal, ca. 5 MB)');
+  if (!window.Tesseract) await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js');
+  ocrWorker = await Tesseract.createWorker('deu', 1, {
+    logger: m => { if (m.status === 'recognizing text') status('Lese Text … ' + Math.round(m.progress * 100) + ' %'); else if (/load|init/.test(m.status)) status('Vorbereitung … ' + Math.round((m.progress || 0) * 100) + ' %'); }
+  });
+  return ocrWorker;
+}
+async function imageToCanvases(file) {
+  const bmp = await createImageBitmap(file);
+  const scale = Math.min(1, 2200 / Math.max(bmp.width, bmp.height)) * (Math.max(bmp.width, bmp.height) < 900 ? 2 : 1);
+  const w = Math.round(bmp.width * scale), hgt = Math.round(bmp.height * scale);
+  const c = document.createElement('canvas'); c.width = w; c.height = hgt;
+  const x = c.getContext('2d', { willReadFrequently: true });
+  x.drawImage(bmp, 0, 0, w, hgt); bmp.close && bmp.close();
+  const img = x.getImageData(0, 0, w, hgt), d = img.data, hist = new Array(256).fill(0);
+  let lo = 255, hi = 0;
+  for (let i = 0; i < d.length; i += 4) { const g = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) | 0; d[i] = d[i + 1] = d[i + 2] = g; hist[g]++; if (g < lo) lo = g; if (g > hi) hi = g; }
+  // Kontrast strecken
+  const span = Math.max(1, hi - lo);
+  for (let i = 0; i < d.length; i += 4) { const g = ((d[i] - lo) * 255 / span) | 0; d[i] = d[i + 1] = d[i + 2] = g; }
+  const gray = document.createElement('canvas'); gray.width = w; gray.height = hgt; gray.getContext('2d').putImageData(img, 0, 0);
+  // Otsu-Schwelle → Schwarz/Weiß
+  const h2 = new Array(256).fill(0); for (let i = 0; i < d.length; i += 4) h2[d[i]]++;
+  const total = w * hgt; let sum = 0; for (let i = 0; i < 256; i++) sum += i * h2[i];
+  let sB = 0, wB = 0, best = 0, th = 128;
+  for (let i = 0; i < 256; i++) { wB += h2[i]; if (!wB) continue; const wF = total - wB; if (!wF) break; sB += i * h2[i]; const mB = sB / wB, mF = (sum - sB) / wF, v = wB * wF * (mB - mF) ** 2; if (v > best) { best = v; th = i; } }
+  for (let i = 0; i < d.length; i += 4) { const g = d[i] > th ? 255 : 0; d[i] = d[i + 1] = d[i + 2] = g; }
+  const bw = document.createElement('canvas'); bw.width = w; bw.height = hgt; bw.getContext('2d').putImageData(img, 0, 0);
+  return { gray, bw };
+}
+async function ocrFile(file) {
+  const status = t => { $('rStatus').textContent = t; };
+  const worker = await getOcr(status);
+  status('Bild wird aufbereitet …');
+  const { gray, bw } = await imageToCanvases(file);
+  await worker.setParameters({ tessedit_pageseg_mode: '11' });
+  const a = (await worker.recognize(bw)).data.text;
+  await worker.setParameters({ tessedit_pageseg_mode: '6' });
+  const b = (await worker.recognize(gray)).data.text;
+  gray.width = gray.height = bw.width = bw.height = 0;   // Speicher freigeben, nichts behalten
+  return a + '\n' + b;
+}
+function openReader(mode) {
+  readMode = mode;
+  $('rText').value = ''; $('rStatus').textContent = ''; $('rPreview').style.display = 'none'; $('rApply').disabled = true;
+  $('backdrop').classList.add('open'); $('readSheet').classList.add('open'); $('readSheet').scrollTop = 0;
+}
+function closeReader() {
+  $('readSheet').classList.remove('open');
+  if (!document.querySelector('.sheet.open')) $('backdrop').classList.remove('open');
+}
+function renderRShops() { const cur = norm($('rShop').value); $('rShops').innerHTML = SHOPS.map(s => `<button type="button" class="chip${norm(s) === cur ? ' sel' : ''}" data-shop="${s}">${s}</button>`).join(''); }
+$('rShops').addEventListener('click', e => { const b = e.target.closest('[data-shop]'); if (!b) return; $('rShop').value = b.dataset.shop; renderRShops(); });
+$('rShop').addEventListener('input', renderRShops);
+function showReadResult(text) {
+  const r = parseOfferText(text);
+  const sug = suggestArticle(r.nameLines || []);
+  const inSheet = readMode === 'fill';
+  $('rName').value = inSheet && $('sName').value ? $('sName').value : sug.name;
+  $('rDetail').value = inSheet && $('sName').value ? ($('sDetail').value || sug.detail) : sug.detail;
+  $('rShop').value = r.shop || (inSheet ? $('sShop').value : '') || '';
+  $('rPrice').value = fmtPriceInput(r.price); $('rRegular').value = fmtPriceInput(r.regular);
+  setType('r', r.type || 'angebot');
+  if (!r.from && !r.until && r.type !== 'normal') { const w = offerWeek(); r.from = w.from; r.until = w.until; }
+  // nur „ab …“ erkannt → bis Samstag derselben Woche; nur „bis …“ → ab Montag
+  const shift = (iso, days) => { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + days); return ymd(d); };
+  if (r.from && !r.until) { const dow = new Date(r.from + 'T12:00:00').getDay(); r.until = shift(r.from, dow === 0 ? 6 : 6 - dow); }
+  if (r.until && !r.from) { const dow = new Date(r.until + 'T12:00:00').getDay(); r.from = shift(r.until, -(dow === 0 ? 6 : dow - 1)); }
+  $('rFrom').value = r.from || ''; $('rUntil').value = r.until || '';
+  writePack('r', r.pack, r.deposit); $('rPackBox').open = !!(r.pack || r.deposit);
+  $('rRaw').textContent = text.trim();
+  renderRShops(); updateSaving('r');
+  $('rPreview').style.display = 'block'; $('rApply').disabled = false;
+  const found = [r.price != null && 'Preis', r.regular != null && 'Vergleichspreis', r.pack && 'Packung', r.deposit && 'Pfand', (r.from || r.until) && 'Zeitraum'].filter(Boolean);
+  $('rStatus').textContent = r.price == null ? '⚠︎ Kein Preis erkannt – bitte unten eintragen.' : '✓ Erkannt: ' + found.join(', ') + (r.regularGuessed ? ' (Vergleichspreis geschätzt – bitte prüfen)' : '') + '. Bitte kurz prüfen.';
+}
+$('readBtn').onclick = () => openReader('new');
+$('sRead').onclick = () => openReader('fill');
+$('rCancel').onclick = closeReader;
+$('rPick').onclick = () => $('rFile').click();
+$('rFile').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  $('rPick').disabled = true;
+  try { const text = await ocrFile(f); showReadResult(text); }
+  catch (err) { $('rStatus').textContent = '⚠︎ ' + (err.message || 'Lesen fehlgeschlagen') + ' – du kannst den Text auch einfügen.'; }
+  finally { $('rPick').disabled = false; }
+};
+$('rParse').onclick = () => { if (!$('rText').value.trim()) { $('rStatus').textContent = 'Bitte zuerst Text einfügen.'; return; } showReadResult($('rText').value); };
+$('rApply').onclick = () => {
+  const price = parsePrice($('rPrice').value), regular = parsePrice($('rRegular').value), type = getType('r');
+  const offer = { shop: $('rShop').value.trim(), price, from: type === 'normal' ? '' : $('rFrom').value, until: type === 'normal' ? '' : $('rUntil').value,
+    type, special: type !== 'normal', pack: readPack('r'), deposit: parsePrice($('rDeposit').value), regular: regular && price != null && regular > price ? regular : null };
+  const name = cap($('rName').value.trim()), detail = $('rDetail').value.trim();
+  closeReader();
+  if (readMode === 'fill') {
+    if (name && !$('sName').value.trim()) { $('sName').value = name; onNameChanged(); }
+    if (detail && !$('sDetail').value.trim()) $('sDetail').value = detail;
+    $('sShop').value = offer.shop; $('sPrice').value = fmtPriceInput(offer.price); $('sRegular').value = fmtPriceInput(offer.regular);
+    setType('s', type); $('sFrom').value = offer.from; $('sUntil').value = offer.until;
+    writePack('s', offer.pack, offer.deposit);
+    if (packCountUnit(offer.pack) && ['', 'Fl.', 'Kiste', 'Tray', 'Pck.'].includes($('sUnit').value)) $('sUnit').value = packCountUnit(offer.pack);
+    renderShops(); renderVariants(); updateSheetExtras(); updateSaving('s');
+    toast('Angebot übernommen – bitte speichern');
+  } else {
+    if (!name) { toast('Bitte einen Artikel angeben'); openReader('new'); return; }
+    openItemSheet('add', { name, detail, offer, ...(packCountUnit(offer.pack) ? { unit: packCountUnit(offer.pack) } : {}) });
+  }
+};
+
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.14', '08.10.2026', [
+    '📷 Angebot aus Bild lesen: Foto oder Screenshot vom Prospekt/Preisschild – wird nur auf dem Handy gelesen, nichts gespeichert',
+    'Alternativ Text einfügen (iPhone: Bild lange drücken → Text kopieren)',
+    'Erkennt Angebotspreis, „statt“/UVP/%-Vergleichspreis, Packungsgröße, Grundpreis, Pfand, Zeitraum, Händler und App-Preise',
+    'Neues Feld „statt (Vergleich)“ mit Ersparnis-Anzeige; der Vergleichspreis landet als Normalpreis im Preisverlauf',
+    '📷-Knopf auch direkt neben dem Eingabefeld der Liste'
+  ]],
   ['v1.13', '08.10.2026', [
     'Im Artikel- und Preisfenster: 🔎 Suche direkt beim Händler (ALDI, EDEKA, Lidl, REWE …)',
     'Händler-Suchlinks in den Einstellungen anpassbar – einfach die Ergebnisseite einer „spaghetti“-Suche einfügen',
