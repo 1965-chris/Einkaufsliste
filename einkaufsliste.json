@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.15",
- "savedAt": "2026-10-08T21:45:46.991Z",
+ "savedAt": "2026-10-08T21:47:56.941Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -231,7 +231,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1791495946414,
+   "last": 1791496074767,
    "cat": "vorrat",
    "deleted": true
   },
@@ -241,7 +241,7 @@
    "detail": "ganze Bohne",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1791451479532,
+   "last": 1791496074767,
    "deleted": true
   },
   "butter|": {
@@ -250,7 +250,8 @@
    "detail": "",
    "cat": "kuehl",
    "unit": "Pck.",
-   "last": 1791371062177
+   "last": 1791496074767,
+   "deleted": true
   },
   "coca cola|": {
    "count": 1,
@@ -258,7 +259,8 @@
    "detail": "",
    "cat": "getraenk",
    "unit": "Tray",
-   "last": 1791378120857
+   "last": 1791496074767,
+   "deleted": true
   },
   "pizza|thunfisch": {
    "count": 1,
@@ -266,7 +268,8 @@
    "detail": "Thunfisch",
    "cat": "tk",
    "unit": "",
-   "last": 1791401873024
+   "last": 1791496074767,
+   "deleted": true
   },
   "pizza|diavolo": {
    "count": 1,
@@ -274,7 +277,8 @@
    "detail": "Diavolo",
    "cat": "tk",
    "unit": "",
-   "last": 1791401935730
+   "last": 1791496074767,
+   "deleted": true
   },
   "salami|": {
    "count": 1,
@@ -282,7 +286,7 @@
    "detail": "",
    "cat": "fleisch",
    "unit": "",
-   "last": 1791451530805,
+   "last": 1791496074767,
    "deleted": true
   },
   "sellerie|": {
@@ -291,7 +295,7 @@
    "detail": "",
    "cat": "sonst",
    "unit": "",
-   "last": 1791451535941,
+   "last": 1791496074767,
    "deleted": true
   },
   "kakao|": {
@@ -300,7 +304,7 @@
    "detail": "",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1791451533638,
+   "last": 1791496074767,
    "deleted": true
   },
   "schinken|": {
@@ -309,7 +313,7 @@
    "detail": "",
    "cat": "fleisch",
    "unit": "Pck.",
-   "last": 1791451520793,
+   "last": 1791496074767,
    "deleted": true
   },
   "tomatenmark|": {
@@ -318,13 +322,13 @@
    "detail": "",
    "cat": "obst",
    "unit": "",
-   "last": 1791451526773,
+   "last": 1791496074767,
    "deleted": true
   },
   "melita barista ganze bohnen|": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1791452096240,
+   "last": 1791496074767,
    "cat": "vorrat",
    "detail": "",
    "deleted": true
@@ -335,7 +339,7 @@
    "detail": "",
    "cat": "drogerie",
    "unit": "Pck.",
-   "last": 1791452238044,
+   "last": 1791496074767,
    "deleted": true
   },
   "joghurt|landliebe versch. sorten": {
@@ -344,7 +348,8 @@
    "detail": "Landliebe versch. Sorten",
    "cat": "kuehl",
    "unit": "Becher",
-   "last": 1791494621604
+   "last": 1791496074767,
+   "deleted": true
   }
  },
  "stars": {
