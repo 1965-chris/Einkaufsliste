@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
- "version": "v1.9",
- "savedAt": "2026-10-08T09:10:19.048Z",
+ "version": "v1.10",
+ "savedAt": "2026-10-08T09:24:41.662Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -187,7 +187,8 @@
    "detail": "ganze Bohne",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1791369927070
+   "last": 1791451479532,
+   "deleted": true
   },
   "butter|": {
    "count": 1,
