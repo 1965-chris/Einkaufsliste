@@ -163,9 +163,9 @@ details.packbox summary{font-size:14px;color:var(--accent);padding:4px 0}
 .log .e{color:var(--warn)}
 details{margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
 summary{cursor:pointer;font-weight:600}
-.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 80px);transform:translateX(-50%) translateY(200px);
-  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;transition:transform .2s;display:flex;gap:12px;align-items:center;max-width:90vw}
-.toast.show{transform:translateX(-50%)}
+.toast{position:fixed;left:0;right:0;margin:0 auto;width:max-content;bottom:calc(env(safe-area-inset-bottom) + 80px);transform:translateY(calc(100% + 120px));opacity:0;visibility:hidden;
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;transition:transform .2s,opacity .2s,visibility .2s;display:flex;gap:12px;align-items:center;max-width:calc(100% - 32px);box-sizing:border-box}
+.toast.show{transform:none;opacity:1;visibility:visible}
 .toast button{border:0;background:none;color:var(--accent);font-weight:700;font-size:14px;cursor:pointer}
 .ver{text-align:center;color:var(--muted);font-size:12px;margin-top:16px}
 </style>
@@ -366,7 +366,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.11';
+const APP_VERSION = 'v1.12';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1612,6 +1612,9 @@ $('pSave').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.12', '08.10.2026', [
+    'Hinweis-Leiste (z. B. nach dem Löschen) verschwindet jetzt vollständig und blitzt nicht mehr am unteren Rand hervor'
+  ]],
   ['v1.11', '08.10.2026', [
     'Fehler behoben: ältere Einträge in „Häufig gekauft“ ließen sich nicht löschen oder bearbeiten'
   ]],
