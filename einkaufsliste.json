@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.10",
- "savedAt": "2026-10-08T09:25:28.869Z",
+ "savedAt": "2026-10-08T09:25:32.863Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -228,7 +228,8 @@
    "detail": "",
    "cat": "fleisch",
    "unit": "",
-   "last": 1791411509959
+   "last": 1791451530805,
+   "deleted": true
   },
   "sellerie|": {
    "count": 1,
