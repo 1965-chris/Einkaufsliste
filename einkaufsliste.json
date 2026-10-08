@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.9",
- "savedAt": "2026-10-08T09:04:56.226Z",
+ "savedAt": "2026-10-08T09:04:58.434Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -44,8 +44,9 @@
    "cat": "kuehl",
    "note": "",
    "checked": true,
-   "updatedAt": 1791450294180,
-   "offer": null
+   "updatedAt": 1791450296310,
+   "offer": null,
+   "deleted": true
   },
   {
    "id": "muy4a4d5k5z0fo",
