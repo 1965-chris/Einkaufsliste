@@ -126,6 +126,14 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .badge{display:inline-block;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .chk{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink);margin:10px 0 0}
 .chk input{width:20px;height:20px;accent-color:var(--accent)}
+.offer.app{background:#ece6ff;color:#4b2fb0}
+.typeseg{display:flex;margin-top:10px}
+.typeseg button{flex:1;padding:8px 4px}
+details.packbox{margin-top:10px;border-top:0;padding-top:0}
+details.packbox summary{font-size:14px;color:var(--accent);padding:4px 0}
+.offerrow span{color:var(--muted)}
+.sp.app{background:#ece6ff;color:#4b2fb0}
+.pmeta{display:block;font-size:12px;color:var(--muted)}
 .offer.plain{background:var(--chip);color:var(--muted)}
 .pricehead{display:flex;align-items:center;gap:8px;margin:10px 0 4px}
 .pricehead h3{margin:0;font-size:20px;flex:1}
@@ -236,14 +244,14 @@ summary{cursor:pointer;font-weight:600}
   <label>Notiz</label>
   <input class="field" id="sNote" placeholder="optional" autocomplete="off">
   <div class="offerbox">
-    <b>🏷 Angebot</b>
+    <b>🏷 Preis / Angebot</b>
     <a class="offerlink" id="sOffer" target="_blank" rel="noopener" style="margin-top:4px">🔎 bei marktguru suchen</a>
     <div class="chips wrap" id="sShops" style="padding-top:8px"></div>
     <div class="offerrow">
       <input class="field" id="sShop" placeholder="Markt" autocomplete="off">
       <input class="field" id="sPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
     </div>
-    <label class="chk"><input type="checkbox" id="sSpecial" checked> Sonderangebot (Prospekt)</label>
+    <div id="sTypeBox"></div>
     <div id="sDates">
     <div class="offerrow" style="align-items:center">
       <span class="hint" style="margin:0;width:34px">von</span>
@@ -254,6 +262,7 @@ summary{cursor:pointer;font-weight:600}
       <input class="field" id="sUntil" type="date">
     </div>
     </div>
+    <div id="sPackUI"></div>
     <a class="offerlink" id="sHistory" href="#" style="display:none">📈 Preisverlauf ansehen</a>
     <div style="text-align:right"><button type="button" class="link" id="sOfferClear">Angebot entfernen</button></div>
   </div>
@@ -283,7 +292,8 @@ summary{cursor:pointer;font-weight:600}
   </div>
   <label>Datum</label>
   <input class="field" id="pDate" type="date">
-  <label class="chk"><input type="checkbox" id="pSpecial"> Sonderangebot</label>
+  <div id="pTypeBox"></div>
+  <div id="pPackUI"></div>
   <div class="row">
     <button class="btn" data-close>Abbrechen</button>
     <button class="btn primary" id="pSave">Speichern</button>
@@ -339,7 +349,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.7';
+const APP_VERSION = 'v1.8';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -360,7 +370,7 @@ const CATS = [
 const CAT_ORDER = Object.fromEntries(CATS.map((c, i) => [c[0], i]));
 const CAT_NAME  = Object.fromEntries(CATS);
 const UNITS = [['', '× (Stück)'], ['Pck.', 'Packung'], ['g', 'Gramm'], ['kg', 'Kilo'], ['ml', 'Milliliter'], ['l', 'Liter'],
-               ['Fl.', 'Flasche'], ['Kiste', 'Kiste'], ['Dose', 'Dose'], ['Glas', 'Glas'], ['Bund', 'Bund'], ['Netz', 'Netz'], ['Becher', 'Becher']];
+               ['Fl.', 'Flasche'], ['Kiste', 'Kiste'], ['Tray', 'Tray'], ['Dose', 'Dose'], ['Glas', 'Glas'], ['Bund', 'Bund'], ['Netz', 'Netz'], ['Becher', 'Becher']];
 
 /* Grundauswahl: Artikel mit typischen Bezeichnungen und Standard-Einheit */
 const CATALOG = {
@@ -488,8 +498,32 @@ function offerOf(i) {
 function offerExpired(o) { return !!(o && o.until && o.until < todayStr()); }
 function offerUpcoming(o) { return !!(o && o.from && o.from > todayStr()); }
 function fmtDay(s, wd) { return new Date(s + 'T12:00:00').toLocaleDateString('de-DE', wd ? { weekday: 'short', day: '2-digit', month: '2-digit' } : { day: '2-digit', month: '2-digit' }); }
+/* Preisart, Gebinde, Pfand */
+const PACKS = [
+  { id: 't6x125', label: 'Tray 6 × 1,25 l', n: 6, size: 1.25, dep: 1.50 },
+  { id: 't6x15', label: 'Tray 6 × 1,5 l', n: 6, size: 1.5, dep: 1.50 },
+  { id: 't4x15', label: 'Tray 4 × 1,5 l', n: 4, size: 1.5, dep: 1.00 },
+  { id: 'k12x1', label: 'Kiste 12 × 1,0 l', n: 12, size: 1.0, dep: 3.30 },
+  { id: 'k12x07', label: 'Kiste 12 × 0,7 l', n: 12, size: 0.7, dep: 3.30 },
+  { id: 'k20x05', label: 'Kiste 20 × 0,5 l', n: 20, size: 0.5, dep: 3.10 },
+  { id: 'k24x033', label: 'Kiste 24 × 0,33 l', n: 24, size: 0.33, dep: 3.42 },
+  { id: 's6x033', label: 'Sixpack 6 × 0,33 l', n: 6, size: 0.33, dep: 0.48 },
+  { id: 'f15', label: 'Flasche 1,5 l', n: 1, size: 1.5, dep: 0.25 }
+];
+const PRICE_TYPES = [['normal', 'Normalpreis'], ['angebot', '🏷 Angebot'], ['app', '📱 App-Preis']];
+function offerType(o) { return !o ? 'normal' : (o.type || (o.special === false ? 'normal' : 'angebot')); }
+function packLitres(p) { return p && p.n > 0 && p.size > 0 ? Math.round(p.n * p.size * 1000) / 1000 : null; }
+function fmtNum(n, d = 2) { return n.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: d }); }
+function packLabel(p) { if (!p) return ''; const k = PACKS.find(x => x.n === p.n && x.size === p.size); return k ? k.label : `${p.n} × ${fmtNum(p.size)} l`; }
+function perLitre(price, p) { const l = packLitres(p); return l && price != null ? price / l : null; }
+function fmtPerLitre(v) { return v == null ? '' : v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €/l'; }
+function depositOf(o) { return o && o.deposit > 0 ? o.deposit : 0; }
+function lineFactor(i) { return ['g', 'kg', 'ml', 'l'].includes(i.unit) ? 1 : (i.qty || 1); }
+
 function offerText(o) {
-  const parts = [o.shop, fmtPrice(o.price)].filter(Boolean).join(' ');
+  let parts = [o.shop, fmtPrice(o.price)].filter(Boolean).join(' ');
+  if (depositOf(o)) parts += ' + ' + fmtPrice(o.deposit) + ' Pfand';
+  const pl = perLitre(o.price, o.pack); if (pl != null) parts += ' · ' + fmtPerLitre(pl);
   let when = '';
   if (o.from && o.until) when = fmtDay(o.from) + '–' + fmtDay(o.until);
   else if (o.until) when = 'bis ' + fmtDay(o.until, true);
@@ -706,9 +740,10 @@ function renderAll() { renderList(); renderChips(); renderCatalog(); renderFavs(
 
 function itemHtml(i) {
   const o = offerOf(i);
-  const state = !o ? '' : offerExpired(o) ? ' old' : offerUpcoming(o) ? ' soon' : (o.special === false ? ' plain' : '');
+  const ot = offerType(o);
+  const state = !o ? '' : offerExpired(o) ? ' old' : offerUpcoming(o) ? ' soon' : (ot === 'normal' ? ' plain' : ot === 'app' ? ' app' : '');
   const suffix = offerExpired(o) ? ' (abgelaufen)' : '';
-  const offer = o ? `<div class="offer${state}">${offerUpcoming(o) ? '🕒' : o.special === false ? '🏪' : '🏷'} ${esc(offerText(o))}${esc(suffix)}</div>` : '';
+  const offer = o ? `<div class="offer${state}">${offerUpcoming(o) ? '🕒' : ot === 'normal' ? '🏪' : ot === 'app' ? '📱' : '🏷'} ${esc(offerText(o))}${esc(suffix)}</div>` : '';
   const q = qtyLabel(i);
   return `<div class="item${i.checked ? ' done' : ''}" data-id="${i.id}">
     <button class="check" data-act="toggle" aria-label="abhaken">${i.checked ? '✓' : ''}</button>
@@ -734,9 +769,10 @@ function renderList() {
       if (shopFilter && groups[shopFilter]) shops = shopFilter === NO_SHOP ? [NO_SHOP] : [shopFilter, ...(groups[NO_SHOP] ? [NO_SHOP] : [])];
       shops.forEach(s => {
         const list = groups[s].sort(byCat);
-        const sum = list.reduce((t, i) => { const o = offerOf(i); return t + (o && o.price != null && s !== NO_SHOP ? o.price * (['g','kg','ml','l'].includes(i.unit) ? 1 : (i.qty || 1)) : 0); }, 0);
+        const sum = list.reduce((t, i) => { const o = offerOf(i); return t + (o && o.price != null && s !== NO_SHOP ? o.price * lineFactor(i) : 0); }, 0);
+        const dep = s === NO_SHOP ? 0 : list.reduce((t, i) => t + depositOf(offerOf(i)) * lineFactor(i), 0);
         const title = s === NO_SHOP ? '🛒 Ohne Händler' : '🏪 ' + s;
-        html += `<section class="group"><h2>${esc(title)}<span class="sub">${list.length} Artikel${sum ? ' · ' + esc(fmtPrice(sum)) : ''}</span></h2><div class="list">${list.map(itemHtml).join('')}</div></section>`;
+        html += `<section class="group"><h2>${esc(title)}<span class="sub">${list.length} Artikel${sum ? ' · ' + esc(fmtPrice(sum)) : ''}${dep ? ' + ' + esc(fmtPrice(dep)) + ' Pfand' : ''}</span></h2><div class="list">${list.map(itemHtml).join('')}</div></section>`;
       });
     } else {
       const groups = {};
@@ -840,9 +876,10 @@ function renderOffers() {
   if (shops.length) {
     html = `<section class="group"><h2>Deine Liste im Angebot</h2><div class="list">${shops.map(s => {
       const rows = byShop[s];
-      const sum = rows.reduce((t, r) => t + (r.o.price != null ? r.o.price * (r.i.unit && ['g','kg','ml','l'].includes(r.i.unit) ? 1 : (r.i.qty || 1)) : 0), 0);
-      return `<div class="shopcard"><span class="sum">${sum ? fmtPrice(sum) : ''}</span><b>${esc(s)}</b> <span class="hint">· ${rows.length} Artikel</span>
-        <ul>${rows.map(r => `<li>${esc(qtyLabel(r.i) ? qtyLabel(r.i) + ' ' : '')}${esc(r.i.name)}${r.i.detail ? ' – ' + esc(r.i.detail) : ''}${r.o.price != null ? ' · ' + esc(fmtPrice(r.o.price)) : ''}</li>`).join('')}</ul></div>`;
+      const sum = rows.reduce((t, r) => t + (r.o.price != null ? r.o.price * lineFactor(r.i) : 0), 0);
+      const dep = rows.reduce((t, r) => t + depositOf(r.o) * lineFactor(r.i), 0);
+      return `<div class="shopcard"><span class="sum">${sum ? fmtPrice(sum) : ''}${dep ? `<span class="pmeta">+ ${fmtPrice(dep)} Pfand</span>` : ''}</span><b>${esc(s)}</b> <span class="hint">· ${rows.length} Artikel</span>
+        <ul>${rows.map(r => `<li>${esc(qtyLabel(r.i) ? qtyLabel(r.i) + ' ' : '')}${esc(r.i.name)}${r.i.detail ? ' – ' + esc(r.i.detail) : ''}${r.o.price != null ? ' · ' + esc(fmtPrice(r.o.price)) : ''}${offerType(r.o) === 'app' ? ' 📱' : ''}</li>`).join('')}</ul></div>`;
     }).join('')}</div></section>` + html;
   }
   if (open.length) {
@@ -899,7 +936,9 @@ function openItemSheet(mode, src) {
   $('sCat').value = src.cat || guessCat(info.name || '');
   $('sNote').value = src.note || '';
   const o = offerOf(src) || {};
-  $('sSpecial').checked = o.special !== false; syncSpecial();
+  setType('s', o.shop || o.price != null ? offerType(o) : 'angebot');
+  writePack('s', o.pack || null, o.deposit);
+  $('sPackBox').open = !!(o.pack || o.deposit) || $('sCat').value === 'getraenk';
   $('sShop').value = o.shop || ''; $('sPrice').value = o.price != null ? String(o.price).replace('.', ',') : ''; $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
   renderShops();
   $('sBtnsAdd').style.display = mode === 'add' ? 'flex' : 'none';
@@ -937,23 +976,81 @@ function sheetOffer() {
   const shop = $('sShop').value.trim(), price = parsePrice($('sPrice').value);
   let from = $('sFrom').value, until = $('sUntil').value;
   if (from && until && from > until) [from, until] = [until, from];
-  const special = $('sSpecial').checked;
-  if (!special) { from = ''; until = ''; }
-  return (shop || price != null) ? { shop, price, from, until, special } : null;
+  const type = getType('s');
+  if (type === 'normal') { from = ''; until = ''; }
+  const pack = readPack('s'), deposit = parsePrice($('sDeposit').value);
+  return (shop || price != null) ? { shop, price, from, until, type, special: type !== 'normal', pack, deposit: deposit || null } : null;
 }
 $('sShops').addEventListener('click', e => {
   const b = e.target.closest('[data-shop]'); if (!b) return;
   $('sShop').value = b.dataset.shop;
-  if ($('sSpecial').checked && !$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
+  if (getType('s') !== 'normal' && !$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
+  // Gebinde/Pfand vom letzten erfassten Preis übernehmen
+  if (!readPack('s')) {
+    const last = priceEntries(keyOf(cap($('sName').value), $('sDetail').value.trim())).filter(e => e.pack).sort((a, b) => b.date.localeCompare(a.date))[0];
+    if (last) writePack('s', last.pack, last.deposit);
+  }
   renderShops(); $('sPrice').focus();
 });
 $('sShop').addEventListener('input', renderShops);
-$('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sFrom').value = ''; $('sUntil').value = ''; $('sSpecial').checked = true; syncSpecial(); renderShops(); };
-function syncSpecial() { $('sDates').style.display = $('sSpecial').checked ? '' : 'none'; }
-$('sSpecial').onchange = () => {
-  syncSpecial();
-  if ($('sSpecial').checked && $('sShop').value && !$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
-};
+$('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sFrom').value = ''; $('sUntil').value = ''; setType('s', 'angebot'); writePack('s', null, null); renderShops(); };
+
+/* Preisart-Umschalter und Gebinde/Pfand – für Artikel- und Preisfenster */
+function typeSegHtml(px) { return `<div class="seg typeseg" id="${px}Type">${PRICE_TYPES.map(([v, l]) => `<button type="button" data-type="${v}">${l}</button>`).join('')}</div>`; }
+function packBoxHtml(px) {
+  return `<details class="packbox" id="${px}PackBox"><summary>🍾 Gebinde & Pfand</summary>
+    <div class="chips wrap" id="${px}Packs" style="padding-top:6px">${PACKS.map(p => `<button type="button" class="chip" data-pack="${p.id}">${p.label}</button>`).join('')}</div>
+    <div class="offerrow" style="align-items:center"><input class="field" id="${px}PackN" placeholder="Anzahl" inputmode="numeric" style="max-width:86px"><span>×</span><input class="field" id="${px}PackSize" placeholder="Liter" inputmode="decimal" style="max-width:96px"><span>l</span></div>
+    <div class="offerrow" style="align-items:center"><span style="width:100px;font-size:14px">Pfand gesamt</span><input class="field" id="${px}Deposit" placeholder="€" inputmode="decimal"></div>
+    <div class="hint" id="${px}PackInfo"></div>
+  </details>`;
+}
+$('sTypeBox').innerHTML = typeSegHtml('s'); $('pTypeBox').innerHTML = typeSegHtml('p');
+$('sPackUI').innerHTML = packBoxHtml('s'); $('pPackUI').innerHTML = packBoxHtml('p');
+function getType(px) { return $(px + 'Type').dataset.val || 'angebot'; }
+function setType(px, v) {
+  $(px + 'Type').dataset.val = v;
+  $(px + 'Type').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.type === v));
+  if (px === 's') $('sDates').style.display = v === 'normal' ? 'none' : '';
+}
+function readPack(px) {
+  const n = parseInt($(px + 'PackN').value, 10), size = parseDecimal($(px + 'PackSize').value);
+  return n > 0 && size > 0 ? { n, size } : null;
+}
+function writePack(px, pack, dep) {
+  $(px + 'PackN').value = pack ? pack.n : ''; $(px + 'PackSize').value = pack ? String(pack.size).replace('.', ',') : '';
+  $(px + 'Deposit').value = dep > 0 ? String(dep.toFixed(2)).replace('.', ',') : '';
+  updatePackInfo(px);
+}
+function updatePackInfo(px) {
+  const pack = readPack(px), price = parsePrice($(px + 'Price').value);
+  const l = packLitres(pack);
+  $(px + 'PackInfo').textContent = l ? `= ${fmtNum(l)} l${price != null ? ' · ' + fmtPerLitre(price / l) : ''}` : '';
+  $(px + 'Packs').querySelectorAll('[data-pack]').forEach(b => { const k = PACKS.find(x => x.id === b.dataset.pack); b.classList.toggle('sel', !!(pack && k.n === pack.n && k.size === pack.size)); });
+  const box = $(px + 'PackBox');
+  if (pack || $(px + 'Deposit').value) box.open = true;
+}
+function parseDecimal(s) { const n = parseFloat(String(s || '').replace(',', '.')); return isNaN(n) ? null : n; }
+['s', 'p'].forEach(px => {
+  $(px + 'Type').addEventListener('click', e => {
+    const b = e.target.closest('[data-type]'); if (!b) return;
+    setType(px, b.dataset.type);
+    if (px === 's' && b.dataset.type !== 'normal' && $('sShop').value && !$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
+  });
+  $(px + 'Packs').addEventListener('click', e => {
+    const b = e.target.closest('[data-pack]'); if (!b) return;
+    const k = PACKS.find(x => x.id === b.dataset.pack);
+    $(px + 'PackN').value = k.n; $(px + 'PackSize').value = String(k.size).replace('.', ',');
+    if (!$(px + 'Deposit').value) $(px + 'Deposit').value = k.dep.toFixed(2).replace('.', ',');
+    // Mengeneinheit passend setzen: 4 Trays statt 4 Flaschen
+    if (px === 's' && ['', 'Fl.', 'Kiste', 'Tray', 'Pck.'].includes($('sUnit').value)) {
+      $('sUnit').value = k.id.startsWith('t') ? 'Tray' : k.id.startsWith('k') ? 'Kiste' : k.id.startsWith('s') ? 'Pck.' : 'Fl.';
+    }
+    updatePackInfo(px);
+  });
+  [px + 'PackN', px + 'PackSize', px + 'Price', px + 'Deposit'].forEach(id => $(id).addEventListener('input', () => updatePackInfo(px)));
+});
+$('sCat').addEventListener('change', () => { if ($('sCat').value === 'getraenk') $('sPackBox').open = true; });
 $('sHistory').onclick = e => { e.preventDefault(); const k = keyOf(cap($('sName').value), $('sDetail').value.trim()); closeSheets(); openPrices(k); };
 function sheetValues() {
   return { name: cap($('sName').value), detail: $('sDetail').value.trim(), qty: clampQty($('sQty').value),
@@ -1256,19 +1353,24 @@ function recordPrice(name, detail, offer, dateOverride) {
   const key = keyOf(name, detail);
   const date = dateOverride || offer.from || todayStr();
   const id = key + '|' + norm(offer.shop) + '|' + date;
-  const special = offer.special !== false;
+  const type = offerType(offer), special = type !== 'normal';
+  const pack = offer.pack || null, deposit = offer.deposit > 0 ? offer.deposit : null;
   const prev = data.prices[id];
-  if (prev && !prev.deleted && prev.price === offer.price && prev.special === special && prev.shop === offer.shop) return;
-  data.prices[id] = { id, key, name, detail, date, shop: offer.shop, price: offer.price, special, updatedAt: now() };
+  if (prev && !prev.deleted && prev.price === offer.price && offerType(prev) === type && prev.shop === offer.shop
+      && JSON.stringify(prev.pack || null) === JSON.stringify(pack) && (prev.deposit || null) === deposit) return;
+  data.prices[id] = { id, key, name, detail, date, shop: offer.shop, price: offer.price, type, special, pack, deposit, updatedAt: now() };
 }
 function openPrices(key) { priceKey = key || null; priceShop = ''; renderPrices(); showTab('preise'); }
 
+let priceBasis = 'price';
+function pval(e) { return priceBasis === 'l' ? perLitre(e.price, e.pack) : e.price; }
 function priceChart(list, shops) {
+  list = list.filter(e => pval(e) != null);
   const W = 340, H = 190, L = 44, R = 12, T = 12, B = 30;
   const t = s => new Date(s + 'T12:00:00').getTime();
   let x0 = Math.min(...list.map(e => t(e.date))), x1 = Math.max(...list.map(e => t(e.date)));
   if (x1 - x0 < 6 * 864e5) { const m = (x0 + x1) / 2; x0 = m - 3 * 864e5; x1 = m + 3 * 864e5; }
-  let y0 = Math.min(...list.map(e => e.price)), y1 = Math.max(...list.map(e => e.price));
+  let y0 = Math.min(...list.map(pval)), y1 = Math.max(...list.map(pval));
   const pad = Math.max((y1 - y0) * 0.15, y1 * 0.05, 0.1); y0 = Math.max(0, y0 - pad); y1 = y1 + pad;
   const X = v => L + (v - x0) / (x1 - x0) * (W - L - R), Y = v => T + (1 - (v - y0) / (y1 - y0)) * (H - T - B);
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Preisverlauf">`;
@@ -1283,12 +1385,12 @@ function priceChart(list, shops) {
   shops.forEach(sh => {
     const pts = list.filter(e => e.shop === sh).sort((a, b) => a.date.localeCompare(b.date));
     const c = shopColor(sh, shops);
-    if (pts.length > 1) s += `<polyline fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" points="${pts.map(e => X(t(e.date)) + ',' + Y(e.price)).join(' ')}"/>`;
+    if (pts.length > 1) s += `<polyline fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" points="${pts.map(e => X(t(e.date)) + ',' + Y(pval(e))).join(' ')}"/>`;
     pts.forEach(e => {
-      const cx = X(t(e.date)), cy = Y(e.price);
-      s += e.special
-        ? `<circle cx="${cx}" cy="${cy}" r="6.5" fill="${c}" stroke="#f2c14e" stroke-width="3"/>`
-        : `<circle cx="${cx}" cy="${cy}" r="4.5" fill="var(--card)" stroke="${c}" stroke-width="2.5"/>`;
+      const cx = X(t(e.date)), cy = Y(pval(e)), ty = offerType(e);
+      s += ty === 'normal'
+        ? `<circle cx="${cx}" cy="${cy}" r="4.5" fill="var(--card)" stroke="${c}" stroke-width="2.5"/>`
+        : `<circle cx="${cx}" cy="${cy}" r="6.5" fill="${c}" stroke="${ty === 'app' ? '#8b6cff' : '#f2c14e'}" stroke-width="3"/>`;
     });
   });
   return s + '</svg>';
@@ -1321,25 +1423,32 @@ function renderPrices() {
   if (priceShop && !shops.includes(priceShop)) priceShop = '';
   const shown = entries.filter(e => !priceShop || e.shop === priceShop).sort((a, b) => b.date.localeCompare(a.date));
   const showShops = priceShop ? [priceShop] : shops;
-  const normal = shown.filter(e => !e.special), special = shown.filter(e => e.special);
-  const avg = normal.length ? normal.reduce((t, e) => t + e.price, 0) / normal.length : null;
-  const min = Math.min(...shown.map(e => e.price));
-  const minE = shown.find(e => e.price === min);
+  const hasPack = shown.some(e => perLitre(e.price, e.pack) != null);
+  if (!hasPack) priceBasis = 'price';
+  const basisList = shown.filter(e => pval(e) != null);
+  const fmtV = v => priceBasis === 'l' ? fmtPerLitre(v) : fmtPrice(v);
+  const normal = basisList.filter(e => offerType(e) === 'normal');
+  const nAng = shown.filter(e => offerType(e) === 'angebot').length, nApp = shown.filter(e => offerType(e) === 'app').length;
+  const avg = normal.length ? normal.reduce((t, e) => t + pval(e), 0) / normal.length : null;
+  const min = Math.min(...basisList.map(pval));
+  const minE = basisList.find(e => pval(e) === min);
   html += `<div class="pricehead"><button class="back" data-act="pback">‹ Alle</button><h3>${esc(entries[0].name)}${entries[0].detail ? ' <span class="hint" style="font-size:15px">' + esc(entries[0].detail) + '</span>' : ''}</h3></div>`;
   html += `<div class="chips">${[['', 'Alle'], ...shops.map(s => [s, s])].map(([v, l]) => `<button class="chip${v === priceShop ? ' sel' : ''}" data-pshop="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
-  html += `<div class="chartbox">${priceChart(shown, showShops)}<div class="legend">${showShops.map(s => `<span><i style="background:${shopColor(s, shops)}"></i>${esc(s)}</span>`).join('')}<span><i style="background:#888;box-shadow:0 0 0 2px #f2c14e"></i>Sonderpreis</span><span><i style="background:transparent;border:2px solid #888;width:6px;height:6px"></i>Normalpreis</span></div></div>`;
+  if (hasPack) html += `<div class="seg" style="margin-top:8px;display:inline-flex">${[['price', 'Packungspreis'], ['l', 'Literpreis €/l']].map(([v, l]) => `<button data-basis="${v}" class="${v === priceBasis ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  html += `<div class="chartbox">${priceChart(shown, showShops)}<div class="legend">${showShops.map(s => `<span><i style="background:${shopColor(s, shops)}"></i>${esc(s)}</span>`).join('')}<span><i style="background:#888;box-shadow:0 0 0 2px #f2c14e"></i>Angebot</span><span><i style="background:#888;box-shadow:0 0 0 2px #8b6cff"></i>App-Preis</span><span><i style="background:transparent;border:2px solid #888;width:6px;height:6px"></i>Normalpreis</span></div></div>`;
   html += `<div class="stats">
-    <div class="stat"><small>Tiefstpreis</small><b>${esc(fmtPrice(min))}</b><small>${esc(minE.shop)}${minE.special ? ' · Angebot' : ''}</small></div>
-    <div class="stat"><small>Ø Normalpreis</small><b>${avg != null ? esc(fmtPrice(avg)) : '–'}</b><small>${normal.length} Wert${normal.length === 1 ? '' : 'e'}</small></div>
-    <div class="stat"><small>Sonderpreise</small><b>${special.length}</b><small>von ${shown.length}</small></div>
+    <div class="stat"><small>Tiefstpreis</small><b>${esc(fmtV(min))}</b><small>${esc(minE.shop)}${offerType(minE) === 'angebot' ? ' · Angebot' : offerType(minE) === 'app' ? ' · App' : ''}</small></div>
+    <div class="stat"><small>Ø Normalpreis</small><b>${avg != null ? esc(fmtV(avg)) : '–'}</b><small>${normal.length} Wert${normal.length === 1 ? '' : 'e'}</small></div>
+    <div class="stat"><small>Angebote · App</small><b>${nAng} · ${nApp}</b><small>von ${shown.length}</small></div>
   </div>`;
-  html += `<section class="group"><h2>Alle Preise</h2><div class="list">${shown.map(e => `<div class="prow"><span class="pd">${esc(fmtDay(e.date))}${e.date.slice(0, 4) !== todayStr().slice(0, 4) ? e.date.slice(2, 4) : ''}</span><span class="ps"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${shopColor(e.shop, shops)};margin-right:6px"></i>${esc(e.shop)}${e.special ? '<span class="sp">Angebot</span>' : ''}</span><span class="pp">${esc(fmtPrice(e.price))}</span><button class="pdel" data-pdel="${esc(e.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
+  html += `<section class="group"><h2>Alle Preise</h2><div class="list">${shown.map(e => `<div class="prow"><span class="pd">${esc(fmtDay(e.date))}${e.date.slice(0, 4) !== todayStr().slice(0, 4) ? e.date.slice(2, 4) : ''}</span><span class="ps"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${shopColor(e.shop, shops)};margin-right:6px"></i>${esc(e.shop)}${offerType(e) === 'angebot' ? '<span class="sp">Angebot</span>' : offerType(e) === 'app' ? '<span class="sp app">📱 App</span>' : ''}${e.pack ? `<span class="pmeta">${esc(packLabel(e.pack))}${perLitre(e.price, e.pack) != null ? ' · ' + esc(fmtPerLitre(perLitre(e.price, e.pack))) : ''}</span>` : ''}</span><span class="pp">${esc(fmtPrice(e.price))}${e.deposit ? `<span class="pmeta">+ ${esc(fmtPrice(e.deposit))} Pfand</span>` : ''}</span><button class="pdel" data-pdel="${esc(e.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
   html += '<button class="btn primary addprice" data-act="addprice">＋ Preis erfassen</button>';
   $('priceMain').innerHTML = html;
 }
 $('priceMain').addEventListener('click', e => {
   const k = e.target.closest('[data-pkey]'); if (k) { priceKey = k.dataset.pkey; priceShop = ''; renderPrices(); window.scrollTo(0, 0); return; }
   const s = e.target.closest('[data-pshop]'); if (s) { priceShop = s.dataset.pshop; renderPrices(); return; }
+  const bs = e.target.closest('[data-basis]'); if (bs) { priceBasis = bs.dataset.basis; renderPrices(); return; }
   const d = e.target.closest('[data-pdel]');
   if (d) {
     const en = data.prices[d.dataset.pdel]; if (!en) return;
@@ -1354,7 +1463,10 @@ $('priceMain').addEventListener('click', e => {
 function openPriceSheet() {
   const ex = priceKey ? priceEntries(priceKey)[0] : null;
   $('pName').value = ex ? ex.name : ''; $('pDetail').value = ex ? ex.detail : '';
-  $('pShop').value = priceShop || ''; $('pPrice').value = ''; $('pDate').value = todayStr(); $('pSpecial').checked = false;
+  $('pShop').value = priceShop || ''; $('pPrice').value = ''; $('pDate').value = todayStr(); setType('p', 'normal');
+  const lastPack = priceKey ? priceEntries(priceKey).filter(e => e.pack).sort((a, b) => b.date.localeCompare(a.date))[0] : null;
+  writePack('p', lastPack ? lastPack.pack : null, lastPack ? lastPack.deposit : null);
+  $('pPackBox').open = !!lastPack;
   const names = new Set([...Object.values(CAT_INDEX).map(a => a.name), ...Object.values(data.custom).map(a => a.name)]);
   $('pArticles').innerHTML = [...names].sort((a, b) => a.localeCompare(b, 'de')).map(n => `<option value="${esc(n)}">`).join('');
   renderPShops(); openSheet('priceSheet');
@@ -1369,13 +1481,21 @@ $('pSave').onclick = () => {
   const name = cap($('pName').value), detail = $('pDetail').value.trim(), shop = $('pShop').value.trim(), price = parsePrice($('pPrice').value);
   if (!name || !shop || price == null) { toast('Bitte Artikel, Markt und Preis angeben'); return; }
   const date = $('pDate').value || todayStr();
-  recordPrice(name, detail, { shop, price, special: $('pSpecial').checked }, date);
+  const type = getType('p');
+  recordPrice(name, detail, { shop, price, type, special: type !== 'normal', pack: readPack('p'), deposit: parsePrice($('pDeposit').value) }, date);
   priceKey = keyOf(name, detail);
   closeSheets(); commit(); toast('Preis gespeichert');
 };
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.8', '08.10.2026', [
+    'Preisart wählbar: Normalpreis, 🏷 Angebot oder 📱 App-Preis',
+    'Pfand beim Preis erfassen – Händler-Summen zeigen den Pfand extra',
+    'Gebinde-Auswahl für Getränke (Tray 6 × 1,25 l, Kisten, Sixpack …) mit Pfand-Vorschlag – die Menge zählt dann in Trays bzw. Kisten',
+    'Literpreis (€/l) wird automatisch berechnet – im Preisverlauf umschaltbar',
+    'App-Preise im Diagramm mit lila Ring markiert'
+  ]],
   ['v1.7', '08.10.2026', [
     'Ansicht lässt sich nicht mehr versehentlich zoomen',
     'Neuer Reiter 📈 Preise: Preisverlauf je Artikel als Diagramm',
