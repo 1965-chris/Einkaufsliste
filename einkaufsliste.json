@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.12",
- "savedAt": "2026-10-08T18:23:14.715Z",
+ "savedAt": "2026-10-08T18:24:14.414Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -508,6 +508,20 @@
    },
    "deposit": 1.5,
    "updatedAt": 1791448697781
+  },
+  "spagethi||aldi|2026-10-08": {
+   "id": "spagethi||aldi|2026-10-08",
+   "key": "spagethi|",
+   "name": "Spagethi",
+   "detail": "",
+   "date": "2026-10-08",
+   "shop": "ALDI",
+   "price": 0.69,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791483852445
   }
  }
 }
