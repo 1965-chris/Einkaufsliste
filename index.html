@@ -249,7 +249,7 @@ summary{cursor:pointer;font-weight:600}
     <div class="chips wrap" id="sShops" style="padding-top:8px"></div>
     <div class="offerrow">
       <input class="field" id="sShop" placeholder="Markt" autocomplete="off">
-      <input class="field" id="sPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
+      <input class="field pricefield" id="sPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
     </div>
     <div id="sTypeBox"></div>
     <div id="sDates">
@@ -273,6 +273,16 @@ summary{cursor:pointer;font-weight:600}
     </div>
     <button class="btn" id="sFavOnly" style="width:100%;margin-top:8px">⭐ Nur als Favorit speichern</button>
   </div>
+  <div id="sBtnsOften">
+    <div class="row">
+      <button class="btn" data-close>Abbrechen</button>
+      <button class="btn primary" id="sOftenAdd">Auf die Liste</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn danger" id="sOftenDel">Löschen</button>
+      <button class="btn" id="sOftenSave">Speichern</button>
+    </div>
+  </div>
   <div class="row" id="sBtnsFav">
     <button class="btn danger" id="sFavDel">Favorit entfernen</button>
     <button class="btn primary" id="sFavSave">⭐ Favorit speichern</button>
@@ -295,7 +305,7 @@ summary{cursor:pointer;font-weight:600}
   <div class="chips wrap" id="pShops" style="padding-top:0"></div>
   <div class="offerrow">
     <input class="field" id="pShop" placeholder="Markt" autocomplete="off">
-    <input class="field" id="pPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
+    <input class="field pricefield" id="pPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
   </div>
   <label>Datum</label>
   <input class="field" id="pDate" type="date">
@@ -356,7 +366,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.9';
+const APP_VERSION = 'v1.10';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -494,7 +504,30 @@ function offerWeek() {
   const sat = new Date(mon); sat.setDate(mon.getDate() + 5);
   return { from: ymd(mon), until: ymd(sat) };
 }
-function parsePrice(s) { const n = parseFloat(String(s || '').replace(/[^\d,.-]/g, '').replace(',', '.')); return isNaN(n) ? null : Math.round(n * 100) / 100; }
+// Preis-Eingabe wie an der Kasse: „79“ = 0,79 · „790“ = 7,90 · „,79“ = 0,79 · „7.9“ = 7,90
+function parsePrice(s) {
+  let t = String(s ?? '').replace(/[€\s]/g, '');
+  if (!t) return null;
+  if (/[.,]/.test(t)) {
+    const i = Math.max(t.lastIndexOf(','), t.lastIndexOf('.'));
+    t = t.slice(0, i).replace(/[^\d]/g, '') + '.' + t.slice(i + 1).replace(/[^\d]/g, '');
+    if (t.startsWith('.')) t = '0' + t;
+    const n = parseFloat(t);
+    return isNaN(n) ? null : Math.round(n * 100) / 100;
+  }
+  t = t.replace(/[^\d]/g, '');
+  if (!t) return null;
+  return parseInt(t, 10) / 100;
+}
+function fmtPriceInput(n) { return n == null ? '' : n.toFixed(2).replace('.', ','); }
+// alle Preisfelder beim Verlassen schön formatieren
+document.addEventListener('focusout', e => {
+  const el = e.target;
+  if (!el.matches || !el.matches('.pricefield')) return;
+  const n = parsePrice(el.value);
+  el.value = fmtPriceInput(n);
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+});
 function fmtPrice(n) { return n == null ? '' : n.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
 function offerOf(i) {
   const o = i.offer;
@@ -582,11 +615,13 @@ function articleInfo(name) {
 function guessCat(name) {
   const info = articleInfo(name);
   if (info.cat) return info.cat;
-  const fav = Object.values(data.favs).find(f => norm(f.name) === norm(name));
+  const fav = Object.values(data.favs).find(f => !f.deleted && norm(f.name) === norm(name));
   if (fav && fav.cat) return fav.cat;
   const n = ' ' + norm(name) + ' ';
-  for (const [cat, words] of Object.entries(CAT_WORDS)) if (words.some(w => n.includes(w))) return cat;
-  return 'sonst';
+  // längstes passendes Stichwort gewinnt („Tomatenmark“ → Vorrat, nicht „Tomate“ → Obst)
+  let best = 'sonst', len = 0;
+  for (const [cat, words] of Object.entries(CAT_WORDS)) words.forEach(w => { if (n.includes(w) && w.length > len) { best = cat; len = w.length; } });
+  return best;
 }
 function rememberArticle(name, detail, cat, unit) {
   const k = norm(name);
@@ -633,7 +668,7 @@ function matchArticle(text) {
   const n = norm(text);
   const pool = [];
   Object.values(data.stars).filter(s => s.on).forEach(s => pool.push({ name: s.name, detail: s.detail || '', unit: s.unit, cat: s.cat }));
-  Object.values(data.favs).forEach(f => pool.push({ name: f.name, detail: f.detail || '', unit: f.unit, cat: f.cat }));
+  Object.values(data.favs).filter(f => !f.deleted).forEach(f => pool.push({ name: f.name, detail: f.detail || '', unit: f.unit, cat: f.cat }));
   // 1) exakter Treffer Artikel + Bezeichnung
   const exact = pool.find(p => norm(p.name + ' ' + p.detail) === n || (!p.detail && norm(p.name) === n));
   if (exact) return { ...exact, known: true };
@@ -714,6 +749,7 @@ function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '', offer 
 function bumpFav(name, detail, cat, unit) {
   const k = keyOf(name, detail);
   const f = data.favs[k] || { count: 0 };
+  delete f.deleted;
   Object.assign(f, { name, detail, cat, unit, count: (f.count || 0) + 1, last: now() });
   data.favs[k] = f;
 }
@@ -819,7 +855,7 @@ function suggestions(q) {
   const n = norm(q); const out = new Map();
   const add = (name, detail, label) => { const k = keyOf(name, detail); if (!out.has(k)) out.set(k, { name, detail, label }); };
   Object.values(data.stars).filter(s => s.on && (norm(s.name).includes(n) || norm(s.detail).includes(n))).forEach(s => add(s.name, s.detail, '★ '));
-  Object.values(data.favs).filter(f => norm(f.name).includes(n) || norm(f.detail).includes(n)).sort((a, b) => b.count - a.count).forEach(f => add(f.name, f.detail, ''));
+  Object.values(data.favs).filter(f => !f.deleted && (norm(f.name).includes(n) || norm(f.detail).includes(n))).sort((a, b) => b.count - a.count).forEach(f => add(f.name, f.detail, ''));
   Object.values(CAT_INDEX).filter(a => norm(a.name).includes(n)).forEach(a => add(a.name, '', ''));
   Object.values(data.custom).filter(a => norm(a.name).includes(n)).forEach(a => add(a.name, '', ''));
   return [...out.values()].slice(0, 10);
@@ -859,7 +895,7 @@ function renderCatalog() {
 function renderFavs() {
   const stars = Object.entries(data.stars).filter(([, s]) => s.on).sort((a, b) => (CAT_ORDER[a[1].cat] ?? 99) - (CAT_ORDER[b[1].cat] ?? 99) || a[1].name.localeCompare(b[1].name, 'de'));
   let html = '<button class="btn primary addprice" data-act="newFav" style="margin-top:6px">＋ Neuer Favorit</button>';
-  html += '<p class="intro">Favoriten landen erst auf der Liste, wenn du auf ＋ tippst. Antippen des Namens zum Bearbeiten.</p>';
+  html += '<p class="intro">Favoriten landen erst auf der Liste, wenn du auf ＋ tippst. Antippen des Namens zum Bearbeiten. Auch „Häufig gekauft“ lässt sich antippen und bearbeiten.</p>';
   if (stars.length) {
     html += `<section class="group"><h2>Meine Favoriten</h2><div class="list">` + stars.map(([k, s]) => `
       <div class="item" data-star="${esc(k)}">
@@ -868,7 +904,7 @@ function renderFavs() {
         <button class="addsmall" data-act="starAdd" aria-label="auf die Liste">＋</button>
       </div>`).join('') + '</div></section>';
   } else html += '<div class="empty"><b>⭐</b>Noch keine Favoriten.<br>Lege oben einen an oder tippe im Artikel auf ☆.</div>';
-  const often = Object.entries(data.favs).filter(([k]) => !(data.stars[k] && data.stars[k].on)).sort((a, b) => b[1].count - a[1].count).slice(0, 20);
+  const often = Object.entries(data.favs).filter(([k, f]) => !f.deleted && !(data.stars[k] && data.stars[k].on)).sort((a, b) => b[1].count - a[1].count).slice(0, 20);
   if (often.length) html += `<section class="group"><h2>Häufig gekauft</h2><div class="chips wrap">${often.map(([k, f]) => `<button class="chip" data-often="${esc(k)}">${esc(f.name)}${f.detail ? ' · ' + esc(f.detail) : ''} <small style="color:var(--muted)">${f.count}×</small></button>`).join('')}</div></section>`;
   $('favMain').innerHTML = html;
 }
@@ -935,8 +971,9 @@ function updateSheetExtras() {
 function openItemSheet(mode, src) {
   sheetMode = mode; editingId = mode === 'edit' ? src.id : null;
   favEditKey = mode === 'fav' && src.name ? keyOf(src.name, src.detail) : null;
+  oftenKey = mode === 'often' ? keyOf(src.name, src.detail) : null;
   const info = articleInfo(src.name || '');
-  $('sTitle').textContent = mode === 'edit' ? 'Artikel bearbeiten' : mode === 'fav' ? (favEditKey ? 'Favorit bearbeiten' : 'Neuer Favorit') : (info.name || 'Neuer Artikel');
+  $('sTitle').textContent = mode === 'edit' ? 'Artikel bearbeiten' : mode === 'fav' ? (favEditKey ? 'Favorit bearbeiten' : 'Neuer Favorit') : mode === 'often' ? 'Häufig gekauft' : (info.name || 'Neuer Artikel');
   $('sName').value = info.name || '';
   $('sDetail').value = src.detail || '';
   $('sQty').value = src.qty || 1;
@@ -945,14 +982,15 @@ function openItemSheet(mode, src) {
   $('sCat').value = src.cat || guessCat(info.name || '');
   $('sNote').value = src.note || '';
   const o = offerOf(src) || {};
-  setType('s', o.shop || o.price != null ? offerType(o) : 'angebot');
+  setType('s', o.shop || o.price != null ? offerType(o) : (mode === 'often' ? 'normal' : 'angebot'));
   writePack('s', o.pack || null, o.deposit);
   $('sPackBox').open = !!(o.pack || o.deposit) || $('sCat').value === 'getraenk';
-  $('sShop').value = o.shop || ''; $('sPrice').value = o.price != null ? String(o.price).replace('.', ',') : ''; $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
+  $('sShop').value = o.shop || ''; $('sPrice').value = fmtPriceInput(o.price ?? null); $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
   renderShops();
   $('sBtnsAdd').style.display = mode === 'add' ? 'block' : 'none';
   $('sBtnsEdit').style.display = mode === 'edit' ? 'flex' : 'none';
   $('sBtnsFav').style.display = mode === 'fav' ? 'flex' : 'none';
+  $('sBtnsOften').style.display = mode === 'often' ? 'block' : 'none';
   $('sFavDel').style.display = favEditKey ? '' : 'none';
   $('sOfferBox').style.display = mode === 'fav' ? 'none' : '';
   $('sStar').style.visibility = mode === 'fav' ? 'hidden' : 'visible';
@@ -998,6 +1036,33 @@ function saveFavoriteFromSheet() {
   toast('⭐ ' + name + (detail ? ' · ' + detail : '') + ' als Favorit gespeichert');
 }
 $('sFavOnly').onclick = saveFavoriteFromSheet;
+
+/* „Häufig gekauft“ bearbeiten */
+let oftenKey = null;
+function saveOftenFromSheet(silent) {
+  const v = sheetValues(); if (!v.name) { toast('Bitte einen Artikel eingeben'); return false; }
+  const newKey = keyOf(v.name, v.detail);
+  const old = data.favs[oftenKey] || { count: 1 };
+  if (oftenKey && oftenKey !== newKey && data.favs[oftenKey]) { data.favs[oftenKey].deleted = true; data.favs[oftenKey].last = now(); }
+  const cur = data.favs[newKey] && newKey !== oftenKey ? data.favs[newKey] : old;
+  const f = { ...cur, name: v.name, detail: v.detail, cat: v.cat, unit: v.unit, qty: v.qty, note: v.note, offer: v.offer, count: Math.max(cur.count || 0, old.count || 0, 1), last: now() };
+  delete f.deleted;
+  data.favs[newKey] = f;
+  recordPrice(v.name, v.detail, v.offer);
+  rememberArticle(v.name, v.detail, v.cat, v.unit);
+  if (!silent) { closeSheets(); commit(); toast('Gespeichert'); }
+  return true;
+}
+$('sOftenSave').onclick = () => saveOftenFromSheet(false);
+$('sOftenAdd').onclick = () => {
+  if (!saveOftenFromSheet(true)) return;
+  const v = sheetValues(); closeSheets(); addItem(v);
+};
+$('sOftenDel').onclick = () => {
+  const f = data.favs[oftenKey]; if (!f) return closeSheets();
+  f.deleted = true; f.last = now(); closeSheets(); commit();
+  toast('„' + f.name + '“ aus „Häufig gekauft“ entfernt', () => { delete f.deleted; f.last = now(); commit(); });
+};
 $('sFavSave').onclick = saveFavoriteFromSheet;
 $('sFavDel').onclick = () => {
   const s = data.stars[favEditKey]; if (!s) return closeSheets();
@@ -1045,7 +1110,7 @@ function packBoxHtml(px) {
   return `<details class="packbox" id="${px}PackBox"><summary>🍾 Gebinde & Pfand</summary>
     <div class="chips wrap" id="${px}Packs" style="padding-top:6px">${PACKS.map(p => `<button type="button" class="chip" data-pack="${p.id}">${p.label}</button>`).join('')}</div>
     <div class="offerrow" style="align-items:center"><input class="field" id="${px}PackN" placeholder="Anzahl" inputmode="numeric" style="max-width:86px"><span>×</span><input class="field" id="${px}PackSize" placeholder="Liter" inputmode="decimal" style="max-width:96px"><span>l</span></div>
-    <div class="offerrow" style="align-items:center"><span style="width:100px;font-size:14px">Pfand gesamt</span><input class="field" id="${px}Deposit" placeholder="€" inputmode="decimal"></div>
+    <div class="offerrow" style="align-items:center"><span style="width:100px;font-size:14px">Pfand gesamt</span><input class="field pricefield" id="${px}Deposit" placeholder="€" inputmode="decimal"></div>
     <div class="hint" id="${px}PackInfo"></div>
   </details>`;
 }
@@ -1146,7 +1211,7 @@ $('catMain').addEventListener('click', e => { const b = e.target.closest('[data-
 $('favMain').addEventListener('click', e => {
   if (e.target.closest('[data-act="newFav"]')) { openItemSheet('fav', {}); return; }
   const o = e.target.closest('[data-often]');
-  if (o) { const f = data.favs[o.dataset.often]; if (f) openItemSheet('add', { name: f.name, detail: f.detail, unit: f.unit, cat: f.cat }); return; }
+  if (o) { const f = data.favs[o.dataset.often]; if (f) openItemSheet('often', { name: f.name, detail: f.detail, unit: f.unit, cat: f.cat, qty: f.qty || 1, note: f.note || '', offer: f.offer || null }); return; }
   const row = e.target.closest('[data-star]'); if (!row) return;
   const s = data.stars[row.dataset.star]; if (!s) return;
   const act = e.target.closest('[data-act]')?.dataset.act;
@@ -1378,7 +1443,7 @@ $('importFile').onchange = async e => {
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
 };
-$('favReset').onclick = () => { if (!confirm('„Häufig gekauft“ wirklich leeren?')) return; data.favs = {}; commit(); };
+$('favReset').onclick = () => { if (!confirm('„Häufig gekauft“ wirklich leeren?')) return; Object.values(data.favs).forEach(f => { f.deleted = true; f.last = now(); }); commit(); };
 
 /* ---------- Preisverlauf ---------- */
 const SHOP_COLORS = { edeka: '#2b6cd4', aldi: '#e07b00', lidl: '#00897b', rewe: '#d0312d', kaufland: '#8e44ad', netto: '#7cb342', penny: '#e84393', dm: '#0f9bb5', rossmann: '#a0522d' };
@@ -1534,6 +1599,11 @@ $('pSave').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.10', '08.10.2026', [
+    '„Häufig gekauft“ antippen: Menge, Bezeichnung, Preis ändern, löschen oder abbrechen',
+    'Preise eintippen wie an der Kasse: 79 → 0,79 · 790 → 7,90 · ,79 → 0,79 · 7.9 → 7,90',
+    'Gilt für alle Preis- und Pfandfelder; beim Verlassen des Feldes wird schön formatiert'
+  ]],
   ['v1.9', '08.10.2026', [
     'Favoriten anlegen, ohne dass sie auf die Liste kommen',
     'Reiter Favoriten: „＋ Neuer Favorit“, Antippen zum Bearbeiten oder Entfernen',
