@@ -126,6 +126,9 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .badge{display:inline-block;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .chk{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink);margin:10px 0 0}
 .chk input{width:20px;height:20px;accent-color:var(--accent)}
+.chip.brand{background:var(--card);border:1px solid var(--line)}
+.chip.brand.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.detail b{font-weight:600}
 .offer.app{background:#ece6ff;color:#4b2fb0}
 .typeseg{display:flex;margin-top:10px}
 .typeseg button{flex:1;padding:8px 4px}
@@ -245,9 +248,13 @@ summary{cursor:pointer;font-weight:600}
   </div>
   <label>Artikel</label>
   <input class="field" id="sName" autocomplete="off">
+  <label>Marke</label>
+  <input class="field" id="sBrand" list="brandList" autocomplete="off" autocapitalize="words" placeholder="z. B. Milsani, ja!, Gut & Günstig, Tuffi …">
+  <datalist id="brandList"></datalist>
+  <div class="chips wrap" id="sBrands" style="padding-top:6px"></div>
   <label>Genaue Bezeichnung</label>
   <div class="chips wrap" id="sVariants"></div>
-  <input class="field" id="sDetail" placeholder="oder selbst eingeben, z. B. Melitta Bella Crema" autocomplete="off" style="margin-top:8px">
+  <input class="field" id="sDetail" placeholder="oder selbst eingeben, z. B. Bella Crema ganze Bohne" autocomplete="off" style="margin-top:8px">
   <label>Menge</label>
   <div class="qtyrow">
     <button id="sMinus" type="button">−</button>
@@ -439,7 +446,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.15';
+const APP_VERSION = 'v1.16';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -666,6 +673,115 @@ function offerText(o) {
   return parts + (when ? ' · ' + when : '');
 }
 
+/* ---------- Marken ---------- */
+const OWN_BRANDS = {
+  ALDI: ['Milsani', 'Cucina', 'Moser Roth', 'Choceur', 'Barissimo', 'Amaroy', 'Westminster', 'Rio d\'Oro', 'Tandil', 'Lacura', 'Gut Bio', 'Nur Nur Natur', 'Meine Metzgerei', 'Golden Seafood', 'Asia Green Garden', 'Le Gusto', 'Wonnemeyer', 'River'],
+  Lidl: ['Milbona', 'Pilos', 'Combino', 'Fin Carré', 'Bellarom', 'Freeway', 'Saskia', 'Solevita', 'Perlenbacher', 'Crownfield', 'Kania', 'Chef Select', 'Deluxe', 'Bio Organic', 'Vemondo', 'Alesto', 'Snack Day', 'Vitasia', 'Dulano', 'Cien', 'W5', 'Formil'],
+  EDEKA: ['Gut & Günstig', 'EDEKA', 'EDEKA Bio', 'EDEKA Herzstücke', 'EDEKA Genuss', 'EDEKA zuhause', 'elkos'],
+  REWE: ['ja!', 'REWE Beste Wahl', 'REWE Bio', 'REWE Feine Welt', 'REWE frei von', 'Wilhelm Brandenburg'],
+  Kaufland: ['K-Classic', 'K-Bio', 'K-Favourites', 'K-Take it Veggie', 'K-Purland'],
+  Netto: ['Gut & Günstig', 'BioBio', 'Mein Metzger'],
+  PENNY: ['ja!', 'Naturgut', 'Penny Ready', 'Food for Future'],
+  dm: ['Balea', 'alverde', 'ebelin', 'Profissimo', 'babylove', 'dmBio', 'Denkmit', 'Mivolis', 'Sundance'],
+  Rossmann: ['Isana', 'Alouette', 'Domol', 'enerBiO', 'Babydream', 'Rival de Loop', 'Sunozon']
+};
+// Marken je Artikel (Vorauswahl) – Schwerpunkt NRW/Rheinland
+const BRAND_HINTS = {
+  'kaffee': ['Melitta', 'Jacobs', 'Tchibo', 'Dallmayr', 'Eduscho', 'Onko', 'Lavazza', 'Segafredo', 'Mövenpick', 'Barissimo', 'Bellarom', 'Gut & Günstig', 'ja!'],
+  'tee': ['Teekanne', 'Meßmer', 'Onno Behrends', 'Lipton', 'Westminster', 'Milford', 'Pompadour'],
+  'milch': ['Tuffi', 'Landliebe', 'Weihenstephan', 'Bärenmarke', 'Milsani', 'Milbona', 'Gut & Günstig', 'ja!', 'Alpro', 'Oatly'],
+  'butter': ['Kerrygold', 'Meggle', 'Landliebe', 'Weihenstephan', 'Milsani', 'Milbona', 'Gut & Günstig', 'ja!'],
+  'margarine': ['Rama', 'Lätta', 'Becel', 'Sanella'],
+  'joghurt': ['Müller', 'Ehrmann', 'Zott', 'Danone', 'Weihenstephan', 'Landliebe', 'Bauer', 'Milsani', 'Milbona'],
+  'quark': ['Tuffi', 'Exquisa', 'Ehrmann', 'Milsani', 'Milbona'],
+  'käse': ['Leerdammer', 'Hochland', 'Bergader', 'Milram', 'Philadelphia', 'Exquisa', 'Gut & Günstig', 'Milsani', 'Milbona'],
+  'sahne': ['Tuffi', 'Weihenstephan', 'Bärenmarke', 'Milsani', 'Milbona'],
+  'eier': ['Gut & Günstig', 'ja!', 'Landfrisch'],
+  'schokolade': ['Stollwerck', 'Ritter Sport', 'Milka', 'Lindt', 'Sarotti', 'Hachez', 'Trumpf', 'Moser Roth', 'Choceur', 'Fin Carré'],
+  'kekse': ['Bahlsen', 'Leibniz', 'De Beukelaer', 'Griesson', 'Lambertz', 'Brandt'],
+  'gummibärchen': ['Haribo', 'Katjes', 'Trolli', 'Nimm2', 'Maoam'],
+  'chips': ['funny-frisch', 'Chio', 'Lorenz', 'Pringles', 'Crusti Croc', 'Snack Day'],
+  'nüsse': ['Seeberger', 'ültje', 'Alesto'],
+  'eis': ['Langnese', 'Mövenpick', 'Schöller', 'Magnum', 'Ben & Jerry\'s', 'Häagen-Dazs'],
+  'nudeln': ['Barilla', 'Birkel', '3 Glocken', 'Bernbacher', 'De Cecco', 'Buitoni', 'Cucina', 'Combino', 'Gut & Günstig', 'ja!'],
+  'reis': ['Oryza', 'Reis-fit', 'Ben\'s Original', 'Gut & Günstig', 'ja!'],
+  'mehl': ['Aurora', 'Diamant', 'Goldpuder', 'Gut & Günstig'],
+  'zucker': ['Südzucker', 'Pfeifer & Langen', 'Diamant', 'Gut & Günstig'],
+  'haferflocken': ['Kölln', 'Seitenbacher', 'Gut & Günstig'],
+  'müsli': ['Kölln', 'Seitenbacher', 'Dr. Oetker Vitalis', 'Kellogg\'s'],
+  'cornflakes': ['Kellogg\'s', 'Nestlé'],
+  'marmelade': ['Schwartau', 'Zentis', 'Mühlhäuser', 'Bonne Maman'],
+  'honig': ['Langnese', 'Breitsamer'],
+  'nuss-nougat-creme': ['Nutella', 'Nudossi', 'Gut & Günstig'],
+  'kakao': ['Kaba', 'Nesquik', 'Ovomaltine'],
+  'ketchup': ['Heinz', 'Kühne', 'Develey', 'Hela'],
+  'senf': ['Löwensenf', 'Kühne', 'Develey', 'Händlmaier', 'Thomy'],
+  'mayonnaise': ['Thomy', 'Hellmann\'s', 'Kühne'],
+  'brühe': ['Knorr', 'Maggi', 'Erasco', 'Gut & Günstig'],
+  'brot': ['Lieken Urkorn', 'Mestemacher', 'Harry', 'Golden Toast'],
+  'toast': ['Golden Toast', 'Harry', 'Lieken Urkorn'],
+  'knäckebrot': ['Wasa', 'Leicht & Cross', 'Brandt'],
+  'aufschnitt': ['Rügenwalder', 'Herta', 'Gutfried', 'Reinert', 'Stockmeyer', 'Wiltmann'],
+  'würstchen': ['Meica', 'Böklunder', 'Herta', 'Rügenwalder', 'Reinert'],
+  'schinken': ['Herta', 'Rügenwalder', 'Reinert', 'Stockmeyer'],
+  'hähnchen': ['Wiesenhof', 'Meine Metzgerei', 'Gut & Günstig'],
+  'pizza': ['Dr. Oetker Ristorante', 'Wagner', 'Gustavo Gusto', 'Freiberger', 'Gut & Günstig'],
+  'pommes': ['McCain', 'Agrarfrost', 'Iglo'],
+  'tk-gemüse': ['Iglo', 'Frosta', 'Bofrost'],
+  'fischstäbchen': ['Iglo', 'Frosta', 'Golden Seafood'],
+  'wasser': ['Gerolsteiner', 'Apollinaris', 'Christinen', 'Vilsa', 'Volvic', 'Evian', 'Saskia', 'Gut & Günstig', 'ja!'],
+  'cola': ['Coca-Cola', 'Pepsi', 'Fritz-Kola', 'River', 'Freeway', 'Gut & Günstig'],
+  'limonade': ['Fanta', 'Sprite', 'Mezzo Mix', 'Schweppes', 'Bionade', 'Freeway'],
+  'apfelschorle': ['Gerolsteiner', 'Lift', 'Christinen'],
+  'saft': ['Hohes C', 'Valensina', 'Granini', 'Rio d\'Oro', 'Solevita', 'Gut & Günstig'],
+  'bier': ['Krombacher', 'Veltins', 'Warsteiner', 'Bitburger', 'König Pilsener', 'Diebels', 'Frankenheim', 'Schlösser', 'Uerige', 'Füchschen', 'Früh', 'Gaffel', 'Reissdorf', 'Sion', 'Mühlen', 'Sünner', 'Erdinger', 'Paulaner', 'Beck\'s', 'Jever', 'Fiege', 'Stauder', 'Perlenbacher'],
+  'wein': ['Rotkäppchen', 'Henkell', 'Mumm'],
+  'sekt': ['Rotkäppchen', 'Mumm', 'Henkell', 'Faber', 'Freixenet'],
+  'toilettenpapier': ['Zewa', 'Hakle', 'Cottonelle', 'Tempo', 'Floralys', 'Gut & Günstig'],
+  'küchenrolle': ['Zewa', 'Bounty', 'Tempo', 'Gut & Günstig'],
+  'taschentücher': ['Tempo', 'Softis', 'Zewa'],
+  'spülmittel': ['Pril', 'Fairy', 'Frosch', 'Denkmit', 'Domol'],
+  'spülmaschinentabs': ['Somat', 'Finish', 'Denkmit', 'Domol'],
+  'waschmittel': ['Persil', 'Ariel', 'Spee', 'Weißer Riese', 'Perwoll', 'Frosch', 'Denkmit', 'Domol', 'Tandil', 'Formil'],
+  'weichspüler': ['Lenor', 'Kuschelweich', 'Vernel', 'Denkmit'],
+  'zahnpasta': ['Colgate', 'Elmex', 'Odol-med3', 'Signal', 'Blend-a-med', 'Meridol', 'Dontodent'],
+  'duschgel': ['Nivea', 'Dove', 'Duschdas', 'Fa', 'Axe', 'Palmolive', 'Balea', 'Isana'],
+  'shampoo': ['Schauma', 'Head & Shoulders', 'Pantene', 'Guhl', 'Balea', 'Isana'],
+  'deo': ['Nivea', 'Rexona', 'Axe', 'Dove', 'Balea', 'Isana'],
+  'reiniger': ['Meister Proper', 'Frosch', 'Sagrotan', 'Domestos', 'WC-Ente', 'Denkmit', 'Domol'],
+  'müllbeutel': ['Swirl', 'Toppits', 'Gut & Günstig'],
+  'alufolie': ['Toppits', 'Melitta', 'Alio'],
+  'frischhaltefolie': ['Toppits', 'Melitta'],
+  'backpapier': ['Toppits', 'Melitta', 'Dr. Oetker'],
+  'filtertüten': ['Melitta', 'Gut & Günstig']
+};
+const EXTRA_BRANDS = ['Dr. Oetker', 'Haribo', 'Ferrero', 'Kinder', 'Duplo', 'Hanuta', 'Raffaello', 'Merci', 'Toffifee', 'Werther\'s', 'Storck', 'Nestlé', 'Maggi', 'Knorr', 'Pfanni', 'Mondamin', 'Sonnen Bassermann', 'Hengstenberg', 'Kühne', 'Iglo', 'Frosta', 'Coppenrath & Wiese', 'Bahlsen', 'Leibniz', 'Lambertz', 'Haribo', 'Katjes', 'Trolli', 'Coca-Cola', 'Red Bull', 'Monster', 'Capri-Sun', 'Nivea', 'Tempo', 'Persil', 'Rügenwalder', 'Herta'];
+function allBrands() {
+  const s = new Map();
+  const add = b => { const k = norm(b); if (k && !s.has(k)) s.set(k, b); };
+  Object.values(data.brands || {}).filter(b => !b.deleted).forEach(b => add(b.name));
+  Object.values(OWN_BRANDS).flat().forEach(add);
+  Object.values(BRAND_HINTS).flat().forEach(add);
+  EXTRA_BRANDS.forEach(add);
+  return [...s.values()];
+}
+// „Melitta Bella Crema ganze Bohne“ → { brand: 'Melitta', rest: 'Bella Crema ganze Bohne' }
+function splitBrand(detail) {
+  const d = String(detail || '').trim(), nd = norm(d);
+  if (!nd) return { brand: '', rest: '' };
+  let best = '';
+  allBrands().forEach(b => { const nb = norm(b); if ((nd === nb || nd.startsWith(nb + ' ')) && nb.length > norm(best).length) best = b; });
+  return best ? { brand: best, rest: d.slice(best.length).trim() } : { brand: '', rest: d };
+}
+function joinBrand(brand, rest) { return [String(brand || '').trim(), String(rest || '').trim()].filter(Boolean).join(' '); }
+function registerBrand(b) {
+  b = String(b || '').trim(); if (!b) return;
+  const k = norm(b);
+  if (allBrands().some(x => norm(x) === k)) return;
+  data.brands = data.brands || {};
+  data.brands[k] = { name: b, updatedAt: now() };
+}
+
 /* ---------- State ---------- */
 let data = loadData();
 // Einträge aus v1.0 hatten bei „Häufig gekauft“ ein älteres Schlüsselformat – einmalig umstellen
@@ -692,7 +808,7 @@ function loadJSON(key, fallback) {
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices) };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -738,7 +854,7 @@ function rememberArticle(name, detail, cat, unit) {
   const cu = prev || { name: cap(name), variants: [], cat, unit };
   let changed = !prev && !isBase;
   if (!isBase) { if (cu.cat !== cat) { cu.cat = cat; changed = true; } if (cu.unit !== unit) { cu.unit = unit; changed = true; } }
-  const d = String(detail || '').trim();
+  const d = splitBrand(detail).rest;   // Marke gehört nicht in die Bezeichnungs-Knöpfe
   if (d && !articleInfo(name).variants.some(v => norm(v) === norm(d))) { cu.variants = [...(cu.variants || []), d]; changed = true; }
   if (changed) { delete cu.deleted; cu.updatedAt = now(); data.custom[k] = cu; }
   return changed;
@@ -892,6 +1008,7 @@ function shopOf(i) { const o = offerOf(i); return (o && o.shop && !offerExpired(
 
 function renderAll() { renderList(); renderChips(); renderCatalog(); renderFavs(); renderOffers(); renderPrices(); }
 
+function detailHtml(d) { const sb = splitBrand(d); return sb.brand ? `<b>${esc(sb.brand)}</b>${sb.rest ? ' ' + esc(sb.rest) : ''}` : esc(d); }
 function itemHtml(i) {
   const o = offerOf(i);
   const ot = offerType(o);
@@ -901,7 +1018,7 @@ function itemHtml(i) {
   const q = qtyLabel(i);
   return `<div class="item${i.checked ? ' done' : ''}" data-id="${i.id}">
     <button class="check" data-act="toggle" aria-label="abhaken">${i.checked ? '✓' : ''}</button>
-    <div class="body" data-act="edit"><div class="name">${isStar(i.name, i.detail) ? '<span class="star">★</span> ' : ''}${esc(i.name)}</div>${i.detail ? `<div class="detail">${esc(i.detail)}</div>` : ''}${i.note ? `<div class="note">${esc(i.note)}</div>` : ''}${offer}</div>
+    <div class="body" data-act="edit"><div class="name">${isStar(i.name, i.detail) ? '<span class="star">★</span> ' : ''}${esc(i.name)}</div>${i.detail ? `<div class="detail">${detailHtml(i.detail)}</div>` : ''}${i.note ? `<div class="note">${esc(i.note)}</div>` : ''}${offer}</div>
     ${q ? `<span class="qty">${esc(q)}</span>` : ''}
   </div>`;
 }
@@ -1064,6 +1181,33 @@ function closeSheets() { $('backdrop').classList.remove('open'); document.queryS
 $('backdrop').addEventListener('click', closeSheets);
 document.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeSheets(); });
 
+function sheetDetail() { return joinBrand($('sBrand').value, $('sDetail').value); }
+function setSheetDetail(d) { const sb = splitBrand(d); $('sBrand').value = sb.brand; $('sDetail').value = sb.rest; renderBrands(); }
+function brandSuggestions() {
+  const n = norm($('sName').value), out = new Map();
+  const add = b => { const k = norm(b); if (k && !out.has(k)) out.set(k, b); };
+  // schon genutzte Marken für diesen Artikel
+  const used = [...liveItems(), ...Object.values(data.favs).filter(f => !f.deleted), ...Object.values(data.stars).filter(s => s.on), ...Object.values(data.prices || {}).filter(e => !e.deleted)]
+    .filter(x => norm(x.name) === n).map(x => splitBrand(x.detail).brand).filter(Boolean);
+  used.forEach(add);
+  (BRAND_HINTS[n] || []).forEach(add);
+  const shop = SHOPS.find(s => norm(s) === norm($('sShop').value));
+  if (shop) (OWN_BRANDS[shop] || []).slice(0, 6).forEach(add);
+  return [...out.values()].slice(0, 14);
+}
+function renderBrands() {
+  const cur = norm($('sBrand').value);
+  const list = brandSuggestions();
+  if (cur && !list.some(b => norm(b) === cur)) list.unshift($('sBrand').value.trim());
+  $('sBrands').innerHTML = list.map(b => `<button type="button" class="chip brand${norm(b) === cur ? ' sel' : ''}" data-brand="${esc(b)}">${esc(b)}</button>`).join('');
+}
+function fillBrandList() { $('brandList').innerHTML = allBrands().sort((a, b) => a.localeCompare(b, 'de')).map(b => `<option value="${esc(b)}">`).join(''); }
+$('sBrands').addEventListener('click', e => {
+  const b = e.target.closest('[data-brand]'); if (!b) return;
+  $('sBrand').value = norm($('sBrand').value) === norm(b.dataset.brand) ? '' : b.dataset.brand;
+  renderBrands(); updateSheetExtras();
+});
+$('sBrand').addEventListener('input', () => { renderBrands(); updateSheetExtras(); });
 function renderVariants() {
   const info = articleInfo($('sName').value);
   const cur = $('sDetail').value.trim();
@@ -1073,7 +1217,7 @@ function renderVariants() {
     : '<span class="hint" style="margin:0">Keine Vorschläge – einfach selbst eingeben.</span>';
 }
 function updateSheetExtras() {
-  const name = $('sName').value.trim(), detail = $('sDetail').value.trim();
+  const name = $('sName').value.trim(), detail = sheetDetail();
   sheetStar = isStar(name, detail);
   $('sStar').textContent = sheetStar ? '★' : '☆';
   $('sStar').classList.toggle('on', sheetStar);
@@ -1088,7 +1232,7 @@ function openItemSheet(mode, src) {
   const info = articleInfo(src.name || '');
   $('sTitle').textContent = mode === 'edit' ? 'Artikel bearbeiten' : mode === 'fav' ? (favEditKey ? 'Favorit bearbeiten' : 'Neuer Favorit') : mode === 'often' ? 'Häufig gekauft' : (info.name || 'Neuer Artikel');
   $('sName').value = info.name || '';
-  $('sDetail').value = src.detail || '';
+  setSheetDetail(src.detail || '');
   $('sQty').value = src.qty || 1;
   $('sUnit').value = src.unit !== undefined ? src.unit : info.unit;
   if (mode === 'add' && !src.qty && ['g','ml'].includes($('sUnit').value)) $('sQty').value = 500;
@@ -1109,12 +1253,14 @@ function openItemSheet(mode, src) {
   $('sOfferBox').style.display = mode === 'fav' ? 'none' : '';
   $('sStar').style.visibility = mode === 'fav' ? 'hidden' : 'visible';
   variantsFor = norm($('sName').value);
+  fillBrandList(); renderBrands();
   renderVariants(); updateSheetExtras();
   openSheet('itemSheet');
 }
 $('sVariants').addEventListener('click', e => {
   const b = e.target.closest('[data-var]'); if (!b) return;
-  $('sDetail').value = norm(b.dataset.var) === norm($('sDetail').value) ? '' : b.dataset.var;
+  if (norm(b.dataset.var) === norm($('sDetail').value) || norm(b.dataset.var) === norm(sheetDetail())) $('sDetail').value = '';
+  else { const sb = splitBrand(b.dataset.var); if (sb.brand) { $('sBrand').value = sb.brand; $('sDetail').value = sb.rest; renderBrands(); } else $('sDetail').value = b.dataset.var; }
   renderVariants(); updateSheetExtras();
 });
 $('sDetail').addEventListener('input', () => { renderVariants(); updateSheetExtras(); });
@@ -1128,7 +1274,7 @@ function onNameChanged() {
   const info = articleInfo($('sName').value);
   if (info.cat) $('sCat').value = info.cat;
   if (sheetMode !== 'edit' && info.unit !== undefined && CAT_INDEX[n]) $('sUnit').value = ['g', 'kg', 'ml', 'l'].includes(info.unit) && clampQty($('sQty').value) < 50 ? '' : info.unit;
-  renderVariants(); updateSheetExtras();
+  renderVariants(); renderBrands(); updateSheetExtras();
 }
 $('sName').addEventListener('input', onNameChanged);
 $('sName').addEventListener('input', updateArtDel);
@@ -1139,8 +1285,9 @@ function stepFor() { const u = $('sUnit').value; return (u === 'g' || u === 'ml'
 /* Favorit speichern, ohne ihn auf die Liste zu setzen */
 let favEditKey = null;
 function saveFavoriteFromSheet() {
-  const name = cap($('sName').value), detail = $('sDetail').value.trim();
+  const name = cap($('sName').value), detail = sheetDetail();
   if (!name) { toast('Bitte einen Artikel eingeben'); return; }
+  registerBrand($('sBrand').value);
   const cat = $('sCat').value, unit = $('sUnit').value, qty = clampQty($('sQty').value);
   if (favEditKey && favEditKey !== keyOf(name, detail)) {
     const old = data.stars[favEditKey]; if (old) { old.on = false; old.updatedAt = now(); }
@@ -1204,7 +1351,7 @@ $('sFavDel').onclick = () => {
   toast('Favorit entfernt', () => { s.on = true; s.updatedAt = now(); commit(); });
 };
 $('sStar').onclick = () => {
-  const name = cap($('sName').value), detail = $('sDetail').value.trim();
+  const name = cap($('sName').value), detail = sheetDetail();
   if (!name) return;
   setStar(name, detail, !sheetStar, { cat: $('sCat').value, unit: $('sUnit').value, qty: clampQty($('sQty').value) });
   rememberArticle(name, detail, $('sCat').value, $('sUnit').value);
@@ -1231,12 +1378,12 @@ $('sShops').addEventListener('click', e => {
   if (getType('s') !== 'normal' && !$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
   // Gebinde/Pfand vom letzten erfassten Preis übernehmen
   if (!readPack('s')) {
-    const last = priceEntries(keyOf(cap($('sName').value), $('sDetail').value.trim())).filter(e => e.pack).sort((a, b) => b.date.localeCompare(a.date))[0];
+    const last = priceEntries(keyOf(cap($('sName').value), sheetDetail())).filter(e => e.pack).sort((a, b) => b.date.localeCompare(a.date))[0];
     if (last) writePack('s', last.pack, last.deposit);
   }
-  renderShops(); $('sPrice').focus();
+  renderShops(); renderBrands(); $('sPrice').focus();
 });
-$('sShop').addEventListener('input', renderShops);
+$('sShop').addEventListener('input', () => { renderShops(); renderBrands(); });
 $('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sRegular').value = ''; updateSaving('s'); $('sFrom').value = ''; $('sUntil').value = ''; setType('s', 'angebot'); writePack('s', null, null); renderShops(); };
 
 /* Preisart-Umschalter und Gebinde/Pfand – für Artikel- und Preisfenster */
@@ -1311,9 +1458,10 @@ function parseDecimal(s) { const n = parseFloat(String(s || '').replace(',', '.'
   $(px + 'PackU').addEventListener('change', () => updatePackInfo(px));
 });
 $('sCat').addEventListener('change', () => { if ($('sCat').value === 'getraenk') $('sPackBox').open = true; });
-$('sHistory').onclick = e => { e.preventDefault(); const k = keyOf(cap($('sName').value), $('sDetail').value.trim()); closeSheets(); openPrices(k); };
+$('sHistory').onclick = e => { e.preventDefault(); const k = keyOf(cap($('sName').value), sheetDetail()); closeSheets(); openPrices(k); };
 function sheetValues() {
-  return { name: cap($('sName').value), detail: $('sDetail').value.trim(), qty: clampQty($('sQty').value),
+  registerBrand($('sBrand').value);
+  return { name: cap($('sName').value), detail: sheetDetail(), qty: clampQty($('sQty').value),
            unit: $('sUnit').value, cat: $('sCat').value, note: $('sNote').value.trim(), offer: sheetOffer() };
 }
 $('sAdd').onclick = () => { const v = sheetValues(); if (!v.name) return; closeSheets(); recordPrice(v.name, v.detail, v.offer); addItem(v); };
@@ -1446,6 +1594,7 @@ function mergeData(local, remote) {
   const stars = mergeByUpdated(local.stars, remote.stars);
   const custom = mergeByUpdated(local.custom, remote.custom);
   const prices = mergeByUpdated(local.prices, remote.prices);
+  const brands = mergeByUpdated(local.brands, remote.brands);
   Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
   // eigene Bezeichnungen beider Seiten zusammenführen
   Object.keys(custom).forEach(k => {
@@ -1453,7 +1602,7 @@ function mergeData(local, remote) {
     [...((obj(local.custom)[k] || {}).variants || []), ...((obj(remote.custom)[k] || {}).variants || [])].forEach(v => { if (!vs.has(norm(v))) vs.set(norm(v), v); });
     custom[k] = { ...custom[k], variants: [...vs.values()] };
   });
-  return { items, favs, stars, custom, prices };
+  return { items, favs, stars, custom, prices, brands };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
@@ -1461,20 +1610,20 @@ function canon(d) {
   const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices)
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
   const p = JSON.parse(b64decode(j.content || ''));
-  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices) };
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands) };
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
@@ -1605,7 +1754,7 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices) });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
@@ -2047,7 +2196,7 @@ function showReadResult(text) {
   const sug = suggestArticle(r.nameLines || []);
   const inSheet = readMode === 'fill';
   $('rName').value = inSheet && $('sName').value ? $('sName').value : sug.name;
-  $('rDetail').value = inSheet && $('sName').value ? ($('sDetail').value || sug.detail) : sug.detail;
+  $('rDetail').value = inSheet && $('sName').value ? (sheetDetail() || sug.detail) : sug.detail;
   $('rShop').value = r.shop || (inSheet ? $('sShop').value : '') || '';
   $('rPrice').value = fmtPriceInput(r.price); $('rRegular').value = fmtPriceInput(r.regular);
   setType('r', r.type || 'angebot');
@@ -2084,7 +2233,7 @@ $('rApply').onclick = () => {
   closeReader();
   if (readMode === 'fill') {
     if (name && !$('sName').value.trim()) { $('sName').value = name; onNameChanged(); }
-    if (detail && !$('sDetail').value.trim()) $('sDetail').value = detail;
+    if (detail && !sheetDetail()) setSheetDetail(detail);
     $('sShop').value = offer.shop; $('sPrice').value = fmtPriceInput(offer.price); $('sRegular').value = fmtPriceInput(offer.regular);
     setType('s', type); $('sFrom').value = offer.from; $('sUntil').value = offer.until;
     writePack('s', offer.pack, offer.deposit);
@@ -2099,6 +2248,13 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.16', '09.10.2026', [
+    'Neues Feld „Marke“ im Artikelfenster – mit Dropdown-Vorschlägen beim Tippen',
+    'Vorauswahl als Knöpfe: passende Marken zum Artikel, zuletzt genutzte und Eigenmarken des gewählten Markts',
+    'Über 300 Marken vorbelegt: Eigenmarken (Milsani, ja!, Gut & Günstig, K-Classic …) und bekannte Marken mit NRW-Schwerpunkt (Tuffi, Stollwerck, Haribo, Melitta, Teekanne, Früh, Gaffel …)',
+    'Eigene Marken werden gemerkt und mit dem zweiten Handy geteilt',
+    'In der Liste steht die Marke fett vor der Bezeichnung'
+  ]],
   ['v1.15', '08.10.2026', [
     'Artikel nur im Katalog speichern – ohne Liste und ohne Favorit („📚 Nur Artikel“)',
     'Reiter Artikel: ＋ für neuen Artikel, Hinweis zur Bedienung',
