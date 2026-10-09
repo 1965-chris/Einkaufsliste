@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.17",
- "savedAt": "2026-10-09T07:10:28.240Z",
+ "savedAt": "2026-10-09T07:10:53.888Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -270,9 +270,19 @@
    "unit": "",
    "cat": "tk",
    "note": "",
-   "offer": null,
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "2026-10-05",
+    "until": "2026-10-10",
+    "type": "angebot",
+    "special": true,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
    "checked": false,
-   "updatedAt": 1791529828078
+   "updatedAt": 1791529851763
   }
  ],
  "favs": {
@@ -520,7 +530,7 @@
    "qty": 2,
    "note": "",
    "on": true,
-   "updatedAt": 1791529607945
+   "updatedAt": 1791529851763
   }
  },
  "custom": {
