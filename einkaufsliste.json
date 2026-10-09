@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.17",
- "savedAt": "2026-10-09T07:06:36.331Z",
+ "savedAt": "2026-10-09T07:06:50.110Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -418,8 +418,8 @@
    "cat": "tk",
    "unit": "",
    "qty": 2,
-   "on": true,
-   "updatedAt": 1791413901032
+   "on": false,
+   "updatedAt": 1791529607945
   },
   "melita barista ganze bohnen|": {
    "name": "Melita Barista Ganze Bohnen",
@@ -468,6 +468,16 @@
    "note": "",
    "on": true,
    "updatedAt": 1791529594225
+  },
+  "pizza|dr. oetker die ofenfrische diavolo": {
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Diavolo",
+   "cat": "tk",
+   "unit": "",
+   "qty": 2,
+   "note": "",
+   "on": true,
+   "updatedAt": 1791529607945
   }
  },
  "custom": {
