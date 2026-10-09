@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
- "version": "v1.18",
- "savedAt": "2026-10-09T07:23:18.759Z",
+ "version": "v1.19",
+ "savedAt": "2026-10-09T08:48:30.872Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -660,7 +660,8 @@
    "shop": "ALDI",
    "price": 1.79,
    "special": true,
-   "updatedAt": 1791413901032
+   "updatedAt": 1791535708730,
+   "deleted": true
   },
   "pizza|thunfisch|aldi|2026-10-12": {
    "id": "pizza|thunfisch|aldi|2026-10-12",
