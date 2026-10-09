@@ -446,7 +446,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.16';
+const APP_VERSION = 'v1.17';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1199,12 +1199,15 @@ function renderBrands() {
   const cur = norm($('sBrand').value);
   const list = brandSuggestions();
   if (cur && !list.some(b => norm(b) === cur)) list.unshift($('sBrand').value.trim());
-  $('sBrands').innerHTML = list.map(b => `<button type="button" class="chip brand${norm(b) === cur ? ' sel' : ''}" data-brand="${esc(b)}">${esc(b)}</button>`).join('');
+  $('sBrands').innerHTML = list.map(b => `<button type="button" class="chip brand${norm(b) === cur ? ' sel' : ''}" data-brand="${esc(b)}">${norm(b) === cur ? '✓ ' : ''}${esc(b)}</button>`).join('')
+    + (cur ? '<button type="button" class="chip" data-brand-clear>✕ ohne Marke</button>' : '');
 }
 function fillBrandList() { $('brandList').innerHTML = allBrands().sort((a, b) => a.localeCompare(b, 'de')).map(b => `<option value="${esc(b)}">`).join(''); }
 $('sBrands').addEventListener('click', e => {
+  if (e.target.closest('[data-brand-clear]')) { $('sBrand').value = ''; renderBrands(); updateSheetExtras(); return; }
   const b = e.target.closest('[data-brand]'); if (!b) return;
-  $('sBrand').value = norm($('sBrand').value) === norm(b.dataset.brand) ? '' : b.dataset.brand;
+  $('sBrand').value = b.dataset.brand;          // Antippen wählt immer aus – nie versehentlich leeren
+  $('sBrand').blur();
   renderBrands(); updateSheetExtras();
 });
 $('sBrand').addEventListener('input', () => { renderBrands(); updateSheetExtras(); });
@@ -1213,7 +1216,8 @@ function renderVariants() {
   const cur = $('sDetail').value.trim();
   selVariant = info.variants.find(v => norm(v) === norm(cur)) || '';
   $('sVariants').innerHTML = info.variants.length
-    ? info.variants.map(v => `<button type="button" class="chip${norm(v) === norm(cur) ? ' sel' : ''}" data-var="${esc(v)}">${esc(v)}</button>`).join('')
+    ? info.variants.map(v => `<button type="button" class="chip${norm(v) === norm(cur) ? ' sel' : ''}" data-var="${esc(v)}">${norm(v) === norm(cur) ? '✓ ' : ''}${esc(v)}</button>`).join('')
+      + (cur ? '<button type="button" class="chip" data-var="" data-var-clear>✕ ohne</button>' : '')
     : '<span class="hint" style="margin:0">Keine Vorschläge – einfach selbst eingeben.</span>';
 }
 function updateSheetExtras() {
@@ -1259,7 +1263,7 @@ function openItemSheet(mode, src) {
 }
 $('sVariants').addEventListener('click', e => {
   const b = e.target.closest('[data-var]'); if (!b) return;
-  if (norm(b.dataset.var) === norm($('sDetail').value) || norm(b.dataset.var) === norm(sheetDetail())) $('sDetail').value = '';
+  if (b.hasAttribute('data-var-clear')) $('sDetail').value = '';
   else { const sb = splitBrand(b.dataset.var); if (sb.brand) { $('sBrand').value = sb.brand; $('sDetail').value = sb.rest; renderBrands(); } else $('sDetail').value = b.dataset.var; }
   renderVariants(); updateSheetExtras();
 });
@@ -2248,6 +2252,10 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.17', '09.10.2026', [
+    'Fehler behoben: Antippen der grün markierten Marke hat das Feld geleert – jetzt bleibt sie ausgewählt (✓)',
+    'Zum Entfernen gibt es eigene Knöpfe „✕ ohne Marke“ bzw. „✕ ohne“ bei der Bezeichnung'
+  ]],
   ['v1.16', '09.10.2026', [
     'Neues Feld „Marke“ im Artikelfenster – mit Dropdown-Vorschlägen beim Tippen',
     'Vorauswahl als Knöpfe: passende Marken zum Artikel, zuletzt genutzte und Eigenmarken des gewählten Markts',
