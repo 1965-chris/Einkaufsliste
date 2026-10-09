@@ -1,9 +1,9 @@
 // Einkaufsliste – Service Worker
 // Netzwerk zuerst (damit Updates sofort ankommen), Cache nur als Offline-Rückfall.
-const CACHE = 'einkaufsliste-v1';
+const CACHE = 'einkaufsliste-v2';
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './index.html'])).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './index.html']).then(() => c.addAll(['./icon-180.png', './icon-192.png', './icon-512.png']).catch(() => {}))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
