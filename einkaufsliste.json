@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.17",
- "savedAt": "2026-10-09T07:10:17.042Z",
+ "savedAt": "2026-10-09T07:10:26.444Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -249,6 +249,18 @@
    },
    "checked": false,
    "updatedAt": 1791496635562
+  },
+  {
+   "id": "mv0mloapt9ka72",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
+   "qty": 2,
+   "unit": "",
+   "cat": "tk",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791529825345
   }
  ],
  "favs": {
@@ -382,6 +394,14 @@
    "cat": "drogerie",
    "unit": "Pck.",
    "last": 1791496635564
+  },
+  "pizza|dr. oetker die ofenfrische thunfisch": {
+   "count": 1,
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
+   "cat": "tk",
+   "unit": "",
+   "last": 1791529825346
   }
  },
  "stars": {
