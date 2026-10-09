@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-09T08:50:10.416Z",
+ "savedAt": "2026-10-09T08:51:01.641Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -297,14 +297,24 @@
   {
    "id": "mv0q5wru9p7oxa",
    "name": "Salzbutter",
-   "detail": "",
+   "detail": "Milsani",
    "qty": 1,
    "unit": "",
    "cat": "kuehl",
    "note": "",
-   "offer": null,
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
    "checked": false,
-   "updatedAt": 1791535808298
+   "updatedAt": 1791535859488
   }
  ],
  "favs": {
