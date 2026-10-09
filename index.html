@@ -248,6 +248,9 @@ summary{cursor:pointer;font-weight:600}
   </div>
   <label>Artikel</label>
   <input class="field" id="sName" autocomplete="off">
+  <label>Markt</label>
+  <div class="chips wrap" id="sShops" style="padding-top:0"></div>
+  <input class="field" id="sShop" placeholder="anderer Markt …" autocomplete="off" style="margin-top:8px">
   <label>Marke</label>
   <input class="field" id="sBrand" list="brandList" autocomplete="off" autocapitalize="words" placeholder="z. B. Milsani, ja!, Gut & Günstig, Tuffi …">
   <datalist id="brandList"></datalist>
@@ -271,10 +274,9 @@ summary{cursor:pointer;font-weight:600}
     <a class="offerlink" id="sOffer" target="_blank" rel="noopener" style="margin-top:4px">🔎 bei marktguru suchen</a>
     <div class="searchrow" id="sSearch"></div>
     <button type="button" class="btn" id="sRead" style="width:100%;margin-top:10px">📷 Angebot aus Bild / Text lesen</button>
-    <div class="chips wrap" id="sShops" style="padding-top:8px"></div>
-    <div class="offerrow">
-      <input class="field" id="sShop" placeholder="Markt" autocomplete="off">
-      <input class="field pricefield" id="sPrice" placeholder="Preis €" inputmode="decimal" autocomplete="off" style="max-width:110px">
+    <div class="offerrow" style="align-items:center">
+      <span style="width:120px;font-size:14px">Preis</span>
+      <input class="field pricefield" id="sPrice" placeholder="€" inputmode="decimal" autocomplete="off">
     </div>
     <div class="offerrow" style="align-items:center">
       <span style="width:120px;font-size:14px">statt (Vergleich)</span>
@@ -446,7 +448,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.17';
+const APP_VERSION = 'v1.18';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -685,6 +687,27 @@ const OWN_BRANDS = {
   dm: ['Balea', 'alverde', 'ebelin', 'Profissimo', 'babylove', 'dmBio', 'Denkmit', 'Mivolis', 'Sundance'],
   Rossmann: ['Isana', 'Alouette', 'Domol', 'enerBiO', 'Babydream', 'Rival de Loop', 'Sunozon']
 };
+// Eigenmarken: für welche Bereiche im Markt sie gelten ('*' = Vollsortiment)
+const OWN_BRAND_CATS = {
+  'Milsani': ['kuehl'], 'Cucina': ['vorrat', 'tk'], 'Moser Roth': ['suess'], 'Choceur': ['suess'], 'Barissimo': ['kaffee'], 'Amaroy': ['kaffee'],
+  'Westminster': ['kaffee'], 'Rio d\'Oro': ['getraenk'], 'Tandil': ['drogerie'], 'Lacura': ['drogerie'], 'Gut Bio': ['*'], 'Nur Nur Natur': ['*'],
+  'Meine Metzgerei': ['fleisch'], 'Golden Seafood': ['fleisch', 'tk'], 'Asia Green Garden': ['vorrat'], 'Le Gusto': ['vorrat'], 'Wonnemeyer': ['brot', 'kaffee'], 'River': ['getraenk'],
+  'Milbona': ['kuehl'], 'Pilos': ['kuehl'], 'Combino': ['vorrat'], 'Fin Carré': ['suess'], 'Bellarom': ['kaffee'], 'Freeway': ['getraenk'], 'Saskia': ['getraenk'],
+  'Solevita': ['getraenk'], 'Perlenbacher': ['getraenk'], 'Crownfield': ['kaffee'], 'Kania': ['vorrat'], 'Chef Select': ['tk', 'vorrat', 'fleisch'], 'Deluxe': ['*'],
+  'Bio Organic': ['*'], 'Vemondo': ['*'], 'Alesto': ['suess'], 'Snack Day': ['suess'], 'Vitasia': ['vorrat'], 'Dulano': ['fleisch'], 'Cien': ['drogerie'], 'W5': ['drogerie'], 'Formil': ['drogerie'],
+  'Gut & Günstig': ['*'], 'EDEKA': ['*'], 'EDEKA Bio': ['*'], 'EDEKA Herzstücke': ['*'], 'EDEKA Genuss': ['*'], 'EDEKA zuhause': ['drogerie'], 'elkos': ['drogerie'],
+  'ja!': ['*'], 'REWE Beste Wahl': ['*'], 'REWE Bio': ['*'], 'REWE Feine Welt': ['*'], 'REWE frei von': ['*'], 'Wilhelm Brandenburg': ['fleisch'],
+  'K-Classic': ['*'], 'K-Bio': ['*'], 'K-Favourites': ['*'], 'K-Take it Veggie': ['*'], 'K-Purland': ['fleisch'],
+  'BioBio': ['*'], 'Mein Metzger': ['fleisch'], 'Naturgut': ['*'], 'Penny Ready': ['tk', 'vorrat'], 'Food for Future': ['*'],
+  'Balea': ['drogerie'], 'alverde': ['drogerie'], 'ebelin': ['drogerie'], 'Profissimo': ['drogerie'], 'babylove': ['drogerie'], 'dmBio': ['*'], 'Denkmit': ['drogerie'], 'Mivolis': ['drogerie'], 'Sundance': ['drogerie'],
+  'Isana': ['drogerie'], 'Alouette': ['drogerie'], 'Domol': ['drogerie'], 'enerBiO': ['*'], 'Babydream': ['drogerie'], 'Rival de Loop': ['drogerie'], 'Sunozon': ['drogerie']
+};
+function ownBrandsFor(shop, cat) {
+  const list = OWN_BRANDS[shop] || [];
+  const exact = list.filter(b => (OWN_BRAND_CATS[b] || []).includes(cat));
+  const general = list.filter(b => (OWN_BRAND_CATS[b] || ['*']).includes('*'));
+  return [...exact, ...general];
+}
 // Marken je Artikel (Vorauswahl) – Schwerpunkt NRW/Rheinland
 const BRAND_HINTS = {
   'kaffee': ['Melitta', 'Jacobs', 'Tchibo', 'Dallmayr', 'Eduscho', 'Onko', 'Lavazza', 'Segafredo', 'Mövenpick', 'Barissimo', 'Bellarom', 'Gut & Günstig', 'ja!'],
@@ -697,6 +720,7 @@ const BRAND_HINTS = {
   'käse': ['Leerdammer', 'Hochland', 'Bergader', 'Milram', 'Philadelphia', 'Exquisa', 'Gut & Günstig', 'Milsani', 'Milbona'],
   'sahne': ['Tuffi', 'Weihenstephan', 'Bärenmarke', 'Milsani', 'Milbona'],
   'eier': ['Gut & Günstig', 'ja!', 'Landfrisch'],
+  'pudding': ['Dr. Oetker', 'Ehrmann', 'Müller', 'Zott', 'Landliebe', 'Milsani', 'Milbona'],
   'schokolade': ['Stollwerck', 'Ritter Sport', 'Milka', 'Lindt', 'Sarotti', 'Hachez', 'Trumpf', 'Moser Roth', 'Choceur', 'Fin Carré'],
   'kekse': ['Bahlsen', 'Leibniz', 'De Beukelaer', 'Griesson', 'Lambertz', 'Brandt'],
   'gummibärchen': ['Haribo', 'Katjes', 'Trolli', 'Nimm2', 'Maoam'],
@@ -1189,10 +1213,14 @@ function brandSuggestions() {
   // schon genutzte Marken für diesen Artikel
   const used = [...liveItems(), ...Object.values(data.favs).filter(f => !f.deleted), ...Object.values(data.stars).filter(s => s.on), ...Object.values(data.prices || {}).filter(e => !e.deleted)]
     .filter(x => norm(x.name) === n).map(x => splitBrand(x.detail).brand).filter(Boolean);
-  used.forEach(add);
-  (BRAND_HINTS[n] || []).forEach(add);
   const shop = SHOPS.find(s => norm(s) === norm($('sShop').value));
-  if (shop) (OWN_BRANDS[shop] || []).slice(0, 6).forEach(add);
+  const hints = BRAND_HINTS[n] || [];
+  if (shop) {
+    // gewählter Markt: dessen Eigenmarken für diesen Bereich zuerst, dann schon genutzte und passende Marken
+    ownBrandsFor(shop, $('sCat').value).forEach(add);
+    used.forEach(add);
+    hints.filter(b => !Object.values(OWN_BRANDS).flat().includes(b)).forEach(add);   // Eigenmarken anderer Märkte ausblenden
+  } else { used.forEach(add); hints.forEach(add); }
   return [...out.values()].slice(0, 14);
 }
 function renderBrands() {
@@ -1286,6 +1314,18 @@ $('sName').addEventListener('change', onNameChanged);
 $('sMinus').onclick = () => { $('sQty').value = Math.max(1, clampQty($('sQty').value) - stepFor()); };
 $('sPlus').onclick  = () => { const q = clampQty($('sQty').value), s = stepFor(); $('sQty').value = (q === 1 && s > 1) ? s : q + s; };
 function stepFor() { const u = $('sUnit').value; return (u === 'g' || u === 'ml') ? 100 : 1; }
+/* Geänderte Marke/Bezeichnung auch bei Artikeln auf der Liste übernehmen? */
+function offerListUpdate(oldKey, name, detail, extra = {}) {
+  if (!oldKey || oldKey === keyOf(name, detail)) return;
+  const hits = liveItems().filter(i => !i.checked && keyOf(i.name, i.detail) === oldKey);
+  if (!hits.length) return;
+  const old = hits[0];
+  const was = old.name + (old.detail ? ' · ' + old.detail : ''), now_ = name + (detail ? ' · ' + detail : '');
+  if (!confirm(`„${was}“ steht auf der Einkaufsliste.\n\nSoll es dort auch in „${now_}“ geändert werden?`)) return;
+  hits.forEach(i => Object.assign(i, { name, detail, ...extra, updatedAt: now() }));
+  toast('Auch auf der Liste geändert');
+}
+
 /* Favorit speichern, ohne ihn auf die Liste zu setzen */
 let favEditKey = null;
 function saveFavoriteFromSheet() {
@@ -1298,6 +1338,7 @@ function saveFavoriteFromSheet() {
   }
   setStar(name, detail, true, { cat, unit, qty, note: $('sNote').value.trim() });
   rememberArticle(name, detail, cat, unit);
+  offerListUpdate(favEditKey, name, detail, { cat });
   closeSheets(); commit();
   toast('⭐ ' + name + (detail ? ' · ' + detail : '') + ' als Favorit gespeichert');
 }
@@ -1335,6 +1376,7 @@ function saveOftenFromSheet(silent) {
   data.favs[newKey] = f;
   recordPrice(v.name, v.detail, v.offer);
   rememberArticle(v.name, v.detail, v.cat, v.unit);
+  if (!silent) offerListUpdate(oftenKey, v.name, v.detail, { cat: v.cat });
   if (!silent) { closeSheets(); commit(); toast('Gespeichert'); }
   return true;
 }
@@ -1385,7 +1427,7 @@ $('sShops').addEventListener('click', e => {
     const last = priceEntries(keyOf(cap($('sName').value), sheetDetail())).filter(e => e.pack).sort((a, b) => b.date.localeCompare(a.date))[0];
     if (last) writePack('s', last.pack, last.deposit);
   }
-  renderShops(); renderBrands(); $('sPrice').focus();
+  renderShops(); renderBrands();   // Markt steht oben – nicht mehr zum Preisfeld springen
 });
 $('sShop').addEventListener('input', () => { renderShops(); renderBrands(); });
 $('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sRegular').value = ''; updateSaving('s'); $('sFrom').value = ''; $('sUntil').value = ''; setType('s', 'angebot'); writePack('s', null, null); renderShops(); };
@@ -1461,7 +1503,7 @@ function parseDecimal(s) { const n = parseFloat(String(s || '').replace(',', '.'
   [px + 'PackN', px + 'PackSize', px + 'Price', px + 'Deposit'].forEach(id => $(id).addEventListener('input', () => updatePackInfo(px)));
   $(px + 'PackU').addEventListener('change', () => updatePackInfo(px));
 });
-$('sCat').addEventListener('change', () => { if ($('sCat').value === 'getraenk') $('sPackBox').open = true; });
+$('sCat').addEventListener('change', () => { if ($('sCat').value === 'getraenk') $('sPackBox').open = true; renderBrands(); });
 $('sHistory').onclick = e => { e.preventDefault(); const k = keyOf(cap($('sName').value), sheetDetail()); closeSheets(); openPrices(k); };
 function sheetValues() {
   registerBrand($('sBrand').value);
@@ -1473,12 +1515,19 @@ $('sSave').onclick = () => {
   const it = data.items.find(i => i.id === editingId); if (!it) return closeSheets();
   const v = sheetValues(); if (!v.name) return;
   const wasStar = isStar(it.name, it.detail);
+  const oldItemKey = keyOf(it.name, it.detail);
   if (wasStar && keyOf(it.name, it.detail) !== keyOf(v.name, v.detail)) { setStar(it.name, it.detail, false); setStar(v.name, v.detail, true, { cat: v.cat, unit: v.unit, qty: v.qty }); }
   Object.assign(it, v, { updatedAt: now() });
   recordPrice(v.name, v.detail, v.offer);
   rememberArticle(v.name, v.detail, v.cat, v.unit);
   const f = data.favs[keyOf(v.name, v.detail)]; if (f) Object.assign(f, { cat: v.cat, unit: v.unit });
   const s = data.stars[keyOf(v.name, v.detail)]; if (s && s.on) Object.assign(s, { cat: v.cat, unit: v.unit, updatedAt: now() });
+  // andere gleiche Einträge auf der Liste (z. B. doppelt eingetragen) ebenfalls anpassen?
+  if (oldItemKey !== keyOf(v.name, v.detail)) {
+    const others = liveItems().filter(i => i !== it && !i.checked && keyOf(i.name, i.detail) === oldItemKey);
+    if (others.length && confirm(`„${it.name}“ steht noch ${others.length}× mit der alten Marke/Bezeichnung auf der Liste. Dort auch ändern?`))
+      others.forEach(i => Object.assign(i, { name: v.name, detail: v.detail, updatedAt: now() }));
+  }
   closeSheets(); commit();
 };
 $('sDelete').onclick = () => { closeSheets(); removeItem(editingId); };
@@ -2252,6 +2301,12 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.18', '09.10.2026', [
+    'Markt-Auswahl steht jetzt oben im Artikelfenster – direkt vor der Marke',
+    'Ist ein Markt gewählt, stehen seine Eigenmarken passend zum Bereich vorne (z. B. Pudding + ALDI → Milsani)',
+    'Eigenmarken anderer Märkte werden dann ausgeblendet',
+    'Marke/Bezeichnung bei Favorit oder „Häufig gekauft“ geändert: Nachfrage, ob es auch auf der Einkaufsliste geändert werden soll'
+  ]],
   ['v1.17', '09.10.2026', [
     'Fehler behoben: Antippen der grün markierten Marke hat das Feld geleert – jetzt bleibt sie ausgewählt (✓)',
     'Zum Entfernen gibt es eigene Knöpfe „✕ ohne Marke“ bzw. „✕ ohne“ bei der Bezeichnung'
