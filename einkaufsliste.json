@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-09T08:48:36.709Z",
+ "savedAt": "2026-10-09T08:50:10.416Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -293,6 +293,18 @@
    },
    "checked": false,
    "updatedAt": 1791530582515
+  },
+  {
+   "id": "mv0q5wru9p7oxa",
+   "name": "Salzbutter",
+   "detail": "",
+   "qty": 1,
+   "unit": "",
+   "cat": "kuehl",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791535808298
   }
  ],
  "favs": {
@@ -442,6 +454,14 @@
    "cat": "tk",
    "unit": "",
    "last": 1791529828078
+  },
+  "salzbutter|": {
+   "count": 1,
+   "name": "Salzbutter",
+   "detail": "",
+   "cat": "kuehl",
+   "unit": "",
+   "last": 1791535808299
   }
  },
  "stars": {
@@ -612,6 +632,13 @@
    "cat": "drogerie",
    "unit": "Pck.",
    "updatedAt": 1791496635564
+  },
+  "salzbutter": {
+   "name": "Salzbutter",
+   "variants": [],
+   "cat": "kuehl",
+   "unit": "",
+   "updatedAt": 1791535808299
   }
  },
  "prices": {
