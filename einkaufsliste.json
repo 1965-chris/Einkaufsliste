@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.18",
- "savedAt": "2026-10-09T07:23:04.629Z",
+ "savedAt": "2026-10-09T07:23:18.759Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -261,8 +261,8 @@
    "offer": {
     "shop": "ALDI",
     "price": 1.79,
-    "from": "2026-10-05",
-    "until": "2026-10-10",
+    "from": "2026-10-12",
+    "until": "2026-10-17",
     "type": "angebot",
     "special": true,
     "pack": null,
@@ -270,7 +270,7 @@
     "regular": null
    },
    "checked": false,
-   "updatedAt": 1791529900585
+   "updatedAt": 1791530596644
   },
   {
    "id": "mv0mlqemr04mjq",
@@ -530,7 +530,7 @@
    "qty": 2,
    "note": "",
    "on": true,
-   "updatedAt": 1791529900586
+   "updatedAt": 1791530596644
   },
   "pizza|dr. oetker die ofenfrische diavolo": {
    "name": "Pizza",
@@ -861,6 +861,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791530582515
+  },
+  "pizza|dr. oetker die ofenfrische thunfisch|aldi|2026-10-12": {
+   "id": "pizza|dr. oetker die ofenfrische thunfisch|aldi|2026-10-12",
+   "key": "pizza|dr. oetker die ofenfrische thunfisch",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.79,
+   "type": "angebot",
+   "special": true,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791530596644
   }
  },
  "brands": {
