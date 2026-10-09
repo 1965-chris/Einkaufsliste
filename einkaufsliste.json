@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.17",
- "savedAt": "2026-10-09T07:10:53.888Z",
+ "savedAt": "2026-10-09T07:11:28.705Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -272,7 +272,7 @@
    "note": "",
    "offer": {
     "shop": "ALDI",
-    "price": null,
+    "price": 1.79,
     "from": "2026-10-05",
     "until": "2026-10-10",
     "type": "angebot",
@@ -282,7 +282,7 @@
     "regular": null
    },
    "checked": false,
-   "updatedAt": 1791529851763
+   "updatedAt": 1791529886591
   }
  ],
  "favs": {
@@ -530,7 +530,7 @@
    "qty": 2,
    "note": "",
    "on": true,
-   "updatedAt": 1791529851763
+   "updatedAt": 1791529886591
   }
  },
  "custom": {
@@ -809,6 +809,20 @@
    "deposit": null,
    "note": "Vergleichspreis",
    "updatedAt": 1791496635562
+  },
+  "pizza|dr. oetker die ofenfrische diavolo|aldi|2026-10-05": {
+   "id": "pizza|dr. oetker die ofenfrische diavolo|aldi|2026-10-05",
+   "key": "pizza|dr. oetker die ofenfrische diavolo",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Diavolo",
+   "date": "2026-10-05",
+   "shop": "ALDI",
+   "price": 1.79,
+   "type": "angebot",
+   "special": true,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791529886591
   }
  },
  "brands": {
