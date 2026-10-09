@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.17",
- "savedAt": "2026-10-09T07:08:06.158Z",
+ "savedAt": "2026-10-09T07:10:06.110Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -87,8 +87,8 @@
     "until": "2026-10-17",
     "special": true
    },
-   "checked": false,
-   "updatedAt": 1791413921672
+   "checked": true,
+   "updatedAt": 1791529803930
   },
   {
    "id": "muyigk1e3ltp6h",
@@ -105,8 +105,8 @@
     "until": "2026-10-17",
     "special": true
    },
-   "checked": false,
-   "updatedAt": 1791413901032
+   "checked": true,
+   "updatedAt": 1791529805476
   },
   {
    "id": "muyo5rk7znkq3g",
