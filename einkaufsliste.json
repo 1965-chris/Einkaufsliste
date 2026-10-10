@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-10T22:36:15.471Z",
+ "savedAt": "2026-10-10T22:37:00.323Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -320,7 +320,7 @@
    "id": "mv2z3tgnae8qqi",
    "name": "Pudding",
    "detail": "Milsani Schoko mit Sahnehaube",
-   "qty": 1,
+   "qty": 3,
    "unit": "Becher",
    "cat": "kuehl",
    "note": "",
@@ -340,7 +340,7 @@
     "regular": null
    },
    "checked": false,
-   "updatedAt": 1791671773345
+   "updatedAt": 1791671818407
   }
  ],
  "favs": {
