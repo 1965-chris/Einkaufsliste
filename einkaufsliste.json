@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-10T22:30:30.343Z",
+ "savedAt": "2026-10-10T22:36:00.317Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -315,6 +315,32 @@
    },
    "checked": false,
    "updatedAt": 1791535859488
+  },
+  {
+   "id": "mv2z3tgnae8qqi",
+   "name": "Pudding",
+   "detail": "Milsani Schoko mit Sahnehaube",
+   "qty": 1,
+   "unit": "Becher",
+   "cat": "kuehl",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "2026-10-12",
+    "until": "2026-10-17",
+    "type": "angebot",
+    "special": true,
+    "pack": {
+     "n": 1,
+     "size": 0.2,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1791671759591
   }
  ],
  "favs": {
@@ -476,6 +502,14 @@
    "unit": "",
    "last": 1791638846588,
    "deleted": true
+  },
+  "pudding|milsani schoko mit sahnehaube": {
+   "count": 1,
+   "name": "Pudding",
+   "detail": "Milsani Schoko mit Sahnehaube",
+   "cat": "kuehl",
+   "unit": "Becher",
+   "last": 1791671759592
   }
  },
  "stars": {
@@ -653,6 +687,15 @@
    "cat": "kuehl",
    "unit": "",
    "updatedAt": 1791535808299
+  },
+  "pudding": {
+   "name": "Pudding",
+   "variants": [
+    "Schoko mit Sahnehaube"
+   ],
+   "cat": "kuehl",
+   "unit": "Becher",
+   "updatedAt": 1791671759592
   }
  },
  "prices": {
