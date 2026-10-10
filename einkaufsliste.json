@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-10T13:26:31.809Z",
+ "savedAt": "2026-10-10T13:27:28.746Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -321,7 +321,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1791638791176,
+   "last": 1791638846588,
    "cat": "vorrat",
    "deleted": true
   },
@@ -331,7 +331,7 @@
    "detail": "ganze Bohne",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "butter|": {
@@ -340,7 +340,7 @@
    "detail": "",
    "cat": "kuehl",
    "unit": "Pck.",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "coca cola|": {
@@ -349,7 +349,7 @@
    "detail": "",
    "cat": "getraenk",
    "unit": "Tray",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "pizza|thunfisch": {
@@ -358,7 +358,7 @@
    "detail": "Thunfisch",
    "cat": "tk",
    "unit": "",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "pizza|diavolo": {
@@ -367,7 +367,7 @@
    "detail": "Diavolo",
    "cat": "tk",
    "unit": "",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "salami|": {
@@ -376,7 +376,7 @@
    "detail": "",
    "cat": "fleisch",
    "unit": "",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "sellerie|": {
@@ -385,7 +385,7 @@
    "detail": "",
    "cat": "sonst",
    "unit": "",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "kakao|": {
@@ -394,7 +394,7 @@
    "detail": "",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "schinken|": {
@@ -403,7 +403,7 @@
    "detail": "",
    "cat": "fleisch",
    "unit": "Pck.",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "tomatenmark|": {
@@ -412,13 +412,13 @@
    "detail": "",
    "cat": "obst",
    "unit": "",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "melita barista ganze bohnen|": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1791496074767,
+   "last": 1791638846588,
    "cat": "vorrat",
    "detail": "",
    "deleted": true
@@ -429,7 +429,7 @@
    "detail": "",
    "cat": "drogerie",
    "unit": "Pck.",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "joghurt|landliebe versch. sorten": {
@@ -438,7 +438,7 @@
    "detail": "Landliebe versch. Sorten",
    "cat": "kuehl",
    "unit": "Becher",
-   "last": 1791496074767,
+   "last": 1791638846588,
    "deleted": true
   },
   "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt": {
@@ -447,7 +447,8 @@
    "detail": "KOKETT 3-lagig 4 Rollen a 64 Blatt",
    "cat": "drogerie",
    "unit": "Pck.",
-   "last": 1791496635564
+   "last": 1791638846588,
+   "deleted": true
   },
   "pizza|dr. oetker die ofenfrische thunfisch": {
    "count": 1,
@@ -455,7 +456,8 @@
    "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
    "cat": "tk",
    "unit": "",
-   "last": 1791529825346
+   "last": 1791638846588,
+   "deleted": true
   },
   "pizza|dr. oetker die ofenfrische diavolo": {
    "count": 1,
@@ -463,7 +465,8 @@
    "detail": "Dr. Oetker Die Ofenfrische Diavolo",
    "cat": "tk",
    "unit": "",
-   "last": 1791529828078
+   "last": 1791638846588,
+   "deleted": true
   },
   "salzbutter|": {
    "count": 1,
@@ -471,7 +474,8 @@
    "detail": "",
    "cat": "kuehl",
    "unit": "",
-   "last": 1791535808299
+   "last": 1791638846588,
+   "deleted": true
   }
  },
  "stars": {
