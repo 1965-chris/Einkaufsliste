@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.21",
- "savedAt": "2026-10-12T18:44:49.215Z",
+ "savedAt": "2026-10-12T18:45:04.063Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -305,7 +305,7 @@
    "note": "",
    "offer": {
     "shop": "ALDI",
-    "price": null,
+    "price": 1.29,
     "from": "",
     "until": "",
     "type": "normal",
@@ -315,7 +315,7 @@
     "regular": null
    },
    "checked": false,
-   "updatedAt": 1791830186580
+   "updatedAt": 1791830701871
   },
   {
    "id": "mv2z3tgnae8qqi",
@@ -1132,6 +1132,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791823536017
+  },
+  "salzbutter|milsani|aldi|2026-10-12": {
+   "id": "salzbutter|milsani|aldi|2026-10-12",
+   "key": "salzbutter|milsani",
+   "name": "Salzbutter",
+   "detail": "Milsani",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.29,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791830701872
   }
  },
  "brands": {
