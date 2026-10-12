@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T16:45:15.804Z",
+ "savedAt": "2026-10-12T16:45:38.151Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -390,7 +390,7 @@
   {
    "id": "mv5hg7obvxhqk0",
    "name": "Taschentücher",
-   "detail": "Kokett Taschentücher Badezimmer",
+   "detail": "Kokett Taschentücher BoxBadezimmer",
    "qty": 1,
    "unit": "Pck.",
    "cat": "drogerie",
@@ -407,7 +407,7 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791823513683
+   "updatedAt": 1791823536017
   }
  ],
  "favs": {
@@ -805,11 +805,12 @@
   "taschentücher": {
    "name": "Taschentücher",
    "variants": [
-    "Taschentücher Badezimmer"
+    "Taschentücher Badezimmer",
+    "Taschentücher BoxBadezimmer"
    ],
    "cat": "drogerie",
    "unit": "Pck.",
-   "updatedAt": 1791823503324
+   "updatedAt": 1791823536017
   }
  },
  "prices": {
@@ -1103,6 +1104,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791823503323
+  },
+  "taschentücher|kokett taschentücher boxbadezimmer|aldi|2026-10-12": {
+   "id": "taschentücher|kokett taschentücher boxbadezimmer|aldi|2026-10-12",
+   "key": "taschentücher|kokett taschentücher boxbadezimmer",
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher BoxBadezimmer",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 0.85,
+   "type": "angebot",
+   "special": true,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791823536017
   }
  },
  "brands": {
