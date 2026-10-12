@@ -450,7 +450,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.19';
+const APP_VERSION = 'v1.20';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1202,9 +1202,21 @@ $('tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab
 /* ---------- Artikel-Blatt ---------- */
 $('sCat').innerHTML = CATS.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
 $('sUnit').innerHTML = UNITS.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
-function openSheet(id) { $('backdrop').classList.add('open'); $(id).classList.add('open'); }
+let sheetDirty = false, lastBlur = 0;
+function openSheet(id) { sheetDirty = false; $('backdrop').classList.add('open'); $(id).classList.add('open'); }
+// Eingaben in einem Fenster merken – dann schließt ein Tipp daneben das Fenster nicht mehr versehentlich
+document.addEventListener('input', e => { if (e.isTrusted && e.target.closest && e.target.closest('.sheet')) sheetDirty = true; });
+document.addEventListener('change', e => { if (e.target.closest && e.target.closest('.sheet')) sheetDirty = true; });
+document.addEventListener('focusout', e => { if (e.target.closest && e.target.closest('.sheet')) lastBlur = Date.now(); });
 function closeSheets() { $('backdrop').classList.remove('open'); document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open')); }
-$('backdrop').addEventListener('click', closeSheets);
+$('backdrop').addEventListener('click', () => {
+  // iPhone: der erste Tipp schließt oft nur die Tastatur, das Fenster rutscht – dieser Tipp darf nichts verwerfen
+  if (Date.now() - lastBlur < 800) return;
+  const ae = document.activeElement;
+  if (ae && ae.closest && ae.closest('.sheet') && /INPUT|TEXTAREA|SELECT/.test(ae.tagName)) { ae.blur(); return; }
+  if (sheetDirty) { toast('Bitte „Speichern“ oder „Abbrechen“ tippen'); return; }
+  closeSheets();
+});
 document.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeSheets(); });
 
 function sheetDetail() { return joinBrand($('sBrand').value, $('sDetail').value); }
@@ -1829,7 +1841,8 @@ function priceEntries(key) {
   return Object.values(data.prices || {}).filter(e => !e.deleted && (!key || e.key === key));
 }
 function recordPrice(name, detail, offer, dateOverride) {
-  if (!offer || offer.price == null || !offer.shop) return;
+  if (!offer || offer.price == null) return;
+  if (!offer.shop) offer = { ...offer, shop: 'ohne Markt' };   // Preis trotzdem merken
   name = cap(name); detail = String(detail || '').trim();
   const key = keyOf(name, detail);
   const date = dateOverride || offer.from || todayStr();
@@ -2303,6 +2316,11 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.20', '12.10.2026', [
+    'Fehler behoben: Preis nachtragen beim Einkaufen ging am iPhone verloren – ein Tipp neben das Fenster (beim Schließen der Tastatur) hat es ohne Speichern geschlossen',
+    'Fenster mit Änderungen schließen sich jetzt nur noch über „Speichern“ oder „Abbrechen“',
+    'Preise ohne gewählten Markt landen trotzdem im Preisverlauf („ohne Markt“)'
+  ]],
   ['v1.19', '09.10.2026', [
     'Neues App-Icon: Mann mit Einkaufswagen (Dateien icon-180/192/512.png und favicon.ico im Repo)'
   ]],
