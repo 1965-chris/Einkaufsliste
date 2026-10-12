@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:06:06.586Z",
+ "savedAt": "2026-10-12T20:07:47.352Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -439,6 +439,28 @@
    },
    "checked": false,
    "updatedAt": 1791835551768
+  },
+  {
+   "id": "mv5oovrjxjc1mb",
+   "name": "Slipeinlagen",
+   "detail": "Extra Lang",
+   "qty": 1,
+   "unit": "",
+   "cat": "drogerie",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.99,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1791835665103
   }
  ],
  "favs": {
@@ -654,6 +676,14 @@
    "cat": "kuehl",
    "unit": "l",
    "last": 1791835551768
+  },
+  "slipeinlagen|extra lang": {
+   "count": 1,
+   "name": "Slipeinlagen",
+   "detail": "Extra Lang",
+   "cat": "drogerie",
+   "unit": "",
+   "last": 1791835665103
   }
  },
  "stars": {
@@ -907,6 +937,18 @@
     "laktosefrei": 1791835551769
    },
    "updatedAt": 1791835551769
+  },
+  "slipeinlagen": {
+   "name": "Slipeinlagen",
+   "variants": [
+    "Extra Lang"
+   ],
+   "cat": "drogerie",
+   "unit": "",
+   "varAdd": {
+    "extra lang": 1791835665104
+   },
+   "updatedAt": 1791835665104
   }
  },
  "prices": {
@@ -1353,6 +1395,20 @@
    },
    "deposit": null,
    "updatedAt": 1791835551768
+  },
+  "slipeinlagen|extra lang|aldi|2026-10-12": {
+   "id": "slipeinlagen|extra lang|aldi|2026-10-12",
+   "key": "slipeinlagen|extra lang",
+   "name": "Slipeinlagen",
+   "detail": "Extra Lang",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 0.99,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791835665103
   }
  },
  "brands": {
