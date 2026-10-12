@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.24",
- "savedAt": "2026-10-12T19:37:54.891Z",
+ "savedAt": "2026-10-12T19:38:50.496Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -840,6 +840,15 @@
    "cat": "drogerie",
    "unit": "Pck.",
    "updatedAt": 1791823536017
+  },
+  "zucker": {
+   "name": "Zucker",
+   "variants": [
+    "Diadem Kristall Zucker"
+   ],
+   "cat": "vorrat",
+   "unit": "",
+   "updatedAt": 1791833928405
   }
  },
  "prices": {
@@ -1116,9 +1125,13 @@
    "price": 0.99,
    "type": "normal",
    "special": false,
-   "pack": null,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
    "deposit": null,
-   "updatedAt": 1791823145575
+   "updatedAt": 1791833928405
   },
   "taschentücher|kokett taschentücher badezimmer|aldi|2026-10-12": {
    "id": "taschentücher|kokett taschentücher badezimmer|aldi|2026-10-12",
