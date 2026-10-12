@@ -470,7 +470,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.24';
+const APP_VERSION = 'v1.25';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -902,7 +902,7 @@ function rememberArticle(name, detail, cat, unit) {
   let changed = !prev && !isBase;
   if (!isBase) { if (cu.cat !== cat) { cu.cat = cat; changed = true; } if (cu.unit !== unit) { cu.unit = unit; changed = true; } }
   const d = splitBrand(detail).rest;   // Marke gehört nicht in die Bezeichnungs-Knöpfe
-  if (d && !articleInfo(name).variants.some(v => norm(v) === norm(d))) { cu.variants = [...(cu.variants || []), d]; changed = true; }
+  if (d && !articleInfo(name).variants.some(v => norm(v) === norm(d))) { cu.variants = [...(cu.variants || []), d]; cu.varAdd = { ...(cu.varAdd || {}), [norm(d)]: now() }; changed = true; }
   if (changed) { delete cu.deleted; cu.updatedAt = now(); data.custom[k] = cu; }
   return changed;
 }
@@ -1503,8 +1503,14 @@ function moveArticleKey(oldKey, name, detail) {
   const st = data.stars[oldKey];
   if (st && st.on) { setStar(name, detail, true, { cat: st.cat, unit: st.unit, qty: st.qty }); st.on = false; st.updatedAt = now(); }
   const old = splitKeyArticle(oldKey);
-  if (old && old.cu && old.variant) { old.cu.variants = old.cu.variants.filter(v => norm(v) !== old.variant); old.cu.updatedAt = now(); }
+  if (old && old.cu && old.variant) removeVariant(old.cu, old.variant);
   offerListUpdate(oldKey, name, detail);
+}
+// Bezeichnung löschen – mit Zeitstempel, damit sie beim Abgleich mit dem anderen Handy nicht zurückkommt
+function removeVariant(cu, nv) {
+  cu.variants = (cu.variants || []).filter(x => norm(x) !== nv);
+  cu.varDel = { ...(cu.varDel || {}), [nv]: now() };
+  cu.updatedAt = now();
 }
 function splitKeyArticle(key) {
   const [nk, dk] = key.split('|'); const cu = data.custom[nk];
@@ -1531,7 +1537,7 @@ $('sArtRemove').onclick = () => {
   const f = data.favs[artKey]; if (f && !f.deleted) { f.deleted = true; f.last = now(); }
   const st = data.stars[artKey]; if (st && st.on) { st.on = false; st.updatedAt = now(); }
   const sk = splitKeyArticle(artKey);
-  if (sk) { if (sk.variant) { sk.cu.variants = (sk.cu.variants || []).filter(x => norm(x) !== sk.variant); } else if (!(sk.cu.variants || []).length) sk.cu.deleted = true; sk.cu.updatedAt = now(); }
+  if (sk) { if (sk.variant) removeVariant(sk.cu, sk.variant); else if (!(sk.cu.variants || []).length) { sk.cu.deleted = true; sk.cu.updatedAt = now(); } }
   closeSheets(); commit(); toast('Gelöscht');
 };
 
@@ -1860,11 +1866,14 @@ function mergeData(local, remote) {
   const purchases = mergeByUpdated(local.purchases, remote.purchases);
   Object.keys(purchases).forEach(k => { if (purchases[k].deleted && (purchases[k].updatedAt || 0) < cutoff) delete purchases[k]; });
   Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
-  // eigene Bezeichnungen beider Seiten zusammenführen
+  // eigene Bezeichnungen beider Seiten zusammenführen – gelöschte (varDel) bleiben gelöscht, solange sie nicht neuer wieder angelegt wurden
   Object.keys(custom).forEach(k => {
+    const L = obj(local.custom)[k] || {}, R = obj(remote.custom)[k] || {};
+    const maxMap = (a, b) => { const o = { ...obj(a) }; Object.entries(obj(b)).forEach(([x, t]) => { if (!(o[x] >= t)) o[x] = t; }); return o; };
+    const varAdd = maxMap(L.varAdd, R.varAdd), varDel = maxMap(L.varDel, R.varDel);
     const vs = new Map();
-    [...((obj(local.custom)[k] || {}).variants || []), ...((obj(remote.custom)[k] || {}).variants || [])].forEach(v => { if (!vs.has(norm(v))) vs.set(norm(v), v); });
-    custom[k] = { ...custom[k], variants: [...vs.values()] };
+    [...(L.variants || []), ...(R.variants || [])].forEach(v => { const nv = norm(v); if (!vs.has(nv) && (!varDel[nv] || (varAdd[nv] || 0) > varDel[nv])) vs.set(nv, v); });
+    custom[k] = { ...custom[k], variants: [...vs.values()], ...(Object.keys(varAdd).length ? { varAdd } : {}), ...(Object.keys(varDel).length ? { varDel } : {}) };
   });
   return { items, favs, stars, custom, prices, brands, purchases };
 }
@@ -2626,6 +2635,9 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.25', '12.10.2026', [
+    'Fehler behoben: In „Meine Artikel“ gelöschte Artikel kamen nach dem Abgleich wieder zurück'
+  ]],
   ['v1.24', '12.10.2026', [
     'Neu: Auswertung „🧾 Einkäufe“ im Reiter Preise – abgehakte Artikel werden beim Entfernen mit Datum, Menge, Markt und Preis gespeichert',
     'Filter nach Jahr, Monat, Bereich und Markt; Ansicht nach Artikel, Monat, Markt, Bereich oder einzeln',
