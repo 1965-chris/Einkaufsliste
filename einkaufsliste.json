@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:05:53.892Z",
+ "savedAt": "2026-10-12T20:06:06.586Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -762,6 +762,15 @@
    "qty": 1,
    "on": true,
    "updatedAt": 1791831929595
+  },
+  "h-milch 1,5%|laktosefrei": {
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "cat": "kuehl",
+   "unit": "l",
+   "qty": 10,
+   "on": true,
+   "updatedAt": 1791835564476
   }
  },
  "custom": {
