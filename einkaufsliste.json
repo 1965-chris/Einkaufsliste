@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:17:36.988Z",
+ "savedAt": "2026-10-12T20:18:08.627Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -576,11 +576,11 @@
    "note": "",
    "offer": {
     "shop": "ALDI",
-    "price": null,
-    "from": "2026-10-12",
-    "until": "2026-10-17",
-    "type": "angebot",
-    "special": true,
+    "price": 1.09,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
     "pack": {
      "n": 1,
      "size": 1
@@ -589,7 +589,7 @@
     "regular": null
    },
    "checked": false,
-   "updatedAt": 1791836254757
+   "updatedAt": 1791836286968
   }
  ],
  "favs": {
@@ -961,7 +961,7 @@
    "unit": "Pck.",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791836254758,
+   "updatedAt": 1791836286969,
    "note": ""
   },
   "sonntagsbrötchen|": {
