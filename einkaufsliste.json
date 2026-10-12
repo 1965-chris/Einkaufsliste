@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T03:26:45.806Z",
+ "savedAt": "2026-10-12T03:27:57.281Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -268,10 +268,10 @@
     "special": true,
     "pack": null,
     "deposit": null,
-    "regular": null
+    "regular": 3.69
    },
    "checked": false,
-   "updatedAt": 1791530596644
+   "updatedAt": 1791775675152
   },
   {
    "id": "mv0mlqemr04mjq",
@@ -599,7 +599,7 @@
    "qty": 2,
    "note": "",
    "on": true,
-   "updatedAt": 1791530596644
+   "updatedAt": 1791775675153
   },
   "pizza|dr. oetker die ofenfrische diavolo": {
    "name": "Pizza",
