@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:13:38.588Z",
+ "savedAt": "2026-10-12T20:14:55.418Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -532,6 +532,32 @@
    "checked": true,
    "updatedAt": 1791836017466,
    "checkedAt": 1791836017466
+  },
+  {
+   "id": "mv5oy27b3kglza",
+   "name": "Fleischsalat",
+   "detail": "",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "kuehl",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.65,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.4,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1791836093351
   }
  ],
  "favs": {
@@ -779,6 +805,14 @@
    "cat": "brot",
    "unit": "Pck.",
    "last": 1791835948331
+  },
+  "fleischsalat|": {
+   "count": 1,
+   "name": "Fleischsalat",
+   "detail": "",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "last": 1791836093351
   }
  },
  "stars": {
@@ -1097,6 +1131,13 @@
    "cat": "brot",
    "unit": "Pck.",
    "updatedAt": 1791835948331
+  },
+  "fleischsalat": {
+   "name": "Fleischsalat",
+   "variants": [],
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "updatedAt": 1791836093351
   }
  },
  "prices": {
@@ -1599,6 +1640,24 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791835948331
+  },
+  "fleischsalat||aldi|2026-10-12": {
+   "id": "fleischsalat||aldi|2026-10-12",
+   "key": "fleischsalat|",
+   "name": "Fleischsalat",
+   "detail": "",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.65,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1791836093351
   }
  },
  "brands": {
