@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:16:51.201Z",
+ "savedAt": "2026-10-12T20:17:03.235Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -565,6 +565,18 @@
    "updatedAt": 1791836107705,
    "checkedAt": 1791836102385,
    "deleted": true
+  },
+  {
+   "id": "mv5p0rnj5p1u4t",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "qty": 4,
+   "unit": "Pck.",
+   "cat": "kuehl",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791836222858
   }
  ],
  "favs": {
@@ -774,12 +786,12 @@
    "deleted": true
   },
   "h-milch 1,5%|laktosefrei": {
-   "count": 1,
+   "count": 5,
    "name": "H-Milch 1,5%",
    "detail": "Laktosefrei",
    "cat": "kuehl",
-   "unit": "l",
-   "last": 1791835551768
+   "unit": "Pck.",
+   "last": 1791836222858
   },
   "slipeinlagen|extra lang": {
    "count": 1,
