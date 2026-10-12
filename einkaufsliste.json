@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.22",
- "savedAt": "2026-10-12T19:04:25.840Z",
+ "savedAt": "2026-10-12T19:05:23.964Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -713,6 +713,15 @@
    "note": "",
    "on": true,
    "updatedAt": 1791775682531
+  },
+  "salzbutter|milsani": {
+   "name": "Salzbutter",
+   "detail": "Milsani",
+   "cat": "kuehl",
+   "unit": "",
+   "qty": 1,
+   "on": true,
+   "updatedAt": 1791831921875
   }
  },
  "custom": {
