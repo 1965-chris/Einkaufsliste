@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:08:24.419Z",
+ "savedAt": "2026-10-12T20:10:04.237Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -803,6 +803,15 @@
    "qty": 10,
    "on": true,
    "updatedAt": 1791835564476
+  },
+  "sonntagsbrötchen|": {
+   "name": "Sonntagsbrötchen",
+   "detail": "",
+   "cat": "brot",
+   "unit": "",
+   "qty": 2,
+   "on": true,
+   "updatedAt": 1791835801980
   }
  },
  "custom": {
@@ -951,6 +960,13 @@
     "extra lang": 1791835665104
    },
    "updatedAt": 1791835665104
+  },
+  "sonntagsbrötchen": {
+   "name": "Sonntagsbrötchen",
+   "variants": [],
+   "cat": "brot",
+   "unit": "",
+   "updatedAt": 1791835801980
   }
  },
  "prices": {
