@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.24",
- "savedAt": "2026-10-12T19:39:42.836Z",
+ "savedAt": "2026-10-12T19:40:53.701Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1173,9 +1173,13 @@
    "price": 1.29,
    "type": "normal",
    "special": false,
-   "pack": null,
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
    "deposit": null,
-   "updatedAt": 1791830751962
+   "updatedAt": 1791834051562
   },
   "pudding|milsani schoko mit sahnehaube|aldi|2026-10-12": {
    "id": "pudding|milsani schoko mit sahnehaube|aldi|2026-10-12",
