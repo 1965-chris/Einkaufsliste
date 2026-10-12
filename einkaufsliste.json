@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.24",
- "savedAt": "2026-10-12T19:33:39.496Z",
+ "savedAt": "2026-10-12T19:36:32.561Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1179,6 +1179,23 @@
    },
    "deposit": null,
    "updatedAt": 1791831978079
+  },
+  "balsamico essig|cucina|aldi|2026-10-12": {
+   "id": "balsamico essig|cucina|aldi|2026-10-12",
+   "key": "balsamico essig|cucina",
+   "name": "Balsamico Essig",
+   "detail": "Cucina",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.69,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5
+   },
+   "deposit": null,
+   "updatedAt": 1791833790362
   }
  },
  "brands": {
