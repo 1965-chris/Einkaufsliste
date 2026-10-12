@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.22",
- "savedAt": "2026-10-12T19:06:20.181Z",
+ "savedAt": "2026-10-12T19:06:36.461Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -57,7 +57,7 @@
    "cat": "getraenk",
    "note": "",
    "checked": true,
-   "updatedAt": 1791823830342,
+   "updatedAt": 1791831994319,
    "offer": {
     "shop": "Lidl",
     "price": 5.94,
@@ -71,7 +71,8 @@
     },
     "deposit": 1.5,
     "regular": 7.14
-   }
+   },
+   "deleted": true
   },
   {
    "id": "muyif7njm5syew",
@@ -249,7 +250,8 @@
     "regular": 2.65
    },
    "checked": true,
-   "updatedAt": 1791823825740
+   "updatedAt": 1791831994319,
+   "deleted": true
   },
   {
    "id": "mv0mloapt9ka72",
@@ -341,7 +343,8 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791831978079
+   "updatedAt": 1791831994319,
+   "deleted": true
   },
   {
    "id": "mv5h2n2zwd7nbt",
@@ -363,7 +366,8 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791822956999
+   "updatedAt": 1791831994319,
+   "deleted": true
   },
   {
    "id": "mv5hc4kfazbl05",
@@ -385,7 +389,8 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791823338604
+   "updatedAt": 1791831994319,
+   "deleted": true
   },
   {
    "id": "mv5hg7obvxhqk0",
@@ -407,7 +412,8 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791823536017
+   "updatedAt": 1791831994319,
+   "deleted": true
   }
  ],
  "favs": {
