@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T16:45:38.151Z",
+ "savedAt": "2026-10-12T16:49:59.316Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -766,11 +766,12 @@
   "küchenrolle": {
    "name": "Küchenrolle",
    "variants": [
-    "KOKETT 3-lagig 4 Rollen a 64 Blatt"
+    "KOKETT 3-lagig 4 Rollen a 64 Blatt",
+    "3-lagig 4 Rollen a 64 Blatt"
    ],
    "cat": "drogerie",
    "unit": "Pck.",
-   "updatedAt": 1791496635564
+   "updatedAt": 1791823797184
   },
   "salzbutter": {
    "name": "Salzbutter",
