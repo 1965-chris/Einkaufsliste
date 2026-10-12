@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:01:50.988Z",
+ "savedAt": "2026-10-12T20:02:49.567Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1268,6 +1268,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791835308558
+  },
+  "tomatenmark||ohne markt|2026-10-12": {
+   "id": "tomatenmark||ohne markt|2026-10-12",
+   "key": "tomatenmark|",
+   "name": "Tomatenmark",
+   "detail": "",
+   "date": "2026-10-12",
+   "shop": "ohne Markt",
+   "price": 0.89,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791835367464
   }
  },
  "brands": {
@@ -1459,12 +1473,13 @@
    "unit": "",
    "n": 2,
    "shop": "ohne Markt",
-   "price": null,
-   "est": false,
+   "price": 0.89,
+   "est": true,
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833530679
+   "updatedAt": 1791835367465,
+   "later": "2026-10-12"
   },
   "k-mv01n4x0751ump": {
    "id": "k-mv01n4x0751ump",
