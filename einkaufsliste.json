@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:10:04.237Z",
+ "savedAt": "2026-10-12T20:10:07.433Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -463,6 +463,28 @@
    "checked": true,
    "updatedAt": 1791835702361,
    "checkedAt": 1791835702361
+  },
+  {
+   "id": "mv5orvyh3uyoa2",
+   "name": "Sonntagsbrötchen",
+   "detail": "",
+   "qty": 2,
+   "unit": "",
+   "cat": "brot",
+   "note": "9 Stck",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.19,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1791835805321
   }
  ],
  "favs": {
@@ -686,6 +708,14 @@
    "cat": "drogerie",
    "unit": "",
    "last": 1791835665103
+  },
+  "sonntagsbrötchen|": {
+   "count": 1,
+   "name": "Sonntagsbrötchen",
+   "detail": "",
+   "cat": "brot",
+   "unit": "",
+   "last": 1791835805321
   }
  },
  "stars": {
@@ -1427,6 +1457,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791835665103
+  },
+  "sonntagsbrötchen||aldi|2026-10-12": {
+   "id": "sonntagsbrötchen||aldi|2026-10-12",
+   "key": "sonntagsbrötchen|",
+   "name": "Sonntagsbrötchen",
+   "detail": "",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.19,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791835805321
   }
  },
  "brands": {
