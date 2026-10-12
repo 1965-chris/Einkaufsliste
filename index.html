@@ -125,6 +125,8 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .credit b{color:var(--ink)}
 .changes{margin:10px 0 0;padding-left:20px}
 .changes li{margin:4px 0}
+.warn{display:inline-block;font-size:11px;font-weight:600;background:#fff1d6;color:#9a5b00;border-radius:6px;padding:1px 6px;margin-top:3px}
+.okmark{color:var(--accent);font-weight:700}
 .badge{display:inline-block;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .chk{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink);margin:10px 0 0}
 .chk input{width:20px;height:20px;accent-color:var(--accent)}
@@ -157,6 +159,10 @@ details.packbox summary{font-size:14px;color:var(--accent);padding:4px 0}
 .prow .ps{flex:1}
 .prow .pp{font-weight:700}
 .sp{display:inline-block;font-size:11px;font-weight:700;background:#fff3cf;color:#7a5600;border-radius:6px;padding:1px 6px;margin-left:6px}
+.pbar{height:6px;border-radius:3px;background:var(--accent);opacity:.75;margin-top:5px}
+.pfil{display:flex;gap:8px;margin-top:8px}
+.pfil select{flex:1;padding:9px 8px}
+.est{color:var(--muted);font-weight:400}
 .pdel{border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer;padding:2px 4px}
 .addprice{width:100%;margin-top:14px}
 .shopcard{padding:12px 14px;border-top:1px solid var(--line)}
@@ -219,6 +225,7 @@ summary{cursor:pointer;font-weight:600}
 <section class="view" id="v-artikel">
   <div class="addbar">
     <div class="addrow"><input class="inp search" id="catSearch" placeholder="Artikel suchen …" autocomplete="off" style="flex:1;margin:0"><button type="button" class="plus" id="newArt" aria-label="Neuer Artikel">+</button></div>
+    <div class="seg" id="catMode" style="margin-top:8px;display:flex"><button data-cm="katalog" class="on" style="flex:1">📚 Katalog</button><button data-cm="meine" style="flex:1">🗂 Meine Artikel</button></div>
   </div>
   <main id="catMain"></main>
 </section>
@@ -310,6 +317,16 @@ summary{cursor:pointer;font-weight:600}
       <button class="btn" id="sArtOnly">📚 Nur Artikel</button>
     </div>
     <div style="text-align:center;margin-top:10px"><button type="button" class="link" id="sArtDel">🗑 Eigenen Artikel löschen</button></div>
+  </div>
+  <div id="sBtnsArt" style="display:none">
+    <div class="row">
+      <button class="btn" data-close>Abbrechen</button>
+      <button class="btn primary" id="sArtSave">Speichern</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn danger" id="sArtRemove">Löschen</button>
+      <button class="btn" id="sArtList">Auf die Liste</button>
+    </div>
   </div>
   <div id="sBtnsOften">
     <div class="row">
@@ -453,7 +470,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.22';
+const APP_VERSION = 'v1.24';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -813,6 +830,7 @@ function registerBrand(b) {
 
 /* ---------- State ---------- */
 let data = loadData();
+setTimeout(() => { if (backfillPurchases()) saveLocal(); }, 0);
 // Einträge aus v1.0 hatten bei „Häufig gekauft“ ein älteres Schlüsselformat – einmalig umstellen
 (function migrateFavKeys() {
   let changed = false;
@@ -837,7 +855,7 @@ function loadJSON(key, fallback) {
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands) };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -1014,18 +1032,47 @@ function setStar(name, detail, on, extra = {}) {
   data.stars[k] = { ...(data.stars[k] || {}), name, detail, ...extra, on, updatedAt: now() };
 }
 function isStar(name, detail) { const s = data.stars[keyOf(name, detail)]; return !!(s && s.on); }
-function toggle(id) { const it = data.items.find(i => i.id === id); if (!it) return; it.checked = !it.checked; it.updatedAt = now(); commit(); }
+function toggle(id) { const it = data.items.find(i => i.id === id); if (!it) return; it.checked = !it.checked; it.checkedAt = it.checked ? now() : null; it.updatedAt = now(); commit(); }
+/* Einkauf archivieren: abgehakte Artikel landen beim Entfernen in der Auswertung */
+const WEIGHT_UNITS = ['g', 'kg', 'ml', 'l'];
+function lastKnownPrice(key, shop) {
+  const pe = priceEntries(key).sort((a, b) => b.date.localeCompare(a.date));
+  return (shop && pe.find(e => e.shop === shop && offerType(e) === 'normal')) || (shop && pe.find(e => e.shop === shop)) || pe.find(e => offerType(e) === 'normal') || pe[0] || null;
+}
+function archivePurchase(it, force = true, d = data) {
+  if (!it || !it.checked) return false;
+  d.purchases = d.purchases || {};
+  const id = 'k-' + it.id;
+  if (d.purchases[id] && (!force || !d.purchases[id].deleted)) return false;
+  const o = offerOf(it) || {};
+  const at = it.checkedAt || it.updatedAt || now();
+  let shop = o.shop || (force && shopFilter && shopFilter !== NO_SHOP ? shopFilter : '');
+  let price = o.price != null ? o.price : null, type = o.price != null ? offerType(o) : 'normal', est = false;
+  if (price == null) { const lp = lastKnownPrice(keyOf(it.name, it.detail), shop); if (lp) { price = lp.price; est = true; if (!shop) shop = lp.shop; } }
+  const n = WEIGHT_UNITS.includes(it.unit) ? 1 : (it.qty || 1);
+  d.purchases[id] = { id, date: ymd(new Date(at)), name: it.name, detail: it.detail || '', cat: it.cat || guessCat(it.name), qty: it.qty || 1, unit: it.unit || '', n,
+    shop: shop || 'ohne Markt', price, est, type, pack: o.pack || null, deposit: o.deposit > 0 ? o.deposit : null, updatedAt: now() };
+  return true;
+}
+// abgehakt entfernte Artikel nachtragen (auch solche, die auf einem anderen Gerät entfernt wurden)
+function backfillPurchases(d = data) {
+  let n = 0;
+  (d.items || []).forEach(i => { if (i.deleted && i.checked && archivePurchase(i, false, d)) n++; });
+  return n;
+}
+function unarchivePurchase(it) { const p = data.purchases && data.purchases['k-' + it.id]; if (p && !p.deleted) { p.deleted = true; p.updatedAt = now(); } }
 function removeItem(id) {
   const it = data.items.find(i => i.id === id); if (!it) return;
+  archivePurchase(it);
   it.deleted = true; it.updatedAt = now(); commit();
-  toast(`„${it.name}“ gelöscht`, () => { it.deleted = false; it.updatedAt = now(); commit(); });
+  toast(`„${it.name}“ ${it.checked ? 'entfernt – in der Auswertung gespeichert' : 'gelöscht'}`, () => { unarchivePurchase(it); it.deleted = false; it.updatedAt = now(); commit(); });
 }
 function clearDone() {
   const done = liveItems().filter(i => i.checked); if (!done.length) return;
-  const t = now(); done.forEach(i => { i.deleted = true; i.updatedAt = t; }); commit();
-  toast(`${done.length} erledigte entfernt`, () => { done.forEach(i => { i.deleted = false; i.updatedAt = now(); }); commit(); });
+  const t = now(); done.forEach(i => { archivePurchase(i); i.deleted = true; i.updatedAt = t; }); commit();
+  toast(`${done.length} erledigte entfernt – in der Auswertung gespeichert`, () => { done.forEach(i => { unarchivePurchase(i); i.deleted = false; i.updatedAt = now(); }); commit(); });
 }
-function commit() { saveLocal(); renderAll(); schedulePush(); }
+function commit() { backfillPurchases(); saveLocal(); renderAll(); schedulePush(); }
 
 /* ---------- Render ---------- */
 const $ = id => document.getElementById(id);
@@ -1130,8 +1177,66 @@ function renderChips() {
   $('chips').innerHTML = html;
 }
 
+/* Meine Artikel: alles, was schon einmal benutzt/angelegt wurde – mit Vollständigkeits-Hinweis */
+let catMode = 'katalog', myFilter = '';
+function myArticles() {
+  const map = new Map();
+  const add = (name, detail, extra = {}) => {
+    if (!name) return; name = cap(name); detail = String(detail || '').trim();
+    const k = keyOf(name, detail);
+    const a = map.get(k) || { key: k, name, detail, cat: null, unit: '', qty: 0, onlyCustom: true };
+    if (!extra.fromCustom) a.onlyCustom = false;
+    if (!a.cat && extra.cat) a.cat = extra.cat;
+    if (!a.unit && extra.unit) a.unit = extra.unit;
+    if (!a.pack && extra.pack) a.pack = extra.pack;
+    if (a.deposit == null && extra.deposit) a.deposit = extra.deposit;
+    map.set(k, a);
+  };
+  customArts().forEach(c => { if (c.variants && c.variants.length) c.variants.forEach(v => add(c.name, v, { ...c, fromCustom: true })); else if (!CAT_INDEX[norm(c.name)]) add(c.name, '', { ...c, fromCustom: true }); });
+  Object.values(data.favs).filter(f => !f.deleted).forEach(f => add(f.name, f.detail, { ...f, pack: f.offer && f.offer.pack, deposit: f.offer && f.offer.deposit }));
+  Object.values(data.stars).filter(st => st.on).forEach(st => add(st.name, st.detail, st));
+  data.items.filter(i => !i.deleted).forEach(i => add(i.name, i.detail, { ...i, pack: i.offer && i.offer.pack, deposit: i.offer && i.offer.deposit }));
+  const pe = priceEntries().sort((a, b) => b.date.localeCompare(a.date) || (b.updatedAt || 0) - (a.updatedAt || 0));
+  pe.forEach(e => add(e.name, e.detail, { pack: e.pack, deposit: e.deposit }));
+  // Bezeichnungs-Knöpfe aus dem Katalog nicht doppelt zeigen, wenn es den Artikel schon (mit Marke) gibt
+  [...map.values()].filter(a => a.onlyCustom).forEach(a => {
+    const rest = norm(splitBrand(a.detail).rest);
+    const dup = [...map.values()].some(b => b !== a && !b.onlyCustom && norm(b.name) === norm(a.name) && (!a.detail || norm(splitBrand(b.detail).rest) === rest));
+    if (dup) map.delete(a.key);
+  });
+  map.forEach(a => {
+    const mine = pe.filter(e => e.key === a.key);
+    a.normal = mine.find(e => offerType(e) === 'normal') || null;      // Angebot/App zählt nicht
+    a.special = mine.find(e => offerType(e) !== 'normal') || null;
+    const withPack = mine.find(e => e.pack); if (withPack) { a.pack = withPack.pack; a.deposit = withPack.deposit; }
+    a.missing = [!a.normal && 'Normalpreis', !a.pack && 'Größe'].filter(Boolean);
+    if (!a.cat) a.cat = guessCat(a.name);
+  });
+  return [...map.values()].sort((a, b) => a.name.localeCompare(b.name, 'de') || a.detail.localeCompare(b.detail, 'de'));
+}
+function renderMyArticles() {
+  const n = norm($('catSearch').value);
+  let arts = myArticles();
+  const nOpen = arts.filter(a => a.missing.length).length;
+  if (n) arts = arts.filter(a => norm(a.name + ' ' + a.detail).includes(n));
+  if (myFilter === 'open') arts = arts.filter(a => a.missing.length);
+  let html = `<p class="intro" style="margin-top:0">Alle Artikel, die du schon angelegt oder gekauft hast. <b>Komplett</b> ist ein Artikel mit Normalpreis und Größe – Angebots- und App-Preise zählen nicht. Antippen zum Bearbeiten.</p>`;
+  html += `<div class="chips">${[['', 'Alle'], ['open', '⚠︎ Unvollständig (' + nOpen + ')']].map(([v, l]) => `<button class="chip${v === myFilter ? ' sel' : ''}" data-myf="${v}">${l}</button>`).join('')}</div>`;
+  if (!arts.length) html += `<div class="empty">${myFilter === 'open' ? '🎉 Alles komplett.' : 'Noch keine eigenen Artikel.'}</div>`;
+  else html += `<div class="list">${arts.map(a => {
+    const meta = [a.normal && fmtPrice(a.normal.price) + (a.normal.shop && a.normal.shop !== 'ohne Markt' ? ' · ' + a.normal.shop : ''), a.pack && packLabel(a.pack)].filter(Boolean).join(' · ');
+    return `<div class="item" data-myart="${esc(a.key)}"><div class="body"><div class="name">${esc(a.name)}</div>${a.detail ? `<div class="detail">${esc(a.detail)}</div>` : ''}${meta ? `<div class="note">${esc(meta)}</div>` : ''}${a.missing.length ? `<span class="warn">⚠︎ fehlt: ${a.missing.join(', ')}</span>` : ''}</div>${a.missing.length ? '' : '<span class="qty"><span class="okmark">✓</span></span>'}</div>`;
+  }).join('')}</div>`;
+  $('catMain').innerHTML = html;
+}
+$('catMode').addEventListener('click', e => {
+  const b = e.target.closest('[data-cm]'); if (!b) return;
+  catMode = b.dataset.cm; $('catMode').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  renderCatalog();
+});
 /* Artikel-Katalog */
 function renderCatalog() {
+  if (catMode === 'meine') return renderMyArticles();
   const n = norm($('catSearch').value);
   let html = '';
   CATS.forEach(([cat, label]) => {
@@ -1278,8 +1383,9 @@ function openItemSheet(mode, src) {
   sheetMode = mode; editingId = mode === 'edit' ? src.id : null;
   favEditKey = mode === 'fav' && src.name ? keyOf(src.name, src.detail) : null;
   oftenKey = mode === 'often' ? (src.favKey || keyOf(src.name, src.detail)) : null;
+  artKey = mode === 'article' ? keyOf(src.name, src.detail) : null;
   const info = articleInfo(src.name || '');
-  $('sTitle').textContent = mode === 'edit' ? 'Artikel bearbeiten' : mode === 'fav' ? (favEditKey ? 'Favorit bearbeiten' : 'Neuer Favorit') : mode === 'often' ? 'Häufig gekauft' : (info.name || 'Neuer Artikel');
+  $('sTitle').textContent = mode === 'edit' ? 'Artikel bearbeiten' : mode === 'fav' ? (favEditKey ? 'Favorit bearbeiten' : 'Neuer Favorit') : mode === 'often' ? 'Häufig gekauft' : mode === 'article' ? 'Artikel bearbeiten' : (info.name || 'Neuer Artikel');
   $('sName').value = info.name || '';
   setSheetDetail(src.detail || '');
   $('sQty').value = src.qty || 1;
@@ -1288,7 +1394,7 @@ function openItemSheet(mode, src) {
   $('sCat').value = src.cat || guessCat(info.name || '');
   $('sNote').value = src.note || '';
   const o = offerOf(src) || {};
-  setType('s', o.shop || o.price != null ? offerType(o) : (mode === 'often' ? 'normal' : 'angebot'));
+  setType('s', o.shop || o.price != null ? offerType(o) : (mode === 'often' || mode === 'article' ? 'normal' : 'angebot'));
   writePack('s', o.pack || null, o.deposit);
   $('sPackBox').open = !!(o.pack || o.deposit) || $('sCat').value === 'getraenk';
   $('sShop').value = o.shop || ''; writePrices('s', getType('s'), o.price, o.regular); $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
@@ -1297,6 +1403,8 @@ function openItemSheet(mode, src) {
   $('sBtnsEdit').style.display = mode === 'edit' ? 'flex' : 'none';
   $('sBtnsFav').style.display = mode === 'fav' ? 'flex' : 'none';
   $('sBtnsOften').style.display = mode === 'often' ? 'block' : 'none';
+  $('sBtnsArt').style.display = mode === 'article' ? 'block' : 'none';
+  if (mode === 'article') $('sPackBox').open = true;
   $('sFavDel').style.display = favEditKey ? '' : 'none';
   updateArtDel();
   $('sOfferBox').style.display = mode === 'fav' ? 'none' : '';
@@ -1379,6 +1487,53 @@ $('sArtDel').onclick = () => {
   toast('„' + c.name + '“ aus dem Katalog gelöscht', () => { delete c.deleted; c.updatedAt = now(); commit(); });
 };
 $('newArt').onclick = () => { openItemSheet('add', { name: cap($('catSearch').value.trim()) }); if (!$('sName').value) $('sTitle').textContent = 'Neuer Artikel'; setTimeout(() => { if (!$('sName').value) $('sName').focus(); }, 250); };
+
+/* „Meine Artikel“ bearbeiten */
+let artKey = null;
+function moveArticleKey(oldKey, name, detail) {
+  // Umbenennen: Preise, Favorit und „Häufig gekauft“ ziehen mit (so lassen sich auch doppelte Artikel zusammenführen)
+  const newKey = keyOf(name, detail); if (!oldKey || oldKey === newKey) return;
+  priceEntries().filter(e => e.key === oldKey).forEach(e => {
+    const nid = newKey + e.id.slice(oldKey.length);
+    if (!data.prices[nid] || data.prices[nid].deleted) data.prices[nid] = { ...e, id: nid, key: newKey, name, detail, updatedAt: now() };
+    e.deleted = true; e.updatedAt = now();
+  });
+  const f = data.favs[oldKey];
+  if (f && !f.deleted) { if (!data.favs[newKey] || data.favs[newKey].deleted) data.favs[newKey] = { ...f, name, detail, last: now() }; f.deleted = true; f.last = now(); }
+  const st = data.stars[oldKey];
+  if (st && st.on) { setStar(name, detail, true, { cat: st.cat, unit: st.unit, qty: st.qty }); st.on = false; st.updatedAt = now(); }
+  const old = splitKeyArticle(oldKey);
+  if (old && old.cu && old.variant) { old.cu.variants = old.cu.variants.filter(v => norm(v) !== old.variant); old.cu.updatedAt = now(); }
+  offerListUpdate(oldKey, name, detail);
+}
+function splitKeyArticle(key) {
+  const [nk, dk] = key.split('|'); const cu = data.custom[nk];
+  return cu && !cu.deleted ? { cu, variant: dk ? norm(splitBrand(dk).rest) || dk : '' } : null;
+}
+function saveArticleFromSheet() {
+  const v = sheetValues(); if (!v.name) { toast('Bitte einen Artikel eingeben'); return false; }
+  const before = myArticles().find(x => x.key === artKey), o = v.offer;
+  // unveränderter Normalpreis → keinen neuen Eintrag im Preisverlauf erzeugen
+  const same = before && before.normal && o && offerType(o) === 'normal' && o.price === before.normal.price
+    && (o.shop || 'ohne Markt') === before.normal.shop && JSON.stringify(o.pack || null) === JSON.stringify(before.normal.pack || null);
+  moveArticleKey(artKey, v.name, v.detail);
+  rememberArticle(v.name, v.detail, v.cat, v.unit);
+  if (!same) recordPrice(v.name, v.detail, v.offer);
+  return v;
+}
+$('sArtSave').onclick = () => { if (!saveArticleFromSheet()) return; closeSheets(); commit(); toast('Gespeichert'); };
+$('sArtList').onclick = () => { const v = saveArticleFromSheet(); if (!v) return; closeSheets(); addItem(v); };
+$('sArtRemove').onclick = () => {
+  const a = myArticles().find(x => x.key === artKey); if (!a) return closeSheets();
+  const pe = priceEntries().filter(e => e.key === artKey);
+  if (!confirm(`„${a.name}${a.detail ? ' · ' + a.detail : ''}“ aus „Meine Artikel“ löschen?` + (pe.length ? `\n\nDabei werden auch ${pe.length} Preis${pe.length > 1 ? 'e' : ''} aus dem Preisverlauf gelöscht.` : '') + '\n\nDie Einkaufsliste bleibt unverändert.')) return;
+  pe.forEach(e => { e.deleted = true; e.updatedAt = now(); });
+  const f = data.favs[artKey]; if (f && !f.deleted) { f.deleted = true; f.last = now(); }
+  const st = data.stars[artKey]; if (st && st.on) { st.on = false; st.updatedAt = now(); }
+  const sk = splitKeyArticle(artKey);
+  if (sk) { if (sk.variant) { sk.cu.variants = (sk.cu.variants || []).filter(x => norm(x) !== sk.variant); } else if (!(sk.cu.variants || []).length) sk.cu.deleted = true; sk.cu.updatedAt = now(); }
+  closeSheets(); commit(); toast('Gelöscht');
+};
 
 /* „Häufig gekauft“ bearbeiten */
 let oftenKey = null;
@@ -1602,7 +1757,18 @@ $('listMain').addEventListener('click', e => {
   if (act.dataset.act === 'edit') { const it = data.items.find(i => i.id === id); if (it) openItemSheet('edit', it); }
 });
 $('catSearch').addEventListener('input', renderCatalog);
-$('catMain').addEventListener('click', e => { const b = e.target.closest('[data-art]'); if (b) openItemSheet('add', { name: b.dataset.art }); });
+$('catMain').addEventListener('click', e => {
+  const f = e.target.closest('[data-myf]'); if (f) { myFilter = f.dataset.myf; renderMyArticles(); return; }
+  const m = e.target.closest('[data-myart]');
+  if (m) {
+    const a = myArticles().find(x => x.key === m.dataset.myart); if (!a) return;
+    const o = a.normal ? { shop: a.normal.shop === 'ohne Markt' ? '' : a.normal.shop, price: a.normal.price, type: 'normal', pack: a.pack || null, deposit: a.deposit || null }
+                       : { shop: '', price: null, type: 'normal', pack: a.pack || null, deposit: a.deposit || null };
+    openItemSheet('article', { name: a.name, detail: a.detail, cat: a.cat, unit: a.unit, offer: o });
+    return;
+  }
+  const b = e.target.closest('[data-art]'); if (b) openItemSheet('add', { name: b.dataset.art });
+});
 $('favMain').addEventListener('click', e => {
   if (e.target.closest('[data-act="newFav"]')) { openItemSheet('fav', {}); return; }
   const o = e.target.closest('[data-often]');
@@ -1691,6 +1857,8 @@ function mergeData(local, remote) {
   const custom = mergeByUpdated(local.custom, remote.custom);
   const prices = mergeByUpdated(local.prices, remote.prices);
   const brands = mergeByUpdated(local.brands, remote.brands);
+  const purchases = mergeByUpdated(local.purchases, remote.purchases);
+  Object.keys(purchases).forEach(k => { if (purchases[k].deleted && (purchases[k].updatedAt || 0) < cutoff) delete purchases[k]; });
   Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
   // eigene Bezeichnungen beider Seiten zusammenführen
   Object.keys(custom).forEach(k => {
@@ -1698,7 +1866,7 @@ function mergeData(local, remote) {
     [...((obj(local.custom)[k] || {}).variants || []), ...((obj(remote.custom)[k] || {}).variants || [])].forEach(v => { if (!vs.has(norm(v))) vs.set(norm(v), v); });
     custom[k] = { ...custom[k], variants: [...vs.values()] };
   });
-  return { items, favs, stars, custom, prices, brands };
+  return { items, favs, stars, custom, prices, brands, purchases };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
@@ -1706,20 +1874,20 @@ function canon(d) {
   const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands)
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
   const p = JSON.parse(b64decode(j.content || ''));
-  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands) };
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases) };
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
@@ -1773,6 +1941,7 @@ async function sync(reason) {
     for (let round = 0; round < 3; round++) {
       const remote = await pull();
       const merged = mergeData(data, remote);
+      backfillPurchases(merged);
       const localChanged = !sameData(merged, data);
       const remoteChanged = !sameData(merged, remote);
       if (localChanged) { data = merged; saveLocal(); renderAll(); }
@@ -1850,7 +2019,7 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands) });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
@@ -1865,7 +2034,7 @@ function shopColor(s, all) {
   const others = all.filter(x => !SHOP_COLORS[norm(x)]);
   return EXTRA_COLORS[Math.max(0, others.indexOf(s)) % EXTRA_COLORS.length];
 }
-let priceKey = null, priceShop = '';
+let priceKey = null, priceShop = '', priceVar = '';   // priceKey = Artikelname (norm), priceVar = Sorte (key) oder ''
 function priceEntries(key) {
   return Object.values(data.prices || {}).filter(e => !e.deleted && (!key || e.key === key));
 }
@@ -1889,7 +2058,8 @@ function recordPrice(name, detail, offer, dateOverride) {
       data.prices[rid] = { id: rid, key, name, detail, date, shop: offer.shop, price: offer.regular, type: 'normal', special: false, pack, deposit, note: 'Vergleichspreis', updatedAt: now() };
   }
 }
-function openPrices(key) { priceKey = key || null; priceShop = ''; renderPrices(); showTab('preise'); }
+function openPrices(key) { priceKey = key ? key.split('|')[0] : null; priceVar = key && key.includes('|') && key.split('|')[1] ? key : ''; priceShop = ''; renderPrices(); showTab('preise'); }
+function nameEntries(nk) { return priceEntries().filter(e => norm(e.name) === nk); }
 
 let priceBasis = 'price';
 let basisUnit = 'l';
@@ -1926,12 +2096,100 @@ function priceChart(list, shops) {
   return s + '</svg>';
 }
 
+/* ---------- Auswertung der Einkäufe ---------- */
+let priceView = 'verlauf';
+const pf = { year: null, month: '', shop: '', cat: '', group: 'artikel' };
+const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+function priceViewSeg() {
+  return `<div class="seg" style="display:flex;margin-bottom:6px">${[['verlauf', '📈 Preisverlauf'], ['einkauf', '🧾 Einkäufe']].map(([v, l]) => `<button data-pview="${v}" class="${v === priceView ? 'on' : ''}" style="flex:1">${l}</button>`).join('')}</div>`;
+}
+function purchaseList() { return Object.values(data.purchases || {}).filter(p => !p.deleted); }
+function filteredPurchases() {
+  return purchaseList().filter(p => (!pf.year || p.date.slice(0, 4) === pf.year) && (!pf.month || p.date.slice(5, 7) === pf.month)
+    && (!pf.shop || p.shop === pf.shop) && (!pf.cat || p.cat === pf.cat));
+}
+const pTotal = p => p.price != null ? p.price * (p.n || 1) : 0;
+const pDep = p => p.deposit ? p.deposit * (p.n || 1) : 0;
+const catName = c => (CATS.find(x => x[0] === c) || [, '🧺 Sonstiges'])[1];
+function mengeLabel(rows) {
+  const n = rows.reduce((t, p) => t + (p.n || 1), 0);
+  const w = {}; rows.filter(p => WEIGHT_UNITS.includes(p.unit)).forEach(p => {
+    const base = p.unit === 'g' || p.unit === 'kg' ? 'kg' : 'l', f = p.unit === 'g' || p.unit === 'ml' ? 1000 : 1;
+    w[base] = (w[base] || 0) + (p.qty || 0) / f;
+  });
+  const ws = Object.entries(w).map(([u, v]) => fmtNum(v, 2) + ' ' + u).join(' + ');
+  return n + '×' + (ws ? ' · ' + ws : '');
+}
+function renderPurchases() {
+  const all = purchaseList();
+  const years = [...new Set(all.map(p => p.date.slice(0, 4)))].sort().reverse();
+  if (pf.year === null) pf.year = years.includes(todayStr().slice(0, 4)) ? todayStr().slice(0, 4) : '';
+  if (pf.year && !years.includes(pf.year)) pf.year = '';
+  let html = priceViewSeg();
+  if (!all.length) {
+    html += '<div class="empty"><b>🧾</b>Noch keine Einkäufe gespeichert.<br><br>Sobald du beim Einkaufen abgehakte Artikel entfernst („Alle entfernen“ oder ✕), landen sie hier – mit Datum, Menge, Markt und Preis.</div>';
+    $('priceMain').innerHTML = html; return;
+  }
+  const shops = [...new Set(all.map(p => p.shop))].sort((a, b) => a.localeCompare(b, 'de'));
+  const cats = [...new Set(all.map(p => p.cat))];
+  html += `<div class="chips">${[['', 'Alle Jahre'], ...years.map(y => [y, y])].map(([v, l]) => `<button class="chip${v === pf.year ? ' sel' : ''}" data-pf="year" data-v="${v}">${l}</button>`).join('')}</div>`;
+  html += `<div class="pfil">
+    <select class="field" data-pfsel="month"><option value="">Alle Monate</option>${MONTHS.map((m, i) => { const v = String(i + 1).padStart(2, '0'); return `<option value="${v}"${v === pf.month ? ' selected' : ''}>${m}</option>`; }).join('')}</select>
+    <select class="field" data-pfsel="cat"><option value="">Alle Bereiche</option>${CATS.filter(c => cats.includes(c[0])).map(([v, l]) => `<option value="${v}"${v === pf.cat ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select>
+  </div>`;
+  html += `<div class="chips">${[['', 'Alle Märkte'], ...shops.map(x => [x, x])].map(([v, l]) => `<button class="chip${v === pf.shop ? ' sel' : ''}" data-pf="shop" data-v="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
+  const rows = filteredPurchases().sort((a, b) => b.date.localeCompare(a.date) || a.name.localeCompare(b.name, 'de'));
+  const sum = rows.reduce((t, p) => t + pTotal(p), 0), dep = rows.reduce((t, p) => t + pDep(p), 0);
+  const noPrice = rows.filter(p => p.price == null).length, est = rows.some(p => p.est);
+  const days = new Set(rows.map(p => p.date + '|' + p.shop)).size;
+  html += `<div class="stats">
+    <div class="stat"><small>Ausgaben</small><b>${est ? '≈ ' : ''}${esc(fmtPrice(sum))}</b><small>${dep ? '+ ' + esc(fmtPrice(dep)) + ' Pfand' : noPrice ? noPrice + ' ohne Preis' : '&nbsp;'}</small></div>
+    <div class="stat"><small>Menge</small><b>${rows.reduce((t, p) => t + (p.n || 1), 0)}×</b><small>${rows.length} Position${rows.length === 1 ? '' : 'en'}</small></div>
+    <div class="stat"><small>Einkäufe</small><b>${days}</b><small>${days ? 'Ø ' + esc(fmtPrice(sum / days)) : '&nbsp;'}</small></div>
+  </div>`;
+  html += `<div class="seg" style="display:flex;margin-top:10px">${[['artikel', 'Artikel'], ['monat', 'Monat'], ['markt', 'Markt'], ['bereich', 'Bereich'], ['einzeln', 'Einzeln']].map(([v, l]) => `<button data-pgroup="${v}" class="${v === pf.group ? 'on' : ''}" style="flex:1;padding:6px 4px">${l}</button>`).join('')}</div>`;
+  if (!rows.length) html += '<div class="empty">Keine Einkäufe für diese Auswahl.</div>';
+  else if (pf.group === 'einzeln') {
+    html += `<section class="group"><div class="list">${rows.map(p => `<div class="prow"><span class="pd">${esc(fmtDay(p.date))}${p.date.slice(0, 4) !== todayStr().slice(0, 4) ? p.date.slice(2, 4) : ''}</span><span class="ps">${esc(p.name)}${p.type === 'angebot' ? '<span class="sp">Angebot</span>' : p.type === 'app' ? '<span class="sp app">📱 App</span>' : ''}<span class="pmeta">${esc([p.detail, p.shop, (p.qty > 1 || p.unit) ? qtyLabel(p) : ''].filter(Boolean).join(' · '))}</span></span><span class="pp">${p.price != null ? (p.est ? '<span class="est">≈</span> ' : '') + esc(fmtPrice(pTotal(p))) : '<span class="est">–</span>'}${p.n > 1 && p.price != null ? `<span class="pmeta">${p.n} × ${esc(fmtPrice(p.price))}</span>` : ''}</span><button class="pdel" data-pudel="${esc(p.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
+  } else {
+    const keyFn = { artikel: p => norm(p.name), monat: p => p.date.slice(0, 7), markt: p => p.shop, bereich: p => p.cat }[pf.group];
+    const groups = {};
+    rows.forEach(p => (groups[keyFn(p)] = groups[keyFn(p)] || []).push(p));
+    let list = Object.entries(groups).map(([k, g]) => ({ k, g, sum: g.reduce((t, p) => t + pTotal(p), 0), est: g.some(p => p.est) }));
+    if (pf.group === 'monat') list.sort((a, b) => b.k.localeCompare(a.k)); else list.sort((a, b) => b.sum - a.sum || b.g.length - a.g.length);
+    const max = Math.max(...list.map(x => x.sum), 0.01);
+    const label = x => pf.group === 'artikel' ? x.g[0].name : pf.group === 'monat' ? MONTHS[+x.k.slice(5, 7) - 1] + ' ' + x.k.slice(0, 4) : pf.group === 'bereich' ? catName(x.k) : x.k;
+    const sub = x => {
+      if (pf.group === 'artikel') { const prices = x.g.filter(p => p.price != null).map(p => p.price); const vs = [...new Set(x.g.map(p => p.detail).filter(Boolean))];
+        return [mengeLabel(x.g), prices.length ? 'Ø ' + fmtPrice(prices.reduce((t, v) => t + v, 0) / prices.length) : '', vs.length > 1 ? vs.length + ' Sorten' : vs[0] || ''].filter(Boolean).join(' · '); }
+      return mengeLabel(x.g) + ' · ' + x.g.length + ' Position' + (x.g.length === 1 ? '' : 'en');
+    };
+    html += `<section class="group"><div class="list">${list.map(x => `<div class="prow" ${pf.group === 'artikel' ? '' : `data-pdrill="${esc(x.k)}"`}><span class="ps"><b style="font-weight:600">${esc(label(x))}</b><span class="pmeta">${esc(sub(x))}</span><div class="pbar" style="width:${Math.max(2, Math.round(x.sum / max * 100))}%"></div></span><span class="pp">${x.g.some(p => p.price != null) ? (x.est ? '<span class="est">≈</span> ' : '') + esc(fmtPrice(x.sum)) : '<span class="est">–</span>'}</span></div>`).join('')}</div></section>`;
+  }
+  if (est || noPrice) html += `<p class="hint" style="padding:0 6px">${est ? '≈ = Preis nicht beim Artikel erfasst, aus dem Preisverlauf geschätzt. ' : ''}${noPrice ? noPrice + ' Position' + (noPrice === 1 ? '' : 'en') + ' ohne bekannten Preis.' : ''}</p>`;
+  if (rows.length) html += '<button class="btn addprice" data-act="csv">⬇︎ Als Tabelle (CSV) speichern</button>';
+  $('priceMain').innerHTML = html;
+}
+function exportPurchasesCsv() {
+  const rows = filteredPurchases().sort((a, b) => a.date.localeCompare(b.date));
+  const num = v => v == null ? '' : String(Math.round(v * 100) / 100).replace('.', ',');
+  const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const lines = [['Datum', 'Artikel', 'Bezeichnung', 'Bereich', 'Markt', 'Menge', 'Einheit', 'Anzahl', 'Einzelpreis', 'Summe', 'Pfand', 'Preisart', 'geschätzt'].join(';'),
+    ...rows.map(p => [p.date.split('-').reverse().join('.'), q(p.name), q(p.detail), q(catName(p.cat).replace(/^\S+\s/, '')), q(p.shop), p.qty, q(p.unit), p.n, num(p.price), num(p.price != null ? pTotal(p) : null), num(pDep(p) || null), p.type === 'normal' ? 'Normal' : p.type === 'app' ? 'App' : 'Angebot', p.est ? 'ja' : ''].join(';'))];
+  const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'einkaeufe' + (pf.year ? '-' + pf.year : '') + (pf.month ? '-' + pf.month : '') + '.csv';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+
 function renderPrices() {
+  if (priceView === 'einkauf' && !priceKey) return renderPurchases();
   const all = priceEntries();
   let html = '';
   if (!priceKey) {
+    html += priceViewSeg();
     const groups = {};
-    all.forEach(e => (groups[e.key] = groups[e.key] || []).push(e));
+    all.forEach(e => { const nk = norm(e.name); (groups[nk] = groups[nk] || []).push(e); });
     const keys = Object.keys(groups).sort((a, b) => {
       const la = groups[a].reduce((m, e) => e.date > m ? e.date : m, ''), lb = groups[b].reduce((m, e) => e.date > m ? e.date : m, '');
       return lb.localeCompare(la);
@@ -1941,14 +2199,21 @@ function renderPrices() {
       html += `<section class="group"><h2>Artikel mit Preisen</h2><div class="list">${keys.map(k => {
         const g = groups[k].sort((a, b) => b.date.localeCompare(a.date));
         const min = Math.min(...g.map(e => e.price));
-        return `<div class="item" data-pkey="${esc(k)}"><div class="body"><div class="name">${esc(g[0].name)}</div>${g[0].detail ? `<div class="detail">${esc(g[0].detail)}</div>` : ''}<div class="note">${g.length} Preis${g.length > 1 ? 'e' : ''} · Tiefstpreis ${esc(fmtPrice(min))}</div></div><span class="qty">${esc(fmtPrice(g[0].price))}</span></div>`;
+        const vars = [...new Set(g.map(e => e.detail || ''))];
+        const sub = vars.length > 1 ? vars.length + ' Sorten' : vars[0];
+        return `<div class="item" data-pkey="${esc(k)}"><div class="body"><div class="name">${esc(g[0].name)}</div>${sub ? `<div class="detail">${esc(sub)}</div>` : ''}<div class="note">${g.length} Preis${g.length > 1 ? 'e' : ''} · Tiefstpreis ${esc(fmtPrice(min))}</div></div><span class="qty">${esc(fmtPrice(g[0].price))}</span></div>`;
       }).join('')}</div></section>`;
     } else html += '<div class="empty"><b>📈</b>Noch keine Preise erfasst.</div>';
     html += '<button class="btn primary addprice" data-act="addprice">＋ Preis erfassen</button>';
     $('priceMain').innerHTML = html; return;
   }
-  const entries = priceEntries(priceKey);
-  if (!entries.length) { priceKey = null; return renderPrices(); }
+  const allVar = nameEntries(priceKey);
+  if (!allVar.length) { priceKey = null; priceVar = ''; return renderPrices(); }
+  const varKeys = [...new Set(allVar.map(e => e.key))].sort((a, b) => a.localeCompare(b, 'de'));
+  if (priceVar && !varKeys.includes(priceVar)) priceVar = '';
+  const entries = allVar.filter(e => !priceVar || e.key === priceVar);
+  const multiVar = varKeys.length > 1;
+  const varLabel = k => { const e = allVar.find(x => x.key === k); return e.detail || 'ohne Bezeichnung'; };
   const shops = [...new Set(entries.map(e => e.shop))].sort((a, b) => a.localeCompare(b, 'de'));
   if (priceShop && !shops.includes(priceShop)) priceShop = '';
   const shown = entries.filter(e => !priceShop || e.shop === priceShop).sort((a, b) => b.date.localeCompare(a.date));
@@ -1965,7 +2230,8 @@ function renderPrices() {
   const avg = normal.length ? normal.reduce((t, e) => t + pval(e), 0) / normal.length : null;
   const min = Math.min(...basisList.map(pval));
   const minE = basisList.find(e => pval(e) === min);
-  html += `<div class="pricehead"><button class="back" data-act="pback">‹ Alle</button><h3>${esc(entries[0].name)}${entries[0].detail ? ' <span class="hint" style="font-size:15px">' + esc(entries[0].detail) + '</span>' : ''}</h3></div>`;
+  html += `<div class="pricehead"><button class="back" data-act="pback">‹ Alle</button><h3>${esc(entries[0].name)}${!multiVar && entries[0].detail ? ' <span class="hint" style="font-size:15px">' + esc(entries[0].detail) + '</span>' : ''}</h3></div>`;
+  if (multiVar) html += `<div class="chips">${[['', 'Alle Sorten'], ...varKeys.map(k => [k, varLabel(k)])].map(([v, l]) => `<button class="chip${v === priceVar ? ' sel' : ''}" data-pvar="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
   html += `<div class="chips">${[['', 'Alle'], ...shops.map(s => [s, s])].map(([v, l]) => `<button class="chip${v === priceShop ? ' sel' : ''}" data-pshop="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
   if (hasPack) html += `<div class="seg" style="margin-top:8px;display:inline-flex">${[['price', 'Packungspreis'], ['l', 'Grundpreis €/' + basisUnit]].map(([v, l]) => `<button data-basis="${v}" class="${v === priceBasis ? 'on' : ''}">${l}</button>`).join('')}</div>`;
   html += `<div class="chartbox">${priceChart(shown, showShops)}<div class="legend">${showShops.map(s => `<span><i style="background:${shopColor(s, shops)}"></i>${esc(s)}</span>`).join('')}<span><i style="background:#888;box-shadow:0 0 0 2px #f2c14e"></i>Angebot</span><span><i style="background:#888;box-shadow:0 0 0 2px #8b6cff"></i>App-Preis</span><span><i style="background:transparent;border:2px solid #888;width:6px;height:6px"></i>Normalpreis</span></div></div>`;
@@ -1974,12 +2240,25 @@ function renderPrices() {
     <div class="stat"><small>Ø Normalpreis</small><b>${avg != null ? esc(fmtV(avg)) : '–'}</b><small>${normal.length} Wert${normal.length === 1 ? '' : 'e'}</small></div>
     <div class="stat"><small>Angebote · App</small><b>${nAng} · ${nApp}</b><small>von ${shown.length}</small></div>
   </div>`;
-  html += `<section class="group"><h2>Alle Preise</h2><div class="list">${shown.map(e => `<div class="prow"><span class="pd">${esc(fmtDay(e.date))}${e.date.slice(0, 4) !== todayStr().slice(0, 4) ? e.date.slice(2, 4) : ''}</span><span class="ps"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${shopColor(e.shop, shops)};margin-right:6px"></i>${esc(e.shop)}${offerType(e) === 'angebot' ? '<span class="sp">Angebot</span>' : offerType(e) === 'app' ? '<span class="sp app">📱 App</span>' : ''}${e.pack ? `<span class="pmeta">${esc(packLabel(e.pack))}${perLitre(e.price, e.pack) != null ? ' · ' + esc(fmtPerLitre(perLitre(e.price, e.pack), packUnit(e.pack))) : ''}</span>` : ''}</span><span class="pp">${esc(fmtPrice(e.price))}${e.deposit ? `<span class="pmeta">+ ${esc(fmtPrice(e.deposit))} Pfand</span>` : ''}</span><button class="pdel" data-pdel="${esc(e.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
+  html += `<section class="group"><h2>Alle Preise</h2><div class="list">${shown.map(e => `<div class="prow"><span class="pd">${esc(fmtDay(e.date))}${e.date.slice(0, 4) !== todayStr().slice(0, 4) ? e.date.slice(2, 4) : ''}</span><span class="ps"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${shopColor(e.shop, shops)};margin-right:6px"></i>${esc(e.shop)}${multiVar && !priceVar ? `<span class="pmeta">${esc(e.detail || 'ohne Bezeichnung')}</span>` : ''}${offerType(e) === 'angebot' ? '<span class="sp">Angebot</span>' : offerType(e) === 'app' ? '<span class="sp app">📱 App</span>' : ''}${e.pack ? `<span class="pmeta">${esc(packLabel(e.pack))}${perLitre(e.price, e.pack) != null ? ' · ' + esc(fmtPerLitre(perLitre(e.price, e.pack), packUnit(e.pack))) : ''}</span>` : ''}</span><span class="pp">${esc(fmtPrice(e.price))}${e.deposit ? `<span class="pmeta">+ ${esc(fmtPrice(e.deposit))} Pfand</span>` : ''}</span><button class="pdel" data-pdel="${esc(e.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
   html += '<button class="btn primary addprice" data-act="addprice">＋ Preis erfassen</button>';
   $('priceMain').innerHTML = html;
 }
+$('priceMain').addEventListener('change', e => { const s = e.target.closest('[data-pfsel]'); if (s) { pf[s.dataset.pfsel] = s.value; renderPrices(); } });
 $('priceMain').addEventListener('click', e => {
-  const k = e.target.closest('[data-pkey]'); if (k) { priceKey = k.dataset.pkey; priceShop = ''; renderPrices(); window.scrollTo(0, 0); return; }
+  const k = e.target.closest('[data-pkey]'); if (k) { priceKey = k.dataset.pkey; priceVar = ''; priceShop = ''; renderPrices(); window.scrollTo(0, 0); return; }
+  const pv = e.target.closest('[data-pvar]'); if (pv) { priceVar = pv.dataset.pvar; renderPrices(); return; }
+  const vw = e.target.closest('[data-pview]'); if (vw) { priceView = vw.dataset.pview; renderPrices(); return; }
+  const pfb = e.target.closest('[data-pf]'); if (pfb) { pf[pfb.dataset.pf] = pfb.dataset.v; renderPrices(); return; }
+  const pg = e.target.closest('[data-pgroup]'); if (pg) { pf.group = pg.dataset.pgroup; renderPrices(); return; }
+  const dr = e.target.closest('[data-pdrill]');
+  if (dr) { const k = dr.dataset.pdrill;
+    if (pf.group === 'monat') { pf.year = k.slice(0, 4); pf.month = k.slice(5, 7); } else if (pf.group === 'markt') pf.shop = k; else if (pf.group === 'bereich') pf.cat = k;
+    pf.group = 'artikel'; renderPrices(); window.scrollTo(0, 0); return; }
+  const pu = e.target.closest('[data-pudel]');
+  if (pu) { const en = data.purchases[pu.dataset.pudel]; if (!en) return;
+    en.deleted = true; en.updatedAt = now(); commit();
+    toast('Einkauf gelöscht', () => { en.deleted = false; en.updatedAt = now(); commit(); }); return; }
   const s = e.target.closest('[data-pshop]'); if (s) { priceShop = s.dataset.pshop; renderPrices(); return; }
   const bs = e.target.closest('[data-basis]'); if (bs) { priceBasis = bs.dataset.basis; renderPrices(); return; }
   const d = e.target.closest('[data-pdel]');
@@ -1990,14 +2269,16 @@ $('priceMain').addEventListener('click', e => {
     return;
   }
   const a = e.target.closest('[data-act]'); if (!a) return;
-  if (a.dataset.act === 'pback') { priceKey = null; renderPrices(); }
+  if (a.dataset.act === 'pback') { priceKey = null; priceVar = ''; renderPrices(); }
   if (a.dataset.act === 'addprice') openPriceSheet();
+  if (a.dataset.act === 'csv') exportPurchasesCsv();
 });
 function openPriceSheet() {
-  const ex = priceKey ? priceEntries(priceKey)[0] : null;
+  const pe = priceKey ? nameEntries(priceKey).filter(e => !priceVar || e.key === priceVar).sort((a, b) => b.date.localeCompare(a.date)) : [];
+  const ex = pe[0] || null;
   $('pName').value = ex ? ex.name : ''; $('pDetail').value = ex ? ex.detail : '';
   $('pShop').value = priceShop || ''; $('pPrice').value = ''; $('pDate').value = todayStr(); setType('p', 'normal');
-  const lastPack = priceKey ? priceEntries(priceKey).filter(e => e.pack).sort((a, b) => b.date.localeCompare(a.date))[0] : null;
+  const lastPack = pe.filter(e => e.pack)[0] || null;
   writePack('p', lastPack ? lastPack.pack : null, lastPack ? lastPack.deposit : null);
   $('pPackBox').open = !!lastPack;
   const names = new Set([...Object.values(CAT_INDEX).map(a => a.name), ...customArts().map(a => a.name)]);
@@ -2018,7 +2299,7 @@ $('pSave').onclick = () => {
   const date = $('pDate').value || todayStr();
   const type = getType('p');
   recordPrice(name, detail, { shop, price, type, special: type !== 'normal', pack: readPack('p'), deposit: parsePrice($('pDeposit').value) }, date);
-  priceKey = keyOf(name, detail);
+  priceKey = norm(name); priceVar = keyOf(name, detail);
   closeSheets(); commit(); toast('Preis gespeichert');
 };
 
@@ -2345,6 +2626,18 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.24', '12.10.2026', [
+    'Neu: Auswertung „🧾 Einkäufe“ im Reiter Preise – abgehakte Artikel werden beim Entfernen mit Datum, Menge, Markt und Preis gespeichert',
+    'Filter nach Jahr, Monat, Bereich und Markt; Ansicht nach Artikel, Monat, Markt, Bereich oder einzeln',
+    'Fehlt beim Artikel der Preis, wird er aus dem Preisverlauf geschätzt (≈)',
+    'Export als Tabelle (CSV) für Excel'
+  ]],
+  ['v1.23', '12.10.2026', [
+    'Preisverlauf: gleiche Artikel werden zusammengeführt (z. B. alle „Zucker“) – die Sorten lassen sich oben einzeln auswählen',
+    'Neu unter „Artikel“: „🗂 Meine Artikel“ – alle angelegten Artikel zum Bearbeiten',
+    'Hinweis „⚠︎ fehlt: Normalpreis, Größe“ bei unvollständigen Artikeln – Angebots- und App-Preise zählen nicht',
+    'Umbenennen eines Artikels nimmt Preise und Favorit mit – so lassen sich doppelte Artikel zusammenlegen'
+  ]],
   ['v1.22', '12.10.2026', [
     'Preisfelder neu geordnet: zuerst Normal / Angebot / App wählen, oben steht immer der normale Preis',
     'Bei Angebot erscheint darunter „Angebotspreis“, bei App „App-Preis“ – die Ersparnis wird automatisch berechnet',
