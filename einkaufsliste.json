@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T17:03:23.114Z",
+ "savedAt": "2026-10-12T17:03:43.722Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -576,10 +576,20 @@
    "detail": "Milsani Schoko mit Sahnehaube",
    "cat": "kuehl",
    "unit": "Becher",
-   "last": 1791824600927,
+   "last": 1791824621587,
    "qty": 1,
    "note": "",
-   "offer": null
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   }
   },
   "gehackte tomaten|": {
    "count": 1,
