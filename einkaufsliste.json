@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:17:10.657Z",
+ "savedAt": "2026-10-12T20:17:36.988Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -574,9 +574,22 @@
    "unit": "Pck.",
    "cat": "kuehl",
    "note": "",
-   "offer": null,
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "2026-10-12",
+    "until": "2026-10-17",
+    "type": "angebot",
+    "special": true,
+    "pack": {
+     "n": 1,
+     "size": 1
+    },
+    "deposit": null,
+    "regular": null
+   },
    "checked": false,
-   "updatedAt": 1791836229827
+   "updatedAt": 1791836254757
   }
  ],
  "favs": {
@@ -948,7 +961,7 @@
    "unit": "Pck.",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791836209047,
+   "updatedAt": 1791836254758,
    "note": ""
   },
   "sonntagsbrötchen|": {
