@@ -470,7 +470,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.25';
+const APP_VERSION = 'v1.26';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1058,6 +1058,25 @@ function archivePurchase(it, force = true, d = data) {
 function backfillPurchases(d = data) {
   let n = 0;
   (d.items || []).forEach(i => { if (i.deleted && i.checked && archivePurchase(i, false, d)) n++; });
+  return n + fillPurchasePrices(d);
+}
+// Einkäufe ohne Preis: den ersten danach erfassten Preis übernehmen (gleicher Markt bevorzugt)
+function fillPurchasePrices(d = data) {
+  const open = Object.values(d.purchases || {}).filter(p => !p.deleted && p.price == null);
+  if (!open.length) return 0;
+  const pe = Object.values(d.prices || {}).filter(e => !e.deleted && e.price != null).sort((a, b) => a.date.localeCompare(b.date) || (a.updatedAt || 0) - (b.updatedAt || 0));
+  let n = 0;
+  open.forEach(p => {
+    const k = keyOf(p.name, p.detail), nk = norm(p.name);
+    const after = e => e.date >= p.date;
+    const cands = [e => e.key === k && e.shop === p.shop, e => e.key === k, e => norm(e.name) === nk && e.shop === p.shop, e => norm(e.name) === nk];
+    let hit = null;
+    for (const c of cands) { hit = pe.find(e => c(e) && after(e)); if (hit) break; }
+    if (!hit) return;
+    p.price = hit.price; p.est = true; p.later = hit.date;
+    if (p.shop === 'ohne Markt' && hit.shop !== 'ohne Markt') p.shop = hit.shop;
+    p.updatedAt = now(); n++;
+  });
   return n;
 }
 function unarchivePurchase(it) { const p = data.purchases && data.purchases['k-' + it.id]; if (p && !p.deleted) { p.deleted = true; p.updatedAt = now(); } }
@@ -2175,7 +2194,7 @@ function renderPurchases() {
     };
     html += `<section class="group"><div class="list">${list.map(x => `<div class="prow" ${pf.group === 'artikel' ? '' : `data-pdrill="${esc(x.k)}"`}><span class="ps"><b style="font-weight:600">${esc(label(x))}</b><span class="pmeta">${esc(sub(x))}</span><div class="pbar" style="width:${Math.max(2, Math.round(x.sum / max * 100))}%"></div></span><span class="pp">${x.g.some(p => p.price != null) ? (x.est ? '<span class="est">≈</span> ' : '') + esc(fmtPrice(x.sum)) : '<span class="est">–</span>'}</span></div>`).join('')}</div></section>`;
   }
-  if (est || noPrice) html += `<p class="hint" style="padding:0 6px">${est ? '≈ = Preis nicht beim Artikel erfasst, aus dem Preisverlauf geschätzt. ' : ''}${noPrice ? noPrice + ' Position' + (noPrice === 1 ? '' : 'en') + ' ohne bekannten Preis.' : ''}</p>`;
+  if (est || noPrice) html += `<p class="hint" style="padding:0 6px">${est ? '≈ = Preis nicht beim Artikel erfasst – aus dem Preisverlauf bzw. dem ersten später erfassten Preis übernommen. ' : ''}${noPrice ? noPrice + ' Position' + (noPrice === 1 ? '' : 'en') + ' ohne bekannten Preis.' : ''}</p>`;
   if (rows.length) html += '<button class="btn addprice" data-act="csv">⬇︎ Als Tabelle (CSV) speichern</button>';
   $('priceMain').innerHTML = html;
 }
@@ -2635,6 +2654,9 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.26', '12.10.2026', [
+    'Einkäufe ohne Preis bekommen automatisch den ersten danach erfassten Preis (≈)'
+  ]],
   ['v1.25', '12.10.2026', [
     'Fehler behoben: In „Meine Artikel“ gelöschte Artikel kamen nach dem Abgleich wieder zurück'
   ]],
