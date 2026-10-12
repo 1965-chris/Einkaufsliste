@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.24",
- "savedAt": "2026-10-12T19:40:53.701Z",
+ "savedAt": "2026-10-12T19:42:18.683Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -840,7 +840,7 @@
    ],
    "cat": "drogerie",
    "unit": "Pck.",
-   "updatedAt": 1791833980664
+   "updatedAt": 1791834136370
   },
   "zucker": {
    "name": "Zucker",
