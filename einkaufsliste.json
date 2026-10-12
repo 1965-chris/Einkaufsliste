@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:15:08.596Z",
+ "savedAt": "2026-10-12T20:16:51.201Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -933,10 +933,11 @@
    "name": "H-Milch 1,5%",
    "detail": "Laktosefrei",
    "cat": "kuehl",
-   "unit": "l",
-   "qty": 10,
+   "unit": "Pck.",
+   "qty": 1,
    "on": true,
-   "updatedAt": 1791835564476
+   "updatedAt": 1791836209047,
+   "note": ""
   },
   "sonntagsbrötchen|": {
    "name": "Sonntagsbrötchen",
@@ -1095,11 +1096,11 @@
     "Laktosefrei"
    ],
    "cat": "kuehl",
-   "unit": "l",
+   "unit": "Pck.",
    "varAdd": {
     "laktosefrei": 1791835551769
    },
-   "updatedAt": 1791835551769
+   "updatedAt": 1791836209048
   },
   "slipeinlagen": {
    "name": "Slipeinlagen",
