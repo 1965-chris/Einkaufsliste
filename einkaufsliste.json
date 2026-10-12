@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T16:42:20.689Z",
+ "savedAt": "2026-10-12T16:45:05.457Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -386,6 +386,28 @@
    },
    "checked": true,
    "updatedAt": 1791823338604
+  },
+  {
+   "id": "mv5hg7obvxhqk0",
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher Badezimmer",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "drogerie",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.85,
+    "from": "",
+    "until": "",
+    "type": "angebot",
+    "special": true,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1791823503323
   }
  ],
  "favs": {
@@ -571,6 +593,14 @@
    "cat": "vorrat",
    "unit": "",
    "last": 1791823312671
+  },
+  "taschentücher|kokett taschentücher badezimmer": {
+   "count": 1,
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher Badezimmer",
+   "cat": "drogerie",
+   "unit": "Pck.",
+   "last": 1791823503323
   }
  },
  "stars": {
@@ -771,6 +801,15 @@
    "cat": "vorrat",
    "unit": "",
    "updatedAt": 1791823312672
+  },
+  "taschentücher": {
+   "name": "Taschentücher",
+   "variants": [
+    "Taschentücher Badezimmer"
+   ],
+   "cat": "drogerie",
+   "unit": "Pck.",
+   "updatedAt": 1791823503324
   }
  },
  "prices": {
@@ -1050,6 +1089,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791823145575
+  },
+  "taschentücher|kokett taschentücher badezimmer|aldi|2026-10-12": {
+   "id": "taschentücher|kokett taschentücher badezimmer|aldi|2026-10-12",
+   "key": "taschentücher|kokett taschentücher badezimmer",
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher Badezimmer",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 0.85,
+   "type": "angebot",
+   "special": true,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791823503323
   }
  },
  "brands": {
@@ -1060,6 +1113,10 @@
   "kings criwn": {
    "name": "Kings Criwn",
    "updatedAt": 1791822940681
+  },
+  "kokett": {
+   "name": "Kokett",
+   "updatedAt": 1791823503322
   }
  }
 }
