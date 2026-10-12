@@ -450,7 +450,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.20';
+const APP_VERSION = 'v1.21';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1423,13 +1423,15 @@ function renderShops() {
   $('sShops').innerHTML = SHOPS.map(s => `<button type="button" class="chip${norm(s) === cur ? ' sel' : ''}" data-shop="${s}">${s}</button>`).join('');
 }
 function sheetOffer() {
-  const shop = $('sShop').value.trim(), price = parsePrice($('sPrice').value);
+  const shop = $('sShop').value.trim();
+  let price = parsePrice($('sPrice').value), regular = parsePrice($('sRegular').value);
+  // nur „statt“ ausgefüllt → das ist dann der Preis
+  if (price == null && regular != null) { price = regular; regular = null; }
   let from = $('sFrom').value, until = $('sUntil').value;
   if (from && until && from > until) [from, until] = [until, from];
   const type = getType('s');
   if (type === 'normal') { from = ''; until = ''; }
   const pack = readPack('s'), deposit = parsePrice($('sDeposit').value);
-  const regular = parsePrice($('sRegular').value);
   return (shop || price != null) ? { shop, price, from, until, type, special: type !== 'normal', pack, deposit: deposit || null, regular: regular && price != null && regular > price ? regular : null } : null;
 }
 $('sShops').addEventListener('click', e => {
@@ -1463,6 +1465,12 @@ function setType(px, v) {
   $(px + 'Type').dataset.val = v;
   $(px + 'Type').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.type === v));
   if (px === 's') $('sDates').style.display = v === 'normal' ? 'none' : '';
+  // Normalpreis braucht keinen Vergleichspreis – Feld ausblenden, Wert ggf. als Preis übernehmen
+  const reg = $(px + 'Regular'), row = reg.closest('.offerrow');
+  if (v === 'normal') {
+    if (reg.value.trim() && !$(px + 'Price').value.trim()) $(px + 'Price').value = reg.value;
+    reg.value = ''; row.style.display = 'none'; if (typeof updateSaving === 'function') updateSaving(px);
+  } else row.style.display = '';
 }
 function readPack(px) {
   let n = parseInt($(px + 'PackN').value, 10), size = parseDecimal($(px + 'PackSize').value);
@@ -2294,7 +2302,8 @@ $('rFile').onchange = async e => {
 };
 $('rParse').onclick = () => { if (!$('rText').value.trim()) { $('rStatus').textContent = 'Bitte zuerst Text einfügen.'; return; } showReadResult($('rText').value); };
 $('rApply').onclick = () => {
-  const price = parsePrice($('rPrice').value), regular = parsePrice($('rRegular').value), type = getType('r');
+  let price = parsePrice($('rPrice').value), regular = parsePrice($('rRegular').value); const type = getType('r');
+  if (price == null && regular != null) { price = regular; regular = null; }
   const offer = { shop: $('rShop').value.trim(), price, from: type === 'normal' ? '' : $('rFrom').value, until: type === 'normal' ? '' : $('rUntil').value,
     type, special: type !== 'normal', pack: readPack('r'), deposit: parsePrice($('rDeposit').value), regular: regular && price != null && regular > price ? regular : null };
   const name = cap($('rName').value.trim()), detail = $('rDetail').value.trim();
@@ -2316,6 +2325,10 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.21', '12.10.2026', [
+    'Fehler behoben: Stand ein Preis nur im Feld „statt (Vergleich)“, ging er beim Speichern verloren – jetzt wird er als Preis übernommen',
+    'Bei „Normalpreis“ ist das Feld „statt (Vergleich)“ ausgeblendet – es gehört nur zu Angeboten'
+  ]],
   ['v1.20', '12.10.2026', [
     'Fehler behoben: Preis nachtragen beim Einkaufen ging am iPhone verloren – ein Tipp neben das Fenster (beim Schließen der Tastatur) hat es ohne Speichern geschlossen',
     'Fenster mit Änderungen schließen sich jetzt nur noch über „Speichern“ oder „Abbrechen“',
