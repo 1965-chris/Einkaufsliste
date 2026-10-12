@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.24",
- "savedAt": "2026-10-12T19:38:56.946Z",
+ "savedAt": "2026-10-12T19:39:23.990Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -619,7 +619,8 @@
    "detail": "Kokett Taschentücher Badezimmer",
    "cat": "drogerie",
    "unit": "Pck.",
-   "last": 1791823503323
+   "last": 1791833961818,
+   "deleted": true
   }
  },
  "stars": {
@@ -834,12 +835,12 @@
   "taschentücher": {
    "name": "Taschentücher",
    "variants": [
-    "Taschentücher Badezimmer",
-    "Taschentücher BoxBadezimmer"
+    "Taschentücher BoxBadezimmer",
+    "Taschentücher Badezimmer"
    ],
    "cat": "drogerie",
    "unit": "Pck.",
-   "updatedAt": 1791823536017
+   "updatedAt": 1791833961818
   },
   "zucker": {
    "name": "Zucker",
@@ -1145,7 +1146,8 @@
    "special": true,
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791823503323
+   "updatedAt": 1791833961818,
+   "deleted": true
   },
   "taschentücher|kokett taschentücher boxbadezimmer|aldi|2026-10-12": {
    "id": "taschentücher|kokett taschentücher boxbadezimmer|aldi|2026-10-12",
