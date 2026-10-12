@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.24",
- "savedAt": "2026-10-12T19:36:32.561Z",
+ "savedAt": "2026-10-12T19:37:54.891Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1196,6 +1196,24 @@
    },
    "deposit": null,
    "updatedAt": 1791833790362
+  },
+  "butter||ohne markt|2026-10-12": {
+   "id": "butter||ohne markt|2026-10-12",
+   "key": "butter|",
+   "name": "Butter",
+   "detail": "",
+   "date": "2026-10-12",
+   "shop": "ohne Markt",
+   "price": 2.19,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1791833872820
   }
  },
  "brands": {
