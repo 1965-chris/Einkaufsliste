@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:18:14.250Z",
+ "savedAt": "2026-10-12T20:18:16.504Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -589,8 +589,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791836292116,
-   "checkedAt": 1791836292116
+   "updatedAt": 1791836294400,
+   "checkedAt": 1791836292116,
+   "deleted": true
   }
  ],
  "favs": {
@@ -2112,6 +2113,26 @@
    },
    "deposit": null,
    "updatedAt": 1791836107705
+  },
+  "k-mv5p0rnj5p1u4t": {
+   "id": "k-mv5p0rnj5p1u4t",
+   "date": "2026-10-12",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "cat": "kuehl",
+   "qty": 9,
+   "unit": "Pck.",
+   "n": 9,
+   "shop": "ALDI",
+   "price": 1.09,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 1
+   },
+   "deposit": null,
+   "updatedAt": 1791836294400
   }
  }
 }
