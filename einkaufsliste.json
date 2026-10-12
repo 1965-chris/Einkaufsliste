@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:12:30.489Z",
+ "savedAt": "2026-10-12T20:12:45.153Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -491,7 +491,7 @@
    "name": "Landbrötchen",
    "detail": "Roggenbrötchen",
    "qty": 1,
-   "unit": "",
+   "unit": "Pck.",
    "cat": "brot",
    "note": "",
    "offer": {
@@ -506,7 +506,7 @@
     "regular": null
    },
    "checked": false,
-   "updatedAt": 1791835868322
+   "updatedAt": 1791835962914
   },
   {
    "id": "mv5ouyazgqgn4u",
@@ -766,7 +766,7 @@
    "name": "Landbrötchen",
    "detail": "Roggenbrötchen",
    "cat": "brot",
-   "unit": "",
+   "unit": "Pck.",
    "last": 1791835868322
   },
   "krüstchen|": {
@@ -1064,11 +1064,11 @@
     "Roggenbrötchen"
    ],
    "cat": "brot",
-   "unit": "",
+   "unit": "Pck.",
    "varAdd": {
     "roggenbrötchen": 1791835868323
    },
-   "updatedAt": 1791835868323
+   "updatedAt": 1791835962916
   },
   "krüstchen": {
    "name": "Krüstchen",
