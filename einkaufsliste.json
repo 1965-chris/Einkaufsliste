@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:02:49.567Z",
+ "savedAt": "2026-10-12T20:05:53.892Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -414,6 +414,31 @@
    "checked": true,
    "updatedAt": 1791831994319,
    "deleted": true
+  },
+  {
+   "id": "mv5omgbcpbgrc3",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "qty": 10,
+   "unit": "l",
+   "cat": "kuehl",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.09,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 1
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1791835551768
   }
  ],
  "favs": {
@@ -621,6 +646,14 @@
    "unit": "Pck.",
    "last": 1791833961818,
    "deleted": true
+  },
+  "h-milch 1,5%|laktosefrei": {
+   "count": 1,
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "cat": "kuehl",
+   "unit": "l",
+   "last": 1791835551768
   }
  },
  "stars": {
@@ -853,6 +886,18 @@
    "cat": "vorrat",
    "unit": "",
    "updatedAt": 1791833928405
+  },
+  "h-milch 1,5%": {
+   "name": "H-Milch 1,5%",
+   "variants": [
+    "Laktosefrei"
+   ],
+   "cat": "kuehl",
+   "unit": "l",
+   "varAdd": {
+    "laktosefrei": 1791835551769
+   },
+   "updatedAt": 1791835551769
   }
  },
  "prices": {
@@ -1282,6 +1327,23 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791835367464
+  },
+  "h-milch 1,5%|laktosefrei|aldi|2026-10-12": {
+   "id": "h-milch 1,5%|laktosefrei|aldi|2026-10-12",
+   "key": "h-milch 1,5%|laktosefrei",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.09,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1
+   },
+   "deposit": null,
+   "updatedAt": 1791835551768
   }
  },
  "brands": {
