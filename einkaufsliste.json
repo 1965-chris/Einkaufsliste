@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:00:38.473Z",
+ "savedAt": "2026-10-12T20:01:50.988Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1254,6 +1254,20 @@
    },
    "deposit": null,
    "updatedAt": 1791833934867
+  },
+  "gehackte tomaten||ohne markt|2026-10-12": {
+   "id": "gehackte tomaten||ohne markt|2026-10-12",
+   "key": "gehackte tomaten|",
+   "name": "Gehackte Tomaten",
+   "detail": "",
+   "date": "2026-10-12",
+   "shop": "ohne Markt",
+   "price": 0.59,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791835308558
   }
  },
  "brands": {
@@ -1522,12 +1536,13 @@
    "unit": "",
    "n": 2,
    "shop": "ALDI",
-   "price": null,
-   "est": false,
+   "price": 0.59,
+   "est": true,
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833530679
+   "updatedAt": 1791835308559,
+   "later": "2026-10-12"
   },
   "k-mv5hc4kfazbl05": {
    "id": "k-mv5hc4kfazbl05",
