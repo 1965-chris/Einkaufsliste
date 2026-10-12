@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T03:24:12.896Z",
+ "savedAt": "2026-10-12T03:26:45.806Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -57,7 +57,7 @@
    "cat": "getraenk",
    "note": "",
    "checked": false,
-   "updatedAt": 1791448850642,
+   "updatedAt": 1791775603471,
    "offer": {
     "shop": "Lidl",
     "price": 5.94,
@@ -69,7 +69,8 @@
      "n": 6,
      "size": 1.25
     },
-    "deposit": 1.5
+    "deposit": 1.5,
+    "regular": 7.14
    }
   },
   {
@@ -530,7 +531,7 @@
    "unit": "Tray",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791448850642
+   "updatedAt": 1791775603471
   },
   "pizza|thunfisch": {
    "name": "Pizza",
