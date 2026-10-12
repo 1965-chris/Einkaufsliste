@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.25",
- "savedAt": "2026-10-12T19:50:43.876Z",
+ "savedAt": "2026-10-12T19:51:15.353Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -836,12 +836,14 @@
   "taschentücher": {
    "name": "Taschentücher",
    "variants": [
-    "Taschentücher BoxBadezimmer",
-    "Taschentücher Badezimmer"
+    "Taschentücher BoxBadezimmer"
    ],
    "cat": "drogerie",
    "unit": "Pck.",
-   "updatedAt": 1791834236126
+   "updatedAt": 1791834672533,
+   "varDel": {
+    "taschentücher badezimmer": 1791834672533
+   }
   },
   "zucker": {
    "name": "Zucker",
