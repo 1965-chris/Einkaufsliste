@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T16:34:01.205Z",
+ "savedAt": "2026-10-12T16:34:31.010Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -342,6 +342,18 @@
    },
    "checked": false,
    "updatedAt": 1791671818407
+  },
+  {
+   "id": "mv5h2n2zwd7nbt",
+   "name": "Gehackte Tomaten",
+   "detail": "",
+   "qty": 1,
+   "unit": "",
+   "cat": "obst",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1791822870107
   }
  ],
  "favs": {
@@ -511,6 +523,14 @@
    "cat": "kuehl",
    "unit": "Becher",
    "last": 1791671759592
+  },
+  "gehackte tomaten|": {
+   "count": 1,
+   "name": "Gehackte Tomaten",
+   "detail": "",
+   "cat": "obst",
+   "unit": "",
+   "last": 1791822870107
   }
  },
  "stars": {
@@ -697,6 +717,13 @@
    "cat": "kuehl",
    "unit": "Becher",
    "updatedAt": 1791671759592
+  },
+  "gehackte tomaten": {
+   "name": "Gehackte Tomaten",
+   "variants": [],
+   "cat": "obst",
+   "unit": "",
+   "updatedAt": 1791822870107
   }
  },
  "prices": {
