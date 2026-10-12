@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:12:45.153Z",
+ "savedAt": "2026-10-12T20:13:02.559Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -469,7 +469,7 @@
    "name": "Sonntagsbrötchen",
    "detail": "",
    "qty": 2,
-   "unit": "",
+   "unit": "Pck.",
    "cat": "brot",
    "note": "9 Stck",
    "offer": {
@@ -484,7 +484,7 @@
     "regular": null
    },
    "checked": false,
-   "updatedAt": 1791835805321
+   "updatedAt": 1791835980324
   },
   {
    "id": "mv5ot8kist7s7u",
@@ -758,7 +758,7 @@
    "name": "Sonntagsbrötchen",
    "detail": "",
    "cat": "brot",
-   "unit": "",
+   "unit": "Pck.",
    "last": 1791835805321
   },
   "landbrötchen|roggenbrötchen": {
@@ -898,10 +898,10 @@
    "name": "Sonntagsbrötchen",
    "detail": "",
    "cat": "brot",
-   "unit": "",
+   "unit": "Pck.",
    "qty": 2,
    "on": true,
-   "updatedAt": 1791835801980
+   "updatedAt": 1791835980324
   }
  },
  "custom": {
@@ -1055,8 +1055,8 @@
    "name": "Sonntagsbrötchen",
    "variants": [],
    "cat": "brot",
-   "unit": "",
-   "updatedAt": 1791835801980
+   "unit": "Pck.",
+   "updatedAt": 1791835980324
   },
   "landbrötchen": {
    "name": "Landbrötchen",
