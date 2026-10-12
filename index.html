@@ -276,16 +276,16 @@ summary{cursor:pointer;font-weight:600}
     <a class="offerlink" id="sOffer" target="_blank" rel="noopener" style="margin-top:4px">🔎 bei marktguru suchen</a>
     <div class="searchrow" id="sSearch"></div>
     <button type="button" class="btn" id="sRead" style="width:100%;margin-top:10px">📷 Angebot aus Bild / Text lesen</button>
+    <div id="sTypeBox"></div>
     <div class="offerrow" style="align-items:center">
-      <span style="width:120px;font-size:14px">Preis</span>
-      <input class="field pricefield" id="sPrice" placeholder="€" inputmode="decimal" autocomplete="off">
-    </div>
-    <div class="offerrow" style="align-items:center">
-      <span style="width:120px;font-size:14px">statt (Vergleich)</span>
+      <span style="width:120px;font-size:14px" id="sRegularLbl">Preis</span>
       <input class="field pricefield" id="sRegular" placeholder="€" inputmode="decimal" autocomplete="off">
     </div>
+    <div class="offerrow" style="align-items:center" id="sPriceRow">
+      <span style="width:120px;font-size:14px;font-weight:600" id="sPriceLbl">Angebotspreis</span>
+      <input class="field pricefield" id="sPrice" placeholder="€" inputmode="decimal" autocomplete="off">
+    </div>
     <div class="saving" id="sSaving"></div>
-    <div id="sTypeBox"></div>
     <div id="sDates">
     <div class="offerrow" style="align-items:center">
       <span class="hint" style="margin:0;width:34px">von</span>
@@ -375,18 +375,21 @@ summary{cursor:pointer;font-weight:600}
     <input class="field" id="rDetail" autocomplete="off">
     <label>Markt</label>
     <div class="chips wrap" id="rShops" style="padding-top:0"></div>
-    <div class="offerrow">
-      <input class="field" id="rShop" placeholder="Markt" autocomplete="off">
-      <input class="field pricefield" id="rPrice" placeholder="Preis €" inputmode="decimal" style="max-width:110px">
-    </div>
+    <input class="field" id="rShop" placeholder="Markt" autocomplete="off">
+    <div id="rTypeBox"></div>
     <div class="offerrow" style="align-items:center">
-      <span style="width:120px;font-size:14px">statt (Vergleich)</span>
+      <span style="width:120px;font-size:14px" id="rRegularLbl">Preis</span>
       <input class="field pricefield" id="rRegular" placeholder="€" inputmode="decimal">
     </div>
+    <div class="offerrow" style="align-items:center" id="rPriceRow">
+      <span style="width:120px;font-size:14px;font-weight:600" id="rPriceLbl">Angebotspreis</span>
+      <input class="field pricefield" id="rPrice" placeholder="€" inputmode="decimal">
+    </div>
     <div class="saving" id="rSaving"></div>
-    <div id="rTypeBox"></div>
+    <div id="rDates">
     <div class="offerrow" style="align-items:center"><span class="hint" style="margin:0;width:34px">von</span><input class="field" id="rFrom" type="date"></div>
     <div class="offerrow" style="align-items:center"><span class="hint" style="margin:0;width:34px">bis</span><input class="field" id="rUntil" type="date"></div>
+    </div>
     <div id="rPackUI"></div>
     <details><summary>Erkannter Text</summary><div class="rawtext" id="rRaw"></div></details>
   </div>
@@ -450,7 +453,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.21';
+const APP_VERSION = 'v1.22';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1288,7 +1291,7 @@ function openItemSheet(mode, src) {
   setType('s', o.shop || o.price != null ? offerType(o) : (mode === 'often' ? 'normal' : 'angebot'));
   writePack('s', o.pack || null, o.deposit);
   $('sPackBox').open = !!(o.pack || o.deposit) || $('sCat').value === 'getraenk';
-  $('sShop').value = o.shop || ''; $('sPrice').value = fmtPriceInput(o.price ?? null); $('sRegular').value = fmtPriceInput(o.regular ?? null); updateSaving('s'); $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
+  $('sShop').value = o.shop || ''; writePrices('s', getType('s'), o.price, o.regular); $('sFrom').value = o.from || ''; $('sUntil').value = o.until || '';
   renderShops();
   $('sBtnsAdd').style.display = mode === 'add' ? 'block' : 'none';
   $('sBtnsEdit').style.display = mode === 'edit' ? 'flex' : 'none';
@@ -1424,15 +1427,12 @@ function renderShops() {
 }
 function sheetOffer() {
   const shop = $('sShop').value.trim();
-  let price = parsePrice($('sPrice').value), regular = parsePrice($('sRegular').value);
-  // nur „statt“ ausgefüllt → das ist dann der Preis
-  if (price == null && regular != null) { price = regular; regular = null; }
+  const { type, price, regular } = readPrices('s');
   let from = $('sFrom').value, until = $('sUntil').value;
   if (from && until && from > until) [from, until] = [until, from];
-  const type = getType('s');
   if (type === 'normal') { from = ''; until = ''; }
   const pack = readPack('s'), deposit = parsePrice($('sDeposit').value);
-  return (shop || price != null) ? { shop, price, from, until, type, special: type !== 'normal', pack, deposit: deposit || null, regular: regular && price != null && regular > price ? regular : null } : null;
+  return (shop || price != null) ? { shop, price, from, until, type, special: type !== 'normal', pack, deposit: deposit || null, regular } : null;
 }
 $('sShops').addEventListener('click', e => {
   const b = e.target.closest('[data-shop]'); if (!b) return;
@@ -1446,10 +1446,28 @@ $('sShops').addEventListener('click', e => {
   renderShops(); renderBrands();   // Markt steht oben – nicht mehr zum Preisfeld springen
 });
 $('sShop').addEventListener('input', () => { renderShops(); renderBrands(); });
-$('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sRegular').value = ''; updateSaving('s'); $('sFrom').value = ''; $('sUntil').value = ''; setType('s', 'angebot'); writePack('s', null, null); renderShops(); };
+$('sOfferClear').onclick = () => { $('sShop').value = ''; $('sPrice').value = ''; $('sRegular').value = ''; $('sFrom').value = ''; $('sUntil').value = ''; setType('s', 'angebot'); writePack('s', null, null); renderShops(); };
 
 /* Preisart-Umschalter und Gebinde/Pfand – für Artikel- und Preisfenster */
-function typeSegHtml(px) { return `<div class="seg typeseg" id="${px}Type">${PRICE_TYPES.map(([v, l]) => `<button type="button" data-type="${v}">${l}</button>`).join('')}</div>`; }
+const TYPE_SHORT = { normal: 'Normal', angebot: '🏷 Angebot', app: '📱 App' };
+function typeSegHtml(px) { return `<div class="seg typeseg" id="${px}Type">${PRICE_TYPES.map(([v]) => `<button type="button" data-type="${v}">${TYPE_SHORT[v]}</button>`).join('')}</div>`; }
+/* Preisfelder: oben immer der normale Preis, darunter Angebots- bzw. App-Preis */
+function writePrices(px, type, price, regular) {
+  setType(px, type);
+  if (type === 'normal') { $(px + 'Regular').value = fmtPriceInput(price ?? null); $(px + 'Price').value = ''; }
+  else { $(px + 'Regular').value = fmtPriceInput(regular ?? null); $(px + 'Price').value = fmtPriceInput(price ?? null); }
+  updateSaving(px); if ($(px + 'PackInfo')) updatePackInfo(px);
+}
+function readPrices(px) {
+  let type = getType(px), price, regular = parsePrice($(px + 'Regular').value);
+  if (type === 'normal') { price = regular; regular = null; }
+  else {
+    price = parsePrice($(px + 'Price').value);
+    if (price == null && regular != null) { price = regular; regular = null; type = 'normal'; }   // nur Normalpreis eingetragen
+  }
+  if (regular != null && !(price != null && regular > price)) regular = null;
+  return { type, price, regular };
+}
 function packBoxHtml(px) {
   return `<details class="packbox" id="${px}PackBox"><summary>📦 Packungsgröße & Pfand</summary>
     <div class="chips wrap" id="${px}Packs" style="padding-top:6px">${PACKS.map(p => `<button type="button" class="chip" data-pack="${p.id}">${p.label}</button>`).join('')}</div>
@@ -1464,13 +1482,14 @@ function getType(px) { return $(px + 'Type').dataset.val || 'angebot'; }
 function setType(px, v) {
   $(px + 'Type').dataset.val = v;
   $(px + 'Type').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.type === v));
-  if (px === 's') $('sDates').style.display = v === 'normal' ? 'none' : '';
-  // Normalpreis braucht keinen Vergleichspreis – Feld ausblenden, Wert ggf. als Preis übernehmen
-  const reg = $(px + 'Regular'), row = reg.closest('.offerrow');
-  if (v === 'normal') {
-    if (reg.value.trim() && !$(px + 'Price').value.trim()) $(px + 'Price').value = reg.value;
-    reg.value = ''; row.style.display = 'none'; if (typeof updateSaving === 'function') updateSaving(px);
-  } else row.style.display = '';
+  if ($(px + 'Dates')) $(px + 'Dates').style.display = v === 'normal' ? 'none' : '';
+  if ($(px + 'PriceRow')) {
+    $(px + 'PriceRow').style.display = v === 'normal' ? 'none' : '';
+    $(px + 'PriceLbl').textContent = v === 'app' ? 'App-Preis' : 'Angebotspreis';
+    $(px + 'RegularLbl').textContent = v === 'normal' ? 'Preis' : 'Preis (normal)';
+    if (typeof updateSaving === 'function') updateSaving(px);
+    if ($(px + 'PackInfo') && typeof updatePackInfo === 'function') updatePackInfo(px);
+  }
 }
 function readPack(px) {
   let n = parseInt($(px + 'PackN').value, 10), size = parseDecimal($(px + 'PackSize').value);
@@ -1497,7 +1516,7 @@ function writePack(px, pack, dep) {
   updatePackInfo(px);
 }
 function updatePackInfo(px) {
-  const pack = readPack(px), price = parsePrice($(px + 'Price').value);
+  const pack = readPack(px), price = $(px + 'Regular') ? readPrices(px).price : parsePrice($(px + 'Price').value);
   const l = packLitres(pack), u = packUnit(pack);
   $(px + 'PackInfo').textContent = l ? `= ${fmtAmount(l, u)}${price != null ? ' · ' + fmtPerLitre(price / l, u) : ''}` : '';
   $(px + 'Packs').querySelectorAll('[data-pack]').forEach(b => { const k = PACKS.find(x => x.id === b.dataset.pack); b.classList.toggle('sel', !!(pack && k.n === pack.n && k.size === pack.size && packUnit(k) === u)); });
@@ -1508,6 +1527,8 @@ function parseDecimal(s) { const n = parseFloat(String(s || '').replace(',', '.'
 ['s', 'p', 'r'].forEach(px => {
   $(px + 'Type').addEventListener('click', e => {
     const b = e.target.closest('[data-type]'); if (!b) return;
+    // auf „Normal“ gewechselt, aber nur der untere Preis steht drin → nach oben übernehmen
+    if (b.dataset.type === 'normal' && $(px + 'Regular') && !$(px + 'Regular').value.trim() && $(px + 'Price').value.trim()) $(px + 'Regular').value = $(px + 'Price').value;
     setType(px, b.dataset.type);
     if (px === 's' && b.dataset.type !== 'normal' && $('sShop').value && !$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
   });
@@ -1522,7 +1543,7 @@ function parseDecimal(s) { const n = parseFloat(String(s || '').replace(',', '.'
     }
     updatePackInfo(px);
   });
-  [px + 'PackN', px + 'PackSize', px + 'Price', px + 'Deposit'].forEach(id => $(id).addEventListener('input', () => updatePackInfo(px)));
+  [px + 'PackN', px + 'PackSize', px + 'Price', px + 'Deposit', px + 'Regular'].filter(id => $(id)).forEach(id => $(id).addEventListener('input', () => updatePackInfo(px)));
   $(px + 'PackU').addEventListener('change', () => updatePackInfo(px));
 });
 $('sCat').addEventListener('change', () => { if ($('sCat').value === 'getraenk') $('sPackBox').open = true; renderBrands(); });
@@ -2178,6 +2199,7 @@ function packCountUnit(p) {
 /* Saving-Anzeige */
 function updateSaving(px) {
   const p = parsePrice($(px + 'Price').value), r = parsePrice($(px + 'Regular').value);
+  if (getType(px) === 'normal') { $(px + 'Saving').textContent = ''; return; }
   $(px + 'Saving').textContent = p != null && r != null && r > p ? `💰 spart ${fmtPrice(r - p)} (−${Math.round((1 - p / r) * 100)} %)` : '';
 }
 ['s', 'r'].forEach(px => [px + 'Price', px + 'Regular'].forEach(id => $(id).addEventListener('input', () => updateSaving(px))));
@@ -2274,8 +2296,7 @@ function showReadResult(text) {
   $('rName').value = inSheet && $('sName').value ? $('sName').value : sug.name;
   $('rDetail').value = inSheet && $('sName').value ? (sheetDetail() || sug.detail) : sug.detail;
   $('rShop').value = r.shop || (inSheet ? $('sShop').value : '') || '';
-  $('rPrice').value = fmtPriceInput(r.price); $('rRegular').value = fmtPriceInput(r.regular);
-  setType('r', r.type || 'angebot');
+  writePrices('r', r.type || 'angebot', r.price, r.regular);
   if (!r.from && !r.until && r.type !== 'normal') { const w = offerWeek(); r.from = w.from; r.until = w.until; }
   // nur „ab …“ erkannt → bis Samstag derselben Woche; nur „bis …“ → ab Montag
   const shift = (iso, days) => { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + days); return ymd(d); };
@@ -2302,17 +2323,16 @@ $('rFile').onchange = async e => {
 };
 $('rParse').onclick = () => { if (!$('rText').value.trim()) { $('rStatus').textContent = 'Bitte zuerst Text einfügen.'; return; } showReadResult($('rText').value); };
 $('rApply').onclick = () => {
-  let price = parsePrice($('rPrice').value), regular = parsePrice($('rRegular').value); const type = getType('r');
-  if (price == null && regular != null) { price = regular; regular = null; }
+  const { type, price, regular } = readPrices('r');
   const offer = { shop: $('rShop').value.trim(), price, from: type === 'normal' ? '' : $('rFrom').value, until: type === 'normal' ? '' : $('rUntil').value,
-    type, special: type !== 'normal', pack: readPack('r'), deposit: parsePrice($('rDeposit').value), regular: regular && price != null && regular > price ? regular : null };
+    type, special: type !== 'normal', pack: readPack('r'), deposit: parsePrice($('rDeposit').value), regular };
   const name = cap($('rName').value.trim()), detail = $('rDetail').value.trim();
   closeReader();
   if (readMode === 'fill') {
     if (name && !$('sName').value.trim()) { $('sName').value = name; onNameChanged(); }
     if (detail && !sheetDetail()) setSheetDetail(detail);
-    $('sShop').value = offer.shop; $('sPrice').value = fmtPriceInput(offer.price); $('sRegular').value = fmtPriceInput(offer.regular);
-    setType('s', type); $('sFrom').value = offer.from; $('sUntil').value = offer.until;
+    $('sShop').value = offer.shop; writePrices('s', type, offer.price, offer.regular);
+    $('sFrom').value = offer.from; $('sUntil').value = offer.until;
     writePack('s', offer.pack, offer.deposit);
     if (packCountUnit(offer.pack) && ['', 'Fl.', 'Kiste', 'Tray', 'Pck.'].includes($('sUnit').value)) $('sUnit').value = packCountUnit(offer.pack);
     renderShops(); renderVariants(); updateSheetExtras(); updateSaving('s');
@@ -2325,6 +2345,11 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.22', '12.10.2026', [
+    'Preisfelder neu geordnet: zuerst Normal / Angebot / App wählen, oben steht immer der normale Preis',
+    'Bei Angebot erscheint darunter „Angebotspreis“, bei App „App-Preis“ – die Ersparnis wird automatisch berechnet',
+    'Von/Bis-Datum nur bei Angebot und App – auch im Fenster „Angebot aus Bild / Text lesen“'
+  ]],
   ['v1.21', '12.10.2026', [
     'Fehler behoben: Stand ein Preis nur im Feld „statt (Vergleich)“, ging er beim Speichern verloren – jetzt wird er als Preis übernommen',
     'Bei „Normalpreis“ ist das Feld „statt (Vergleich)“ ausgeblendet – es gehört nur zu Angeboten'
