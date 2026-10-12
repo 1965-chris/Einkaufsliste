@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T16:39:07.734Z",
+ "savedAt": "2026-10-12T16:41:54.714Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -364,6 +364,28 @@
    },
    "checked": true,
    "updatedAt": 1791822956999
+  },
+  {
+   "id": "mv5hc4kfazbl05",
+   "name": "Balsamico Essig",
+   "detail": "Cucina",
+   "qty": 1,
+   "unit": "",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1791823312671
   }
  ],
  "favs": {
@@ -541,6 +563,14 @@
    "cat": "obst",
    "unit": "",
    "last": 1791822870107
+  },
+  "balsamico essig|cucina": {
+   "count": 1,
+   "name": "Balsamico Essig",
+   "detail": "Cucina",
+   "cat": "vorrat",
+   "unit": "",
+   "last": 1791823312671
   }
  },
  "stars": {
@@ -734,6 +764,13 @@
    "cat": "obst",
    "unit": "",
    "updatedAt": 1791822870107
+  },
+  "balsamico essig": {
+   "name": "Balsamico Essig",
+   "variants": [],
+   "cat": "vorrat",
+   "unit": "",
+   "updatedAt": 1791823312672
   }
  },
  "prices": {
