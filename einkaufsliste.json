@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:13:02.559Z",
+ "savedAt": "2026-10-12T20:13:08.582Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -902,6 +902,15 @@
    "qty": 2,
    "on": true,
    "updatedAt": 1791835980324
+  },
+  "landbrötchen|roggenbrötchen": {
+   "name": "Landbrötchen",
+   "detail": "Roggenbrötchen",
+   "cat": "brot",
+   "unit": "Pck.",
+   "qty": 1,
+   "on": true,
+   "updatedAt": 1791835987725
   }
  },
  "custom": {
