@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.22",
- "savedAt": "2026-10-12T19:05:51.024Z",
+ "savedAt": "2026-10-12T19:06:20.181Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -327,7 +327,7 @@
    "note": "",
    "offer": {
     "shop": "ALDI",
-    "price": null,
+    "price": 0.39,
     "from": "",
     "until": "",
     "type": "normal",
@@ -341,7 +341,7 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791824540768
+   "updatedAt": 1791831978079
   },
   {
    "id": "mv5h2n2zwd7nbt",
@@ -1155,6 +1155,24 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791830751962
+  },
+  "pudding|milsani schoko mit sahnehaube|aldi|2026-10-12": {
+   "id": "pudding|milsani schoko mit sahnehaube|aldi|2026-10-12",
+   "key": "pudding|milsani schoko mit sahnehaube",
+   "name": "Pudding",
+   "detail": "Milsani Schoko mit Sahnehaube",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 0.39,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1791831978079
   }
  },
  "brands": {
