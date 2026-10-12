@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.20",
- "savedAt": "2026-10-12T18:35:07.549Z",
+ "savedAt": "2026-10-12T18:35:51.267Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -315,7 +315,7 @@
     "regular": null
    },
    "checked": false,
-   "updatedAt": 1791830012860
+   "updatedAt": 1791830149146
   },
   {
    "id": "mv2z3tgnae8qqi",
