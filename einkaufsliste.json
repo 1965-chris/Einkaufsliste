@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.22",
- "savedAt": "2026-10-12T19:05:32.461Z",
+ "savedAt": "2026-10-12T19:05:51.024Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -293,7 +293,7 @@
     "regular": 3.69
    },
    "checked": false,
-   "updatedAt": 1791775682531
+   "updatedAt": 1791831948533
   },
   {
    "id": "mv0q5wru9p7oxa",
@@ -712,7 +712,7 @@
    "qty": 2,
    "note": "",
    "on": true,
-   "updatedAt": 1791775682531
+   "updatedAt": 1791831948534
   },
   "salzbutter|milsani": {
    "name": "Salzbutter",
