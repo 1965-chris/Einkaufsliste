@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-12T20:15:04.500Z",
+ "savedAt": "2026-10-12T20:15:08.596Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -438,8 +438,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791835699728,
-   "checkedAt": 1791835699728
+   "updatedAt": 1791836107705,
+   "checkedAt": 1791835699728,
+   "deleted": true
   },
   {
    "id": "mv5oovrjxjc1mb",
@@ -461,8 +462,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791835702361,
-   "checkedAt": 1791835702361
+   "updatedAt": 1791836107705,
+   "checkedAt": 1791835702361,
+   "deleted": true
   },
   {
    "id": "mv5orvyh3uyoa2",
@@ -484,8 +486,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791836015748,
-   "checkedAt": 1791836015748
+   "updatedAt": 1791836107705,
+   "checkedAt": 1791836015748,
+   "deleted": true
   },
   {
    "id": "mv5ot8kist7s7u",
@@ -507,8 +510,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791836016680,
-   "checkedAt": 1791836016680
+   "updatedAt": 1791836107705,
+   "checkedAt": 1791836016680,
+   "deleted": true
   },
   {
    "id": "mv5ouyazgqgn4u",
@@ -530,8 +534,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791836017466,
-   "checkedAt": 1791836017466
+   "updatedAt": 1791836107705,
+   "checkedAt": 1791836017466,
+   "deleted": true
   },
   {
    "id": "mv5oy27b3kglza",
@@ -557,8 +562,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1791836102385,
-   "checkedAt": 1791836102385
+   "updatedAt": 1791836107705,
+   "checkedAt": 1791836102385,
+   "deleted": true
   }
  ],
  "favs": {
@@ -1970,6 +1976,115 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1791833530679
+  },
+  "k-mv5omgbcpbgrc3": {
+   "id": "k-mv5omgbcpbgrc3",
+   "date": "2026-10-12",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "cat": "kuehl",
+   "qty": 10,
+   "unit": "l",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.09,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 1
+   },
+   "deposit": null,
+   "updatedAt": 1791836107705
+  },
+  "k-mv5oovrjxjc1mb": {
+   "id": "k-mv5oovrjxjc1mb",
+   "date": "2026-10-12",
+   "name": "Slipeinlagen",
+   "detail": "Extra Lang",
+   "cat": "drogerie",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 0.99,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791836107705
+  },
+  "k-mv5orvyh3uyoa2": {
+   "id": "k-mv5orvyh3uyoa2",
+   "date": "2026-10-12",
+   "name": "Sonntagsbrötchen",
+   "detail": "",
+   "cat": "brot",
+   "qty": 2,
+   "unit": "Pck.",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 1.19,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791836107705
+  },
+  "k-mv5ot8kist7s7u": {
+   "id": "k-mv5ot8kist7s7u",
+   "date": "2026-10-12",
+   "name": "Landbrötchen",
+   "detail": "Roggenbrötchen",
+   "cat": "brot",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.29,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791836107705
+  },
+  "k-mv5ouyazgqgn4u": {
+   "id": "k-mv5ouyazgqgn4u",
+   "date": "2026-10-12",
+   "name": "Krüstchen",
+   "detail": "",
+   "cat": "brot",
+   "qty": 2,
+   "unit": "Pck.",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 1.79,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1791836107705
+  },
+  "k-mv5oy27b3kglza": {
+   "id": "k-mv5oy27b3kglza",
+   "date": "2026-10-12",
+   "name": "Fleischsalat",
+   "detail": "",
+   "cat": "kuehl",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.65,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1791836107705
   }
  }
 }
