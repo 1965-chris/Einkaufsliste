@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T16:34:31.010Z",
+ "savedAt": "2026-10-12T16:35:42.774Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -346,14 +346,24 @@
   {
    "id": "mv5h2n2zwd7nbt",
    "name": "Gehackte Tomaten",
-   "detail": "",
-   "qty": 1,
+   "detail": "Kings Criwn",
+   "qty": 2,
    "unit": "",
    "cat": "obst",
    "note": "",
-   "offer": null,
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
    "checked": false,
-   "updatedAt": 1791822870107
+   "updatedAt": 1791822940682
   }
  ],
  "favs": {
@@ -995,6 +1005,10 @@
   "dr. oetker die ofenfrische": {
    "name": "Dr. Oetker Die Ofenfrische",
    "updatedAt": 1791529594225
+  },
+  "kings criwn": {
+   "name": "Kings Criwn",
+   "updatedAt": 1791822940681
   }
  }
 }
