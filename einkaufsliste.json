@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.19",
- "savedAt": "2026-10-12T17:03:00.578Z",
+ "savedAt": "2026-10-12T17:03:23.114Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -576,7 +576,10 @@
    "detail": "Milsani Schoko mit Sahnehaube",
    "cat": "kuehl",
    "unit": "Becher",
-   "last": 1791671759592
+   "last": 1791824600927,
+   "qty": 1,
+   "note": "",
+   "offer": null
   },
   "gehackte tomaten|": {
    "count": 1,
