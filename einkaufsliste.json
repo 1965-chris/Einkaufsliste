@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-13T15:17:40.760Z",
+ "savedAt": "2026-10-13T18:40:21.627Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -598,7 +598,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1791904660018,
+   "last": 1791916820763,
    "cat": "vorrat",
    "deleted": true
   },
@@ -1725,8 +1725,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833591286,
-   "deleted": true
+   "updatedAt": 1791916820934
   },
   "k-muy02tupwreamy": {
    "id": "k-muy02tupwreamy",
@@ -1738,13 +1737,13 @@
    "unit": "Pck.",
    "n": 2,
    "shop": "ohne Markt",
-   "price": null,
-   "est": false,
+   "price": 2.19,
+   "est": true,
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833595803,
-   "deleted": true
+   "updatedAt": 1791916821616,
+   "later": "2026-10-12"
   },
   "k-muy4a4d5k5z0fo": {
    "id": "k-muy4a4d5k5z0fo",
@@ -1781,8 +1780,7 @@
    "type": "angebot",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833617422,
-   "deleted": true
+   "updatedAt": 1791916820934
   },
   "k-muyigk1e3ltp6h": {
    "id": "k-muyigk1e3ltp6h",
@@ -1799,8 +1797,7 @@
    "type": "angebot",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833619039,
-   "deleted": true
+   "updatedAt": 1791916820934
   },
   "k-muyo5rk7znkq3g": {
    "id": "k-muyo5rk7znkq3g",
@@ -1817,8 +1814,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833583537,
-   "deleted": true
+   "updatedAt": 1791916820934
   },
   "k-muyo98bmktmzmg": {
    "id": "k-muyo98bmktmzmg",
@@ -1835,8 +1831,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833588037,
-   "deleted": true
+   "updatedAt": 1791916820934
   },
   "k-muyo99fe7bwlhm": {
    "id": "k-muyo99fe7bwlhm",
@@ -1853,8 +1848,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833579887,
-   "deleted": true
+   "updatedAt": 1791916820934
   },
   "k-muyoupjoperrgw": {
    "id": "k-muyoupjoperrgw",
@@ -1871,8 +1865,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791833584487,
-   "deleted": true
+   "updatedAt": 1791916820934
   },
   "k-muyouqf0b24oro": {
    "id": "k-muyouqf0b24oro",
@@ -1889,7 +1882,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791835367465,
+   "updatedAt": 1791916821616,
    "later": "2026-10-12"
   },
   "k-mv01n4x0751ump": {
@@ -1911,8 +1904,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1791833593836,
-   "deleted": true
+   "updatedAt": 1791916820934
   },
   "k-mv02uawa8rm1uc": {
    "id": "k-mv02uawa8rm1uc",
