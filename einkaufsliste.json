@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.26",
- "savedAt": "2026-10-15T15:48:44.200Z",
+ "savedAt": "2026-10-15T17:48:19.876Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -598,7 +598,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1792079323189,
+   "last": 1792086499156,
    "cat": "vorrat",
    "deleted": true
   },
