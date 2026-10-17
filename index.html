@@ -126,6 +126,18 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .changes{margin:10px 0 0;padding-left:20px}
 .changes li{margin:4px 0}
 .warn{display:inline-block;font-size:11px;font-weight:600;background:#fff1d6;color:#9a5b00;border-radius:6px;padding:1px 6px;margin-top:3px}
+.mygrp{padding:10px 14px 4px;font-size:14px;color:var(--muted);border-top:1px solid var(--line)}
+.mygrp:first-child{border-top:0}
+.mygrp b{color:var(--ink);font-size:16px}
+.item.insub{padding-left:26px}
+.prodrow .pbadge{font-size:11px;font-weight:700;background:var(--chip);color:var(--muted);border-radius:6px;padding:1px 6px;vertical-align:middle}
+.brandchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.brandchips .chip{font-size:13px;padding:5px 10px}
+.item.insub .name{font-size:15px}
+.dupgrp{border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-top:8px;background:var(--bg)}
+.dupgrp label{display:flex;align-items:center;gap:8px;margin:6px 0 0;font-size:14px;color:var(--ink)}
+.dupgrp input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+.dupgrp .dm{color:var(--muted);font-size:12px}
 .okmark{color:var(--accent);font-weight:700}
 .badge{display:inline-block;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .chk{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink);margin:10px 0 0}
@@ -392,6 +404,15 @@ summary{cursor:pointer;font-weight:600}
 </div>
 
 <!-- Angebot aus Bild / Text lesen -->
+<div class="sheet" id="dupSheet">
+  <h3>🧹 Doppelte Artikel</h3>
+  <div class="hint">Gleiche Produkte, die mehrfach angelegt sind (z. B. „Thunfischfilet“ und „Thunfisch-Filet“). Beim Zusammenführen wandern Preise aller Märkte, Größe, Favorit, Strichcode und Einkäufe zum behaltenen Artikel. Verschiedene Marken bleiben getrennt.</div>
+  <div id="dupList"></div>
+  <div class="row" style="margin-top:12px">
+    <button class="btn" data-close>Abbrechen</button>
+    <button class="btn primary" id="dupGo">Zusammenführen</button>
+  </div>
+</div>
 <div class="sheet" id="addMenu">
   <h3>Was möchtest du tun?</h3>
   <div class="menulist">
@@ -537,7 +558,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.30';
+const APP_VERSION = 'v1.33';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -645,7 +666,7 @@ const CAT_WORDS = {
   fleisch: ['fleisch','wurst','schinken','salami','hähnchen','huhn','hack','steak','schnitzel','fisch','lachs','aufschnitt','bacon','speck','würstchen','frikadelle','pute'],
   vorrat: ['nudel','spaghetti','reis','mehl','zucker','salz','öl','essig','konserve','dose','tomatenmark','passata','linsen','bohnen','mais','brühe','gewürz','pfeffer','senf','ketchup','mayo','soße','sauce','haferflocken','müsli','backpulver'],
   kaffee: ['kaffee','tee','kakao','marmelade','honig','nutella','cornflakes','melitta','jacobs','tchibo','dallmayr','espresso','pads','kapseln'],
-  suess: ['schokolade','chips','keks','gummi','bonbon','snack','nüsse','riegel','haribo'],
+  suess: ['schokolade','chips','keks','gummi','bonbon','snack','nüsse','riegel','haribo','waffel','kuchen','muffin','croissant','praline','lakritz'],
   getraenk: ['wasser','saft','cola','bier','wein','sprudel','limo','fanta','sekt','schorle','getränk','sprite'],
   tk: ['tiefkühl','tk-','pizza','pommes','fischstäbchen'],
   drogerie: ['klopapier','toilettenpapier','küchenrolle','spülmittel','waschmittel','zahnpasta','zahnbürste','shampoo','duschgel','seife','deo','taschentücher','müllbeutel','tabs','creme','alufolie','folie','backpapier','batterie','schwamm','weichspüler','reiniger']
@@ -767,7 +788,7 @@ function offerText(o) {
 /* ---------- Marken ---------- */
 const OWN_BRANDS = {
   ALDI: ['Milsani', 'Cucina', 'Moser Roth', 'Choceur', 'Barissimo', 'Amaroy', 'Westminster', 'Rio d\'Oro', 'Tandil', 'Lacura', 'Gut Bio', 'Nur Nur Natur', 'Meine Metzgerei', 'Golden Seafood', 'Asia Green Garden', 'Le Gusto', 'Wonnemeyer', 'River'],
-  Lidl: ['Milbona', 'Pilos', 'Combino', 'Fin Carré', 'Bellarom', 'Freeway', 'Saskia', 'Solevita', 'Perlenbacher', 'Crownfield', 'Kania', 'Chef Select', 'Deluxe', 'Bio Organic', 'Vemondo', 'Alesto', 'Snack Day', 'Vitasia', 'Dulano', 'Cien', 'W5', 'Formil'],
+  Lidl: ['Almare', 'Milbona', 'Pilos', 'Combino', 'Fin Carré', 'Bellarom', 'Freeway', 'Saskia', 'Solevita', 'Perlenbacher', 'Crownfield', 'Kania', 'Chef Select', 'Deluxe', 'Bio Organic', 'Vemondo', 'Alesto', 'Snack Day', 'Vitasia', 'Dulano', 'Cien', 'W5', 'Formil'],
   EDEKA: ['Gut & Günstig', 'EDEKA', 'EDEKA Bio', 'EDEKA Herzstücke', 'EDEKA Genuss', 'EDEKA zuhause', 'elkos'],
   REWE: ['ja!', 'REWE Beste Wahl', 'REWE Bio', 'REWE Feine Welt', 'REWE frei von', 'Wilhelm Brandenburg'],
   Kaufland: ['K-Classic', 'K-Bio', 'K-Favourites', 'K-Take it Veggie', 'K-Purland'],
@@ -884,20 +905,65 @@ function splitBrand(detail) {
   if (!nd) return { brand: '', rest: '' };
   let best = '';
   allBrands().forEach(b => { const nb = norm(b); if ((nd === nb || nd.startsWith(nb + ' ')) && nb.length > norm(best).length) best = b; });
-  return best ? { brand: best, rest: d.slice(best.length).trim() } : { brand: '', rest: d };
+  if (best) return { brand: best, rest: d.slice(best.length).trim() };
+  // andere Schreibweise („Gut&Günstig“, „GUT & GÜNSTIG“) – ohne Leer- und Satzzeichen vergleichen
+  const loose = x => norm(x).replace(/[^a-zäöüß0-9]/g, ''), ld = loose(d);
+  let cut = -1;
+  allBrands().forEach(b => {
+    const lb = loose(b); if (lb.length < 3 || !ld.startsWith(lb) || (best && lb.length <= loose(best).length)) return;
+    let i = 0, acc = ''; while (i < d.length && acc.length < lb.length) { acc = loose(d.slice(0, ++i)); }
+    if (acc === lb && (i === d.length || /[\s\-–,.:]/.test(d[i]))) { best = b; cut = i; }
+  });
+  return best ? { brand: best, rest: d.slice(cut).replace(/^[\s\-–,.:]+/, '').trim() } : { brand: '', rest: d };
 }
 function joinBrand(brand, rest) { return [String(brand || '').trim(), String(rest || '').trim()].filter(Boolean).join(' '); }
-function registerBrand(b) {
-  b = String(b || '').trim(); if (!b) return;
+// Marke merken – samt Markt und Bereich, damit sie dort künftig gleich vorgeschlagen wird („Meine Küchenwelt“ bei ALDI)
+function registerBrand(b, shop, cat) {
+  b = String(b || '').trim(); if (!b) return false;
   const k = norm(b);
-  if (allBrands().some(x => norm(x) === k)) return;
   data.brands = data.brands || {};
-  data.brands[k] = { name: b, updatedAt: now() };
+  const prev = data.brands[k] && !data.brands[k].deleted ? data.brands[k] : null;
+  const known = allBrands().find(x => norm(x) === k);
+  shop = SHOPS.find(x => norm(x) === norm(shop)) || '';
+  const ownOf = Object.keys(OWN_BRANDS).find(sh => OWN_BRANDS[sh].some(x => norm(x) === k));
+  if (shop && ownOf && ownOf === shop) shop = '';                        // steht schon als Eigenmarke dieses Markts drin
+  if (prev) {
+    const shops = { ...(prev.shops || {}) }, cats = { ...(prev.cats || {}) };
+    let ch = false;
+    if (shop && !shops[shop]) { shops[shop] = 1; ch = true; }
+    if (cat && !cats[cat]) { cats[cat] = 1; ch = true; }
+    if (ch) { data.brands[k] = { ...prev, shops, cats, updatedAt: now() }; return true; }
+    return false;
+  }
+  if (known && !shop) return false;                                       // bekannte Marke ohne Markt: nichts zu merken
+  data.brands[k] = { name: known || b, shops: shop ? { [shop]: 1 } : {}, cats: cat ? { [cat]: 1 } : {}, updatedAt: now() };
+  return true;
+}
+// Marken, die bei diesem Markt schon benutzt wurden (passender Bereich zuerst)
+function userBrandsFor(shop, cat) {
+  const list = Object.values(data.brands || {}).filter(b => !b.deleted && b.shops && b.shops[shop]);
+  return [...list.filter(b => b.cats && b.cats[cat]), ...list.filter(b => !(b.cats && b.cats[cat]) && !Object.keys(b.cats || {}).length)].map(b => b.name);
+}
+// Marken aus vorhandenen Artikeln, Preisen und Einkäufen ihrem Markt zuordnen (einmalig beim Start, danach laufend)
+function backfillBrandShops() {
+  let n = 0;
+  const seen = new Set();
+  const take = (name, detail, shop, cat) => {
+    if (!detail || !shop || shop === 'ohne Markt') return;
+    const br = splitBrand(detail).brand; if (!br) return;
+    const k = norm(br) + '|' + shop + '|' + (cat || ''); if (seen.has(k)) return; seen.add(k);
+    if (registerBrand(br, shop, cat || guessCat(name))) n++;
+  };
+  Object.values(data.prices || {}).filter(e => !e.deleted).forEach(e => take(e.name, e.detail, e.shop));
+  Object.values(data.purchases || {}).filter(p => !p.deleted).forEach(p => take(p.name, p.detail, p.shop, p.cat));
+  Object.values(data.arts || {}).filter(a => !a.deleted).forEach(a => take(a.name, a.detail, a.shop, a.cat));
+  liveItems().forEach(i => { const o = offerOf(i); if (o) take(i.name, i.detail, o.shop, i.cat); });
+  return n;
 }
 
 /* ---------- State ---------- */
 let data = loadData();
-setTimeout(() => { if (backfillPurchases()) saveLocal(); }, 0);
+setTimeout(() => { const a = backfillPurchases(), b = backfillBrandShops(); if (a || b) { saveLocal(); if (b && typeof schedulePush === 'function') schedulePush(); } }, 0);
 // Einträge aus v1.0 hatten bei „Häufig gekauft“ ein älteres Schlüsselformat – einmalig umstellen
 (function migrateFavKeys() {
   let changed = false;
@@ -1299,6 +1365,9 @@ function myArticles() {
     if (am && am.pack) { a.pack = am.pack; a.deposit = am.deposit; }        // zuletzt eingegebene Größe gewinnt
     else if (withPack) { a.pack = withPack.pack; a.deposit = withPack.deposit; }
     a.shop = (a.normal && a.normal.shop !== 'ohne Markt' ? a.normal.shop : '') || (am && am.shop) || '';
+    a.nPrices = mine.length;
+    const seen = {}; a.shops = [];
+    mine.filter(e => e.shop !== 'ohne Markt').forEach(e => { if (!seen[e.shop]) { seen[e.shop] = 1; a.shops.push(e); } });   // letzter Preis je Markt
     if (am && am.cat) a.cat = am.cat;
     a.missing = [!a.normal && 'Normalpreis', !a.pack && 'Größe'].filter(Boolean);
     if (!a.cat) a.cat = guessCat(a.name);
@@ -1312,12 +1381,40 @@ function renderMyArticles() {
   if (n) arts = arts.filter(a => norm(a.name + ' ' + a.detail).includes(n));
   if (myFilter === 'open') arts = arts.filter(a => a.missing.length);
   let html = `<p class="intro" style="margin-top:0">Alle Artikel, die du schon angelegt oder gekauft hast. <b>Komplett</b> ist ein Artikel mit Normalpreis und Größe – Angebots- und App-Preise zählen nicht. Antippen zum Bearbeiten.</p>`;
-  html += `<div class="chips">${[['', 'Alle'], ['open', '⚠︎ Unvollständig (' + nOpen + ')']].map(([v, l]) => `<button class="chip${v === myFilter ? ' sel' : ''}" data-myf="${v}">${l}</button>`).join('')}</div>`;
+  html += `<div class="chips wrap">${[['', 'Alle'], ['open', '⚠︎ Unvollständig (' + nOpen + ')']].map(([v, l]) => `<button class="chip${v === myFilter ? ' sel' : ''}" data-myf="${v}">${l}</button>`).join('')}<button class="chip" data-act="dups">🧹 Doppelte suchen</button></div>`;
   if (!arts.length) html += `<div class="empty">${myFilter === 'open' ? '🎉 Alles komplett.' : 'Noch keine eigenen Artikel.'}</div>`;
-  else html += `<div class="list">${arts.map(a => {
-    const meta = [a.normal && fmtPrice(a.normal.price) + (a.normal.shop && a.normal.shop !== 'ohne Markt' ? ' · ' + a.normal.shop : ''), a.pack && packLabel(a.pack)].filter(Boolean).join(' · ');
-    return `<div class="item" data-myart="${esc(a.key)}"><div class="body"><div class="name">${esc(a.name)}</div>${a.detail ? `<div class="detail">${esc(a.detail)}</div>` : ''}${meta ? `<div class="note">${esc(meta)}</div>` : ''}${a.missing.length ? `<span class="warn">⚠︎ fehlt: ${a.missing.join(', ')}</span>` : ''}</div>${a.missing.length ? '' : '<span class="qty"><span class="okmark">✓</span></span>'}</div>`;
-  }).join('')}</div>`;
+  else {
+    const groups = []; arts.forEach(a => { const g = groups[groups.length - 1]; if (g && norm(g[0].name) === norm(a.name)) g.push(a); else groups.push([a]); });
+    const rowHtml = (a, sub) => {
+      const cheapest = a.shops.length > 1 ? Math.min(...a.shops.map(e => e.price)) : null;
+      const shopLine = a.shops.map(e => { const t = `${e.shop} ${fmtPrice(e.price)}${offerType(e) === 'angebot' ? ' (Angebot)' : offerType(e) === 'app' ? ' (App)' : ''}`; return e.price === cheapest ? `<b>${esc(t)}</b>` : esc(t); }).join(' · ');
+      const meta = [!a.shops.length && a.normal ? fmtPrice(a.normal.price) : '', !a.shops.length && a.shop ? a.shop : '', a.pack ? packLabel(a.pack) : ''].filter(Boolean).join(' · ');
+      return `<div class="item${sub ? ' insub' : ''}" data-myart="${esc(a.key)}"><div class="body"><div class="name">${esc(sub ? (a.detail || 'ohne Bezeichnung') : a.name)}</div>${!sub && a.detail ? `<div class="detail">${esc(a.detail)}</div>` : ''}${meta ? `<div class="note">${esc(meta)}</div>` : ''}${shopLine ? `<div class="note">🏪 ${shopLine}</div>` : ''}${a.missing.length ? `<span class="warn">⚠︎ fehlt: ${a.missing.join(', ')}</span>` : ''}</div>${a.missing.length ? '' : '<span class="qty"><span class="okmark">✓</span></span>'}</div>`;
+    };
+    // gleiches Produkt, verschiedene Marken (z. B. Thunfisch von Gut & Günstig (EDEKA), Almare (Lidl) …) = ein Artikel mit Preisen je Markt
+    const productRow = (c, g) => {
+      const rest = splitBrand(c[0].detail).rest || '';
+      const all = c.flatMap(a => a.shops.map(e => ({ a, e, v: c.every(x => x.pack) ? perLitre(e.price, a.pack) : e.price }))).filter(x => x.v != null).sort((x, y) => x.v - y.v);
+      const unit = c.every(x => x.pack) && new Set(c.map(x => JSON.stringify(x.pack))).size > 1;
+      const line = all.map((x, i) => { const br = splitBrand(x.a.detail).brand || x.a.detail || ''; const t = `${x.e.shop} ${fmtPrice(x.e.price)}${unit ? ' (' + fmtPerLitre(x.v, packUnit(x.a.pack)) + ')' : ''}${offerType(x.e) === 'angebot' ? ' Angebot' : offerType(x.e) === 'app' ? ' App' : ''}${br ? ' · ' + br : ''}`; return i === 0 && all.length > 1 ? `<b>${esc(t)}</b>` : esc(t); }).join('<br>');
+      const open = c.filter(a => a.missing.length).length;
+      return `<div class="item${g.length > 1 ? ' insub' : ''} prodrow"><div class="body"><div class="name">${esc(g.length > 1 ? (rest || 'ohne Bezeichnung') : c[0].name + (rest ? ' · ' + rest : ''))} <span class="pbadge">${c.length} Marken</span></div>
+        ${line ? `<div class="note">🏪 ${line}</div>` : ''}
+        <div class="brandchips">${c.map(a => `<button class="chip" data-myart="${esc(a.key)}">${esc(splitBrand(a.detail).brand || a.detail || 'ohne Marke')}${a.pack ? ' · ' + esc(packLabel(a.pack)) : ''}${a.missing.length ? ' ⚠︎' : ' ✓'}</button>`).join('')}</div>
+        ${open ? `<span class="warn">⚠︎ ${open} Marke${open > 1 ? 'n' : ''} unvollständig – antippen zum Bearbeiten</span>` : ''}</div></div>`;
+    };
+    html += `<div class="list">${groups.map(g => {
+      const cl = productClusters(g);
+      let head = '';
+      if (g.length > 1) {
+        // günstigste Sorte: je Grundpreis, wenn alle eine Größe haben
+        const cand = g.flatMap(a => a.shops.map(e => ({ a, e, v: a.pack && g.every(x => x.pack) ? perLitre(e.price, a.pack) : e.price })).filter(x => x.v != null));
+        const best = cand.sort((x, y) => x.v - y.v)[0];
+        head = `<div class="mygrp"><b>${esc(g[0].name)}</b> · ${cl.length > 1 ? cl.length + ' Sorten' : g.length + ' Marken'}${best ? ` · günstigster: ${esc(best.a.detail || 'ohne Bezeichnung')} bei ${esc(best.e.shop)} ${esc(fmtPrice(best.e.price))}` : ''}</div>`;
+      }
+      return head + cl.map(c => c.length > 1 ? productRow(c, g) : rowHtml(c[0], g.length > 1)).join('');
+    }).join('')}</div>`;
+  }
   $('catMain').innerHTML = html;
 }
 $('catMode').addEventListener('click', e => {
@@ -1325,6 +1422,86 @@ $('catMode').addEventListener('click', e => {
   catMode = b.dataset.cm; $('catMode').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
   renderCatalog();
 });
+// Artikel gleichen Namens nach Produkt bündeln (Bezeichnung ohne Marke ähnlich, z. B. „Thunfischfilet“ ≈ „Thunfisch Filets“)
+function productClusters(g) {
+  const loose = x => norm(x).replace(/[^a-zäöüß0-9]/g, '');
+  const stems = x => new Set(norm(x).replace(/[^a-zäöüß0-9 ]/g, ' ').split(' ').filter(w => w.length >= 2 && !/^\d/.test(w)).map(w => w.slice(0, 5)));
+  const rest = a => splitBrand(a.detail).rest.replace(/\s*\d+(?:[,.]\d+)?\s?(?:kg|g|ml|l)\b\.?/gi, '').trim();
+  const parent = g.map((_, i) => i), find = i => parent[i] === i ? i : (parent[i] = find(parent[i]));
+  for (let i = 0; i < g.length; i++) for (let j = i + 1; j < g.length; j++) {
+    const ra = rest(g[i]), rb = rest(g[j]);
+    let same = loose(ra) === loose(rb);
+    if (!same && ra && rb) { const sa = stems(ra), sb = stems(rb), inter = [...sa].filter(x => sb.has(x)).length, uni = new Set([...sa, ...sb]).size; same = uni > 0 && inter / uni >= 0.5; }
+    // nur bündeln, wenn wirklich verschiedene Marken (oder Schreibweisen) – „ohne Bezeichnung“ bleibt für sich
+    if (same && (g[i].detail || g[j].detail) && g[i].detail && g[j].detail) parent[find(i)] = find(j);
+  }
+  const out = {}; g.forEach((a, i) => (out[find(i)] = out[find(i)] || []).push(a));
+  return Object.values(out);
+}
+/* Doppelte Artikel finden und zusammenführen */
+let dupGroups = [];
+function findDupGroups() {
+  const loose = x => norm(x).replace(/[^a-zäöüß0-9]/g, '');
+  const stems = x => norm(x).replace(/[^a-zäöüß0-9 ]/g, ' ').split(' ').filter(w => w.length >= 2).map(w => w.slice(0, 5));
+  const arts = myArticles().filter(a => !a.onlyCustom);
+  const byName = {}; arts.forEach(a => (byName[loose(a.name)] = byName[loose(a.name)] || []).push(a));
+  const out = [];
+  Object.values(byName).filter(g => g.length > 1).forEach(g => {
+    const parent = g.map((_, i) => i), find = i => parent[i] === i ? i : (parent[i] = find(parent[i]));
+    const weak = new Set();
+    for (let i = 0; i < g.length; i++) for (let j = i + 1; j < g.length; j++) {
+      const a = g[i], b = g[j];
+      const ba = loose(splitBrand(a.detail).brand), bb = loose(splitBrand(b.detail).brand);
+      if (ba && bb && ba !== bb) continue;                                  // verschiedene Marken = verschiedene Produkte
+      let strong = loose(a.detail) === loose(b.detail);
+      if (!strong && a.detail && b.detail) {
+        const sa = new Set(stems(splitBrand(a.detail).rest || a.detail)), sb = new Set(stems(splitBrand(b.detail).rest || b.detail));
+        const inter = [...sa].filter(x => sb.has(x)).length, uni = new Set([...sa, ...sb]).size;
+        strong = uni > 0 && inter / uni >= 0.6;
+      }
+      if (strong) parent[find(i)] = find(j);
+      else if (!a.detail || !b.detail) { weak.add(i); weak.add(j); }
+    }
+    const cl = {}; g.forEach((a, i) => (cl[find(i)] = cl[find(i)] || []).push(a));
+    Object.values(cl).filter(c => c.length > 1).forEach(c => out.push({ items: c, sure: true }));
+    // Artikel nur mit Namen (ohne Bezeichnung) neben genau einem mit Bezeichnung: als Vorschlag (nicht vorausgewählt)
+    const w = g.filter((a, i) => weak.has(i) && !Object.values(cl).some(c => c.length > 1 && c.includes(a)));
+    if (w.length === 2) out.push({ items: w, sure: false });
+  });
+  const score = a => (a.nPrices || 0) * 2 + (a.pack ? 3 : 0) + (a.shop ? 1 : 0) + (a.detail || '').length / 100;
+  out.forEach(d => { d.items.sort((x, y) => score(y) - score(x)); d.keep = d.items[0].key; d.on = d.sure; });
+  return out;
+}
+function openDups() {
+  dupGroups = findDupGroups();
+  renderDups(); openSheet('dupSheet');
+}
+function renderDups() {
+  if (!dupGroups.length) { $('dupList').innerHTML = '<div class="empty">🎉 Keine doppelten Artikel gefunden.</div>'; $('dupGo').disabled = true; return; }
+  $('dupGo').disabled = false;
+  $('dupList').innerHTML = dupGroups.map((d, gi) => `<div class="dupgrp">
+    <label><input type="checkbox" data-dg="${gi}"${d.on ? ' checked' : ''}><b>${esc(d.items[0].name)}</b>${d.sure ? '' : ' <span class="dm">(Vorschlag – bitte prüfen)</span>'}</label>
+    ${d.items.map(a => `<label style="padding-left:20px"><input type="radio" name="keep${gi}" data-dk="${gi}" value="${esc(a.key)}"${a.key === d.keep ? ' checked' : ''}><span>${esc(a.detail || 'ohne Bezeichnung')}<br><span class="dm">${[a.pack && packLabel(a.pack), a.shops.map(e => e.shop + ' ' + fmtPrice(e.price)).join(', ') || a.shop, (a.nPrices || 0) + ' Preis' + (a.nPrices === 1 ? '' : 'e')].filter(Boolean).map(esc).join(' · ')}</span></span></label>`).join('')}
+    <div class="dm" style="padding-left:20px;margin-top:4px">● = wird behalten, die anderen werden darin zusammengeführt</div>
+  </div>`).join('');
+}
+$('dupList').addEventListener('change', e => {
+  const t = e.target;
+  if (t.dataset.dg != null) dupGroups[+t.dataset.dg].on = t.checked;
+  if (t.dataset.dk != null) { dupGroups[+t.dataset.dk].keep = t.value; dupGroups[+t.dataset.dk].on = true; renderDups(); }
+});
+$('dupGo').onclick = () => {
+  const todo = dupGroups.filter(d => d.on);
+  if (!todo.length) { toast('Nichts ausgewählt'); return; }
+  let n = 0;
+  todo.forEach(d => {
+    const keep = d.items.find(a => a.key === d.keep);
+    d.items.filter(a => a !== keep).forEach(a => { moveArticleKey(a.key, keep.name, keep.detail, true); n++; });
+  });
+  closeSheets(); commit();
+  toast(`🧹 ${n} doppelte Artikel zusammengeführt`);
+};
+
 /* Artikel-Katalog */
 function renderCatalog() {
   if (catMode === 'meine') return renderMyArticles();
@@ -1424,13 +1601,15 @@ function brandSuggestions() {
   const n = norm($('sName').value), out = new Map();
   const add = b => { const k = norm(b); if (k && !out.has(k)) out.set(k, b); };
   // schon genutzte Marken für diesen Artikel
-  const used = [...liveItems(), ...Object.values(data.favs).filter(f => !f.deleted), ...Object.values(data.stars).filter(s => s.on), ...Object.values(data.prices || {}).filter(e => !e.deleted)]
+  const used = [...liveItems(), ...Object.values(data.favs).filter(f => !f.deleted), ...Object.values(data.stars).filter(s => s.on), ...Object.values(data.prices || {}).filter(e => !e.deleted),
+    ...Object.values(data.arts || {}).filter(a => !a.deleted), ...Object.values(data.purchases || {}).filter(p => !p.deleted)]
     .filter(x => norm(x.name) === n).map(x => splitBrand(x.detail).brand).filter(Boolean);
   const shop = SHOPS.find(s => norm(s) === norm($('sShop').value));
   const hints = BRAND_HINTS[n] || [];
   if (shop) {
     // gewählter Markt: dessen Eigenmarken für diesen Bereich zuerst, dann schon genutzte und passende Marken
     ownBrandsFor(shop, $('sCat').value).forEach(add);
+    userBrandsFor(shop, $('sCat').value).forEach(add);                     // selbst zugeordnete Marken dieses Markts
     used.forEach(add);
     hints.filter(b => !Object.values(OWN_BRANDS).flat().includes(b)).forEach(add);   // Eigenmarken anderer Märkte ausblenden
   } else { used.forEach(add); hints.forEach(add); }
@@ -1550,7 +1729,7 @@ let favEditKey = null;
 function saveFavoriteFromSheet() {
   const name = cap($('sName').value), detail = sheetDetail();
   if (!name) { toast('Bitte einen Artikel eingeben'); return; }
-  registerBrand($('sBrand').value);
+  registerBrand($('sBrand').value, $('sShop').value, $('sCat').value);
   const cat = $('sCat').value, unit = $('sUnit').value, qty = clampQty($('sQty').value);
   if (favEditKey && favEditKey !== keyOf(name, detail)) {
     const old = data.stars[favEditKey]; if (old) { old.on = false; old.updatedAt = now(); }
@@ -1606,11 +1785,21 @@ $('newArt').onclick = () => { openItemSheet('add', { name: cap($('catSearch').va
 
 /* „Meine Artikel“ bearbeiten */
 let artKey = null;
-function moveArticleKey(oldKey, name, detail) {
+function moveArticleKey(oldKey, name, detail, silent) {
   // Umbenennen: Preise, Favorit und „Häufig gekauft“ ziehen mit (so lassen sich auch doppelte Artikel zusammenführen)
   const newKey = keyOf(name, detail); if (!oldKey || oldKey === newKey) return;
-  const am = (data.arts || {})[oldKey];
-  if (am && !am.deleted) { am.deleted = true; am.updatedAt = now(); }
+  data.arts = data.arts || {};
+  const am = data.arts[oldKey];
+  if (am && !am.deleted) {
+    const nm = data.arts[newKey] && !data.arts[newKey].deleted ? data.arts[newKey] : null;
+    data.arts[newKey] = nm ? { ...nm, pack: nm.pack || am.pack || null, deposit: nm.deposit ?? am.deposit ?? null, shop: nm.shop || am.shop || '', cat: nm.cat || am.cat || null, updatedAt: now() }
+                           : { ...am, name, detail, updatedAt: now() };
+    am.deleted = true; am.updatedAt = now();
+  }
+  // Strichcodes, Bon-Zuordnungen und Einkäufe zeigen ab jetzt auf den neuen Artikel
+  Object.values(data.eans || {}).forEach(x => { if (!x.deleted && keyOf(x.name, x.detail) === oldKey) Object.assign(x, { name, detail, updatedAt: now() }); });
+  Object.values(data.bonmap || {}).forEach(x => { if (!x.deleted && keyOf(x.name, x.detail) === oldKey) Object.assign(x, { name, detail, updatedAt: now() }); });
+  Object.values(data.purchases || {}).forEach(x => { if (!x.deleted && keyOf(x.name, x.detail) === oldKey) Object.assign(x, { name, detail, updatedAt: now() }); });
   priceEntries().filter(e => e.key === oldKey).forEach(e => {
     const nid = newKey + e.id.slice(oldKey.length);
     if (!data.prices[nid] || data.prices[nid].deleted) data.prices[nid] = { ...e, id: nid, key: newKey, name, detail, updatedAt: now() };
@@ -1622,7 +1811,8 @@ function moveArticleKey(oldKey, name, detail) {
   if (st && st.on) { setStar(name, detail, true, { cat: st.cat, unit: st.unit, qty: st.qty }); st.on = false; st.updatedAt = now(); }
   const old = splitKeyArticle(oldKey);
   if (old && old.cu && old.variant) removeVariant(old.cu, old.variant);
-  offerListUpdate(oldKey, name, detail);
+  if (silent) liveItems().filter(i => keyOf(i.name, i.detail) === oldKey).forEach(i => Object.assign(i, { name, detail, updatedAt: now() }));
+  else offerListUpdate(oldKey, name, detail);
 }
 // Bezeichnung löschen – mit Zeitstempel, damit sie beim Abgleich mit dem anderen Handy nicht zurückkommt
 function removeVariant(cu, nv) {
@@ -1845,7 +2035,7 @@ function saveArtMaster(name, detail, extra = {}) {
 }
 function artMaster(name, detail) { const a = (data.arts || {})[keyOf(name, detail)]; return a && !a.deleted ? a : null; }
 function sheetValues() {
-  registerBrand($('sBrand').value);
+  registerBrand($('sBrand').value, $('sShop').value, $('sCat').value);
   const v = { name: cap($('sName').value), detail: sheetDetail(), qty: clampQty($('sQty').value),
            unit: $('sUnit').value, cat: $('sCat').value, note: $('sNote').value.trim(), offer: sheetOffer() };
   rememberEan(v.name, v.detail, v.cat);
@@ -1904,6 +2094,7 @@ $('listMain').addEventListener('click', e => {
 $('catSearch').addEventListener('input', renderCatalog);
 $('catMain').addEventListener('click', e => {
   const f = e.target.closest('[data-myf]'); if (f) { myFilter = f.dataset.myf; renderMyArticles(); return; }
+  if (e.target.closest('[data-act="dups"]')) { openDups(); return; }
   const m = e.target.closest('[data-myart]');
   if (m) {
     const a = myArticles().find(x => x.key === m.dataset.myart); if (!a) return;
@@ -3346,6 +3537,22 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.33', '17.10.2026', [
+    'Marken merken sich ihren Markt und Bereich: „Meine Küchenwelt“ bei ALDI wird beim nächsten Mal bei ALDI gleich vorgeschlagen',
+    'Marken aus schon vorhandenen Artikeln, Preisen, Bons und Einkäufen werden beim Start ihrem Markt zugeordnet',
+    'Vorschläge im Feld „Marke“: Eigenmarken des Markts, dann selbst zugeordnete, dann schon genutzte'
+  ]],
+  ['v1.32', '17.10.2026', [
+    '„Meine Artikel“: gleiches Produkt verschiedener Marken (z. B. Thunfisch von Gut & Günstig und Almare) wird als ein Artikel gezeigt',
+    'Darin alle Märkte mit Preis und Marke, der günstigste zuerst und fett (bei verschiedenen Größen mit Grundpreis)',
+    'Jede Marke bleibt als Knopf erreichbar und behält ihre eigenen Preise'
+  ]],
+  ['v1.31', '17.10.2026', [
+    '„Meine Artikel“: letzter Preis je Markt direkt am Artikel (günstigster fett)',
+    'Gleiche Artikel mit mehreren Sorten/Marken stehen zusammen – mit „günstigster: … bei …“',
+    'Neu: „🧹 Doppelte suchen“ – mehrfach angelegte gleiche Produkte zusammenführen; Preise aller Märkte, Größe, Favorit, Strichcode und Einkäufe wandern mit',
+    'Verschiedene Marken bleiben eigene Artikel'
+  ]],
   ['v1.30', '17.10.2026', [
     'Artikel werden jetzt auch ohne Preis vollständig gespeichert: Bezeichnung, Marke, Markt, Größe und Pfand',
     'Gilt für „Meine Artikel“, „Nur Artikel“, Favoriten und per Strichcode angelegte Artikel',
