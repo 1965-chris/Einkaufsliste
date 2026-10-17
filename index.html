@@ -159,6 +159,11 @@ details.packbox summary{font-size:14px;color:var(--accent);padding:4px 0}
 .prow .ps{flex:1}
 .prow .pp{font-weight:700}
 .sp{display:inline-block;font-size:11px;font-weight:700;background:#fff3cf;color:#7a5600;border-radius:6px;padding:1px 6px;margin-left:6px}
+#scanView{width:100%;min-height:200px;background:#111;border-radius:12px;overflow:hidden;margin-top:10px}
+#scanView video{width:100% !important;display:block}
+.menulist{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.menulist .btn{text-align:left;padding:12px 14px;font-weight:600}
+.menulist .btn small{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:2px}
 .bonrow{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-top:8px}
 .bonrow.off{opacity:.45}
 .bonrow .bontop{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
@@ -265,7 +270,7 @@ summary{cursor:pointer;font-weight:600}
 <div class="sheet" id="itemSheet">
   <div class="sheethead">
     <h3 id="sTitle">Artikel</h3>
-    <button class="starbtn" id="sStar" title="Favorit">☆</button>
+    <span><button class="starbtn" id="sScan" title="Strichcode scannen" style="margin-right:6px"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="vertical-align:-4px"><path fill="currentColor" d="M2 5h2v14H2zm3 0h1v14H5zm2 0h2v14H7zm3 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h1v14h-1zm2 0h2v14h-2z"/></svg></button><button class="starbtn" id="sStar" title="Favorit">☆</button></span>
   </div>
   <label>Artikel</label>
   <input class="field" id="sName" autocomplete="off">
@@ -386,6 +391,28 @@ summary{cursor:pointer;font-weight:600}
 </div>
 
 <!-- Angebot aus Bild / Text lesen -->
+<div class="sheet" id="addMenu">
+  <h3>Was möchtest du tun?</h3>
+  <div class="menulist">
+    <button class="btn" data-menu="scan"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="vertical-align:-4px"><path fill="currentColor" d="M2 5h2v14H2zm3 0h1v14H5zm2 0h2v14H7zm3 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h1v14h-1zm2 0h2v14h-2z"/></svg> Strichcode scannen<small>Packung scannen – Name, Marke und Größe werden ausgefüllt</small></button>
+    <button class="btn" data-menu="read">📷 Angebot aus Bild lesen<small>Prospekt, Preisschild oder Bildschirmfoto</small></button>
+    <button class="btn" data-menu="bon">🧾 Kassenbon einlesen<small>dm-eBon, EDEKA-App, Lidl Plus</small></button>
+  </div>
+  <div class="row" style="margin-top:12px"><button class="btn" data-close>Abbrechen</button></div>
+</div>
+<div class="sheet" id="scanSheet" style="z-index:23">
+  <h3><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="vertical-align:-4px"><path fill="currentColor" d="M2 5h2v14H2zm3 0h1v14H5zm2 0h2v14H7zm3 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h1v14h-1zm2 0h2v14h-2z"/></svg> Strichcode scannen</h3>
+  <div class="hint">Den Strichcode der Packung in den Rahmen halten. Gesucht wird in der freien Produktdatenbank Open Food Facts.</div>
+  <div id="scanView"></div>
+  <div class="rstatus" id="scanStatus"></div>
+  <label>oder Nummer unter dem Strichcode eintippen</label>
+  <div class="offerrow"><input class="field" id="scanCode" inputmode="numeric" placeholder="z. B. 4006040000000" autocomplete="off"><button class="btn" id="scanGo" style="max-width:110px">Suchen</button></div>
+  <input type="file" id="scanFile" accept="image/*" hidden>
+  <div class="row" style="margin-top:12px">
+    <button class="btn" id="scanClose">Abbrechen</button>
+    <button class="btn" id="scanPhoto">🖼 Foto vom Code</button>
+  </div>
+</div>
 <div class="sheet" id="bonSheet">
   <h3>🧾 Kassenbon einlesen</h3>
   <div class="hint">dm-eBon als PDF, Bildschirmfoto vom Bon (EDEKA-App, Lidl Plus) oder kopierter Text. Alles wird nur auf dem Handy gelesen, nichts hochgeladen.</div>
@@ -507,7 +534,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.27';
+const APP_VERSION = 'v1.28';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -892,7 +919,7 @@ function loadJSON(key, fallback) {
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap) };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap), eans: obj(d.eans) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -1372,7 +1399,7 @@ function openSheet(id) { sheetDirty = false; $('backdrop').classList.add('open')
 document.addEventListener('input', e => { if (e.isTrusted && e.target.closest && e.target.closest('.sheet')) sheetDirty = true; });
 document.addEventListener('change', e => { if (e.target.closest && e.target.closest('.sheet')) sheetDirty = true; });
 document.addEventListener('focusout', e => { if (e.target.closest && e.target.closest('.sheet')) lastBlur = Date.now(); });
-function closeSheets() { $('backdrop').classList.remove('open'); document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open')); }
+function closeSheets() { if (typeof stopScan === 'function') stopScan(); $('backdrop').classList.remove('open'); document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open')); }
 $('backdrop').addEventListener('click', () => {
   // iPhone: der erste Tipp schließt oft nur die Tastatur, das Fenster rutscht – dieser Tipp darf nichts verwerfen
   if (Date.now() - lastBlur < 800) return;
@@ -1436,6 +1463,7 @@ function updateSheetExtras() {
   $('sHistory').style.display = priceEntries(keyOf(cap(name), detail)).length ? 'block' : 'none';
 }
 function openItemSheet(mode, src) {
+  scanEan = null;
   sheetMode = mode; editingId = mode === 'edit' ? src.id : null;
   favEditKey = mode === 'fav' && src.name ? keyOf(src.name, src.detail) : null;
   oftenKey = mode === 'often' ? (src.favKey || keyOf(src.name, src.detail)) : null;
@@ -1519,6 +1547,7 @@ function saveFavoriteFromSheet() {
   }
   setStar(name, detail, true, { cat, unit, qty, note: $('sNote').value.trim() });
   rememberArticle(name, detail, cat, unit);
+  rememberEan(name, detail, cat);
   offerListUpdate(favEditKey, name, detail, { cat });
   closeSheets(); commit();
   toast('⭐ ' + name + (detail ? ' · ' + detail : '') + ' als Favorit gespeichert');
@@ -1767,8 +1796,10 @@ $('sCat').addEventListener('change', () => { if ($('sCat').value === 'getraenk')
 $('sHistory').onclick = e => { e.preventDefault(); const k = keyOf(cap($('sName').value), sheetDetail()); closeSheets(); openPrices(k); };
 function sheetValues() {
   registerBrand($('sBrand').value);
-  return { name: cap($('sName').value), detail: sheetDetail(), qty: clampQty($('sQty').value),
+  const v = { name: cap($('sName').value), detail: sheetDetail(), qty: clampQty($('sQty').value),
            unit: $('sUnit').value, cat: $('sCat').value, note: $('sNote').value.trim(), offer: sheetOffer() };
+  rememberEan(v.name, v.detail, v.cat);
+  return v;
 }
 $('sAdd').onclick = () => { const v = sheetValues(); if (!v.name) return; closeSheets(); recordPrice(v.name, v.detail, v.offer); addItem(v); };
 $('sSave').onclick = () => {
@@ -1922,6 +1953,7 @@ function mergeData(local, remote) {
   const brands = mergeByUpdated(local.brands, remote.brands);
   const purchases = mergeByUpdated(local.purchases, remote.purchases);
   const bonmap = mergeByUpdated(local.bonmap, remote.bonmap);
+  const eans = mergeByUpdated(local.eans, remote.eans);
   Object.keys(purchases).forEach(k => { if (purchases[k].deleted && (purchases[k].updatedAt || 0) < cutoff) delete purchases[k]; });
   Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
   // eigene Bezeichnungen beider Seiten zusammenführen – gelöschte (varDel) bleiben gelöscht, solange sie nicht neuer wieder angelegt wurden
@@ -1933,7 +1965,7 @@ function mergeData(local, remote) {
     [...(L.variants || []), ...(R.variants || [])].forEach(v => { const nv = norm(v); if (!vs.has(nv) && (!varDel[nv] || (varAdd[nv] || 0) > varDel[nv])) vs.set(nv, v); });
     custom[k] = { ...custom[k], variants: [...vs.values()], ...(Object.keys(varAdd).length ? { varAdd } : {}), ...(Object.keys(varDel).length ? { varDel } : {}) };
   });
-  return { items, favs, stars, custom, prices, brands, purchases, bonmap };
+  return { items, favs, stars, custom, prices, brands, purchases, bonmap, eans };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
@@ -1941,20 +1973,20 @@ function canon(d) {
   const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap)
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap), eans: mapC(d.eans)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {}, eans: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
   const p = JSON.parse(b64decode(j.content || ''));
-  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap) };
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans) };
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
@@ -2086,7 +2118,7 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap) });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap), eans: obj(j.eans) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
@@ -2710,7 +2742,7 @@ function bonSumCheck(res) {
 }
 
 // Abkürzungen auf Bons ausschreiben
-const BON_ABBR = [[/^melit\.?\s?/i, 'Melitta '], [/\bg&g\b/i, 'Gut & Günstig'], [/\bgut&g[üu]nstig\b/i, 'Gut & Günstig'], [/\bedeka bio\b/i, 'EDEKA Bio'], [/\bja!\s?/i, 'ja! ']];
+const BON_ABBR = [[/^melit(\.\s?|\s)/i, 'Melitta '], [/\bg&g\b/i, 'Gut & Günstig'], [/\bgut&g[üu]nstig\b/i, 'Gut & Günstig'], [/\bedeka bio\b/i, 'EDEKA Bio'], [/\bja!\s?/i, 'ja! ']];
 function bonExpand(raw) {
   let t = String(raw || '');
   BON_ABBR.forEach(([re, v]) => { t = t.replace(re, v); });
@@ -2913,6 +2945,151 @@ $('bonApply').onclick = () => {
   bon = null;
 };
 
+/* ---------- Strichcode scannen + Open Food Facts ---------- */
+let scanner = null, scanMode = 'new', scanEan = null, scanBusy = false;
+function rememberEan(name, detail, cat) {
+  if (!scanEan || !name) return;
+  data.eans = data.eans || {};
+  data.eans[scanEan] = { name, detail: detail || '', cat, pack: readPack('s'), updatedAt: now() };
+  scanEan = null;
+}
+function eanValid(c) {
+  c = String(c || '').trim();
+  if (!/^(\d{8}|\d{12,14})$/.test(c)) return false;
+  const d = c.split('').map(Number), chk = d.pop();
+  const sum = d.reverse().reduce((t, x, i) => t + x * (i % 2 === 0 ? 3 : 1), 0);
+  return (10 - sum % 10) % 10 === chk;
+}
+const scanStatus = t => { $('scanStatus').textContent = t; };
+async function openScan(mode) {
+  scanMode = mode; scanBusy = false; $('scanCode').value = ''; scanStatus(''); $('scanView').style.display = '';
+  $('backdrop').classList.add('open'); $('scanSheet').classList.add('open'); $('scanSheet').scrollTop = 0;
+  try {
+    if (!window.Html5Qrcode) { scanStatus('Scanner wird geladen … (nur beim ersten Mal)'); await loadScript('https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js'); }
+    if (!$('scanSheet').classList.contains('open')) return;
+    const F = window.Html5QrcodeSupportedFormats;
+    scanner = new Html5Qrcode('scanView', { verbose: false, formatsToSupport: [F.EAN_13, F.EAN_8, F.UPC_A, F.UPC_E], experimentalFeatures: { useBarCodeDetectorIfSupported: true } });
+    await scanner.start({ facingMode: 'environment' }, { fps: 12, qrbox: (w, h) => ({ width: Math.round(Math.min(w * 0.9, 340)), height: Math.round(Math.min(h * 0.55, 160)) }) },
+      txt => { if (eanValid(txt)) onScanCode(txt); }, () => {});
+    scanStatus('📷 Kamera läuft – Strichcode in den Rahmen halten');
+  } catch (err) {
+    $('scanView').style.display = 'none';
+    scanStatus('⚠︎ Kamera nicht verfügbar' + (err && err.message && /permission|notallowed/i.test(err.message) ? ' (Zugriff nicht erlaubt)' : '') + ' – Nummer eintippen oder „Foto vom Code“ wählen.');
+  }
+}
+async function stopScan() {
+  const sc = scanner; scanner = null;
+  if (sc) { try { if (sc.isScanning) await sc.stop(); sc.clear(); } catch (e) {} }
+}
+function closeScan() {
+  stopScan(); $('scanSheet').classList.remove('open');
+  if (!document.querySelector('.sheet.open')) $('backdrop').classList.remove('open');
+}
+$('scanClose').onclick = closeScan;
+$('scanGo').onclick = () => { const c = $('scanCode').value.replace(/\D/g, ''); if (!eanValid(c)) { scanStatus('⚠︎ Die Nummer stimmt nicht – bitte alle Ziffern unter dem Strichcode eingeben (meist 13).'); return; } onScanCode(c); };
+$('scanPhoto').onclick = () => $('scanFile').click();
+$('scanFile').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try {
+    if (!window.Html5Qrcode) await loadScript('https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js');
+    await stopScan();
+    const tmp = new Html5Qrcode('scanView', { verbose: false });
+    const txt = await tmp.scanFile(f, false); tmp.clear();
+    if (eanValid(txt)) onScanCode(txt); else scanStatus('⚠︎ Kein gültiger Strichcode im Foto gefunden.');
+  } catch (err) { scanStatus('⚠︎ Kein Strichcode im Foto gefunden – Nummer eintippen?'); }
+};
+async function onScanCode(code) {
+  if (scanBusy) return; scanBusy = true;
+  if (navigator.vibrate) try { navigator.vibrate(60); } catch (e) {}
+  await stopScan();
+  scanStatus('🔎 ' + code + ' wird gesucht …');
+  let r = null;
+  try { r = await lookupEan(code); } catch (e) { r = null; }
+  scanBusy = false;
+  closeScan();
+  applyScan(code, r);
+}
+async function lookupEan(code) {
+  const own = (data.eans || {})[code];
+  if (own && !own.deleted) return { ...own, source: 'own' };
+  const fields = 'product_name,product_name_de,generic_name_de,generic_name,brands,quantity,categories_tags';
+  for (const base of ['https://world.openfoodfacts.org', 'https://world.openbeautyfacts.org', 'https://world.openproductsfacts.org']) {
+    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 8000);
+    try {
+      const res = await fetch(`${base}/api/v2/product/${code}.json?fields=${fields}`, { signal: ctl.signal });
+      if (!res.ok) continue;
+      const j = await res.json();
+      if (j && j.status === 1 && j.product) { const m = mapOffProduct(j.product); if (m.name) return { ...m, source: base.includes('beauty') ? 'obf' : 'off' }; }
+    } catch (e) { if (e.name !== 'AbortError' && !navigator.onLine) throw e; }
+    finally { clearTimeout(to); }
+  }
+  return null;
+}
+function offPack(q) {
+  q = String(q || '').toLowerCase().replace(/\s+/g, ' ');
+  let m = q.match(/(\d{1,2})\s?[x×]\s?(\d+(?:[,.]\d+)?)\s?(kg|g|ml|cl|l)\b/);
+  const fix = (n, sz, u) => u === 'cl' ? mkPack(n, String(parseFloat(String(sz).replace(',', '.')) * 10), 'ml') : mkPack(n, sz, u);
+  if (m) return fix(+m[1], m[2], m[3]);
+  m = q.match(/(\d+(?:[,.]\d+)?)\s?(kg|g|ml|cl|l)\b/);
+  return m ? fix(1, m[1], m[2]) : null;
+}
+const OFF_CATS = [[/coffee|en:teas|tea-bags|breakfast-cereal|muesli|kaffee/, 'kaffee'], [/frozen/, 'tk'], [/beverage|drink|water|soda|juice|beer|wine|getränk/, 'getraenk'],
+  [/dair|milk|cheese|yogurt|butter|cream|egg/, 'kuehl'], [/meat|sausage|ham|fish|seafood|poultry/, 'fleisch'], [/bread|pastr|bakery|toast/, 'brot'],
+  [/chocolate|candy|confection|biscuit|cookie|snack|chip|crisps|sweet/, 'suess'], [/fruit|vegetable|salad/, 'obst'],
+  [/pasta|rice|flour|sugar|canned|sauce|spread|condiment|oil|spice|soup|cereal|legume|nut/, 'vorrat'], [/beauty|cosmetic|shampoo|soap|hygien|deodorant|clean|detergent/, 'drogerie']];
+function mapOffProduct(p) {
+  const brand = String(p.brands || '').split(',')[0].trim();
+  let title = String(p.product_name_de || p.product_name || p.generic_name_de || p.generic_name || '').replace(/\s+/g, ' ').trim();
+  const pack = offPack(p.quantity) || offPack(title);
+  // Marke und Größe aus dem Namen nehmen
+  if (brand && norm(title).startsWith(norm(brand))) title = title.slice(brand.length).trim();
+  title = title.replace(/\s*\d+(?:[,.]\d+)?\s?(?:x\s?\d+(?:[,.]\d+)?\s?)?(?:kg|g|ml|cl|l)\b\.?/gi, '').replace(/^[-–,:\s]+|[-–,:\s]+$/g, '').trim();
+  const tags = (p.categories_tags || []).join(' ');
+  let cat = null; for (const [re, c] of OFF_CATS) if (re.test(tags)) { cat = c; break; }
+  // Artikel aus unserem Katalog finden: erst die vorderen Wörter („Thunfisch Filets in eigenem Saft“ → Fisch, nicht Saft)
+  const words = title.split(' ');
+  let g = null;
+  for (let n = 1; n <= Math.min(3, words.length) && !g; n++) {
+    const part = words.slice(0, n).join(' '), sug = suggestArticle([part]);
+    const lw = ' ' + norm(part).replace(/[^a-zäöüß0-9]+/g, ' ') + ' ';
+    if (sug.name && CAT_INDEX[norm(sug.name)] && lw.includes(norm(sug.name).split(' ')[0].slice(0, 5))) g = { name: sug.name, detail: joinBrand(brand, title) };
+  }
+  if (!g) g = bonGuess(joinBrand(brand, title), '');
+  let name = g.name, detail = g.detail;
+  if (!g.detail && brand) { name = cap(title) || brand; detail = title ? brand : ''; }
+  else if (g.detail && brand && !norm(g.detail).startsWith(norm(brand))) detail = joinBrand(brand, g.detail);
+  if (CAT_INDEX[norm(name)]) cat = CAT_INDEX[norm(name)].cat;   // Bereich aus unserem Katalog hat Vorrang
+  if (!cat) cat = guessCat(name);
+  return { name, detail, cat, pack, brand, title };
+}
+function applyScan(code, r) {
+  if (scanMode === 'fill' && $('itemSheet').classList.contains('open')) {
+    scanEan = code;
+    if (!r) { toast('Strichcode unbekannt – einfach ausfüllen, die App merkt ihn sich'); return; }
+    if (!$('sName').value.trim() || confirm(`Gefunden: ${r.name}${r.detail ? ' · ' + r.detail : ''}\n\nFelder damit ausfüllen?`)) fillSheetFromScan(r);
+    return;
+  }
+  if (!r) {
+    openItemSheet('add', {}); scanEan = code;
+    $('sTitle').textContent = 'Neuer Artikel';
+    toast('Strichcode unbekannt – einmal ausfüllen, dann kennt die App ihn');
+    setTimeout(() => $('sName').focus(), 250);
+    return;
+  }
+  openItemSheet('add', { name: r.name, detail: r.detail, cat: r.cat });
+  scanEan = code;
+  fillSheetFromScan(r);
+  toast(r.source === 'own' ? '✓ Bekannter Artikel' : '✓ Gefunden in ' + (r.source === 'obf' ? 'Open Beauty Facts' : 'Open Food Facts') + ' – bitte kurz prüfen');
+}
+function fillSheetFromScan(r) {
+  if (norm($('sName').value) !== norm(r.name)) { $('sName').value = r.name; onNameChanged(); }
+  setSheetDetail(r.detail || '');
+  if (r.cat) $('sCat').value = r.cat;
+  if (r.pack) { writePack('s', r.pack, parsePrice($('sDeposit').value)); $('sPackBox').open = true; }
+  renderBrands(); renderVariants(); updateSheetExtras();
+}
+$('sScan').onclick = () => openScan('fill');
+
 /* Texterkennung auf dem Gerät (Tesseract) – Bild wird nur gelesen, nie gespeichert */
 let ocrWorker = null, readMode = 'new';
 function loadScript(src) { return new Promise((ok, err) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => err(new Error('Lesepaket konnte nicht geladen werden – Internet?')); document.head.appendChild(s); }); }
@@ -2993,7 +3170,14 @@ function showReadResult(text) {
   const found = [r.price != null && 'Preis', r.regular != null && 'Vergleichspreis', r.pack && 'Packung', r.deposit && 'Pfand', (r.from || r.until) && 'Zeitraum'].filter(Boolean);
   $('rStatus').textContent = r.price == null ? '⚠︎ Kein Preis erkannt – bitte unten eintragen.' : '✓ Erkannt: ' + found.join(', ') + (r.regularGuessed ? ' (Vergleichspreis geschätzt – bitte prüfen)' : '') + '. Bitte kurz prüfen.';
 }
-$('readBtn').onclick = () => openReader('new');
+$('readBtn').onclick = () => openSheet('addMenu');
+$('addMenu').addEventListener('click', e => {
+  const b = e.target.closest('[data-menu]'); if (!b) return;
+  closeSheets();
+  if (b.dataset.menu === 'scan') openScan('new');
+  if (b.dataset.menu === 'read') openReader('new');
+  if (b.dataset.menu === 'bon') openBon();
+});
 $('sRead').onclick = () => openReader('fill');
 $('rCancel').onclick = closeReader;
 $('rPick').onclick = () => $('rFile').click();
@@ -3028,6 +3212,12 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.28', '17.10.2026', [
+    'Neu: Strichcode scannen – Name, Marke, Größe und Bereich kommen aus Open Food Facts (Drogerie: Open Beauty Facts)',
+    'Unbekannte Codes einmal ausfüllen – die App merkt sie sich (auch auf dem anderen Handy)',
+    'Der 📷-Knopf auf der Liste öffnet jetzt eine Auswahl: Strichcode, Angebot aus Bild, Kassenbon',
+    'Im Artikel-Fenster oben rechts: Strichcode-Knopf zum Ausfüllen'
+  ]],
   ['v1.27', '17.10.2026', [
     'Neu: „🧾 Kassenbon einlesen“ – dm-eBon (PDF), Bildschirmfotos aus EDEKA-App und Lidl Plus oder kopierter Text',
     'Erkennt Markt, Datum, Artikel, Menge, Preis, Coupons/Lidl-Plus-Rabatte (als App-Preis) und Pfand; prüft gegen die Bon-Summe',
