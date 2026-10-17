@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.30",
- "savedAt": "2026-10-17T16:07:32.963Z",
+ "savedAt": "2026-10-17T16:08:20.774Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1087,9 +1087,9 @@
   "gehackte tomaten": {
    "name": "Gehackte Tomaten",
    "variants": [],
-   "cat": "obst",
-   "unit": "",
-   "updatedAt": 1791822870107
+   "cat": "vorrat",
+   "unit": "Dose",
+   "updatedAt": 1792253298592
   },
   "balsamico essig": {
    "name": "Balsamico Essig",
@@ -1866,6 +1866,24 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792250188167
+  },
+  "gehackte tomaten||aldi|2026-10-17": {
+   "id": "gehackte tomaten||aldi|2026-10-17",
+   "key": "gehackte tomaten|",
+   "name": "Gehackte Tomaten",
+   "detail": "",
+   "date": "2026-10-17",
+   "shop": "ALDI",
+   "price": 0.59,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792253298592
   }
  },
  "brands": {
@@ -2529,6 +2547,20 @@
    },
    "deposit": null,
    "updatedAt": 1792253250820
+  },
+  "gehackte tomaten|": {
+   "name": "Gehackte Tomaten",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "Dose",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792253298580
   }
  }
 }
