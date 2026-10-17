@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.28",
- "savedAt": "2026-10-17T15:34:35.031Z",
+ "savedAt": "2026-10-17T15:36:15.132Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1268,6 +1268,18 @@
    "cat": "vorrat",
    "unit": "Fl.",
    "updatedAt": 1792251272783
+  },
+  "schlagsahne": {
+   "name": "SChlagsahne",
+   "variants": [
+    "Haltbare Schlagsahne"
+   ],
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "varAdd": {
+    "haltbare schlagsahne": 1792251372995
+   },
+   "updatedAt": 1792251372995
   }
  },
  "prices": {
@@ -2472,6 +2484,17 @@
     "size": 0.5
    },
    "updatedAt": 1792251272783
+  },
+  "4069365451410": {
+   "name": "SChlagsahne",
+   "detail": "Milsani Haltbare Schlagsahne",
+   "cat": "kuehl",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "updatedAt": 1792251372994
   }
  }
 }
