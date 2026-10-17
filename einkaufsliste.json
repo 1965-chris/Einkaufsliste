@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.30",
- "savedAt": "2026-10-17T16:08:20.774Z",
+ "savedAt": "2026-10-17T16:09:31.937Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1255,15 +1255,16 @@
   },
   "ketchup": {
    "name": "Ketchup",
-   "variants": [
-    "Tomatenketchup"
-   ],
+   "variants": [],
    "cat": "vorrat",
    "unit": "Fl.",
    "varAdd": {
-    "tomatenketchup": 1792251200684
+    "tomatenketchup": 1792253369690
    },
-   "updatedAt": 1792251200684
+   "updatedAt": 1792253369690,
+   "varDel": {
+    "tomatenketchup": 1792253369690
+   }
   },
   "remolade": {
    "name": "Remolade",
@@ -2561,6 +2562,19 @@
    },
    "deposit": null,
    "updatedAt": 1792253298580
+  },
+  "ketchup|delikato tomatenketchup": {
+   "name": "Ketchup",
+   "detail": "Delikato Tomatenketchup",
+   "cat": "vorrat",
+   "unit": "Fl.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5
+   },
+   "deposit": null,
+   "updatedAt": 1792253369682
   }
  }
 }
