@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.30",
- "savedAt": "2026-10-17T16:12:08.998Z",
+ "savedAt": "2026-10-17T16:13:53.028Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1279,17 +1279,19 @@
   "schlagsahne": {
    "name": "SChlagsahne",
    "variants": [
-    "Schlagsahne Laktosefrei"
+    "H-Schlagsahne Laktosefrei"
    ],
    "cat": "vorrat",
    "unit": "Pck.",
    "varAdd": {
     "haltbare schlagsahne": 1792251641362,
-    "schlagsahne laktosefrei": 1792251450722
+    "schlagsahne laktosefrei": 1792251450722,
+    "h-schlagsahne laktosefrei": 1792253630828
    },
-   "updatedAt": 1792251641362,
+   "updatedAt": 1792253630828,
    "varDel": {
-    "haltbare schlagsahne": 1792251641362
+    "haltbare schlagsahne": 1792251641362,
+    "schlagsahne laktosefrei": 1792253630828
    }
   }
  },
@@ -2619,6 +2621,20 @@
    },
    "deposit": null,
    "updatedAt": 1792253526801
+  },
+  "schlagsahne|milsani h-schlagsahne laktosefrei": {
+   "name": "Schlagsahne",
+   "detail": "Milsani H-Schlagsahne Laktosefrei",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792253630820
   }
  }
 }
