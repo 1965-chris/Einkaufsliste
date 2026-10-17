@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.28",
- "savedAt": "2026-10-17T15:39:09.631Z",
+ "savedAt": "2026-10-17T15:40:43.569Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1275,16 +1275,18 @@
   "schlagsahne": {
    "name": "SChlagsahne",
    "variants": [
-    "Haltbare Schlagsahne",
     "Schlagsahne Laktosefrei"
    ],
    "cat": "vorrat",
    "unit": "Pck.",
    "varAdd": {
-    "haltbare schlagsahne": 1792251372995,
+    "haltbare schlagsahne": 1792251641362,
     "schlagsahne laktosefrei": 1792251450722
    },
-   "updatedAt": 1792251450722
+   "updatedAt": 1792251641362,
+   "varDel": {
+    "haltbare schlagsahne": 1792251641362
+   }
   }
  },
  "prices": {
