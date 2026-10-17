@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.30",
- "savedAt": "2026-10-17T16:09:31.937Z",
+ "savedAt": "2026-10-17T16:10:26.596Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2575,6 +2575,19 @@
    },
    "deposit": null,
    "updatedAt": 1792253369682
+  },
+  "remolade|delikato": {
+   "name": "Remolade",
+   "detail": "Delikato",
+   "cat": "vorrat",
+   "unit": "Fl.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5
+   },
+   "deposit": null,
+   "updatedAt": 1792253424373
   }
  }
 }
