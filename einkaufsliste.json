@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
- "version": "v1.30",
- "savedAt": "2026-10-17T16:34:29.416Z",
+ "version": "v1.33",
+ "savedAt": "2026-10-17T16:40:06.676Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -600,7 +600,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1792254868794,
+   "last": 1792255205947,
    "cat": "vorrat",
    "deleted": true
   },
@@ -1895,19 +1895,43 @@
  "brands": {
   "dr. oetker die ofenfrische": {
    "name": "Dr. Oetker Die Ofenfrische",
-   "updatedAt": 1791529594225
+   "updatedAt": 1792255205971,
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "tk": 1
+   }
   },
   "kings criwn": {
    "name": "Kings Criwn",
-   "updatedAt": 1791822940681
+   "updatedAt": 1792255205974,
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "obst": 1
+   }
   },
   "kokett": {
    "name": "Kokett",
-   "updatedAt": 1791823503322
+   "updatedAt": 1792255205971,
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "drogerie": 1
+   }
   },
   "sweet valley": {
    "name": "Sweet Valley",
-   "updatedAt": 1792250942723
+   "updatedAt": 1792255205976,
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "vorrat": 1
+   }
   },
   "king‘s crown": {
    "name": "King‘s Crown",
@@ -1915,11 +1939,63 @@
   },
   "meine küchen welt": {
    "name": "meine Küchen Welt",
-   "updatedAt": 1792251106871
+   "updatedAt": 1792255205976,
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "brot": 1
+   }
   },
   "delikato": {
    "name": "Delikato",
-   "updatedAt": 1792251200683
+   "updatedAt": 1792255205976,
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "vorrat": 1
+   }
+  },
+  "landliebe": {
+   "name": "Landliebe",
+   "shops": {
+    "EDEKA": 1
+   },
+   "cats": {
+    "kuehl": 1
+   },
+   "updatedAt": 1792255205970
+  },
+  "sagrotan": {
+   "name": "Sagrotan",
+   "shops": {
+    "dm": 1
+   },
+   "cats": {
+    "drogerie": 1
+   },
+   "updatedAt": 1792255205973
+  },
+  "meridol": {
+   "name": "Meridol",
+   "shops": {
+    "dm": 1
+   },
+   "cats": {
+    "drogerie": 1
+   },
+   "updatedAt": 1792255205973
+  },
+  "pantene": {
+   "name": "Pantene",
+   "shops": {
+    "dm": 1
+   },
+   "cats": {
+    "drogerie": 1
+   },
+   "updatedAt": 1792255205973
   }
  },
  "purchases": {
