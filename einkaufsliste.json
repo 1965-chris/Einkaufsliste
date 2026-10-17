@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.30",
- "savedAt": "2026-10-17T16:06:47.158Z",
+ "savedAt": "2026-10-17T16:07:32.963Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1246,11 +1246,11 @@
    "cat": "brot",
    "unit": "Pck.",
    "varAdd": {
-    "frischei waffeln": 1792251547474
+    "frischei waffeln": 1792253250830
    },
-   "updatedAt": 1792251547474,
+   "updatedAt": 1792253250830,
    "varDel": {
-    "frischei waffeln": 1792251547473
+    "frischei waffeln": 1792253250829
    }
   },
   "ketchup": {
@@ -2515,5 +2515,20 @@
    "updatedAt": 1792251450722
   }
  },
- "arts": {}
+ "arts": {
+  "frischei-waffeln|meine küchen welt frischei waffeln": {
+   "name": "Frischei-Waffeln",
+   "detail": "meine Küchen Welt Frischei Waffeln",
+   "cat": "brot",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792253250820
+  }
+ }
 }
