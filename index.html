@@ -159,6 +159,18 @@ details.packbox summary{font-size:14px;color:var(--accent);padding:4px 0}
 .prow .ps{flex:1}
 .prow .pp{font-weight:700}
 .sp{display:inline-block;font-size:11px;font-weight:700;background:#fff3cf;color:#7a5600;border-radius:6px;padding:1px 6px;margin-left:6px}
+.bonrow{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-top:8px}
+.bonrow.off{opacity:.45}
+.bonrow .bontop{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.bonrow .bontop span{flex:1;font-family:ui-monospace,Menlo,monospace}
+.bonrow .offerrow{margin-top:6px}
+.bonrow .bonnum{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:13px;color:var(--muted)}
+.bonrow .bonnum input{max-width:70px;padding:7px 8px}
+.bonrow .bonnum input.pricefield{max-width:90px}
+.boncheck{margin-top:12px;font-size:14px;padding:8px 10px;border-radius:10px;background:var(--bg)}
+.boncheck.ok{color:var(--accent)}
+.boncheck.bad{background:#fff1d6;color:#9a5b00}
+.bonnew{font-size:11px;font-weight:700;color:#9a5b00;background:#fff1d6;border-radius:6px;padding:1px 6px}
 .pbar{height:6px;border-radius:3px;background:var(--accent);opacity:.75;margin-top:5px}
 .pfil{display:flex;gap:8px;margin-top:8px}
 .pfil select{flex:1;padding:9px 8px}
@@ -374,6 +386,31 @@ summary{cursor:pointer;font-weight:600}
 </div>
 
 <!-- Angebot aus Bild / Text lesen -->
+<div class="sheet" id="bonSheet">
+  <h3>🧾 Kassenbon einlesen</h3>
+  <div class="hint">dm-eBon als PDF, Bildschirmfoto vom Bon (EDEKA-App, Lidl Plus) oder kopierter Text. Alles wird nur auf dem Handy gelesen, nichts hochgeladen.</div>
+  <input type="file" id="bonFile" accept="application/pdf,image/*" hidden>
+  <div class="readbtns"><button class="btn primary" id="bonPick">📄 PDF / Bildschirmfoto wählen</button></div>
+  <label>oder Text einfügen (Foto öffnen → Text lange drücken → „Alles auswählen“ → Kopieren)</label>
+  <textarea class="field" id="bonText" placeholder="Hier einfügen …"></textarea>
+  <div class="readbtns"><button class="btn" id="bonParse">Text auswerten</button></div>
+  <div class="rstatus" id="bonStatus"></div>
+  <div id="bonResult" style="display:none">
+    <label>Markt</label>
+    <div class="chips wrap" id="bonShops" style="padding-top:0"></div>
+    <input class="field" id="bonShop" placeholder="Markt" autocomplete="off">
+    <label>Einkaufsdatum</label>
+    <input class="field" id="bonDate" type="date">
+    <div class="boncheck" id="bonCheck"></div>
+    <div id="bonRows"></div>
+    <datalist id="bonArts"></datalist>
+    <label class="chk"><input type="checkbox" id="bonRemove" checked> Gekaufte Artikel von der Einkaufsliste nehmen</label>
+  </div>
+  <div class="row" style="margin-top:12px">
+    <button class="btn" data-close>Abbrechen</button>
+    <button class="btn primary" id="bonApply" disabled>Übernehmen</button>
+  </div>
+</div>
 <div class="sheet" id="readSheet" style="z-index:22">
   <h3>📷 Angebot lesen</h3>
   <div class="hint">Das Bild wird nur auf dem Handy gelesen – es wird nicht gespeichert und nicht hochgeladen.</div>
@@ -470,7 +507,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.26';
+const APP_VERSION = 'v1.27';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -855,7 +892,7 @@ function loadJSON(key, fallback) {
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases) };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -1149,7 +1186,7 @@ function renderList() {
       });
     }
     if (!open.length) html += '<div class="empty"><b>✅</b>Alles erledigt!</div>';
-    if (done.length) html += `<section class="group"><div class="donehead"><h2>Im Wagen (${done.length})</h2><button class="link" data-act="cleardone">Alle entfernen</button></div>`
+    if (done.length) html += `<section class="group"><div class="donehead"><h2>Im Wagen (${done.length})</h2><span><button class="link" data-act="bon" style="margin-right:14px">🧾 Bon</button><button class="link" data-act="cleardone">Alle entfernen</button></span></div>`
       + `<div class="list">${done.sort((a, b) => b.updatedAt - a.updatedAt).map(itemHtml).join('')}</div></section>`;
   }
   $('listMain').innerHTML = html;
@@ -1777,6 +1814,7 @@ $('chips').addEventListener('click', e => {
 $('listMain').addEventListener('click', e => {
   const act = e.target.closest('[data-act]'); if (!act) return;
   if (act.dataset.act === 'cleardone') return clearDone();
+  if (act.dataset.act === 'bon') return openBon();
   const id = e.target.closest('.item')?.dataset.id;
   if (act.dataset.act === 'toggle') toggle(id);
   if (act.dataset.act === 'edit') { const it = data.items.find(i => i.id === id); if (it) openItemSheet('edit', it); }
@@ -1883,6 +1921,7 @@ function mergeData(local, remote) {
   const prices = mergeByUpdated(local.prices, remote.prices);
   const brands = mergeByUpdated(local.brands, remote.brands);
   const purchases = mergeByUpdated(local.purchases, remote.purchases);
+  const bonmap = mergeByUpdated(local.bonmap, remote.bonmap);
   Object.keys(purchases).forEach(k => { if (purchases[k].deleted && (purchases[k].updatedAt || 0) < cutoff) delete purchases[k]; });
   Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
   // eigene Bezeichnungen beider Seiten zusammenführen – gelöschte (varDel) bleiben gelöscht, solange sie nicht neuer wieder angelegt wurden
@@ -1894,7 +1933,7 @@ function mergeData(local, remote) {
     [...(L.variants || []), ...(R.variants || [])].forEach(v => { const nv = norm(v); if (!vs.has(nv) && (!varDel[nv] || (varAdd[nv] || 0) > varDel[nv])) vs.set(nv, v); });
     custom[k] = { ...custom[k], variants: [...vs.values()], ...(Object.keys(varAdd).length ? { varAdd } : {}), ...(Object.keys(varDel).length ? { varDel } : {}) };
   });
-  return { items, favs, stars, custom, prices, brands, purchases };
+  return { items, favs, stars, custom, prices, brands, purchases, bonmap };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
@@ -1902,20 +1941,20 @@ function canon(d) {
   const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases)
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
   const p = JSON.parse(b64decode(j.content || ''));
-  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases) };
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap) };
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
@@ -2047,7 +2086,7 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases) });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
@@ -2153,9 +2192,9 @@ function renderPurchases() {
   const years = [...new Set(all.map(p => p.date.slice(0, 4)))].sort().reverse();
   if (pf.year === null) pf.year = years.includes(todayStr().slice(0, 4)) ? todayStr().slice(0, 4) : '';
   if (pf.year && !years.includes(pf.year)) pf.year = '';
-  let html = priceViewSeg();
+  let html = priceViewSeg() + '<button class="btn primary" data-act="bon" style="width:100%;margin:4px 0 6px">🧾 Kassenbon einlesen</button>';
   if (!all.length) {
-    html += '<div class="empty"><b>🧾</b>Noch keine Einkäufe gespeichert.<br><br>Sobald du beim Einkaufen abgehakte Artikel entfernst („Alle entfernen“ oder ✕), landen sie hier – mit Datum, Menge, Markt und Preis.</div>';
+    html += '<div class="empty"><b>🧾</b>Noch keine Einkäufe gespeichert.<br><br>Lies einen Kassenbon ein – oder entferne beim Einkaufen abgehakte Artikel („Alle entfernen“ oder ✕). Dann landen sie hier mit Datum, Menge, Markt und Preis.</div>';
     $('priceMain').innerHTML = html; return;
   }
   const shops = [...new Set(all.map(p => p.shop))].sort((a, b) => a.localeCompare(b, 'de'));
@@ -2300,6 +2339,7 @@ $('priceMain').addEventListener('click', e => {
   if (a.dataset.act === 'pback') { priceKey = null; priceVar = ''; renderPrices(); }
   if (a.dataset.act === 'addprice') openPriceSheet();
   if (a.dataset.act === 'csv') exportPurchasesCsv();
+  if (a.dataset.act === 'bon') openBon();
 });
 function openPriceSheet() {
   const pe = priceKey ? nameEntries(priceKey).filter(e => !priceVar || e.key === priceVar).sort((a, b) => b.date.localeCompare(a.date)) : [];
@@ -2539,6 +2579,340 @@ function suggestArticle(lines) {
   return { name: best.name, detail: detail.length > 60 ? detail.slice(0, 60) : detail };
 }
 
+/* ---------- Kassenbon lesen (EDEKA-App, Lidl Plus, dm-eBon, Fotos) ---------- */
+const BON_SHOPS = [[/\blidl\b/i, 'Lidl'], [/edeka/i, 'EDEKA'], [/dm-drogerie|dm-ebon|\bdmbio\b|dm\.de/i, 'dm'], [/\brewe\b/i, 'REWE'], [/\baldi\b/i, 'ALDI'],
+  [/kaufland/i, 'Kaufland'], [/\bnetto\b/i, 'Netto'], [/\bpenny\b/i, 'PENNY'], [/rossmann/i, 'Rossmann']];
+const BON_MONTHS = { jan: 1, feb: 2, 'mär': 3, mar: 3, apr: 4, mai: 5, jun: 6, jul: 7, aug: 8, sep: 9, okt: 10, oct: 10, nov: 11, dez: 12, dec: 12 };
+const BON_STOP = /^(summe|zu zahlen|zu bezahlen|zu zahlender|gesamt(betrag)?|total|endsumme)\b/i;
+const BON_NOITEM = /(mwst|netto|brutto|kreditkarte|ec-?karte|girocard|bar\b|rückgeld|ruckgeld|wechselgeld|payback|punkte|tse|kasse|bon-?nr|beleg|steuer|gegeben|visa|mastercard|kontaktlos)/i;
+function bonNum(s) { return s == null ? null : Math.round(parseFloat(String(s).replace(/\s/g, '').replace(',', '.')) * 100) / 100; }
+function bonDate(text, fileName) {
+  const today = new Date(); today.setHours(23, 59);
+  const ok = (y, m, d) => { if (y < 100) y += 2000; const dt = new Date(y, m - 1, d, 12); return m >= 1 && m <= 12 && d >= 1 && d <= 31 && dt <= today && y > 2015 ? ymd(dt) : null; };
+  let m;
+  if (fileName && (m = fileName.match(/(20\d\d)[-_.]?(\d\d)[-_.]?(\d\d)/))) { const r = ok(+m[1], +m[2], +m[3]); if (r) return r; }
+  const re1 = /(\d{1,2})\.\s?(\d{1,2})\.\s?(20\d\d|\d\d)(?!\d)/g;
+  while ((m = re1.exec(text))) { const r = ok(+m[3], +m[2], +m[1]); if (r) return r; }
+  const re2 = /(\d{1,2})\.?\s+(jan|feb|mär|mar|apr|mai|jun|jul|aug|sep|okt|oct|nov|dez|dec)[a-zä]*\.?\s+(20\d\d)/gi;
+  while ((m = re2.exec(text))) { const r = ok(+m[3], BON_MONTHS[m[2].toLowerCase()], +m[1]); if (r) return r; }
+  const re3 = /(20\d\d)-(\d\d)-(\d\d)/g;
+  while ((m = re3.exec(text))) { const r = ok(+m[1], +m[2], +m[3]); if (r) return r; }
+  return '';
+}
+function parseReceipt(raw, fileName) {
+  let text = String(raw || '').replace(/\r/g, '').replace(/[–—]/g, '-').replace(/ /g, ' ');
+  // typische Lesefehler bei Ziffern
+  text = text.replace(/(?<=[\d\s])[@O](?=[,.]\d)/g, '0').replace(/(\d)\s?[,.]\s(\d{2})(?!\d)/g, '$1,$2').replace(/(\d) , (\d{2})/g, '$1,$2');
+  const lines0 = text.split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).filter(Boolean);
+  // Live Text / Bildschirmfotos: Name und Preis stehen oft in getrennten Zeilen – wieder zusammensetzen
+  const ONLY_PRICE = /^-?\d{1,4},\d{2}\s?(?:€|eur)?(?:\s?[A-D])?$/i, HAS_PRICE = /\s-?\d{1,4},\d{2}\s?(?:€|eur)?(?:\s?[A-D]|\s[1-3])?$/i;
+  const lines = [];
+  for (let i = 0; i < lines0.length;) {
+    if (!ONLY_PRICE.test(lines0[i])) { lines.push(lines0[i]); i++; continue; }
+    let j = i; while (j < lines0.length && ONLY_PRICE.test(lines0[j])) j++;
+    const prices = lines0.slice(i, j);
+    // passende Namenszeilen direkt davor (ohne eigenen Preis)
+    let k = lines.length; while (k > 0 && lines.length - k < prices.length && !HAS_PRICE.test(' ' + lines[k - 1]) && /[a-zäöü]/i.test(lines[k - 1])) k--;
+    const names = lines.splice(k);
+    const off = prices.length - names.length;
+    prices.forEach((p, n) => lines.push(n >= off ? names[n - off] + ' ' + p : p));
+    i = j;
+  }
+  const res = { shop: '', date: bonDate(text, fileName), items: [], discounts: [], total: null, totalLabel: '', lines: lines.length };
+  for (const [re, s] of BON_SHOPS) if (re.test(text) || (fileName && re.test(fileName))) { res.shop = s; break; }
+  const PRICE_END = /\s(-?\d{1,4},\d{2})\s?(?:€|eur)?(?:\s?[A-D]|\s[1-3]|\s?\*)?$/i;
+  const QTY_A = /(\d{1,4},\d{2})\s?(?:€|eur)?\s?[x×]\s?(\d{1,3})(?![,\d])/i;          // Lidl: 1,19 x 30
+  const QTY_B = /(?:^|\s)(\d{1,3})\s?(?:stk\.?|st\.?)?\s?[x×]\s?(\d{1,4},\d{2})/i;      // 2 x 0,69 / 2 Stk x 0,69
+  const KG = /(\d{1,2},\d{3})\s?kg\s?[x×]\s?(\d{1,3},\d{2})/i;                          // 0,532 kg x 2,99
+  let inItems = true, last = null, pendingQty = null;
+  for (const l0 of lines) {
+    const l = ' ' + l0;
+    const pm = l.match(PRICE_END);
+    let amount = pm ? bonNum(pm[1]) : null;
+    if (BON_STOP.test(l0)) {
+      if (inItems && amount != null) { res.total = amount; res.totalLabel = l0.replace(PRICE_END, '').trim(); }
+      inItems = false; last = null; continue;
+    }
+    // reine Mengenzeile („2 x 1,75“ / „2 Stk x 0,69   1,38“) – gehört zum Artikel davor oder danach
+    {
+      const qa = l.match(QTY_A), qb = !qa && l.match(QTY_B);
+      if (inItems && (qa || qb) && !/[a-zäöü]{3,}/i.test(l0.replace(/stk|eur|st\b/gi, ''))) {
+        const q = qa ? +qa[2] : +qb[1], u = bonNum(qa ? qa[1] : qb[2]), tot = Math.round(u * q * 100) / 100;
+        if (last && (Math.abs(last.total - tot) < 0.01 || Math.abs(last.unit - u) < 0.01)) { last.qty = q; last.unit = u; last.total = tot; }
+        else pendingQty = { q, u, tot };
+        continue;
+      }
+    }
+    if (amount == null) continue;
+    let name = l0.replace(PRICE_END, '').trim();
+    if (!inItems) {
+      // nach der Summe: nur Coupons/Rabatte
+      if (amount < 0 && /coupon|rabatt|gutschein|nachlass|aktion|vorteil/i.test(name) && !/punkte/i.test(name) && !/^=/.test(name)) res.discounts.push({ label: name, amount });
+      continue;
+    }
+    if (BON_NOITEM.test(name)) continue;
+    // Rabatt direkt unter dem Artikel (Lidl Plus Rabatt, Preisvorteil …)
+    if (amount < 0) {
+      if (/pfand|leergut/i.test(name)) { res.discounts.push({ label: name, amount, leergut: true }); continue; }
+      if (last) { last.discInline = Math.round(((last.discInline || 0) + amount) * 100) / 100; last.discount = Math.round((last.discount + amount) * 100) / 100; last.discLabel = name; }
+      else res.discounts.push({ label: name, amount });
+      continue;
+    }
+    // Pfand gehört zum Artikel darüber
+    if (/^pfand\b/i.test(name)) {
+      const qd = name.match(QTY_A); let dep = amount;
+      if (qd && Math.abs(bonNum(qd[1]) * +qd[2] - amount) > 0.005) dep = Math.round(bonNum(qd[1]) * +qd[2] * 100) / 100;
+      amount = dep;
+      if (last) last.deposit = Math.round(((last.deposit || 0) + amount) * 100) / 100;
+      else res.discounts.push({ label: name, amount, pfand: true });
+      continue;
+    }
+    let qty = 1, unit = amount, weight = null;
+    let q;
+    if ((q = name.match(KG))) { weight = bonNum(q[1]); name = name.replace(KG, ''); }
+    else if ((q = name.match(QTY_A))) { unit = bonNum(q[1]); qty = +q[2]; name = name.replace(QTY_A, ''); }
+    else if ((q = name.match(QTY_B))) { qty = +q[1]; unit = bonNum(q[2]); name = name.replace(QTY_B, ''); }
+    if (qty === 1 && pendingQty && Math.abs(pendingQty.tot - amount) < 0.01) { qty = pendingQty.q; unit = pendingQty.u; }
+    pendingQty = null;
+    let total = amount, checked = true;
+    if (qty > 1 && Math.abs(unit * qty - amount) > 0.005) { total = Math.round(unit * qty * 100) / 100; checked = false; }   // Lesefehler: Einzelpreis × Menge gewinnt
+    if (qty === 1) unit = amount; else if (qty > 1 && Math.abs(unit * qty - amount) < 0.01) total = amount;
+    name = name.replace(/\s?(€|eur)\s?\/\s?kg\b/i, '').replace(/\s?(€|eur)$/i, '').replace(/\s+/g, ' ').trim();
+    if ((name.match(/[a-zäöüß]/gi) || []).length < 2) continue;
+    last = { raw: name, qty, unit, total, weight, discount: 0, discInline: 0, deposit: 0, checked };
+    res.items.push(last);
+  }
+  // gleiche Zeilen zusammenfassen (EDEKA listet jedes Stück einzeln)
+  const merged = [];
+  res.items.forEach(it => {
+    const m = merged.find(x => norm(x.raw) === norm(it.raw) && x.unit === it.unit && !x.weight && !it.weight);
+    if (m) { m.qty += it.qty; m.total = Math.round((m.total + it.total) * 100) / 100; m.discount = Math.round((m.discount + it.discount) * 100) / 100; m.discInline = Math.round((m.discInline + it.discInline) * 100) / 100; m.deposit = Math.round((m.deposit + it.deposit) * 100) / 100; m.checked = m.checked && it.checked; }
+    else merged.push({ ...it });
+  });
+  res.items = merged;
+  // Coupons nach der Summe dem passenden Artikel zuordnen („Coupon 25% NIVEA“, „Coupon Melitta“ ↔ „Melit.Speziale“)
+  res.discounts.filter(d => !d.leergut && !d.pfand).forEach(d => {
+    const words = norm(d.label.replace(/coupon|rabatt|gutschein|nachlass|aktion|\d+\s?%|[^a-zäöüß ]/gi, ' ')).split(' ').filter(w => w.length >= 3);
+    const hit = res.items.find(it => {
+      const iw = norm(it.raw.replace(/[^a-zäöüß ]/gi, ' ')).split(' ').filter(w => w.length >= 3);
+      return words.some(w => iw.some(x => x === w || (x.length >= 4 && w.startsWith(x)) || (w.length >= 4 && x.startsWith(w))));
+    });
+    if (hit) { hit.discount = Math.round((hit.discount + d.amount) * 100) / 100; hit.discLabel = d.label; d.used = true; }
+  });
+  res.sumCheck = bonSumCheck(res);
+  return res;
+}
+// Summe wie sie auf dem Bon vor den Coupons steht: Artikel + Pfand + Rabatte direkt unter dem Artikel
+function bonSumCheck(res) {
+  const t = res.items.filter(i => i.on !== false).reduce((t, i) => t + i.total + (i.deposit || 0) + (i.discInline || 0), 0)
+    + res.discounts.filter(d => d.pfand || d.leergut).reduce((t, d) => t + d.amount, 0);
+  return Math.round(t * 100) / 100;
+}
+
+// Abkürzungen auf Bons ausschreiben
+const BON_ABBR = [[/^melit\.?\s?/i, 'Melitta '], [/\bg&g\b/i, 'Gut & Günstig'], [/\bgut&g[üu]nstig\b/i, 'Gut & Günstig'], [/\bedeka bio\b/i, 'EDEKA Bio'], [/\bja!\s?/i, 'ja! ']];
+function bonExpand(raw) {
+  let t = String(raw || '');
+  BON_ABBR.forEach(([re, v]) => { t = t.replace(re, v); });
+  return t.replace(/([a-zäöü])\.([A-ZÄÖÜ])/g, '$1. $2').replace(/\s+/g, ' ').trim();
+}
+function bonPack(raw) {
+  const m = String(raw).match(/(\d{1,4}(?:[,.]\d{1,3})?)\s?(kg|g|ml|l)\b/i);
+  return m ? mkPack(1, m[1], m[2]) : null;
+}
+function bonGuess(raw, shop) {
+  const mp = (data.bonmap || {})[norm(shop) + '|' + norm(raw)] || (data.bonmap || {})['*|' + norm(raw)];
+  if (mp && !mp.deleted) return { name: mp.name, detail: mp.detail || '', known: true };
+  const exp = bonExpand(raw);
+  const own = myArticles().find(a => norm(a.detail) === norm(exp) || norm(a.name + ' ' + a.detail) === norm(exp));
+  if (own) return { name: own.name, detail: own.detail, known: false };
+  // nur wenn der Artikelname wirklich im Bon-Text steht („Coca Cola“ → Cola, „Thunfischfilet“ → Thunfisch …)
+  const sug = suggestArticle([exp]);
+  const lw = ' ' + norm(exp).replace(/[^a-zäöüß0-9]+/g, ' ') + ' ';
+  const found = sug.name && (CAT_INDEX[norm(sug.name)] || isOwnArticle(sug.name)) && norm(sug.name) !== norm(exp) && lw.includes(norm(sug.name).replace(/\s*\(.*\)/, '').split(' ')[0].slice(0, 5));
+  if (found) return { name: sug.name, detail: exp, known: false };
+  // Marke, die eindeutig zu einem Artikel gehört („Melitta …“ → Kaffee)
+  const sb = splitBrand(exp), br = norm(sb.brand);
+  const BON_BRAND_ART = { melitta: 'kaffee', jacobs: 'kaffee', tchibo: 'kaffee', dallmayr: 'kaffee', onko: 'kaffee' };
+  if (br) {
+    const arts = Object.entries(BRAND_HINTS).filter(([, bs]) => bs.some(b => norm(b) === br)).map(([k]) => k).filter(k => CAT_INDEX[k]);
+    const k = BON_BRAND_ART[br] || (arts.length === 1 ? arts[0] : null);
+    if (k && CAT_INDEX[k]) return { name: CAT_INDEX[k].name, detail: exp, known: false };
+  }
+  // sonst: Name ohne Marke und Größe, Marke als Bezeichnung
+  const rest = sb.rest.replace(/\s*\d+(?:[,.]\d+)?\s?(?:kg|g|ml|l)\b\.?/gi, '').trim();
+  return rest && sb.brand ? { name: cap(rest), detail: sb.brand, known: false } : { name: exp.charAt(0).toUpperCase() === exp.charAt(0) ? exp : exp, detail: '', known: false };
+}
+let bon = null, bonFileName = '';
+function openBon() {
+  bon = null; bonFileName = '';
+  $('bonText').value = ''; $('bonStatus').textContent = ''; $('bonResult').style.display = 'none'; $('bonApply').disabled = true;
+  openSheet('bonSheet'); $('bonSheet').scrollTop = 0;
+}
+function renderBonShops() { const cur = norm($('bonShop').value); $('bonShops').innerHTML = SHOPS.map(x => `<button type="button" class="chip${norm(x) === cur ? ' sel' : ''}" data-shop="${x}">${x}</button>`).join(''); }
+$('bonShops').addEventListener('click', e => { const b = e.target.closest('[data-shop]'); if (!b) return; $('bonShop').value = b.dataset.shop; renderBonShops(); renderBonRows(); });
+$('bonShop').addEventListener('input', renderBonShops);
+function showBon(text) {
+  const r = parseReceipt(text, bonFileName);
+  if (!r.items.length) { $('bonStatus').textContent = '⚠︎ Keine Artikelzeilen erkannt. Tipp: Text aus dem Foto kopieren und oben einfügen.'; $('bonResult').style.display = 'none'; $('bonApply').disabled = true; return; }
+  bon = r;
+  r.items.forEach(it => { const g = bonGuess(it.raw, r.shop); Object.assign(it, { name: g.name, detail: g.detail, known: g.known, on: true }); });
+  $('bonShop').value = r.shop || ''; $('bonDate').value = r.date || todayStr();
+  const names = new Set([...Object.values(CAT_INDEX).map(a => a.name), ...customArts().map(a => a.name)]);
+  $('bonArts').innerHTML = [...names].sort((a, b) => a.localeCompare(b, 'de')).map(n => `<option value="${esc(n)}">`).join('');
+  renderBonShops(); renderBonRows();
+  const nNew = r.items.filter(i => !i.known).length;
+  $('bonStatus').textContent = `✓ ${r.items.length} Artikel erkannt${r.shop ? ' · ' + r.shop : ''}${r.date ? '' : ' · kein Datum auf dem Bon – heute eingesetzt'}.` + (nNew ? ` Bei ${nNew} neuen Bon-Namen bitte Artikel prüfen – die App merkt sich die Zuordnung.` : ' Alle Bon-Namen bekannt.');
+  $('bonResult').style.display = 'block'; $('bonApply').disabled = false;
+  setTimeout(() => { try { $('bonStatus').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }, 50);
+}
+function bonEff(it) {   // Preis je Stück nach Rabatt
+  const q = it.weight ? 1 : (it.qty || 1);
+  return Math.round(((it.total + (it.discount || 0)) / q) * 100) / 100;
+}
+function renderBonRows() {
+  if (!bon) return;
+  $('bonRows').innerHTML = bon.items.map((it, i) => {
+    const eff = bonEff(it), q = it.weight ? 1 : it.qty;
+    const info = [it.weight ? fmtNum(it.weight, 3) + ' kg' : '', it.discount ? `${esc(it.discLabel || 'Rabatt')} ${esc(fmtPrice(it.discount))} → ${esc(fmtPrice(eff))}${q > 1 ? ' / Stück' : ''}` : (q > 1 ? `je ${esc(fmtPrice(eff))}` : ''), it.deposit ? `+ ${esc(fmtPrice(it.deposit))} Pfand` : '', it.checked === false ? '⚠︎ Preis × Menge korrigiert – bitte prüfen' : ''].filter(Boolean).join(' · ');
+    return `<div class="bonrow${it.on ? '' : ' off'}" data-bi="${i}">
+      <div class="bontop"><input type="checkbox" data-bf="on"${it.on ? ' checked' : ''} style="width:18px;height:18px;accent-color:var(--accent)"><span>${esc(it.raw)}</span>${it.known ? '' : '<em class="bonnew">neu</em>'}</div>
+      <div class="offerrow"><input class="field" data-bf="name" list="bonArts" value="${esc(it.name)}" placeholder="Artikel" autocomplete="off"><input class="field" data-bf="detail" value="${esc(it.detail)}" placeholder="Bezeichnung / Marke" autocomplete="off"></div>
+      <div class="bonnum">Menge <input class="field" data-bf="qty" inputmode="numeric" value="${it.weight ? 1 : it.qty}"> Summe <input class="field pricefield" data-bf="total" inputmode="decimal" value="${esc(fmtPriceInput(it.total))}"> €</div>
+      ${info ? `<div class="hint" style="margin:4px 0 0">${info}</div>` : ''}
+    </div>`;
+  }).join('');
+  updateBonCheck();
+}
+function updateBonCheck() {
+  if (!bon) return;
+  const sum = bonSumCheck(bon), el = $('bonCheck');
+  if (bon.total == null) { el.className = 'boncheck'; el.textContent = `Summe der Artikel: ${fmtPrice(sum)} (Bon-Summe nicht gefunden)`; return; }
+  const diff = Math.round((bon.total - sum) * 100) / 100;
+  const allOn = bon.items.every(i => i.on);
+  if (Math.abs(diff) < 0.005) { el.className = 'boncheck ok'; el.textContent = `✓ ${bon.totalLabel || 'Summe'} ${fmtPrice(bon.total)} – passt genau`; }
+  else { el.className = 'boncheck' + (allOn ? ' bad' : ''); el.textContent = `${allOn ? '⚠︎ ' : ''}${bon.totalLabel || 'Summe'} laut Bon ${fmtPrice(bon.total)} · erkannt ${fmtPrice(sum)} (${diff > 0 ? 'fehlen' : 'zu viel'} ${fmtPrice(Math.abs(diff))})${allOn ? ' – bitte Preise prüfen' : ''}`; }
+}
+$('bonRows').addEventListener('input', e => {
+  const row = e.target.closest('[data-bi]'), f = e.target.dataset.bf; if (!row || !f || !bon) return;
+  const it = bon.items[+row.dataset.bi];
+  if (f === 'name' || f === 'detail') it[f] = e.target.value;
+  if (f === 'qty') { const q = parseInt(e.target.value, 10); if (q > 0) { if (it.weight) it.weight = null; it.qty = q; } }
+  if (f === 'total') { const v = parsePrice(e.target.value); if (v != null) { it.total = v; it.checked = true; } }
+  updateBonCheck();
+});
+$('bonRows').addEventListener('change', e => {
+  const row = e.target.closest('[data-bi]'); if (!row || !bon) return;
+  if (e.target.dataset.bf === 'on') { bon.items[+row.dataset.bi].on = e.target.checked; row.classList.toggle('off', !e.target.checked); updateBonCheck(); }
+  if (e.target.dataset.bf === 'qty' || e.target.dataset.bf === 'total') renderBonRows();
+});
+$('bonPick').onclick = () => $('bonFile').click();
+$('bonParse').onclick = () => { if (!$('bonText').value.trim()) { $('bonStatus').textContent = 'Bitte zuerst Text einfügen.'; return; } bonFileName = ''; showBon($('bonText').value); };
+$('bonFile').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  bonFileName = f.name || '';
+  $('bonPick').disabled = true;
+  const status = t => { $('bonStatus').textContent = t; };
+  try {
+    let text = '';
+    if (/pdf/i.test(f.type) || /\.pdf$/i.test(f.name)) text = await pdfText(f, status);
+    else text = await ocrReceipt(f, status);
+    showBon(text);
+  } catch (err) { status('⚠︎ ' + (err.message || 'Lesen fehlgeschlagen') + ' – du kannst den Text auch einfügen.'); }
+  finally { $('bonPick').disabled = false; }
+};
+async function getPdfJs(status) {
+  if (!window.pdfjsLib) {
+    status('PDF-Leser wird geladen … (nur beim ersten Mal)');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  return window.pdfjsLib;
+}
+// Text eines PDFs zeilenweise (nach Höhe gruppiert, von links nach rechts)
+async function pdfText(file, status) {
+  const lib = await getPdfJs(status);
+  status('PDF wird gelesen …');
+  const pdf = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
+  const out = [];
+  for (let p = 1; p <= pdf.numPages; p++) {
+    const page = await pdf.getPage(p);
+    const tc = await page.getTextContent();
+    out.push(pdfLines(tc.items));
+    if (!tc.items.length || out[out.length - 1].replace(/\s/g, '').length < 20) {
+      // gescanntes PDF → Seite als Bild lesen
+      const vp = page.getViewport({ scale: 2.5 }), c = document.createElement('canvas');
+      c.width = vp.width; c.height = vp.height;
+      await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+      const blob = await new Promise(r => c.toBlob(r, 'image/png'));
+      out[out.length - 1] = await ocrReceipt(blob, status);
+      c.width = c.height = 0;
+    }
+  }
+  return out.join('\n');
+}
+function pdfLines(items) {
+  const rows = [];
+  items.filter(it => it.str && it.str.trim()).forEach(it => {
+    const x = it.transform[4], y = it.transform[5], h = Math.abs(it.transform[3]) || 8;
+    let r = rows.find(r => Math.abs(r.y - y) < h * 0.45);
+    if (!r) { r = { y, h, parts: [] }; rows.push(r); }
+    r.parts.push({ x, w: it.width || 0, s: it.str, cw: (it.width || 0) / Math.max(1, it.str.length) });
+  });
+  rows.sort((a, b) => b.y - a.y);
+  return rows.map(r => {
+    r.parts.sort((a, b) => a.x - b.x);
+    let line = '', end = null;
+    r.parts.forEach(p => {
+      const gap = end == null ? 0 : p.x - end;
+      line += (end != null && gap > Math.max(1, p.cw * 0.4) && !/\s$/.test(line) && !/^\s/.test(p.s)) ? ' ' + p.s : p.s;
+      end = p.x + p.w;
+    });
+    return line.replace(/\s+/g, ' ').trim();
+  }).join('\n');
+}
+async function ocrReceipt(file, status) {
+  const worker = await getOcr(status);
+  status('Bon wird gelesen … (dauert ein paar Sekunden)');
+  const { gray, bw } = await imageToCanvases(file);
+  await worker.setParameters({ tessedit_pageseg_mode: '6' });
+  const t = (await worker.recognize(gray)).data.text;
+  gray.width = gray.height = bw.width = bw.height = 0;
+  return t;
+}
+$('bonApply').onclick = () => {
+  if (!bon) return;
+  const shop = $('bonShop').value.trim() || 'ohne Markt', date = $('bonDate').value || todayStr();
+  const rows = bon.items.filter(i => i.on && (i.name || '').trim());
+  if (!rows.length) { toast('Keine Artikel ausgewählt'); return; }
+  data.purchases = data.purchases || {}; data.bonmap = data.bonmap || {};
+  const keys = new Set();
+  let removed = 0;
+  rows.forEach((it, idx) => {
+    const name = cap(it.name.trim()), detail = (it.detail || '').trim();
+    const q = it.weight ? 1 : (it.qty || 1);
+    const eff = bonEff(it), regular = it.discount ? Math.round(it.total / q * 100) / 100 : null;
+    const type = it.discount ? 'app' : 'normal';
+    const pack = bonPack(it.raw) || bonPack(detail);
+    const deposit = it.deposit ? Math.round(it.deposit / q * 100) / 100 : null;
+    const cat = guessCat(name);
+    recordPrice(name, detail, { shop, price: eff, type, special: type !== 'normal', regular, pack, deposit }, date);
+    rememberArticle(name, detail, cat, '');
+    data.bonmap[norm(shop) + '|' + norm(it.raw)] = { name, detail, raw: it.raw, shop, updatedAt: now() };
+    const id = 'b-' + date + '-' + norm(shop).replace(/\W/g, '') + '-' + idx + '-' + norm(it.raw).replace(/[^a-z0-9äöü]/g, '').slice(0, 24);
+    data.purchases[id] = { id, date, name, detail, cat, qty: it.weight || q, unit: it.weight ? 'kg' : '', n: q, shop, price: eff, est: false, type, pack, deposit, raw: it.raw, updatedAt: now() };
+    keys.add(norm(name));
+  });
+  // Einkäufe desselben Tages, die schon über „abgehakt + entfernt“ erfasst wurden, ersetzt der Bon
+  Object.values(data.purchases).forEach(p => { if (!p.deleted && p.id.startsWith('k-') && p.date === date && keys.has(norm(p.name))) { p.deleted = true; p.updatedAt = now(); } });
+  if ($('bonRemove').checked) {
+    data.items.filter(i => !i.deleted && keys.has(norm(i.name))).forEach(i => { i.deleted = true; i.checked = false; i.updatedAt = now(); removed++; });
+  }
+  closeSheets(); commit();
+  toast(`🧾 ${rows.length} Artikel übernommen` + (removed ? ` · ${removed} von der Liste genommen` : ''));
+  bon = null;
+};
+
 /* Texterkennung auf dem Gerät (Tesseract) – Bild wird nur gelesen, nie gespeichert */
 let ocrWorker = null, readMode = 'new';
 function loadScript(src) { return new Promise((ok, err) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => err(new Error('Lesepaket konnte nicht geladen werden – Internet?')); document.head.appendChild(s); }); }
@@ -2654,6 +3028,13 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.27', '17.10.2026', [
+    'Neu: „🧾 Kassenbon einlesen“ – dm-eBon (PDF), Bildschirmfotos aus EDEKA-App und Lidl Plus oder kopierter Text',
+    'Erkennt Markt, Datum, Artikel, Menge, Preis, Coupons/Lidl-Plus-Rabatte (als App-Preis) und Pfand; prüft gegen die Bon-Summe',
+    'Bon-Namen wie „Melit.Speziale“ einmal zuordnen – die App merkt sich das (auch auf dem anderen Handy)',
+    'Übernimmt Preise in den Preisverlauf, den Einkauf in die Auswertung und nimmt gekaufte Artikel von der Liste',
+    'Zu finden unter Preise → Einkäufe und in der Liste bei „Im Wagen“'
+  ]],
   ['v1.26', '12.10.2026', [
     'Einkäufe ohne Preis bekommen automatisch den ersten danach erfassten Preis (≈)'
   ]],
