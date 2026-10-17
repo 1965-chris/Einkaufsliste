@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.28",
- "savedAt": "2026-10-17T15:29:04.869Z",
+ "savedAt": "2026-10-17T15:30:11.570Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1225,6 +1225,18 @@
     "geschälte mandarin-orangen": 1792250942724
    },
    "updatedAt": 1792250942724
+  },
+  "tomaten (dose)": {
+   "name": "Tomaten (Dose)",
+   "variants": [
+    "Aldi Tomaten gehackt"
+   ],
+   "cat": "vorrat",
+   "unit": "Dose",
+   "varAdd": {
+    "aldi tomaten gehackt": 1792251007128
+   },
+   "updatedAt": 1792251007128
   }
  },
  "prices": {
@@ -1822,6 +1834,10 @@
   "sweet valley": {
    "name": "Sweet Valley",
    "updatedAt": 1792250942723
+  },
+  "king‘s crown": {
+   "name": "King‘s Crown",
+   "updatedAt": 1792251007128
   }
  },
  "purchases": {
@@ -2375,6 +2391,17 @@
     "u": "kg"
    },
    "updatedAt": 1792250942723
+  },
+  "4061461968052": {
+   "name": "Tomaten (Dose)",
+   "detail": "King‘s Crown Aldi Tomaten gehackt",
+   "cat": "vorrat",
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "updatedAt": 1792251007128
   }
  }
 }
