@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-17T17:19:57.876Z",
+ "savedAt": "2026-10-17T17:20:47.592Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1293,6 +1293,18 @@
     "haltbare schlagsahne": 1792251641362,
     "schlagsahne laktosefrei": 1792253630828
    }
+  },
+  "mayonnaise": {
+   "name": "Mayonnaise",
+   "variants": [
+    "Mayonnaise"
+   ],
+   "cat": "vorrat",
+   "unit": "Fl.",
+   "varAdd": {
+    "mayonnaise": 1792257644638
+   },
+   "updatedAt": 1792257644638
   }
  },
  "prices": {
@@ -2613,6 +2625,16 @@
     "u": "kg"
    },
    "updatedAt": 1792251450722
+  },
+  "4069365421307": {
+   "name": "Mayonnaise",
+   "detail": "Delikato Mayonnaise",
+   "cat": "vorrat",
+   "pack": {
+    "n": 1,
+    "size": 0.5
+   },
+   "updatedAt": 1792257644637
   }
  },
  "arts": {
@@ -2711,6 +2733,19 @@
    },
    "deposit": null,
    "updatedAt": 1792253630820
+  },
+  "mayonnaise|delikato mayonnaise": {
+   "name": "Mayonnaise",
+   "detail": "Delikato Mayonnaise",
+   "cat": "vorrat",
+   "unit": "Fl.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5
+   },
+   "deposit": null,
+   "updatedAt": 1792257644638
   }
  }
 }
