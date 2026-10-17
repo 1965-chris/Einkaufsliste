@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.28",
- "savedAt": "2026-10-17T15:24:04.639Z",
+ "savedAt": "2026-10-17T15:29:04.869Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1213,6 +1213,18 @@
     "spülung vol. pur": 1792250188168
    },
    "updatedAt": 1792250188168
+  },
+  "mandarinen-orangen": {
+   "name": "Mandarinen-Orangen",
+   "variants": [
+    "geschälte Mandarin-Orangen"
+   ],
+   "cat": "vorrat",
+   "unit": "Dose",
+   "varAdd": {
+    "geschälte mandarin-orangen": 1792250942724
+   },
+   "updatedAt": 1792250942724
   }
  },
  "prices": {
@@ -1806,6 +1818,10 @@
   "kokett": {
    "name": "Kokett",
    "updatedAt": 1791823503322
+  },
+  "sweet valley": {
+   "name": "Sweet Valley",
+   "updatedAt": 1792250942723
   }
  },
  "purchases": {
@@ -2348,5 +2364,17 @@
    "updatedAt": 1792250188168
   }
  },
- "eans": {}
+ "eans": {
+  "4061458004107": {
+   "name": "Mandarinen-Orangen",
+   "detail": "Sweet Valley geschälte Mandarin-Orangen",
+   "cat": "vorrat",
+   "pack": {
+    "n": 1,
+    "size": 0.312,
+    "u": "kg"
+   },
+   "updatedAt": 1792250942723
+  }
+ }
 }
