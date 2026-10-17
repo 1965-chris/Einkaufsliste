@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.28",
- "savedAt": "2026-10-17T15:36:15.132Z",
+ "savedAt": "2026-10-17T15:37:32.912Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1272,14 +1272,16 @@
   "schlagsahne": {
    "name": "SChlagsahne",
    "variants": [
-    "Haltbare Schlagsahne"
+    "Haltbare Schlagsahne",
+    "Schlagsahne Laktosefrei"
    ],
-   "cat": "kuehl",
+   "cat": "vorrat",
    "unit": "Pck.",
    "varAdd": {
-    "haltbare schlagsahne": 1792251372995
+    "haltbare schlagsahne": 1792251372995,
+    "schlagsahne laktosefrei": 1792251450722
    },
-   "updatedAt": 1792251372995
+   "updatedAt": 1792251450722
   }
  },
  "prices": {
@@ -2495,6 +2497,17 @@
     "u": "kg"
    },
    "updatedAt": 1792251372994
+  },
+  "4069365451175": {
+   "name": "Schlagsahne",
+   "detail": "Milsani Schlagsahne Laktosefrei",
+   "cat": "vorrat",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "updatedAt": 1792251450722
   }
  }
 }
