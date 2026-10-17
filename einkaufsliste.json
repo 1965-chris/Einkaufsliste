@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.28",
- "savedAt": "2026-10-17T15:37:32.912Z",
+ "savedAt": "2026-10-17T15:39:09.631Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1246,9 +1246,12 @@
    "cat": "brot",
    "unit": "Pck.",
    "varAdd": {
-    "frischei waffeln": 1792251106871
+    "frischei waffeln": 1792251547474
    },
-   "updatedAt": 1792251106871
+   "updatedAt": 1792251547474,
+   "varDel": {
+    "frischei waffeln": 1792251547473
+   }
   },
   "ketchup": {
    "name": "Ketchup",
