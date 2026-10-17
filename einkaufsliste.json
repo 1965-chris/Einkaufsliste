@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.30",
- "savedAt": "2026-10-17T16:11:02.516Z",
+ "savedAt": "2026-10-17T16:12:08.998Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1222,9 +1222,12 @@
    "cat": "vorrat",
    "unit": "Dose",
    "varAdd": {
-    "geschälte mandarin-orangen": 1792250942724
+    "geschälte mandarin-orangen": 1792253526810
    },
-   "updatedAt": 1792250942724
+   "updatedAt": 1792253526810,
+   "varDel": {
+    "geschälte mandarin-orangen": 1792253526809
+   }
   },
   "tomaten (dose)": {
    "name": "Tomaten (Dose)",
@@ -2602,6 +2605,20 @@
    },
    "deposit": null,
    "updatedAt": 1792253460383
+  },
+  "mandarinen-orangen|sweet valley geschälte mandarin-orangen": {
+   "name": "Mandarinen-Orangen",
+   "detail": "Sweet Valley geschälte Mandarin-Orangen",
+   "cat": "vorrat",
+   "unit": "Dose",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.312,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792253526801
   }
  }
 }
