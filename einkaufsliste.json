@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.28",
- "savedAt": "2026-10-17T15:31:59.243Z",
+ "savedAt": "2026-10-17T15:33:22.993Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1249,6 +1249,18 @@
     "frischei waffeln": 1792251106871
    },
    "updatedAt": 1792251106871
+  },
+  "ketchup": {
+   "name": "Ketchup",
+   "variants": [
+    "Tomatenketchup"
+   ],
+   "cat": "vorrat",
+   "unit": "Fl.",
+   "varAdd": {
+    "tomatenketchup": 1792251200684
+   },
+   "updatedAt": 1792251200684
   }
  },
  "prices": {
@@ -1854,6 +1866,10 @@
   "meine küchen welt": {
    "name": "meine Küchen Welt",
    "updatedAt": 1792251106871
+  },
+  "delikato": {
+   "name": "Delikato",
+   "updatedAt": 1792251200683
   }
  },
  "purchases": {
@@ -2429,6 +2445,16 @@
     "u": "kg"
    },
    "updatedAt": 1792251106871
+  },
+  "4061463721204": {
+   "name": "Ketchup",
+   "detail": "Delikato Tomatenketchup",
+   "cat": "vorrat",
+   "pack": {
+    "n": 1,
+    "size": 0.5
+   },
+   "updatedAt": 1792251200683
   }
  }
 }
