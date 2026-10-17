@@ -166,6 +166,7 @@ details.packbox summary{font-size:14px;color:var(--accent);padding:4px 0}
 .menulist .btn small{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:2px}
 .bonrow{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-top:8px}
 .bonrow.off{opacity:.45}
+.bonrow.warn{border-color:#e7b45a;background:#fffaf0}
 .bonrow .bontop{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
 .bonrow .bontop span{flex:1;font-family:ui-monospace,Menlo,monospace}
 .bonrow .offerrow{margin-top:6px}
@@ -498,7 +499,8 @@ summary{cursor:pointer;font-weight:600}
 <!-- Einstellungen -->
 <div class="sheet" id="setSheet">
   <h3>Einstellungen</h3>
-  <b>Gemeinsamer Sync über GitHub</b>
+  <details id="syncBox" style="margin-top:6px;border-top:0;padding-top:0">
+  <summary>Gemeinsamer Sync über GitHub</summary>
   <div class="hint">Die Liste wird als <code>einkaufsliste.json</code> im Repo gespeichert. Beide Handys brauchen dieselben Angaben.</div>
   <label>GitHub-Benutzer</label><input class="field" id="gOwner" autocapitalize="off" autocorrect="off">
   <label>Repository</label><input class="field" id="gRepo" autocapitalize="off" autocorrect="off">
@@ -508,6 +510,7 @@ summary{cursor:pointer;font-weight:600}
     <button class="btn" id="gTest">Verbindung testen</button>
     <button class="btn primary" id="gSave">Speichern</button>
   </div>
+  </details>
   <details>
     <summary>Händler-Suchlinks</summary>
     <div class="hint">So hinterlegst du einen direkten Link: Auf der Seite des Händlers nach <b>spaghetti</b> suchen, die Adresse der Ergebnisseite kopieren und hier einfügen. Leer lassen = Google-Suche auf der Händlerseite.</div>
@@ -534,7 +537,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.28';
+const APP_VERSION = 'v1.30';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -865,7 +868,7 @@ const BRAND_HINTS = {
   'backpapier': ['Toppits', 'Melitta', 'Dr. Oetker'],
   'filtertüten': ['Melitta', 'Gut & Günstig']
 };
-const EXTRA_BRANDS = ['Dr. Oetker', 'Haribo', 'Ferrero', 'Kinder', 'Duplo', 'Hanuta', 'Raffaello', 'Merci', 'Toffifee', 'Werther\'s', 'Storck', 'Nestlé', 'Maggi', 'Knorr', 'Pfanni', 'Mondamin', 'Sonnen Bassermann', 'Hengstenberg', 'Kühne', 'Iglo', 'Frosta', 'Coppenrath & Wiese', 'Bahlsen', 'Leibniz', 'Lambertz', 'Haribo', 'Katjes', 'Trolli', 'Coca-Cola', 'Red Bull', 'Monster', 'Capri-Sun', 'Nivea', 'Tempo', 'Persil', 'Rügenwalder', 'Herta'];
+const EXTRA_BRANDS = ['Herzstücke', 'EDEKA Regional', 'EDEKA Bio', 'Dr. Oetker', 'Haribo', 'Ferrero', 'Kinder', 'Duplo', 'Hanuta', 'Raffaello', 'Merci', 'Toffifee', 'Werther\'s', 'Storck', 'Nestlé', 'Maggi', 'Knorr', 'Pfanni', 'Mondamin', 'Sonnen Bassermann', 'Hengstenberg', 'Kühne', 'Iglo', 'Frosta', 'Coppenrath & Wiese', 'Bahlsen', 'Leibniz', 'Lambertz', 'Haribo', 'Katjes', 'Trolli', 'Coca-Cola', 'Red Bull', 'Monster', 'Capri-Sun', 'Nivea', 'Tempo', 'Persil', 'Rügenwalder', 'Herta'];
 function allBrands() {
   const s = new Map();
   const add = b => { const k = norm(b); if (k && !s.has(k)) s.set(k, b); };
@@ -919,7 +922,7 @@ function loadJSON(key, fallback) {
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap), eans: obj(d.eans) };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap), eans: obj(d.eans), arts: obj(d.arts) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -1281,6 +1284,7 @@ function myArticles() {
   data.items.filter(i => !i.deleted).forEach(i => add(i.name, i.detail, { ...i, pack: i.offer && i.offer.pack, deposit: i.offer && i.offer.deposit }));
   const pe = priceEntries().sort((a, b) => b.date.localeCompare(a.date) || (b.updatedAt || 0) - (a.updatedAt || 0));
   pe.forEach(e => add(e.name, e.detail, { pack: e.pack, deposit: e.deposit }));
+  Object.values(data.arts || {}).filter(a => !a.deleted).forEach(a => add(a.name, a.detail, a));
   // Bezeichnungs-Knöpfe aus dem Katalog nicht doppelt zeigen, wenn es den Artikel schon (mit Marke) gibt
   [...map.values()].filter(a => a.onlyCustom).forEach(a => {
     const rest = norm(splitBrand(a.detail).rest);
@@ -1291,7 +1295,11 @@ function myArticles() {
     const mine = pe.filter(e => e.key === a.key);
     a.normal = mine.find(e => offerType(e) === 'normal') || null;      // Angebot/App zählt nicht
     a.special = mine.find(e => offerType(e) !== 'normal') || null;
-    const withPack = mine.find(e => e.pack); if (withPack) { a.pack = withPack.pack; a.deposit = withPack.deposit; }
+    const withPack = mine.find(e => e.pack), am = artMaster(a.name, a.detail);
+    if (am && am.pack) { a.pack = am.pack; a.deposit = am.deposit; }        // zuletzt eingegebene Größe gewinnt
+    else if (withPack) { a.pack = withPack.pack; a.deposit = withPack.deposit; }
+    a.shop = (a.normal && a.normal.shop !== 'ohne Markt' ? a.normal.shop : '') || (am && am.shop) || '';
+    if (am && am.cat) a.cat = am.cat;
     a.missing = [!a.normal && 'Normalpreis', !a.pack && 'Größe'].filter(Boolean);
     if (!a.cat) a.cat = guessCat(a.name);
   });
@@ -1477,7 +1485,9 @@ function openItemSheet(mode, src) {
   if (mode === 'add' && !src.qty && ['g','ml'].includes($('sUnit').value)) $('sQty').value = 500;
   $('sCat').value = src.cat || guessCat(info.name || '');
   $('sNote').value = src.note || '';
-  const o = offerOf(src) || {};
+  let o = offerOf(src) || (src.offer && typeof src.offer === 'object' ? src.offer : {});
+  const am = src.name ? artMaster(src.name, src.detail) : null;
+  if (am && !o.pack && !o.shop) o = { ...o, pack: am.pack || null, deposit: am.deposit || null, shop: mode === 'article' || mode === 'add' ? (am.shop || '') : o.shop };
   setType('s', o.shop || o.price != null ? offerType(o) : (mode === 'often' || mode === 'article' ? 'normal' : 'angebot'));
   writePack('s', o.pack || null, o.deposit);
   $('sPackBox').open = !!(o.pack || o.deposit) || $('sCat').value === 'getraenk';
@@ -1548,6 +1558,7 @@ function saveFavoriteFromSheet() {
   setStar(name, detail, true, { cat, unit, qty, note: $('sNote').value.trim() });
   rememberArticle(name, detail, cat, unit);
   rememberEan(name, detail, cat);
+  saveArtMaster(name, detail, { cat, unit });
   offerListUpdate(favEditKey, name, detail, { cat });
   closeSheets(); commit();
   toast('⭐ ' + name + (detail ? ' · ' + detail : '') + ' als Favorit gespeichert');
@@ -1557,7 +1568,27 @@ $('sFavOnly').onclick = saveFavoriteFromSheet;
 /* Artikel nur im Katalog speichern – ohne Liste, ohne Favorit */
 function isOwnArticle(name) { const k = norm(name); return !!(k && !CAT_INDEX[k] && data.custom[k] && !data.custom[k].deleted); }
 function updateArtDel() { $('sArtDel').parentElement.style.display = sheetMode === 'add' && isOwnArticle($('sName').value) ? '' : 'none'; }
+/* Doppelte Artikel erkennen: gleicher Name + gleiche Bezeichnung (auch mit anderer Schreibweise) */
+function findArticleDup(name, detail, ignoreKey) {
+  const k = keyOf(name, detail), loose = x => norm(x).replace(/[^a-zäöüß0-9]/g, '');
+  const arts = myArticles().filter(a => a.key !== ignoreKey);
+  const exact = arts.find(a => a.key === k && !a.onlyCustom);
+  const similar = exact ? null : arts.find(a => !a.onlyCustom && loose(a.name) === loose(name) && loose(a.detail) === loose(detail));
+  return { exact, similar };
+}
+const artLabel = a => a.name + (a.detail ? ' · ' + a.detail : '');
+function confirmArticleDup(name, detail, ignoreKey) {
+  if (!name) return true;
+  const { exact, similar } = findArticleDup(cap(name), detail, ignoreKey), shop = $('sShop').value.trim();
+  if (exact) {
+    const where = exact.shop ? ` (bisher ${exact.shop}${shop && norm(shop) !== norm(exact.shop) ? ', neu ' + shop : ''})` : '';
+    return confirm(`„${artLabel(exact)}“ gibt es schon${where}.\n\nVorhandenen Artikel mit den neuen Angaben aktualisieren?`);
+  }
+  if (similar) return confirm(`Es gibt schon „${artLabel(similar)}“${similar.shop ? ' (' + similar.shop + ')' : ''}.\n\nTrotzdem als eigenen Artikel anlegen?`);
+  return true;
+}
 $('sArtOnly').onclick = () => {
+  if (!confirmArticleDup($('sName').value.trim(), sheetDetail())) return;
   const v = sheetValues(); if (!v.name) { toast('Bitte einen Artikel eingeben'); return; }
   const isNew = !CAT_INDEX[norm(v.name)] && !isOwnArticle(v.name);
   const changed = rememberArticle(v.name, v.detail, v.cat, v.unit);
@@ -1578,6 +1609,8 @@ let artKey = null;
 function moveArticleKey(oldKey, name, detail) {
   // Umbenennen: Preise, Favorit und „Häufig gekauft“ ziehen mit (so lassen sich auch doppelte Artikel zusammenführen)
   const newKey = keyOf(name, detail); if (!oldKey || oldKey === newKey) return;
+  const am = (data.arts || {})[oldKey];
+  if (am && !am.deleted) { am.deleted = true; am.updatedAt = now(); }
   priceEntries().filter(e => e.key === oldKey).forEach(e => {
     const nid = newKey + e.id.slice(oldKey.length);
     if (!data.prices[nid] || data.prices[nid].deleted) data.prices[nid] = { ...e, id: nid, key: newKey, name, detail, updatedAt: now() };
@@ -1602,6 +1635,11 @@ function splitKeyArticle(key) {
   return cu && !cu.deleted ? { cu, variant: dk ? norm(splitBrand(dk).rest) || dk : '' } : null;
 }
 function saveArticleFromSheet() {
+  const nn = cap($('sName').value.trim()), nd = sheetDetail();
+  if (artKey && keyOf(nn, nd) !== artKey) {
+    const { exact } = findArticleDup(nn, nd, artKey);
+    if (exact && !confirm(`„${artLabel(exact)}“ gibt es schon.\n\nBeide zusammenführen? Preise und Favorit wandern mit.`)) return false;
+  }
   const v = sheetValues(); if (!v.name) { toast('Bitte einen Artikel eingeben'); return false; }
   const before = myArticles().find(x => x.key === artKey), o = v.offer;
   // unveränderter Normalpreis → keinen neuen Eintrag im Preisverlauf erzeugen
@@ -1619,6 +1657,7 @@ $('sArtRemove').onclick = () => {
   const pe = priceEntries().filter(e => e.key === artKey);
   if (!confirm(`„${a.name}${a.detail ? ' · ' + a.detail : ''}“ aus „Meine Artikel“ löschen?` + (pe.length ? `\n\nDabei werden auch ${pe.length} Preis${pe.length > 1 ? 'e' : ''} aus dem Preisverlauf gelöscht.` : '') + '\n\nDie Einkaufsliste bleibt unverändert.')) return;
   pe.forEach(e => { e.deleted = true; e.updatedAt = now(); });
+  const am = (data.arts || {})[artKey]; if (am && !am.deleted) { am.deleted = true; am.updatedAt = now(); }
   const f = data.favs[artKey]; if (f && !f.deleted) { f.deleted = true; f.last = now(); }
   const st = data.stars[artKey]; if (st && st.on) { st.on = false; st.updatedAt = now(); }
   const sk = splitKeyArticle(artKey);
@@ -1794,11 +1833,23 @@ function parseDecimal(s) { const n = parseFloat(String(s || '').replace(',', '.'
 });
 $('sCat').addEventListener('change', () => { if ($('sCat').value === 'getraenk') $('sPackBox').open = true; renderBrands(); });
 $('sHistory').onclick = e => { e.preventDefault(); const k = keyOf(cap($('sName').value), sheetDetail()); closeSheets(); openPrices(k); };
+/* Artikel-Stammdaten: Bezeichnung mit Marke, Markt, Größe, Pfand – unabhängig vom Preis */
+function saveArtMaster(name, detail, extra = {}) {
+  if (!name) return;
+  data.arts = data.arts || {};
+  const k = keyOf(name, detail), prev = data.arts[k] && !data.arts[k].deleted ? data.arts[k] : {};
+  const pack = readPack('s'), dep = parsePrice($('sDeposit').value), shop = $('sShop').value.trim();
+  data.arts[k] = { ...prev, name: cap(name), detail: String(detail || '').trim(), cat: extra.cat || prev.cat || null, unit: extra.unit ?? prev.unit ?? '',
+    shop: shop || prev.shop || '', pack: pack || null, deposit: pack || dep ? (dep || null) : null, updatedAt: now() };
+  delete data.arts[k].deleted;
+}
+function artMaster(name, detail) { const a = (data.arts || {})[keyOf(name, detail)]; return a && !a.deleted ? a : null; }
 function sheetValues() {
   registerBrand($('sBrand').value);
   const v = { name: cap($('sName').value), detail: sheetDetail(), qty: clampQty($('sQty').value),
            unit: $('sUnit').value, cat: $('sCat').value, note: $('sNote').value.trim(), offer: sheetOffer() };
   rememberEan(v.name, v.detail, v.cat);
+  saveArtMaster(v.name, v.detail, { cat: v.cat, unit: v.unit });
   return v;
 }
 $('sAdd').onclick = () => { const v = sheetValues(); if (!v.name) return; closeSheets(); recordPrice(v.name, v.detail, v.offer); addItem(v); };
@@ -1856,8 +1907,7 @@ $('catMain').addEventListener('click', e => {
   const m = e.target.closest('[data-myart]');
   if (m) {
     const a = myArticles().find(x => x.key === m.dataset.myart); if (!a) return;
-    const o = a.normal ? { shop: a.normal.shop === 'ohne Markt' ? '' : a.normal.shop, price: a.normal.price, type: 'normal', pack: a.pack || null, deposit: a.deposit || null }
-                       : { shop: '', price: null, type: 'normal', pack: a.pack || null, deposit: a.deposit || null };
+    const o = { shop: a.shop || '', price: a.normal ? a.normal.price : null, type: 'normal', pack: a.pack || null, deposit: a.deposit || null };
     openItemSheet('article', { name: a.name, detail: a.detail, cat: a.cat, unit: a.unit, offer: o });
     return;
   }
@@ -1954,6 +2004,7 @@ function mergeData(local, remote) {
   const purchases = mergeByUpdated(local.purchases, remote.purchases);
   const bonmap = mergeByUpdated(local.bonmap, remote.bonmap);
   const eans = mergeByUpdated(local.eans, remote.eans);
+  const arts = mergeByUpdated(local.arts, remote.arts);
   Object.keys(purchases).forEach(k => { if (purchases[k].deleted && (purchases[k].updatedAt || 0) < cutoff) delete purchases[k]; });
   Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
   // eigene Bezeichnungen beider Seiten zusammenführen – gelöschte (varDel) bleiben gelöscht, solange sie nicht neuer wieder angelegt wurden
@@ -1965,7 +2016,7 @@ function mergeData(local, remote) {
     [...(L.variants || []), ...(R.variants || [])].forEach(v => { const nv = norm(v); if (!vs.has(nv) && (!varDel[nv] || (varAdd[nv] || 0) > varDel[nv])) vs.set(nv, v); });
     custom[k] = { ...custom[k], variants: [...vs.values()], ...(Object.keys(varAdd).length ? { varAdd } : {}), ...(Object.keys(varDel).length ? { varDel } : {}) };
   });
-  return { items, favs, stars, custom, prices, brands, purchases, bonmap, eans };
+  return { items, favs, stars, custom, prices, brands, purchases, bonmap, eans, arts };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
@@ -1973,20 +2024,20 @@ function canon(d) {
   const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap), eans: mapC(d.eans)
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap), eans: mapC(d.eans), arts: mapC(d.arts)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {}, eans: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {}, eans: {}, arts: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
   const p = JSON.parse(b64decode(j.content || ''));
-  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans) };
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts) };
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
@@ -2088,6 +2139,7 @@ $('linkEdit').addEventListener('change', e => {
 function openSettings() {
   renderLinkEdit();
   $('gOwner').value = cfg.owner || ''; $('gRepo').value = cfg.repo || ''; $('gToken').value = cfg.token || '';
+  $('syncBox').open = !cfg.token;   // eingeklappt, solange der Sync eingerichtet ist
   renderLog(); openSheet('setSheet');
 }
 $('settingsBtn').onclick = openSettings;
@@ -2118,7 +2170,7 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap), eans: obj(j.eans) });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap), eans: obj(j.eans), arts: obj(j.arts) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
@@ -2634,8 +2686,17 @@ function bonDate(text, fileName) {
 function parseReceipt(raw, fileName) {
   let text = String(raw || '').replace(/\r/g, '').replace(/[–—]/g, '-').replace(/ /g, ' ');
   // typische Lesefehler bei Ziffern
-  text = text.replace(/(?<=[\d\s])[@O](?=[,.]\d)/g, '0').replace(/(\d)\s?[,.]\s(\d{2})(?!\d)/g, '$1,$2').replace(/(\d) , (\d{2})/g, '$1,$2');
-  const lines0 = text.split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).filter(Boolean);
+  text = text.replace(/(?<=[\d\s])[@O](?=[,.]\d)/g, '0').replace(/(\d)\s?[,.]\s(\d{2})(?!\d)/g, '$1,$2').replace(/(\d) , (\d{2})/g, '$1,$2').replace(/(\d) (\d{2}) ?€/g, '$1,$2 €');
+  // Schmale Schrift (EDEKA-App): Komma verschluckt, Ziffern als Buchstaben gelesen („139€“, „2il€“, „1/5€“) – reparieren und als unsicher markieren
+  const CONF = { l: '1', I: '1', i: '1', '|': '1', '!': '1', L: '1', T: '7', '/': '7', A: '4', S: '5', O: '0', o: '0', B: '13', Z: '2', G: '6' };   // „B“ = zusammengelaufene „13“
+  const lines0 = text.split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim().replace(/€\s+\S{1,2}$/, '€')).filter(Boolean).map(l => {
+    const m = l.match(/^(.*[a-zäöü].*?)\s+(-?)(\S{2,6})\s?€$/i);
+    if (!m || /^\d{1,4},\d{2}$/.test(m[3])) return l;
+    if (/^(summe|zu (be)?zahlen|gespart|gesamt)/i.test(m[1])) return l;
+    const raw = m[3].replace(/[,.]/g, ''), mapped = raw.split('').map(c => /\d/.test(c) ? c : (CONF[c] ?? '?')).join('');
+    if (/^\d{3,4}$/.test(mapped) && /\d/.test(raw)) return `${m[1]}\u2047 ${m[2]}${mapped.slice(0, -2)},${mapped.slice(-2)} €`;
+    return `${m[1]}\u2049 0,00 €`;   // Preis nicht lesbar
+  });
   // Live Text / Bildschirmfotos: Name und Preis stehen oft in getrennten Zeilen – wieder zusammensetzen
   const ONLY_PRICE = /^-?\d{1,4},\d{2}\s?(?:€|eur)?(?:\s?[A-D])?$/i, HAS_PRICE = /\s-?\d{1,4},\d{2}\s?(?:€|eur)?(?:\s?[A-D]|\s[1-3])?$/i;
   const lines = [];
@@ -2709,15 +2770,17 @@ function parseReceipt(raw, fileName) {
     let total = amount, checked = true;
     if (qty > 1 && Math.abs(unit * qty - amount) > 0.005) { total = Math.round(unit * qty * 100) / 100; checked = false; }   // Lesefehler: Einzelpreis × Menge gewinnt
     if (qty === 1) unit = amount; else if (qty > 1 && Math.abs(unit * qty - amount) < 0.01) total = amount;
+    const unsure = name.includes('\u2047'), unknown = name.includes('\u2049');
+    name = name.replace(/[\u2047\u2049]/g, '');
     name = name.replace(/\s?(€|eur)\s?\/\s?kg\b/i, '').replace(/\s?(€|eur)$/i, '').replace(/\s+/g, ' ').trim();
     if ((name.match(/[a-zäöüß]/gi) || []).length < 2) continue;
-    last = { raw: name, qty, unit, total, weight, discount: 0, discInline: 0, deposit: 0, checked };
+    last = { raw: name, qty, unit, total, weight, discount: 0, discInline: 0, deposit: 0, checked, unsure, unknown };
     res.items.push(last);
   }
   // gleiche Zeilen zusammenfassen (EDEKA listet jedes Stück einzeln)
   const merged = [];
   res.items.forEach(it => {
-    const m = merged.find(x => norm(x.raw) === norm(it.raw) && x.unit === it.unit && !x.weight && !it.weight);
+    const m = merged.find(x => norm(x.raw) === norm(it.raw) && x.unit === it.unit && !x.weight && !it.weight && !x.unknown && !it.unknown);
     if (m) { m.qty += it.qty; m.total = Math.round((m.total + it.total) * 100) / 100; m.discount = Math.round((m.discount + it.discount) * 100) / 100; m.discInline = Math.round((m.discInline + it.discInline) * 100) / 100; m.deposit = Math.round((m.deposit + it.deposit) * 100) / 100; m.checked = m.checked && it.checked; }
     else merged.push({ ...it });
   });
@@ -2731,8 +2794,28 @@ function parseReceipt(raw, fileName) {
     });
     if (hit) { hit.discount = Math.round((hit.discount + d.amount) * 100) / 100; hit.discLabel = d.label; d.used = true; }
   });
+  bonAutoFix(res);
   res.sumCheck = bonSumCheck(res);
   return res;
+}
+// Mit der Bon-Summe nachbessern: ein unlesbarer Preis = Rest; sonst eine eindeutige Ziffern-Verwechslung bei unsicheren Preisen
+function bonAutoFix(res) {
+  if (res.total == null) return;
+  const diff = Math.round((res.total - bonSumCheck(res)) * 100) / 100;
+  if (Math.abs(diff) < 0.005) return;
+  const unk = res.items.filter(i => i.unknown);
+  if (unk.length === 1 && diff > 0) { const it = unk[0]; it.total = diff; it.unit = Math.round(diff / (it.qty || 1) * 100) / 100; it.fromSum = true; return; }
+  if (unk.length) return;
+  const SUBS = { '1': ['7', '4'], '7': ['1'], '4': ['1'], '8': ['3', '6'], '3': ['8'], '5': ['6', '3'], '6': ['5', '8'], '0': ['9', '8'], '9': ['0'] };
+  const cands = [];
+  res.items.filter(i => i.unsure).forEach(it => {
+    const s = it.total.toFixed(2);
+    for (let p = 0; p < s.length; p++) (SUBS[s[p]] || []).forEach(r => {
+      const v = +(s.slice(0, p) + r + s.slice(p + 1));
+      if (Math.abs(v - it.total - diff) < 0.005) cands.push([it, v]);
+    });
+  });
+  if (cands.length === 1) { const [it, v] = cands[0]; it.autofix = it.total; it.total = v; it.unit = Math.round(v / (it.qty || 1) * 100) / 100; }
 }
 // Summe wie sie auf dem Bon vor den Coupons steht: Artikel + Pfand + Rabatte direkt unter dem Artikel
 function bonSumCheck(res) {
@@ -2742,7 +2825,8 @@ function bonSumCheck(res) {
 }
 
 // Abkürzungen auf Bons ausschreiben
-const BON_ABBR = [[/^melit(\.\s?|\s)/i, 'Melitta '], [/\bg&g\b/i, 'Gut & Günstig'], [/\bgut&g[üu]nstig\b/i, 'Gut & Günstig'], [/\bedeka bio\b/i, 'EDEKA Bio'], [/\bja!\s?/i, 'ja! ']];
+const BON_ABBR = [[/^melit(\.\s?|\s)/i, 'Melitta '], [/^dallm(\.\s?|\s)/i, 'Dallmayr '], [/\bprod\.\s?/i, 'Prodomo '], [/\bnaturm\./i, 'naturmild'],
+  [/^herz(\.\s?|\s)/i, 'Herzstücke '], [/^e\.\s?regio\.?\s?/i, 'EDEKA Regional '], [/^ras\.\s?/i, 'Rasierter '], [/\bsp\.\s?salami/i, 'Spitzen-Salami'], [/\bnektar\./i, 'Nektarinen'], [/\bkulturheidel\.?/i, 'Kulturheidelbeeren'], [/\bg&g\b/i, 'Gut & Günstig'], [/\bgut&g[üu]nstig\b/i, 'Gut & Günstig'], [/\bedeka bio\b/i, 'EDEKA Bio'], [/\bja!\s?/i, 'ja! ']];
 function bonExpand(raw) {
   let t = String(raw || '');
   BON_ABBR.forEach(([re, v]) => { t = t.replace(re, v); });
@@ -2794,9 +2878,30 @@ function showBon(text) {
   $('bonArts').innerHTML = [...names].sort((a, b) => a.localeCompare(b, 'de')).map(n => `<option value="${esc(n)}">`).join('');
   renderBonShops(); renderBonRows();
   const nNew = r.items.filter(i => !i.known).length;
-  $('bonStatus').textContent = `✓ ${r.items.length} Artikel erkannt${r.shop ? ' · ' + r.shop : ''}${r.date ? '' : ' · kein Datum auf dem Bon – heute eingesetzt'}.` + (nNew ? ` Bei ${nNew} neuen Bon-Namen bitte Artikel prüfen – die App merkt sich die Zuordnung.` : ' Alle Bon-Namen bekannt.');
+  const unsureN = r.items.filter(i => i.unsure || i.unknown).length;
+  $('bonStatus').textContent = `✓ ${r.items.length} Artikel erkannt${r.shop ? ' · ' + r.shop : ''}${r.date ? '' : ' · kein Datum auf dem Bon – heute eingesetzt'}.` + (nNew ? ` Bei ${nNew} neuen Bon-Namen bitte Artikel prüfen – die App merkt sich die Zuordnung.` : ' Alle Bon-Namen bekannt.')
+    + (unsureN ? ` ${unsureN} Preis${unsureN > 1 ? 'e' : ''} unsicher gelesen (gelb markiert). Genauer: Text im Foto markieren → Kopieren → oben einfügen.` : '');
+  const dup = bonFindDup(r.items, r.shop);
+  if (dup) { $('bonDate').value = dup; $('bonStatus').textContent = `⚠︎ Diesen Bon hast du am ${dup.split('-').reverse().join('.')} schon eingelesen. Nochmal übernehmen ersetzt die alten Einträge – doppelt gezählt wird nichts. ` + $('bonStatus').textContent; }
   $('bonResult').style.display = 'block'; $('bonApply').disabled = false;
   setTimeout(() => { try { $('bonStatus').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }, 50);
+}
+// Schon eingelesen? Gleicher Markt und dieselben Bon-Zeilen wie ein früherer Bon
+function bonFindDup(items, shop) {
+  const on = items.filter(i => i.on !== false);
+  const single = on.length === 1;   // Ein-Artikel-Bon: zusätzlich Preis vergleichen
+  const sig = (raw, n, price) => norm(raw) + '|' + n + (single ? '|' + Math.round(price * 100) : '');
+  const want = on.map(i => sig(i.raw, i.weight ? 1 : i.qty, bonEff(i))).sort();
+  if (!want.length) return null;
+  const groups = {};
+  Object.values(data.purchases || {}).filter(p => !p.deleted && p.id.startsWith('b-') && p.raw && norm(p.shop) === norm(shop || 'ohne Markt'))
+    .forEach(p => (groups[p.date] = groups[p.date] || []).push(sig(p.raw, p.n || 1, p.price || 0)));
+  for (const [date, g] of Object.entries(groups)) {
+    const have = g.sort();
+    const hits = want.filter(w => have.includes(w)).length;
+    if (hits >= Math.max(1, Math.ceil(want.length * 0.8)) && Math.abs(have.length - want.length) <= Math.max(1, want.length * 0.2)) return date;
+  }
+  return null;
 }
 function bonEff(it) {   // Preis je Stück nach Rabatt
   const q = it.weight ? 1 : (it.qty || 1);
@@ -2806,11 +2911,15 @@ function renderBonRows() {
   if (!bon) return;
   $('bonRows').innerHTML = bon.items.map((it, i) => {
     const eff = bonEff(it), q = it.weight ? 1 : it.qty;
-    const info = [it.weight ? fmtNum(it.weight, 3) + ' kg' : '', it.discount ? `${esc(it.discLabel || 'Rabatt')} ${esc(fmtPrice(it.discount))} → ${esc(fmtPrice(eff))}${q > 1 ? ' / Stück' : ''}` : (q > 1 ? `je ${esc(fmtPrice(eff))}` : ''), it.deposit ? `+ ${esc(fmtPrice(it.deposit))} Pfand` : '', it.checked === false ? '⚠︎ Preis × Menge korrigiert – bitte prüfen' : ''].filter(Boolean).join(' · ');
-    return `<div class="bonrow${it.on ? '' : ' off'}" data-bi="${i}">
+    const info = [it.weight ? fmtNum(it.weight, 3) + ' kg' : '', it.discount ? `${esc(it.discLabel || 'Rabatt')} ${esc(fmtPrice(it.discount))} → ${esc(fmtPrice(eff))}${q > 1 ? ' / Stück' : ''}` : (q > 1 ? `je ${esc(fmtPrice(eff))}` : ''), it.deposit ? `+ ${esc(fmtPrice(it.deposit))} Pfand` : '', it.checked === false ? '⚠︎ Preis × Menge korrigiert – bitte prüfen' : '',
+      it.unknown && !it.fromSum ? '⚠︎ Preis nicht lesbar – bitte eintragen' : '', it.fromSum ? '⚠︎ aus der Bon-Summe berechnet – bitte prüfen' : '',
+      it.autofix != null ? `⚠︎ gelesen ${esc(fmtPrice(it.autofix))}, passend zur Summe korrigiert – bitte prüfen` : '',
+      it.unsure && it.autofix == null ? '⚠︎ Preis unsicher gelesen – bitte mit dem Bon vergleichen' : ''].filter(Boolean).join(' · ');
+    const warn = it.unknown || it.fromSum || it.autofix != null || it.unsure || it.checked === false;
+    return `<div class="bonrow${it.on ? '' : ' off'}${warn ? ' warn' : ''}" data-bi="${i}">
       <div class="bontop"><input type="checkbox" data-bf="on"${it.on ? ' checked' : ''} style="width:18px;height:18px;accent-color:var(--accent)"><span>${esc(it.raw)}</span>${it.known ? '' : '<em class="bonnew">neu</em>'}</div>
       <div class="offerrow"><input class="field" data-bf="name" list="bonArts" value="${esc(it.name)}" placeholder="Artikel" autocomplete="off"><input class="field" data-bf="detail" value="${esc(it.detail)}" placeholder="Bezeichnung / Marke" autocomplete="off"></div>
-      <div class="bonnum">Menge <input class="field" data-bf="qty" inputmode="numeric" value="${it.weight ? 1 : it.qty}"> Summe <input class="field pricefield" data-bf="total" inputmode="decimal" value="${esc(fmtPriceInput(it.total))}"> €</div>
+      <div class="bonnum">Menge <input class="field" data-bf="qty" inputmode="numeric" value="${it.weight ? 1 : it.qty}"> Summe <input class="field pricefield" data-bf="total" inputmode="decimal" value="${esc(fmtPriceInput(it.total))}"> € <button type="button" class="link" data-bdisc style="margin-left:auto;font-size:13px;white-space:nowrap;color:var(--accent)">${it.discount ? 'Rabatt ändern' : '＋ Rabatt'}</button></div>
       ${info ? `<div class="hint" style="margin:4px 0 0">${info}</div>` : ''}
     </div>`;
   }).join('');
@@ -2830,8 +2939,18 @@ $('bonRows').addEventListener('input', e => {
   const it = bon.items[+row.dataset.bi];
   if (f === 'name' || f === 'detail') it[f] = e.target.value;
   if (f === 'qty') { const q = parseInt(e.target.value, 10); if (q > 0) { if (it.weight) it.weight = null; it.qty = q; } }
-  if (f === 'total') { const v = parsePrice(e.target.value); if (v != null) { it.total = v; it.checked = true; } }
+  if (f === 'total') { const v = parsePrice(e.target.value); if (v != null) { it.total = v; it.checked = true; it.unsure = it.unknown = it.fromSum = false; it.autofix = null; } }
   updateBonCheck();
+});
+$('bonRows').addEventListener('click', e => {
+  const b = e.target.closest('[data-bdisc]'); if (!b || !bon) return;
+  const it = bon.items[+b.closest('[data-bi]').dataset.bi];
+  const v = prompt('Rabatt / Coupon für „' + it.raw + '“ in € (z. B. 0,30) – leer = kein Rabatt', it.discount ? fmtPriceInput(-it.discount) : '');
+  if (v === null) return;
+  const d = parsePrice(v);
+  const old = it.discInline || 0;
+  it.discount = d ? -Math.abs(d) : 0; it.discInline = it.discount; it.discLabel = it.discount ? 'Rabatt' : '';
+  if (old !== it.discInline) renderBonRows();
 });
 $('bonRows').addEventListener('change', e => {
   const row = e.target.closest('[data-bi]'); if (!row || !bon) return;
@@ -2906,17 +3025,31 @@ function pdfLines(items) {
 async function ocrReceipt(file, status) {
   const worker = await getOcr(status);
   status('Bon wird gelesen … (dauert ein paar Sekunden)');
-  const { gray, bw } = await imageToCanvases(file);
+  // zwei Durchgänge (Originalgröße und vergrößert) – der Text, der besser zur Bon-Summe passt, gewinnt
   await worker.setParameters({ tessedit_pageseg_mode: '6' });
-  const t = (await worker.recognize(gray)).data.text;
-  gray.width = gray.height = bw.width = bw.height = 0;
-  return t;
+  const texts = [];
+  for (const opt of [{}, { minWidth: 1800 }]) {
+    const { gray, bw } = await imageToCanvases(file, opt);
+    texts.push((await worker.recognize(gray)).data.text);
+    gray.width = gray.height = bw.width = bw.height = 0;
+    status('Bon wird gelesen … (zweiter Durchgang)');
+  }
+  const score = t => { const r = parseReceipt(t, bonFileName); const ok = r.total != null && Math.abs(r.total - r.sumCheck) < 0.005;
+    return (ok ? 1000 : 0) + r.items.length * 10 - r.items.filter(i => i.unsure).length - r.items.filter(i => i.unknown).length * 5; };
+  return texts.sort((a, b) => score(b) - score(a))[0];
 }
 $('bonApply').onclick = () => {
   if (!bon) return;
-  const shop = $('bonShop').value.trim() || 'ohne Markt', date = $('bonDate').value || todayStr();
+  const shop = $('bonShop').value.trim() || 'ohne Markt';
+  let date = $('bonDate').value || todayStr();
   const rows = bon.items.filter(i => i.on && (i.name || '').trim());
   if (!rows.length) { toast('Keine Artikel ausgewählt'); return; }
+  const dup = bonFindDup(rows, shop);
+  if (dup) {
+    if (!confirm(`Dieser Bon wurde am ${dup.split('-').reverse().join('.')} schon eingelesen.\n\nNochmal übernehmen? Die alten Einträge werden ersetzt, nichts wird doppelt gezählt.`)) return;
+    date = dup;
+    Object.values(data.purchases).forEach(p => { if (!p.deleted && p.id.startsWith('b-') && p.date === dup && norm(p.shop) === norm(shop)) { p.deleted = true; p.updatedAt = now(); } });
+  }
   data.purchases = data.purchases || {}; data.bonmap = data.bonmap || {};
   const keys = new Set();
   let removed = 0;
@@ -3102,9 +3235,10 @@ async function getOcr(status) {
   });
   return ocrWorker;
 }
-async function imageToCanvases(file) {
+async function imageToCanvases(file, opt = {}) {
   const bmp = await createImageBitmap(file);
-  const scale = Math.min(1, 2200 / Math.max(bmp.width, bmp.height)) * (Math.max(bmp.width, bmp.height) < 900 ? 2 : 1);
+  let scale = Math.min(1, 2200 / Math.max(bmp.width, bmp.height)) * (Math.max(bmp.width, bmp.height) < 900 ? 2 : 1);
+  if (opt.minWidth && bmp.width * scale < opt.minWidth) scale = Math.min(opt.minWidth / bmp.width, 4400 / Math.max(bmp.width, bmp.height));
   const w = Math.round(bmp.width * scale), hgt = Math.round(bmp.height * scale);
   const c = document.createElement('canvas'); c.width = w; c.height = hgt;
   const x = c.getContext('2d', { willReadFrequently: true });
@@ -3212,6 +3346,18 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.30', '17.10.2026', [
+    'Artikel werden jetzt auch ohne Preis vollständig gespeichert: Bezeichnung, Marke, Markt, Größe und Pfand',
+    'Gilt für „Meine Artikel“, „Nur Artikel“, Favoriten und per Strichcode angelegte Artikel',
+    'Einstellungen: „Gemeinsamer Sync über GitHub“ ist einklappbar und startet eingeklappt',
+    'Doppelt eingelesene Kassenbons werden erkannt – nichts wird doppelt gezählt',
+    'Beim Anlegen eines Artikels, den es schon gibt (auch in anderer Schreibweise), fragt die App nach'
+  ]],
+  ['v1.29', '17.10.2026', [
+    'Kassenbon: Preise in der schmalen EDEKA-Schrift werden repariert („139€“ → 1,39 €) statt übersprungen',
+    'Unsicher gelesene Preise sind gelb markiert; mit der Bon-Summe korrigiert die App eindeutige Lesefehler selbst',
+    'Bildschirmfotos werden vor dem Lesen vergrößert – das verbessert die Erkennung'
+  ]],
   ['v1.28', '17.10.2026', [
     'Neu: Strichcode scannen – Name, Marke, Größe und Bereich kommen aus Open Food Facts (Drogerie: Open Beauty Facts)',
     'Unbekannte Codes einmal ausfüllen – die App merkt sie sich (auch auf dem anderen Handy)',
