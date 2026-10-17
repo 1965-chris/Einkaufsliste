@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.27",
- "savedAt": "2026-10-17T15:14:13.183Z",
+ "savedAt": "2026-10-17T15:16:28.978Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1175,6 +1175,44 @@
    "cat": "kuehl",
    "unit": "Pck.",
    "updatedAt": 1791836093351
+  },
+  "reiniger": {
+   "name": "Reiniger",
+   "variants": [
+    "2in1 Desinfektion",
+    "Hygiene Spray"
+   ],
+   "cat": "drogerie",
+   "unit": "",
+   "varAdd": {
+    "2in1 desinfektion": 1792250188166,
+    "hygiene spray": 1792250188167
+   },
+   "updatedAt": 1792250188167
+  },
+  "zahnpasta": {
+   "name": "Zahnpasta",
+   "variants": [
+    "Zahncreme DP 2x75ml"
+   ],
+   "cat": "drogerie",
+   "unit": "",
+   "varAdd": {
+    "zahncreme dp 2x75ml": 1792250188167
+   },
+   "updatedAt": 1792250188167
+  },
+  "shampoo": {
+   "name": "Shampoo",
+   "variants": [
+    "Spülung Vol. Pur"
+   ],
+   "cat": "drogerie",
+   "unit": "",
+   "varAdd": {
+    "spülung vol. pur": 1792250188168
+   },
+   "updatedAt": 1792250188168
   }
  },
  "prices": {
@@ -1695,6 +1733,65 @@
    },
    "deposit": null,
    "updatedAt": 1791836093351
+  },
+  "reiniger|sagrotan 2in1 desinfektion|dm|2026-08-06": {
+   "id": "reiniger|sagrotan 2in1 desinfektion|dm|2026-08-06",
+   "key": "reiniger|sagrotan 2in1 desinfektion",
+   "name": "Reiniger",
+   "detail": "Sagrotan 2in1 Desinfektion",
+   "date": "2026-08-06",
+   "shop": "dm",
+   "price": 1.95,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792250188165
+  },
+  "reiniger|sagrotan hygiene spray|dm|2026-08-06": {
+   "id": "reiniger|sagrotan hygiene spray|dm|2026-08-06",
+   "key": "reiniger|sagrotan hygiene spray",
+   "name": "Reiniger",
+   "detail": "Sagrotan Hygiene Spray",
+   "date": "2026-08-06",
+   "shop": "dm",
+   "price": 1.95,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792250188166
+  },
+  "zahnpasta|meridol zahncreme dp 2x75ml|dm|2026-08-06": {
+   "id": "zahnpasta|meridol zahncreme dp 2x75ml|dm|2026-08-06",
+   "key": "zahnpasta|meridol zahncreme dp 2x75ml",
+   "name": "Zahnpasta",
+   "detail": "Meridol Zahncreme DP 2x75ml",
+   "date": "2026-08-06",
+   "shop": "dm",
+   "price": 8.25,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.075
+   },
+   "deposit": null,
+   "updatedAt": 1792250188167
+  },
+  "shampoo|pantene spülung vol. pur|dm|2026-08-06": {
+   "id": "shampoo|pantene spülung vol. pur|dm|2026-08-06",
+   "key": "shampoo|pantene spülung vol. pur",
+   "name": "Shampoo",
+   "detail": "Pantene Spülung Vol. Pur",
+   "date": "2026-08-06",
+   "shop": "dm",
+   "price": 3.95,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792250188167
   }
  },
  "brands": {
@@ -2144,7 +2241,111 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792243640728
+  },
+  "b-2026-08-06-dm-0-sagrotan2in1desinfektion": {
+   "id": "b-2026-08-06-dm-0-sagrotan2in1desinfektion",
+   "date": "2026-08-06",
+   "name": "Reiniger",
+   "detail": "Sagrotan 2in1 Desinfektion",
+   "cat": "drogerie",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "dm",
+   "price": 1.95,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "raw": "Sagrotan 2in1 Desinfektion",
+   "updatedAt": 1792250188166
+  },
+  "b-2026-08-06-dm-1-sagrotanhygienespray": {
+   "id": "b-2026-08-06-dm-1-sagrotanhygienespray",
+   "date": "2026-08-06",
+   "name": "Reiniger",
+   "detail": "Sagrotan Hygiene Spray",
+   "cat": "drogerie",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "dm",
+   "price": 1.95,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "raw": "Sagrotan Hygiene Spray",
+   "updatedAt": 1792250188167
+  },
+  "b-2026-08-06-dm-2-meridolzahncremedp2x75ml": {
+   "id": "b-2026-08-06-dm-2-meridolzahncremedp2x75ml",
+   "date": "2026-08-06",
+   "name": "Zahnpasta",
+   "detail": "Meridol Zahncreme DP 2x75ml",
+   "cat": "drogerie",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "dm",
+   "price": 8.25,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.075
+   },
+   "deposit": null,
+   "raw": "Meridol Zahncreme DP 2x75ml",
+   "updatedAt": 1792250188167
+  },
+  "b-2026-08-06-dm-3-pantenespülungvolpur": {
+   "id": "b-2026-08-06-dm-3-pantenespülungvolpur",
+   "date": "2026-08-06",
+   "name": "Shampoo",
+   "detail": "Pantene Spülung Vol. Pur",
+   "cat": "drogerie",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "dm",
+   "price": 3.95,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "raw": "Pantene Spülung Vol.Pur",
+   "updatedAt": 1792250188168
   }
  },
- "bonmap": {}
+ "bonmap": {
+  "dm|sagrotan 2in1 desinfektion": {
+   "name": "Reiniger",
+   "detail": "Sagrotan 2in1 Desinfektion",
+   "raw": "Sagrotan 2in1 Desinfektion",
+   "shop": "dm",
+   "updatedAt": 1792250188166
+  },
+  "dm|sagrotan hygiene spray": {
+   "name": "Reiniger",
+   "detail": "Sagrotan Hygiene Spray",
+   "raw": "Sagrotan Hygiene Spray",
+   "shop": "dm",
+   "updatedAt": 1792250188167
+  },
+  "dm|meridol zahncreme dp 2x75ml": {
+   "name": "Zahnpasta",
+   "detail": "Meridol Zahncreme DP 2x75ml",
+   "raw": "Meridol Zahncreme DP 2x75ml",
+   "shop": "dm",
+   "updatedAt": 1792250188167
+  },
+  "dm|pantene spülung vol.pur": {
+   "name": "Shampoo",
+   "detail": "Pantene Spülung Vol. Pur",
+   "raw": "Pantene Spülung Vol.Pur",
+   "shop": "dm",
+   "updatedAt": 1792250188168
+  }
+ }
 }
