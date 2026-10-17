@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.28",
- "savedAt": "2026-10-17T15:30:11.570Z",
+ "savedAt": "2026-10-17T15:31:59.243Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1237,6 +1237,18 @@
     "aldi tomaten gehackt": 1792251007128
    },
    "updatedAt": 1792251007128
+  },
+  "frischei-waffeln": {
+   "name": "Frischei-Waffeln",
+   "variants": [
+    "Frischei Waffeln"
+   ],
+   "cat": "brot",
+   "unit": "Pck.",
+   "varAdd": {
+    "frischei waffeln": 1792251106871
+   },
+   "updatedAt": 1792251106871
   }
  },
  "prices": {
@@ -1838,6 +1850,10 @@
   "king‘s crown": {
    "name": "King‘s Crown",
    "updatedAt": 1792251007128
+  },
+  "meine küchen welt": {
+   "name": "meine Küchen Welt",
+   "updatedAt": 1792251106871
   }
  },
  "purchases": {
@@ -2402,6 +2418,17 @@
     "u": "kg"
    },
    "updatedAt": 1792251007128
+  },
+  "4061458026215": {
+   "name": "Frischei-Waffeln",
+   "detail": "meine Küchen Welt Frischei Waffeln",
+   "cat": "brot",
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "updatedAt": 1792251106871
   }
  }
 }
