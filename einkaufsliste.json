@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:08:08.716Z",
+ "savedAt": "2026-10-18T07:08:42.155Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1186,7 +1186,8 @@
    "variants": [],
    "cat": "brot",
    "unit": "Pck.",
-   "updatedAt": 1791835980324
+   "updatedAt": 1792307319717,
+   "deleted": true
   },
   "landbrötchen": {
    "name": "Landbrötchen",
