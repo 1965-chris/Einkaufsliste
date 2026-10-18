@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:14:54.818Z",
+ "savedAt": "2026-10-18T07:14:56.670Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -991,10 +991,10 @@
    "detail": "Dr. Oetker Die Ofenfrische Diavolo",
    "cat": "tk",
    "unit": "",
-   "qty": 2,
+   "qty": 1,
    "note": "",
    "on": true,
-   "updatedAt": 1791831948534
+   "updatedAt": 1792307696420
   },
   "salzbutter|milsani": {
    "name": "Salzbutter",
@@ -3133,6 +3133,16 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792307692671
+  },
+  "pizza|dr. oetker die ofenfrische diavolo": {
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Diavolo",
+   "cat": "tk",
+   "unit": "",
+   "shop": "",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792307696420
   }
  }
 }
