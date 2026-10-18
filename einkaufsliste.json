@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-18T07:40:48.625Z",
+ "savedAt": "2026-10-18T07:41:14.753Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -972,8 +972,8 @@
    "cat": "vorrat",
    "unit": "Pck.",
    "qty": 1,
-   "on": true,
-   "updatedAt": 1791529684099,
+   "on": false,
+   "updatedAt": 1792309272560,
    "note": ""
   },
   "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt": {
