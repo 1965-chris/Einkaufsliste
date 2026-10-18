@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:19:57.629Z",
+ "savedAt": "2026-10-18T07:21:43.956Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2232,6 +2232,24 @@
    },
    "deposit": null,
    "updatedAt": 1792307906458
+  },
+  "reiniger|sagrotan 2in1 desinfektion|dm|2026-10-18": {
+   "id": "reiniger|sagrotan 2in1 desinfektion|dm|2026-10-18",
+   "key": "reiniger|sagrotan 2in1 desinfektion",
+   "name": "Reiniger",
+   "detail": "Sagrotan 2in1 Desinfektion",
+   "date": "2026-10-18",
+   "shop": "dm",
+   "price": 1.95,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.015,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792308101576
   }
  },
  "brands": {
@@ -3232,9 +3250,13 @@
    "cat": "drogerie",
    "unit": "Tray",
    "shop": "dm",
-   "pack": null,
+   "pack": {
+    "n": 1,
+    "size": 0.015,
+    "u": "kg"
+   },
    "deposit": null,
-   "updatedAt": 1792307995446
+   "updatedAt": 1792308101556
   }
  }
 }
