@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:07:34.072Z",
+ "savedAt": "2026-10-18T07:08:08.716Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1196,10 +1196,11 @@
    "varAdd": {
     "roggenbrötchen": 1791835868323
    },
-   "updatedAt": 1792307157391,
+   "updatedAt": 1792307286593,
    "varDel": {
     "roggenbrötchen": 1792307157391
-   }
+   },
+   "deleted": true
   },
   "krüstchen": {
    "name": "Krüstchen",
