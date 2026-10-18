@@ -558,7 +558,7 @@ summary{cursor:pointer;font-weight:600}
 
 <script>
 'use strict';
-const APP_VERSION = 'v1.33';
+const APP_VERSION = 'v1.34';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -758,9 +758,9 @@ const PACKS = [
 ];
 const PRICE_TYPES = [['normal', 'Normalpreis'], ['angebot', '🏷 Angebot'], ['app', '📱 App-Preis']];
 function offerType(o) { return !o ? 'normal' : (o.type || (o.special === false ? 'normal' : 'angebot')); }
-function packUnit(p) { return p && p.u === 'kg' ? 'kg' : 'l'; }
+function packUnit(p) { return p && p.u === 'kg' ? 'kg' : p && p.u === 'st' ? 'st' : 'l'; }
 function packLitres(p) { return p && p.n > 0 && p.size > 0 ? Math.round(p.n * p.size * 1000) / 1000 : null; }   // Grundmenge in l bzw. kg
-function fmtAmount(v, u) { return u === 'kg' ? (v < 1 ? fmtNum(v * 1000, 0) + ' g' : fmtNum(v) + ' kg') : (v < 0.1 ? fmtNum(v * 1000, 0) + ' ml' : fmtNum(v) + ' l'); }
+function fmtAmount(v, u) { if (u === 'st') return fmtNum(v, 0) + ' Stk'; return u === 'kg' ? (v < 1 ? fmtNum(v * 1000, 0) + ' g' : fmtNum(v) + ' kg') : (v < 0.1 ? fmtNum(v * 1000, 0) + ' ml' : fmtNum(v) + ' l'); }
 function fmtNum(n, d = 2) { return n.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: d }); }
 function packLabel(p) {
   if (!p) return '';
@@ -769,7 +769,7 @@ function packLabel(p) {
   return k ? k.label : (p.n > 1 ? p.n + ' × ' : '') + fmtAmount(p.size, u);
 }
 function perLitre(price, p) { const l = packLitres(p); return l && price != null ? price / l : null; }
-function fmtPerLitre(v, u) { return v == null ? '' : v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €/' + (u === 'kg' ? 'kg' : 'l'); }
+function fmtPerLitre(v, u) { return v == null ? '' : v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: u === 'st' ? 3 : 2 }) + ' €/' + (u === 'kg' ? 'kg' : u === 'st' ? 'Stk' : 'l'); }
 function depositOf(o) { return o && o.deposit > 0 ? o.deposit : 0; }
 function lineFactor(i) { return ['g', 'kg', 'ml', 'l'].includes(i.unit) ? 1 : (i.qty || 1); }
 
@@ -1946,7 +1946,7 @@ function readPrices(px) {
 function packBoxHtml(px) {
   return `<details class="packbox" id="${px}PackBox"><summary>📦 Packungsgröße & Pfand</summary>
     <div class="chips wrap" id="${px}Packs" style="padding-top:6px">${PACKS.map(p => `<button type="button" class="chip" data-pack="${p.id}">${p.label}</button>`).join('')}</div>
-    <div class="offerrow" style="align-items:center"><input class="field" id="${px}PackN" placeholder="Anzahl" inputmode="numeric" style="max-width:86px"><span>×</span><input class="field" id="${px}PackSize" placeholder="Menge" inputmode="decimal" style="max-width:90px"><select class="field" id="${px}PackU" style="max-width:76px;padding:11px 6px"><option value="l">l</option><option value="ml">ml</option><option value="kg">kg</option><option value="g">g</option></select></div>
+    <div class="offerrow" style="align-items:center"><input class="field" id="${px}PackN" placeholder="Anzahl" inputmode="numeric" style="max-width:86px"><span>×</span><input class="field" id="${px}PackSize" placeholder="Menge" inputmode="decimal" style="max-width:90px"><select class="field" id="${px}PackU" style="max-width:76px;padding:11px 6px"><option value="l">l</option><option value="ml">ml</option><option value="kg">kg</option><option value="g">g</option><option value="st">Stk</option></select></div>
     <div class="offerrow" style="align-items:center"><span style="width:100px;font-size:14px">Pfand gesamt</span><input class="field pricefield" id="${px}Deposit" placeholder="€" inputmode="decimal"></div>
     <div class="hint" id="${px}PackInfo"></div>
   </details>`;
@@ -1974,13 +1974,14 @@ function readPack(px) {
   if (su === 'ml' || su === 'g') size = size / 1000;
   const p = { n, size: Math.round(size * 100000) / 100000 };
   if (su === 'kg' || su === 'g') p.u = 'kg';
+  if (su === 'st') { p.u = 'st'; p.size = Math.round(size); }
   return p;
 }
 function writePack(px, pack, dep) {
   $(px + 'PackN').value = pack ? pack.n : '';
   if (pack) {
-    const u = packUnit(pack), small = u === 'kg' ? pack.size < 1 : pack.size < 0.1;
-    $(px + 'PackU').value = u === 'kg' ? (small ? 'g' : 'kg') : (small ? 'ml' : 'l');
+    const u = packUnit(pack), small = u === 'kg' ? pack.size < 1 : u === 'st' ? false : pack.size < 0.1;
+    $(px + 'PackU').value = u === 'st' ? 'st' : u === 'kg' ? (small ? 'g' : 'kg') : (small ? 'ml' : 'l');
     $(px + 'PackSize').value = fmtNum(small ? pack.size * 1000 : pack.size, 3);
   } else {
     $(px + 'PackSize').value = '';
@@ -2575,7 +2576,7 @@ function renderPrices() {
   html += `<div class="pricehead"><button class="back" data-act="pback">‹ Alle</button><h3>${esc(entries[0].name)}${!multiVar && entries[0].detail ? ' <span class="hint" style="font-size:15px">' + esc(entries[0].detail) + '</span>' : ''}</h3></div>`;
   if (multiVar) html += `<div class="chips">${[['', 'Alle Sorten'], ...varKeys.map(k => [k, varLabel(k)])].map(([v, l]) => `<button class="chip${v === priceVar ? ' sel' : ''}" data-pvar="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
   html += `<div class="chips">${[['', 'Alle'], ...shops.map(s => [s, s])].map(([v, l]) => `<button class="chip${v === priceShop ? ' sel' : ''}" data-pshop="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
-  if (hasPack) html += `<div class="seg" style="margin-top:8px;display:inline-flex">${[['price', 'Packungspreis'], ['l', 'Grundpreis €/' + basisUnit]].map(([v, l]) => `<button data-basis="${v}" class="${v === priceBasis ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  if (hasPack) html += `<div class="seg" style="margin-top:8px;display:inline-flex">${[['price', 'Packungspreis'], ['l', 'Grundpreis €/' + (basisUnit === 'st' ? 'Stk' : basisUnit)]].map(([v, l]) => `<button data-basis="${v}" class="${v === priceBasis ? 'on' : ''}">${l}</button>`).join('')}</div>`;
   html += `<div class="chartbox">${priceChart(shown, showShops)}<div class="legend">${showShops.map(s => `<span><i style="background:${shopColor(s, shops)}"></i>${esc(s)}</span>`).join('')}<span><i style="background:#888;box-shadow:0 0 0 2px #f2c14e"></i>Angebot</span><span><i style="background:#888;box-shadow:0 0 0 2px #8b6cff"></i>App-Preis</span><span><i style="background:transparent;border:2px solid #888;width:6px;height:6px"></i>Normalpreis</span></div></div>`;
   html += `<div class="stats">
     <div class="stat"><small>Tiefstpreis</small><b>${esc(fmtV(min))}</b><small>${esc(minE.shop)}${offerType(minE) === 'angebot' ? ' · Angebot' : offerType(minE) === 'app' ? ' · App' : ''}</small></div>
@@ -2807,6 +2808,7 @@ function parseOfferText(raw) {
 function mkPack(n, sz, u) {
   let size = parseFloat(String(sz).replace(',', '.'));
   u = u.toLowerCase();
+  if (/^(st|stk|stück|tücher|blatt|beutel|kapseln|pads|tabs|rollen)/.test(u)) { size = Math.round(size); return size > 0 ? { n: n || 1, size, u: 'st' } : null; }
   if (u === 'ml' || u === 'g') size /= 1000;
   const p = { n: n || 1, size: Math.round(size * 100000) / 100000 };
   if (u === 'kg' || u === 'g') p.u = 'kg';
@@ -2815,7 +2817,7 @@ function mkPack(n, sz, u) {
 
 /* passende Mengeneinheit zur erkannten Packung: 6 × 1,25 l → Tray, 12 × 0,7 l → Kiste */
 function packCountUnit(p) {
-  if (!p || p.u === 'kg' || !(p.n > 1)) return '';
+  if (!p || p.u === 'kg' || p.u === 'st' || !(p.n > 1)) return '';
   const k = PACKS.find(x => !x.u && x.n === p.n && x.size === p.size);
   if (k) return k.id.startsWith('t') ? 'Tray' : k.id.startsWith('k') ? 'Kiste' : 'Pck.';
   return p.n >= 12 ? 'Kiste' : 'Tray';
@@ -3025,7 +3027,9 @@ function bonExpand(raw) {
 }
 function bonPack(raw) {
   const m = String(raw).match(/(\d{1,4}(?:[,.]\d{1,3})?)\s?(kg|g|ml|l)\b/i);
-  return m ? mkPack(1, m[1], m[2]) : null;
+  if (m) return mkPack(1, m[1], m[2]);
+  const s = String(raw).match(/(\d{1,4})\s?(stk\.?|stück|st\.|tücher|blatt|tabs|pads|kapseln|rollen)/i);
+  return s ? mkPack(1, s[1], 'st') : null;
 }
 function bonGuess(raw, shop) {
   const mp = (data.bonmap || {})[norm(shop) + '|' + norm(raw)] || (data.bonmap || {})['*|' + norm(raw)];
@@ -3355,7 +3359,9 @@ function offPack(q) {
   const fix = (n, sz, u) => u === 'cl' ? mkPack(n, String(parseFloat(String(sz).replace(',', '.')) * 10), 'ml') : mkPack(n, sz, u);
   if (m) return fix(+m[1], m[2], m[3]);
   m = q.match(/(\d+(?:[,.]\d+)?)\s?(kg|g|ml|cl|l)\b/);
-  return m ? fix(1, m[1], m[2]) : null;
+  if (m) return fix(1, m[1], m[2]);
+  m = q.match(/(\d{1,4})\s?(stk\.?|stück|st\.|tücher|blatt|beutel|kapseln|pads|tabs|rollen)/);
+  return m ? mkPack(1, m[1], 'st') : null;
 }
 const OFF_CATS = [[/coffee|en:teas|tea-bags|breakfast-cereal|muesli|kaffee/, 'kaffee'], [/frozen/, 'tk'], [/beverage|drink|water|soda|juice|beer|wine|getränk/, 'getraenk'],
   [/dair|milk|cheese|yogurt|butter|cream|egg/, 'kuehl'], [/meat|sausage|ham|fish|seafood|poultry/, 'fleisch'], [/bread|pastr|bakery|toast/, 'brot'],
@@ -3537,6 +3543,10 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.34', '18.10.2026', [
+    'Packungsgröße jetzt auch in Stück („Stk“) – z. B. Sagrotan Tücher 60 Stk, mit Preis pro Stück',
+    'Strichcode und Kassenbon erkennen Stück-Angaben wie „60 Tücher“, „20 Tabs“, „8 Rollen“'
+  ]],
   ['v1.33', '17.10.2026', [
     'Marken merken sich ihren Markt und Bereich: „Meine Küchenwelt“ bei ALDI wird beim nächsten Mal bei ALDI gleich vorgeschlagen',
     'Marken aus schon vorhandenen Artikeln, Preisen, Bons und Einkäufen werden beim Start ihrem Markt zugeordnet',
