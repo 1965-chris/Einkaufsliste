@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:18:28.647Z",
+ "savedAt": "2026-10-18T07:19:57.629Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3225,6 +3225,16 @@
    },
    "deposit": null,
    "updatedAt": 1792307906441
+  },
+  "reiniger|sagrotan 2in1 desinfektion": {
+   "name": "Reiniger",
+   "detail": "Sagrotan 2in1 Desinfektion",
+   "cat": "drogerie",
+   "unit": "Tray",
+   "shop": "dm",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792307995446
   }
  }
 }
