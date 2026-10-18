@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-18T07:39:02.810Z",
+ "savedAt": "2026-10-18T07:40:08.092Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2268,6 +2268,24 @@
    },
    "deposit": null,
    "updatedAt": 1792308925638
+  },
+  "slipeinlagen|extra lang|aldi|2026-10-18": {
+   "id": "slipeinlagen|extra lang|aldi|2026-10-18",
+   "key": "slipeinlagen|extra lang",
+   "name": "Slipeinlagen",
+   "detail": "Extra Lang",
+   "date": "2026-10-18",
+   "shop": "ALDI",
+   "price": 0.99,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 32,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1792309205973
   }
  },
  "brands": {
@@ -3293,6 +3311,20 @@
    },
    "deposit": null,
    "updatedAt": 1792309140586
+  },
+  "slipeinlagen|extra lang": {
+   "name": "Slipeinlagen",
+   "detail": "Extra Lang",
+   "cat": "drogerie",
+   "unit": "",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 32,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1792309205956
   }
  }
 }
