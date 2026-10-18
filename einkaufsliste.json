@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:14:16.532Z",
+ "savedAt": "2026-10-18T07:14:21.567Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1084,9 +1084,10 @@
    "detail": "Goldähren Krüstchen",
    "cat": "brot",
    "unit": "Pck.",
-   "qty": 2,
+   "qty": 1,
    "on": true,
-   "updatedAt": 1792307489550
+   "updatedAt": 1792307659355,
+   "note": ""
   }
  },
  "custom": {
@@ -3110,7 +3111,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792307489550
+   "updatedAt": 1792307659355
   }
  }
 }
