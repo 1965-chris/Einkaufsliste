@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-18T07:35:27.814Z",
+ "savedAt": "2026-10-18T07:36:08.828Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3121,7 +3121,7 @@
     "size": 0.5
    },
    "deposit": null,
-   "updatedAt": 1792257644638
+   "updatedAt": 1792308966695
   },
   "brötchen|landbrötchen-roggenbrötchen": {
    "name": "Brötchen",
