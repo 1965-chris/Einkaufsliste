@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-18T07:36:08.828Z",
+ "savedAt": "2026-10-18T07:39:02.810Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3279,6 +3279,20 @@
    },
    "deposit": null,
    "updatedAt": 1792308101556
+  },
+  "taschentücher|kokett taschentücher boxbadezimmer": {
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher BoxBadezimmer",
+   "cat": "drogerie",
+   "unit": "",
+   "shop": "",
+   "pack": {
+    "n": 1,
+    "size": 100,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1792309140586
   }
  }
 }
