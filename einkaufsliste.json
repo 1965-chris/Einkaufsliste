@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:15:02.511Z",
+ "savedAt": "2026-10-18T07:15:29.645Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -602,7 +602,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1792307605141,
+   "last": 1792307727554,
    "cat": "vorrat",
    "deleted": true
   },
@@ -612,7 +612,7 @@
    "detail": "ganze Bohne",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "butter|": {
@@ -621,7 +621,7 @@
    "detail": "",
    "cat": "kuehl",
    "unit": "Pck.",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "coca cola|": {
@@ -630,7 +630,7 @@
    "detail": "",
    "cat": "getraenk",
    "unit": "Tray",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "pizza|thunfisch": {
@@ -639,7 +639,7 @@
    "detail": "Thunfisch",
    "cat": "tk",
    "unit": "",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "pizza|diavolo": {
@@ -648,7 +648,7 @@
    "detail": "Diavolo",
    "cat": "tk",
    "unit": "",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "salami|": {
@@ -657,7 +657,7 @@
    "detail": "",
    "cat": "fleisch",
    "unit": "",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "sellerie|": {
@@ -666,7 +666,7 @@
    "detail": "",
    "cat": "sonst",
    "unit": "",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "kakao|": {
@@ -675,7 +675,7 @@
    "detail": "",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "schinken|": {
@@ -684,7 +684,7 @@
    "detail": "",
    "cat": "fleisch",
    "unit": "Pck.",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "tomatenmark|": {
@@ -693,13 +693,13 @@
    "detail": "",
    "cat": "obst",
    "unit": "",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "melita barista ganze bohnen|": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1791638846588,
+   "last": 1792307727554,
    "cat": "vorrat",
    "detail": "",
    "deleted": true
@@ -710,7 +710,7 @@
    "detail": "",
    "cat": "drogerie",
    "unit": "Pck.",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "joghurt|landliebe versch. sorten": {
@@ -719,7 +719,7 @@
    "detail": "Landliebe versch. Sorten",
    "cat": "kuehl",
    "unit": "Becher",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt": {
@@ -728,7 +728,7 @@
    "detail": "KOKETT 3-lagig 4 Rollen a 64 Blatt",
    "cat": "drogerie",
    "unit": "Pck.",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "pizza|dr. oetker die ofenfrische thunfisch": {
@@ -737,7 +737,7 @@
    "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
    "cat": "tk",
    "unit": "",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "pizza|dr. oetker die ofenfrische diavolo": {
@@ -746,7 +746,7 @@
    "detail": "Dr. Oetker Die Ofenfrische Diavolo",
    "cat": "tk",
    "unit": "",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "salzbutter|": {
@@ -755,7 +755,7 @@
    "detail": "",
    "cat": "kuehl",
    "unit": "",
-   "last": 1791638846588,
+   "last": 1792307727554,
    "deleted": true
   },
   "pudding|milsani schoko mit sahnehaube": {
@@ -764,7 +764,7 @@
    "detail": "Milsani Schoko mit Sahnehaube",
    "cat": "kuehl",
    "unit": "Becher",
-   "last": 1791824621587,
+   "last": 1792307727554,
    "qty": 1,
    "note": "",
    "offer": {
@@ -777,7 +777,8 @@
     "pack": null,
     "deposit": null,
     "regular": null
-   }
+   },
+   "deleted": true
   },
   "gehackte tomaten|": {
    "count": 1,
@@ -785,7 +786,8 @@
    "detail": "",
    "cat": "obst",
    "unit": "",
-   "last": 1791822870107
+   "last": 1792307727554,
+   "deleted": true
   },
   "balsamico essig|cucina": {
    "count": 1,
@@ -793,7 +795,8 @@
    "detail": "Cucina",
    "cat": "vorrat",
    "unit": "",
-   "last": 1791823312671
+   "last": 1792307727554,
+   "deleted": true
   },
   "taschentücher|kokett taschentücher badezimmer": {
    "count": 1,
@@ -801,7 +804,7 @@
    "detail": "Kokett Taschentücher Badezimmer",
    "cat": "drogerie",
    "unit": "Pck.",
-   "last": 1791833961818,
+   "last": 1792307727554,
    "deleted": true
   },
   "h-milch 1,5%|laktosefrei": {
@@ -810,7 +813,8 @@
    "detail": "Laktosefrei",
    "cat": "kuehl",
    "unit": "Pck.",
-   "last": 1791836229827
+   "last": 1792307727554,
+   "deleted": true
   },
   "slipeinlagen|extra lang": {
    "count": 1,
@@ -818,7 +822,8 @@
    "detail": "Extra Lang",
    "cat": "drogerie",
    "unit": "",
-   "last": 1791835665103
+   "last": 1792307727554,
+   "deleted": true
   },
   "sonntagsbrötchen|": {
    "count": 1,
@@ -826,7 +831,7 @@
    "detail": "",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307251786,
+   "last": 1792307727554,
    "deleted": true
   },
   "landbrötchen|roggenbrötchen": {
@@ -835,7 +840,7 @@
    "detail": "Roggenbrötchen",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307157391,
+   "last": 1792307727554,
    "deleted": true
   },
   "krüstchen|": {
@@ -844,7 +849,7 @@
    "detail": "",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307382331,
+   "last": 1792307727554,
    "deleted": true
   },
   "fleischsalat|": {
@@ -853,7 +858,8 @@
    "detail": "",
    "cat": "kuehl",
    "unit": "Pck.",
-   "last": 1791836093351
+   "last": 1792307727554,
+   "deleted": true
   },
   "brötchen|landbrötchen-roggenbrötchen": {
    "count": 1,
@@ -861,7 +867,7 @@
    "detail": "Landbrötchen-Roggenbrötchen",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307445065,
+   "last": 1792307727554,
    "deleted": true
   },
   "brötchen|goldähren sonntagsbrötchen": {
@@ -870,7 +876,8 @@
    "detail": "Goldähren Sonntagsbrötchen",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307251786
+   "last": 1792307727554,
+   "deleted": true
   },
   "brötchen|goldähren": {
    "count": 1,
@@ -878,7 +885,7 @@
    "detail": "Goldähren",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307489550,
+   "last": 1792307727554,
    "deleted": true
   },
   "brötchen|goldähren landbrötchen-roggenbrötchen": {
@@ -887,7 +894,8 @@
    "detail": "Goldähren Landbrötchen-Roggenbrötchen",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307445065
+   "last": 1792307727554,
+   "deleted": true
   },
   "brötchen|goldähren krüstchen": {
    "count": 1,
@@ -895,7 +903,8 @@
    "detail": "Goldähren Krüstchen",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307489550
+   "last": 1792307727554,
+   "deleted": true
   }
  },
  "stars": {
