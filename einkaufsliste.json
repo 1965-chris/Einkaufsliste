@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:15:29.645Z",
+ "savedAt": "2026-10-18T07:16:47.782Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1151,8 +1151,8 @@
    "name": "Melita Bella Crema Ganze Bohnen",
    "variants": [],
    "cat": "vorrat",
-   "unit": "",
-   "updatedAt": 1791450616952
+   "unit": "Pck.",
+   "updatedAt": 1792307805655
   },
   "joghurt": {
    "name": "Joghurt",
@@ -2197,6 +2197,24 @@
    },
    "deposit": null,
    "updatedAt": 1792307489550
+  },
+  "melita bella crema ganze bohnen||edeka|2026-10-18": {
+   "id": "melita bella crema ganze bohnen||edeka|2026-10-18",
+   "key": "melita bella crema ganze bohnen|",
+   "name": "Melita Bella Crema Ganze Bohnen",
+   "detail": "",
+   "date": "2026-10-18",
+   "shop": "EDEKA",
+   "price": 19.99,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792307805655
   }
  },
  "brands": {
@@ -3163,6 +3181,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792307700056
+  },
+  "melita bella crema ganze bohnen|": {
+   "name": "Melita Bella Crema Ganze Bohnen",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "shop": "EDEKA",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792307805637
   }
  }
 }
