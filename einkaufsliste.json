@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:14:56.670Z",
+ "savedAt": "2026-10-18T07:15:02.511Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -969,12 +969,13 @@
   },
   "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt": {
    "name": "Küchenrolle",
-   "detail": "KOKETT 3-lagig 4 Rollen a 64 Blatt",
+   "detail": "Kokett 3-lagig 4 Rollen a 64 Blatt",
    "cat": "drogerie",
    "unit": "Pck.",
-   "qty": 2,
+   "qty": 1,
    "on": true,
-   "updatedAt": 1791496692749
+   "updatedAt": 1792307700055,
+   "note": ""
   },
   "pizza|dr. oetker die ofenfrische thunfisch": {
    "name": "Pizza",
@@ -3143,6 +3144,16 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792307696420
+  },
+  "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt": {
+   "name": "Küchenrolle",
+   "detail": "Kokett 3-lagig 4 Rollen a 64 Blatt",
+   "cat": "drogerie",
+   "unit": "Pck.",
+   "shop": "",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792307700056
   }
  }
 }
