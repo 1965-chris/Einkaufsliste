@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:16:47.782Z",
+ "savedAt": "2026-10-18T07:18:28.647Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2215,6 +2215,23 @@
    },
    "deposit": null,
    "updatedAt": 1792307805655
+  },
+  "reiniger|sagrotan hygiene spray|dm|2026-10-18": {
+   "id": "reiniger|sagrotan hygiene spray|dm|2026-10-18",
+   "key": "reiniger|sagrotan hygiene spray",
+   "name": "Reiniger",
+   "detail": "Sagrotan Hygiene Spray",
+   "date": "2026-10-18",
+   "shop": "dm",
+   "price": 1.95,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.1
+   },
+   "deposit": null,
+   "updatedAt": 1792307906458
   }
  },
  "brands": {
@@ -3195,6 +3212,19 @@
    },
    "deposit": null,
    "updatedAt": 1792307805637
+  },
+  "reiniger|sagrotan hygiene spray": {
+   "name": "Reiniger",
+   "detail": "Sagrotan Hygiene Spray",
+   "cat": "drogerie",
+   "unit": "",
+   "shop": "dm",
+   "pack": {
+    "n": 1,
+    "size": 0.1
+   },
+   "deposit": null,
+   "updatedAt": 1792307906441
   }
  }
 }
