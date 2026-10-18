@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:09:44.454Z",
+ "savedAt": "2026-10-18T07:09:54.046Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1226,7 +1226,8 @@
    "variants": [],
    "cat": "brot",
    "unit": "Pck.",
-   "updatedAt": 1791835948331
+   "updatedAt": 1792307391890,
+   "deleted": true
   },
   "fleischsalat": {
    "name": "Fleischsalat",
