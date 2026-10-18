@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:13:25.853Z",
+ "savedAt": "2026-10-18T07:14:16.532Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1056,9 +1056,10 @@
    "detail": "Goldähren Sonntagsbrötchen",
    "cat": "brot",
    "unit": "Pck.",
-   "qty": 2,
+   "qty": 1,
    "on": true,
-   "updatedAt": 1792307251786
+   "updatedAt": 1792307653690,
+   "note": ""
   },
   "brötchen|goldähren": {
    "name": "Brötchen",
@@ -3066,7 +3067,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792307251776
+   "updatedAt": 1792307653692
   },
   "brötchen|goldähren": {
    "name": "Brötchen",
