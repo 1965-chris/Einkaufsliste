@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-18T07:40:08.092Z",
+ "savedAt": "2026-10-18T07:40:48.625Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1433,6 +1433,13 @@
     "landbrötchen-roggenbrötchen": 1792307445066,
     "goldähren": 1792307489550
    }
+  },
+  "spagethi": {
+   "name": "Spagethi",
+   "variants": [],
+   "cat": "sonst",
+   "unit": "",
+   "updatedAt": 1792309246379
   }
  },
  "prices": {
@@ -2286,6 +2293,24 @@
    },
    "deposit": null,
    "updatedAt": 1792309205973
+  },
+  "spagethi||aldi|2026-10-18": {
+   "id": "spagethi||aldi|2026-10-18",
+   "key": "spagethi|",
+   "name": "Spagethi",
+   "detail": "",
+   "date": "2026-10-18",
+   "shop": "ALDI",
+   "price": 0.69,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792309246379
   }
  },
  "brands": {
@@ -3325,6 +3350,20 @@
    },
    "deposit": null,
    "updatedAt": 1792309205956
+  },
+  "spagethi|": {
+   "name": "Spagethi",
+   "detail": "",
+   "cat": "sonst",
+   "unit": "",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792309246362
   }
  }
 }
