@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:05:59.467Z",
+ "savedAt": "2026-10-18T07:07:34.072Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -826,7 +826,8 @@
    "detail": "",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1791835805321
+   "last": 1792307251786,
+   "deleted": true
   },
   "landbrötchen|roggenbrötchen": {
    "count": 1,
@@ -860,6 +861,14 @@
    "cat": "brot",
    "unit": "Pck.",
    "last": 1792307157391
+  },
+  "brötchen|goldähren sonntagsbrötchen": {
+   "count": 1,
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "cat": "brot",
+   "unit": "Pck.",
+   "last": 1792307251786
   }
  },
  "stars": {
@@ -985,8 +994,8 @@
    "cat": "brot",
    "unit": "Pck.",
    "qty": 2,
-   "on": true,
-   "updatedAt": 1791835980324
+   "on": false,
+   "updatedAt": 1792307251786
   },
   "landbrötchen|roggenbrötchen": {
    "name": "Landbrötchen",
@@ -1014,6 +1023,15 @@
    "qty": 1,
    "on": true,
    "updatedAt": 1792307157391
+  },
+  "brötchen|goldähren sonntagsbrötchen": {
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "cat": "brot",
+   "unit": "Pck.",
+   "qty": 2,
+   "on": true,
+   "updatedAt": 1792307251786
   }
  },
  "custom": {
@@ -1330,14 +1348,16 @@
   "brötchen": {
    "name": "Brötchen",
    "variants": [
-    "Landbrötchen-Roggenbrötchen"
+    "Landbrötchen-Roggenbrötchen",
+    "Sonntagsbrötchen"
    ],
    "cat": "brot",
    "unit": "Pck.",
    "varAdd": {
-    "landbrötchen-roggenbrötchen": 1792307157391
+    "landbrötchen-roggenbrötchen": 1792307157391,
+    "sonntagsbrötchen": 1792307251786
    },
-   "updatedAt": 1792307157391
+   "updatedAt": 1792307251786
   }
  },
  "prices": {
@@ -1811,7 +1831,8 @@
    "special": false,
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791835805321
+   "updatedAt": 1792307251786,
+   "deleted": true
   },
   "landbrötchen|roggenbrötchen|aldi|2026-10-12": {
    "id": "landbrötchen|roggenbrötchen|aldi|2026-10-12",
@@ -1968,6 +1989,38 @@
    },
    "deposit": null,
    "updatedAt": 1792307157391
+  },
+  "brötchen|goldähren sonntagsbrötchen|aldi|2026-10-12": {
+   "id": "brötchen|goldähren sonntagsbrötchen|aldi|2026-10-12",
+   "key": "brötchen|goldähren sonntagsbrötchen",
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.19,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792307251786
+  },
+  "brötchen|goldähren sonntagsbrötchen|aldi|2026-10-18": {
+   "id": "brötchen|goldähren sonntagsbrötchen|aldi|2026-10-18",
+   "key": "brötchen|goldähren sonntagsbrötchen",
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "date": "2026-10-18",
+   "shop": "ALDI",
+   "price": 1.19,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.56,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792307251787
   }
  },
  "brands": {
@@ -2074,6 +2127,16 @@
     "drogerie": 1
    },
    "updatedAt": 1792255205973
+  },
+  "goldähren": {
+   "name": "Goldähren",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "brot": 1
+   },
+   "updatedAt": 1792307251776
   }
  },
  "purchases": {
@@ -2404,8 +2467,8 @@
   "k-mv5orvyh3uyoa2": {
    "id": "k-mv5orvyh3uyoa2",
    "date": "2026-10-12",
-   "name": "Sonntagsbrötchen",
-   "detail": "",
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
    "cat": "brot",
    "qty": 2,
    "unit": "Pck.",
@@ -2416,7 +2479,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791836107705
+   "updatedAt": 1792307251786
   },
   "k-mv5ot8kist7s7u": {
    "id": "k-mv5ot8kist7s7u",
@@ -2826,6 +2889,20 @@
    },
    "deposit": null,
    "updatedAt": 1792307157383
+  },
+  "brötchen|goldähren sonntagsbrötchen": {
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "cat": "brot",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.56,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792307251776
   }
  }
 }
