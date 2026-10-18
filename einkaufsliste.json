@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:09:54.046Z",
+ "savedAt": "2026-10-18T07:10:47.237Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -861,7 +861,8 @@
    "detail": "Landbrötchen-Roggenbrötchen",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307157391
+   "last": 1792307445065,
+   "deleted": true
   },
   "brötchen|goldähren sonntagsbrötchen": {
    "count": 1,
@@ -878,6 +879,14 @@
    "cat": "brot",
    "unit": "Pck.",
    "last": 1792307382331
+  },
+  "brötchen|goldähren landbrötchen-roggenbrötchen": {
+   "count": 1,
+   "name": "Brötchen",
+   "detail": "Goldähren Landbrötchen-Roggenbrötchen",
+   "cat": "brot",
+   "unit": "Pck.",
+   "last": 1792307445065
   }
  },
  "stars": {
@@ -1030,8 +1039,8 @@
    "cat": "brot",
    "unit": "Pck.",
    "qty": 1,
-   "on": true,
-   "updatedAt": 1792307157391
+   "on": false,
+   "updatedAt": 1792307445065
   },
   "brötchen|goldähren sonntagsbrötchen": {
    "name": "Brötchen",
@@ -1050,6 +1059,15 @@
    "qty": 2,
    "on": true,
    "updatedAt": 1792307382331
+  },
+  "brötchen|goldähren landbrötchen-roggenbrötchen": {
+   "name": "Brötchen",
+   "detail": "Goldähren Landbrötchen-Roggenbrötchen",
+   "cat": "brot",
+   "unit": "Pck.",
+   "qty": 1,
+   "on": true,
+   "updatedAt": 1792307445065
   }
  },
  "custom": {
@@ -1369,16 +1387,18 @@
   "brötchen": {
    "name": "Brötchen",
    "variants": [
-    "Landbrötchen-Roggenbrötchen",
     "Sonntagsbrötchen"
    ],
    "cat": "brot",
    "unit": "Pck.",
    "varAdd": {
-    "landbrötchen-roggenbrötchen": 1792307157391,
+    "landbrötchen-roggenbrötchen": 1792307445066,
     "sonntagsbrötchen": 1792307251786
    },
-   "updatedAt": 1792307251786
+   "updatedAt": 1792307445066,
+   "varDel": {
+    "landbrötchen-roggenbrötchen": 1792307445066
+   }
   }
  },
  "prices": {
@@ -1992,7 +2012,8 @@
    "special": false,
    "pack": null,
    "deposit": null,
-   "updatedAt": 1792307157391
+   "updatedAt": 1792307445065,
+   "deleted": true
   },
   "brötchen|landbrötchen-roggenbrötchen|aldi|2026-10-18": {
    "id": "brötchen|landbrötchen-roggenbrötchen|aldi|2026-10-18",
@@ -2010,7 +2031,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792307157391
+   "updatedAt": 1792307445065,
+   "deleted": true
   },
   "brötchen|goldähren sonntagsbrötchen|aldi|2026-10-12": {
    "id": "brötchen|goldähren sonntagsbrötchen|aldi|2026-10-12",
@@ -2075,6 +2097,38 @@
    },
    "deposit": null,
    "updatedAt": 1792307382332
+  },
+  "brötchen|goldähren landbrötchen-roggenbrötchen|aldi|2026-10-12": {
+   "id": "brötchen|goldähren landbrötchen-roggenbrötchen|aldi|2026-10-12",
+   "key": "brötchen|goldähren landbrötchen-roggenbrötchen",
+   "name": "Brötchen",
+   "detail": "Goldähren Landbrötchen-Roggenbrötchen",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.29,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792307445065
+  },
+  "brötchen|goldähren landbrötchen-roggenbrötchen|aldi|2026-10-18": {
+   "id": "brötchen|goldähren landbrötchen-roggenbrötchen|aldi|2026-10-18",
+   "key": "brötchen|goldähren landbrötchen-roggenbrötchen",
+   "name": "Brötchen",
+   "detail": "Goldähren Landbrötchen-Roggenbrötchen",
+   "date": "2026-10-18",
+   "shop": "ALDI",
+   "price": 1.29,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.56,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792307445065
   }
  },
  "brands": {
@@ -2539,7 +2593,7 @@
    "id": "k-mv5ot8kist7s7u",
    "date": "2026-10-12",
    "name": "Brötchen",
-   "detail": "Landbrötchen-Roggenbrötchen",
+   "detail": "Goldähren Landbrötchen-Roggenbrötchen",
    "cat": "brot",
    "qty": 1,
    "unit": "Pck.",
@@ -2550,7 +2604,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1792307157391
+   "updatedAt": 1792307445065
   },
   "k-mv5ouyazgqgn4u": {
    "id": "k-mv5ouyazgqgn4u",
@@ -2942,7 +2996,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792307157383
+   "updatedAt": 1792307445065,
+   "deleted": true
   },
   "brötchen|goldähren sonntagsbrötchen": {
    "name": "Brötchen",
@@ -2971,6 +3026,20 @@
    },
    "deposit": null,
    "updatedAt": 1792307382323
+  },
+  "brötchen|goldähren landbrötchen-roggenbrötchen": {
+   "name": "Brötchen",
+   "detail": "Goldähren Landbrötchen-Roggenbrötchen",
+   "cat": "brot",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.56,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792307445065
   }
  }
 }
