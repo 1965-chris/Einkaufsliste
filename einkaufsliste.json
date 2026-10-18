@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-18T07:41:50.691Z",
+ "savedAt": "2026-10-18T07:43:55.719Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1901,7 +1901,8 @@
    "special": false,
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791835665103
+   "updatedAt": 1792309433581,
+   "deleted": true
   },
   "sonntagsbrötchen||aldi|2026-10-12": {
    "id": "sonntagsbrötchen||aldi|2026-10-12",
