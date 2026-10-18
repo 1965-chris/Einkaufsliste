@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-18T07:34:49.573Z",
+ "savedAt": "2026-10-18T07:35:27.814Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2250,6 +2250,24 @@
    },
    "deposit": null,
    "updatedAt": 1792308101576
+  },
+  "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt|aldi|2026-10-18": {
+   "id": "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt|aldi|2026-10-18",
+   "key": "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt",
+   "name": "Küchenrolle",
+   "detail": "Kokett 3-lagig 4 Rollen a 64 Blatt",
+   "date": "2026-10-18",
+   "shop": "ALDI",
+   "price": 2.65,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 4,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1792308925638
   }
  },
  "brands": {
@@ -3212,10 +3230,14 @@
    "detail": "Kokett 3-lagig 4 Rollen a 64 Blatt",
    "cat": "drogerie",
    "unit": "Pck.",
-   "shop": "",
-   "pack": null,
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 4,
+    "u": "st"
+   },
    "deposit": null,
-   "updatedAt": 1792307700056
+   "updatedAt": 1792308925620
   },
   "melita bella crema ganze bohnen|": {
    "name": "Melita Bella Crema Ganze Bohnen",
