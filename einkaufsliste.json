@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-18T07:41:14.753Z",
+ "savedAt": "2026-10-18T07:41:50.691Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1137,7 +1137,8 @@
    "variants": [],
    "cat": "obst",
    "unit": "",
-   "updatedAt": 1791412674876
+   "updatedAt": 1792309308595,
+   "deleted": true
   },
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
@@ -1868,7 +1869,8 @@
    "special": false,
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791835367464
+   "updatedAt": 1792309308595,
+   "deleted": true
   },
   "h-milch 1,5%|laktosefrei|aldi|2026-10-12": {
    "id": "h-milch 1,5%|laktosefrei|aldi|2026-10-12",
