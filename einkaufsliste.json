@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:14:21.567Z",
+ "savedAt": "2026-10-18T07:14:39.892Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1000,10 +1000,11 @@
    "name": "Salzbutter",
    "detail": "Milsani",
    "cat": "kuehl",
-   "unit": "",
+   "unit": "Pck.",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791831929595
+   "updatedAt": 1792307677833,
+   "note": ""
   },
   "h-milch 1,5%|laktosefrei": {
    "name": "H-Milch 1,5%",
@@ -1166,8 +1167,8 @@
    "name": "Salzbutter",
    "variants": [],
    "cat": "kuehl",
-   "unit": "",
-   "updatedAt": 1791535808299
+   "unit": "Pck.",
+   "updatedAt": 1792307677833
   },
   "pudding": {
    "name": "Pudding",
@@ -3112,6 +3113,16 @@
    },
    "deposit": null,
    "updatedAt": 1792307659355
+  },
+  "salzbutter|milsani": {
+   "name": "Salzbutter",
+   "detail": "Milsani",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "shop": "",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792307677833
   }
  }
 }
