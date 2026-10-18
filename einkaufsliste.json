@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.33",
- "savedAt": "2026-10-18T07:08:42.155Z",
+ "savedAt": "2026-10-18T07:09:44.454Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -844,7 +844,8 @@
    "detail": "",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1791835948331
+   "last": 1792307382331,
+   "deleted": true
   },
   "fleischsalat|": {
    "count": 1,
@@ -869,6 +870,14 @@
    "cat": "brot",
    "unit": "Pck.",
    "last": 1792307251786
+  },
+  "brötchen|goldähren": {
+   "count": 1,
+   "name": "Brötchen",
+   "detail": "Goldähren",
+   "cat": "brot",
+   "unit": "Pck.",
+   "last": 1792307382331
   }
  },
  "stars": {
@@ -1012,8 +1021,8 @@
    "cat": "brot",
    "unit": "Pck.",
    "qty": 2,
-   "on": true,
-   "updatedAt": 1791836001249
+   "on": false,
+   "updatedAt": 1792307382331
   },
   "brötchen|landbrötchen-roggenbrötchen": {
    "name": "Brötchen",
@@ -1032,6 +1041,15 @@
    "qty": 2,
    "on": true,
    "updatedAt": 1792307251786
+  },
+  "brötchen|goldähren": {
+   "name": "Brötchen",
+   "detail": "Goldähren",
+   "cat": "brot",
+   "unit": "Pck.",
+   "qty": 2,
+   "on": true,
+   "updatedAt": 1792307382331
   }
  },
  "custom": {
@@ -1863,7 +1881,8 @@
    "special": false,
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791835948331
+   "updatedAt": 1792307382331,
+   "deleted": true
   },
   "fleischsalat||aldi|2026-10-12": {
    "id": "fleischsalat||aldi|2026-10-12",
@@ -2023,6 +2042,38 @@
    },
    "deposit": null,
    "updatedAt": 1792307251787
+  },
+  "brötchen|goldähren|aldi|2026-10-12": {
+   "id": "brötchen|goldähren|aldi|2026-10-12",
+   "key": "brötchen|goldähren",
+   "name": "Brötchen",
+   "detail": "Goldähren",
+   "date": "2026-10-12",
+   "shop": "ALDI",
+   "price": 1.79,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792307382331
+  },
+  "brötchen|goldähren|aldi|2026-10-18": {
+   "id": "brötchen|goldähren|aldi|2026-10-18",
+   "key": "brötchen|goldähren",
+   "name": "Brötchen",
+   "detail": "Goldähren",
+   "date": "2026-10-18",
+   "shop": "ALDI",
+   "price": 1.79,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.48,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792307382332
   }
  },
  "brands": {
@@ -2503,8 +2554,8 @@
   "k-mv5ouyazgqgn4u": {
    "id": "k-mv5ouyazgqgn4u",
    "date": "2026-10-12",
-   "name": "Krüstchen",
-   "detail": "",
+   "name": "Brötchen",
+   "detail": "Goldähren",
    "cat": "brot",
    "qty": 2,
    "unit": "Pck.",
@@ -2515,7 +2566,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791836107705
+   "updatedAt": 1792307382331
   },
   "k-mv5oy27b3kglza": {
    "id": "k-mv5oy27b3kglza",
@@ -2905,6 +2956,20 @@
    },
    "deposit": null,
    "updatedAt": 1792307251776
+  },
+  "brötchen|goldähren": {
+   "name": "Brötchen",
+   "detail": "Goldähren",
+   "cat": "brot",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.48,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792307382323
   }
  }
 }
