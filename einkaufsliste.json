@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-18T10:35:15.607Z",
+ "savedAt": "2026-10-19T06:35:16.655Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -602,7 +602,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1792319714652,
+   "last": 1792391715815,
    "cat": "vorrat",
    "deleted": true
   },
@@ -2319,7 +2319,7 @@
  "brands": {
   "dr. oetker die ofenfrische": {
    "name": "Dr. Oetker Die Ofenfrische",
-   "updatedAt": 1792255205971,
+   "updatedAt": 1792391715901,
    "shops": {
     "ALDI": 1
    },
@@ -2329,7 +2329,7 @@
   },
   "kings criwn": {
    "name": "Kings Criwn",
-   "updatedAt": 1792255205974,
+   "updatedAt": 1792391715908,
    "shops": {
     "ALDI": 1
    },
@@ -2339,7 +2339,7 @@
   },
   "kokett": {
    "name": "Kokett",
-   "updatedAt": 1792255205971,
+   "updatedAt": 1792391715900,
    "shops": {
     "ALDI": 1
    },
@@ -2389,7 +2389,7 @@
    "cats": {
     "kuehl": 1
    },
-   "updatedAt": 1792255205970
+   "updatedAt": 1792391715899
   },
   "sagrotan": {
    "name": "Sagrotan",
