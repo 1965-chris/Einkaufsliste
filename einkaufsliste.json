@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-20T09:49:23.461Z",
+ "savedAt": "2026-10-20T09:51:36.072Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1525,6 +1525,18 @@
    "cat": "sonst",
    "unit": "",
    "updatedAt": 1792309246379
+  },
+  "family cappuccino": {
+   "name": "Family Cappuccino",
+   "variants": [
+    "Family Cappuccino - Choco"
+   ],
+   "cat": "kaffee",
+   "unit": "Pck.",
+   "varAdd": {
+    "family cappuccino - choco": 1792489893835
+   },
+   "updatedAt": 1792489893835
   }
  },
  "prices": {
@@ -3141,6 +3153,17 @@
     "size": 0.5
    },
    "updatedAt": 1792257644637
+  },
+  "4061462319013": {
+   "name": "Family Cappuccino",
+   "detail": "Barissimo Family Cappuccino - Choco",
+   "cat": "kaffee",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "updatedAt": 1792489893834
   }
  },
  "arts": {
@@ -3455,6 +3478,20 @@
    },
    "deposit": null,
    "updatedAt": 1792309246362
+  },
+  "family cappuccino|barissimo family cappuccino - choco": {
+   "name": "Family Cappuccino",
+   "detail": "Barissimo Family Cappuccino - Choco",
+   "cat": "kaffee",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": 3.49,
+   "updatedAt": 1792489893834
   }
  }
 }
