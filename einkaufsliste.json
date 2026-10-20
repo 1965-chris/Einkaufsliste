@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-20T09:47:29.538Z",
+ "savedAt": "2026-10-20T09:49:23.461Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -648,6 +648,32 @@
    },
    "checked": false,
    "updatedAt": 1792489646700
+  },
+  {
+   "id": "mvgi4fj2tn5i3v",
+   "name": "Salzbutter",
+   "detail": "Milsani",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "kuehl",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.29,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.25,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1792489761182
   }
  ],
  "favs": {
@@ -955,6 +981,14 @@
    "cat": "brot",
    "unit": "Pck.",
    "last": 1792489634376
+  },
+  "salzbutter|milsani": {
+   "count": 1,
+   "name": "Salzbutter",
+   "detail": "Milsani",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "last": 1792489761182
   }
  },
  "stars": {
@@ -3296,10 +3330,14 @@
    "detail": "Milsani",
    "cat": "kuehl",
    "unit": "Pck.",
-   "shop": "",
-   "pack": null,
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
    "deposit": null,
-   "updatedAt": 1792307677833
+   "updatedAt": 1792489761167
   },
   "pizza|dr. oetker die ofenfrische thunfisch": {
    "name": "Pizza",
