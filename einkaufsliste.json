@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-20T09:46:36.851Z",
+ "savedAt": "2026-10-20T09:47:16.568Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -596,6 +596,32 @@
    "updatedAt": 1791836294400,
    "checkedAt": 1791836292116,
    "deleted": true
+  },
+  {
+   "id": "mvgi1pooid5pv3",
+   "name": "Brötchen",
+   "detail": "Goldähren Krüstchen",
+   "qty": 2,
+   "unit": "Pck.",
+   "cat": "brot",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.79,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.48,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1792489634376
   }
  ],
  "favs": {
@@ -898,13 +924,12 @@
    "deleted": true
   },
   "brötchen|goldähren krüstchen": {
-   "count": 1,
+   "count": 2,
    "name": "Brötchen",
    "detail": "Goldähren Krüstchen",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792307727554,
-   "deleted": true
+   "last": 1792489634376
   }
  },
  "stars": {
@@ -3239,7 +3264,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792307659355
+   "updatedAt": 1792489634362
   },
   "salzbutter|milsani": {
    "name": "Salzbutter",
