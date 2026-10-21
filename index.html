@@ -230,6 +230,8 @@ summary{cursor:pointer;font-weight:600}
   .item>*+*{margin-left:12px}
   .menulist>*+*{margin-top:8px}
 }
+/* Knöpfe: kein Markieren von Text beim Antippen (ältere iPhones) */
+button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -600,7 +602,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.38';
+const APP_VERSION = 'v1.39';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -3657,6 +3659,9 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.39', '21.10.2026', [
+    'Knöpfe lassen sich nicht mehr versehentlich als Text markieren (ältere iPhones)'
+  ]],
   ['v1.38', '21.10.2026', [
     'Einrichtungs-Code wird auch erkannt, wenn das iPhone den Anfang klein geschrieben hat („ekl1:“)'
   ]],
