@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.40",
- "savedAt": "2026-10-21T22:01:42.589Z",
+ "savedAt": "2026-10-21T22:02:10.268Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1282,6 +1282,15 @@
    "qty": 1,
    "on": true,
    "updatedAt": 1792620017550
+  },
+  "kartoffeln|festkochend": {
+   "name": "Kartoffeln",
+   "detail": "festkochend",
+   "cat": "obst",
+   "unit": "Pck.",
+   "qty": 1,
+   "on": true,
+   "updatedAt": 1792620128254
   }
  },
  "custom": {
