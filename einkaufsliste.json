@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.34",
- "savedAt": "2026-10-21T05:43:10.478Z",
+ "savedAt": "2026-10-21T05:43:51.322Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -726,6 +726,18 @@
    },
    "checked": false,
    "updatedAt": 1792490155557
+  },
+  {
+   "id": "mvhosiwe7q56cs",
+   "name": "Butter",
+   "detail": "",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "kuehl",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1792561429167
   }
  ],
  "favs": {
@@ -746,13 +758,12 @@
    "deleted": true
   },
   "butter|": {
-   "count": 1,
+   "count": 2,
    "name": "Butter",
    "detail": "",
    "cat": "kuehl",
    "unit": "Pck.",
-   "last": 1792307727554,
-   "deleted": true
+   "last": 1792561429168
   },
   "coca cola|": {
    "count": 1,
