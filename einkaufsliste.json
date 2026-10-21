@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.40",
- "savedAt": "2026-10-21T21:50:06.736Z",
+ "savedAt": "2026-10-21T22:00:07.673Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3651,6 +3651,18 @@
    "version": "v1.40",
    "lastSeen": 1792618999868,
    "updatedAt": 1792619033121
+  },
+  "dmvino2cftqf1h": {
+   "firstSeen": 1792620007648,
+   "id": "dmvino2cftqf1h",
+   "name": "iPad",
+   "model": "iPad",
+   "os": "iPadOS 27.0",
+   "browser": "Safari",
+   "app": "Homebildschirm-App",
+   "version": "v1.40",
+   "lastSeen": 1792620007648,
+   "updatedAt": 1792620007648
   }
  }
 }
