@@ -85,7 +85,7 @@ nav button{flex:1;border:0;background:none;color:var(--muted);font-size:11px;pad
 nav button b{font-size:21px;font-weight:400;line-height:1.2}
 nav button.on{color:var(--accent);font-weight:600}
 /* Sheets */
-.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:20;display:none}
+.backdrop{position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,.35);z-index:20;display:none}
 .backdrop.open{display:block}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--card);border-radius:20px 20px 0 0;
   padding:18px 16px calc(env(safe-area-inset-bottom) + 18px);max-height:90vh;overflow:auto;transform:translateY(105%);
@@ -222,6 +222,14 @@ summary{cursor:pointer;font-weight:600}
 .toast.show{transform:none;opacity:1;visibility:visible}
 .toast button{border:0;background:none;color:var(--accent);font-weight:700;font-size:14px;cursor:pointer}
 .ver{text-align:center;color:var(--muted);font-size:12px;margin-top:16px}
+/* Ältere iPhones (iOS 12–14.0) kennen „gap“ bei Flexbox nicht – Abstände per Rand */
+@supports not (inset:0) {
+  header>*+*,.addrow>*+*,.row>*+*,.offerrow>*+*,.bonnum>*+*{margin-left:8px}
+  .chips>*+*{margin-left:6px}
+  .chips.wrap>*,.brandchips>*{margin:0 6px 6px 0}
+  .item>*+*{margin-left:12px}
+  .menulist>*+*{margin-top:8px}
+}
 </style>
 </head>
 <body>
@@ -404,6 +412,30 @@ summary{cursor:pointer;font-weight:600}
 </div>
 
 <!-- Angebot aus Bild / Text lesen -->
+<div class="sheet" id="shareSheet" style="z-index:23">
+  <h3>📲 Einrichtung übertragen</h3>
+  <div class="hint">Enthält deinen Zugangs-Token – nur an eigene Geräte geben, nicht als Bildschirmfoto verschicken.</div>
+  <div id="shareQr" style="display:flex;justify-content:center;margin:14px 0"></div>
+  <div class="hint" style="margin-top:0"><b>Altes iPhone:</b> mit der normalen <b>Kamera-App</b> den QR-Code scannen → es öffnet sich Safari → „Code kopieren“ → Einkaufsliste-App öffnen → ⚙️ → Sync → Code einfügen.</div>
+  <div class="hint">Oder per <b>AirDrop</b> („Teilen“) bzw. Kopieren und am anderen Gerät einfügen.</div>
+  <textarea class="field" id="shareCode" readonly style="font-size:12px;height:70px"></textarea>
+  <div class="row">
+    <button class="btn" id="shareCopy">Kopieren</button>
+    <button class="btn" id="shareSend">Teilen / AirDrop</button>
+  </div>
+  <div class="row"><button class="btn" data-close>Schließen</button></div>
+</div>
+<div class="sheet" id="setupSheet" style="z-index:24">
+  <h3>📲 Einrichtung empfangen</h3>
+  <div class="hint" id="setupInfo"></div>
+  <div class="row"><button class="btn primary" id="setupApply">Hier übernehmen</button></div>
+  <div class="hint">Nutzt du die App vom <b>Homebildschirm</b>? Dann hier „Code kopieren“, die App öffnen und unter ⚙️ → Sync → „Einrichtungs-Code einfügen“ einsetzen. (Safari und die Homebildschirm-App speichern getrennt.)</div>
+  <textarea class="field" id="setupCode" readonly style="font-size:12px;height:70px"></textarea>
+  <div class="row">
+    <button class="btn" id="setupCopy">Code kopieren</button>
+    <button class="btn" data-close>Schließen</button>
+  </div>
+</div>
 <div class="sheet" id="dupSheet">
   <h3>🧹 Doppelte Artikel</h3>
   <div class="hint">Gleiche Produkte, die mehrfach angelegt sind (z. B. „Thunfischfilet“ und „Thunfisch-Filet“). Beim Zusammenführen wandern Preise aller Märkte, Größe, Favorit, Strichcode und Einkäufe zum behaltenen Artikel. Verschiedene Marken bleiben getrennt.</div>
@@ -531,6 +563,9 @@ summary{cursor:pointer;font-weight:600}
     <button class="btn" id="gTest">Verbindung testen</button>
     <button class="btn primary" id="gSave">Speichern</button>
   </div>
+  <div class="row"><button class="btn" id="gShare">📲 Einrichtung an anderes Handy</button></div>
+  <label>Einrichtungs-Code vom anderen Handy einfügen</label>
+  <input class="field" id="gCode" placeholder="EKL1:…" autocapitalize="off" autocorrect="off" autocomplete="off">
   </details>
   <details>
     <summary>Händler-Suchlinks</summary>
@@ -557,8 +592,14 @@ summary{cursor:pointer;font-weight:600}
 <div class="toast" id="toast"><span id="toastText"></span><button id="toastBtn" hidden>Rückgängig</button></div>
 
 <script>
+// Ältere iPhones (iOS 12): kleine Helfer statt neuerer Sprachmittel
+function nz(a, b) { return a == null ? b : a; }
+if (!Object.fromEntries) Object.fromEntries = it => { const o = {}; for (const [k, v] of it) o[k] = v; return o; };
+if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat.apply([], this); };
+if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
+
 'use strict';
-const APP_VERSION = 'v1.34';
+const APP_VERSION = 'v1.36';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -709,7 +750,7 @@ function offerWeek() {
 }
 // Preis-Eingabe wie an der Kasse: „79“ = 0,79 · „790“ = 7,90 · „,79“ = 0,79 · „7.9“ = 7,90
 function parsePrice(s) {
-  let t = String(s ?? '').replace(/[€\s]/g, '');
+  let t = String(s == null ? '' : s).replace(/[€\s]/g, '');
   if (!t) return null;
   if (/[.,]/.test(t)) {
     const i = Math.max(t.lastIndexOf(','), t.lastIndexOf('.'));
@@ -983,7 +1024,7 @@ let syncing = false, syncQueued = false, pushTimer = null;
 let sheetMode = 'add', editingId = null, sheetStar = false, selVariant = '';
 
 function loadJSON(key, fallback) {
-  try { const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; } catch { return fallback; }
+  try { const v = JSON.parse(localStorage.getItem(key)); return v == null ? fallback : v; } catch { return fallback; }
 }
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
@@ -996,7 +1037,7 @@ function now() { return Date.now(); }
 function norm(s) { return String(s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
 function keyOf(name, detail) { return norm(name) + '|' + norm(detail); }
 function cap(s) { s = String(s || '').trim(); return s.charAt(0).toUpperCase() + s.slice(1); }
-function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 function clampQty(q) { q = parseInt(q, 10); return Math.max(1, Math.min(9999, isNaN(q) ? 1 : q)); }
 function qtyLabel(i) {
   const u = i.unit || '';
@@ -1258,7 +1299,7 @@ function renderList() {
   if (!items.length) html = '<div class="empty"><b>🧺</b>Die Liste ist leer.<br>Oben eintragen, unter „Artikel“ auswählen oder aus den Favoriten antippen.</div>';
   else {
     const byName = (a, b) => a.name.localeCompare(b.name, 'de') || String(a.detail || '').localeCompare(b.detail || '', 'de');
-    const byCat = (a, b) => ((CAT_ORDER[a.cat] ?? 99) - (CAT_ORDER[b.cat] ?? 99)) || byName(a, b);
+    const byCat = (a, b) => (nz(CAT_ORDER[a.cat], 99) - nz(CAT_ORDER[b.cat], 99)) || byName(a, b);
     if (sortMode === 'shop') {
       const groups = {};
       open.forEach(i => { const s = shopOf(i); (groups[s] = groups[s] || []).push(i); });
@@ -1276,7 +1317,7 @@ function renderList() {
     } else {
       const groups = {};
       open.forEach(i => (groups[i.cat] = groups[i.cat] || []).push(i));
-      Object.keys(groups).sort((a, b) => (CAT_ORDER[a] ?? 99) - (CAT_ORDER[b] ?? 99)).forEach(cat => {
+      Object.keys(groups).sort((a, b) => nz(CAT_ORDER[a], 99) - nz(CAT_ORDER[b], 99)).forEach(cat => {
         const list = groups[cat].sort(byName);
         html += `<section class="group"><h2>${esc(CAT_NAME[cat] || CAT_NAME.sonst)}</h2><div class="list">${list.map(itemHtml).join('')}</div></section>`;
       });
@@ -1524,7 +1565,7 @@ function renderCatalog() {
 
 /* Favoriten */
 function renderFavs() {
-  const stars = Object.entries(data.stars).filter(([, s]) => s.on).sort((a, b) => (CAT_ORDER[a[1].cat] ?? 99) - (CAT_ORDER[b[1].cat] ?? 99) || a[1].name.localeCompare(b[1].name, 'de'));
+  const stars = Object.entries(data.stars).filter(([, s]) => s.on).sort((a, b) => nz(CAT_ORDER[a[1].cat], 99) - nz(CAT_ORDER[b[1].cat], 99) || a[1].name.localeCompare(b[1].name, 'de'));
   let html = '<button class="btn primary addprice" data-act="newFav" style="margin-top:6px">＋ Neuer Favorit</button>';
   html += '<p class="intro">Favoriten landen erst auf der Liste, wenn du auf ＋ tippst. Antippen des Namens zum Bearbeiten. Auch „Häufig gekauft“ lässt sich antippen und bearbeiten.</p>';
   if (stars.length) {
@@ -1792,7 +1833,7 @@ function moveArticleKey(oldKey, name, detail, silent) {
   const am = data.arts[oldKey];
   if (am && !am.deleted) {
     const nm = data.arts[newKey] && !data.arts[newKey].deleted ? data.arts[newKey] : null;
-    data.arts[newKey] = nm ? { ...nm, pack: nm.pack || am.pack || null, deposit: nm.deposit ?? am.deposit ?? null, shop: nm.shop || am.shop || '', cat: nm.cat || am.cat || null, updatedAt: now() }
+    data.arts[newKey] = nm ? { ...nm, pack: nm.pack || am.pack || null, deposit: nz(nm.deposit, nz(am.deposit, null)), shop: nm.shop || am.shop || '', cat: nm.cat || am.cat || null, updatedAt: now() }
                            : { ...am, name, detail, updatedAt: now() };
     am.deleted = true; am.updatedAt = now();
   }
@@ -1929,8 +1970,8 @@ function typeSegHtml(px) { return `<div class="seg typeseg" id="${px}Type">${PRI
 /* Preisfelder: oben immer der normale Preis, darunter Angebots- bzw. App-Preis */
 function writePrices(px, type, price, regular) {
   setType(px, type);
-  if (type === 'normal') { $(px + 'Regular').value = fmtPriceInput(price ?? null); $(px + 'Price').value = ''; }
-  else { $(px + 'Regular').value = fmtPriceInput(regular ?? null); $(px + 'Price').value = fmtPriceInput(price ?? null); }
+  if (type === 'normal') { $(px + 'Regular').value = fmtPriceInput(nz(price, null)); $(px + 'Price').value = ''; }
+  else { $(px + 'Regular').value = fmtPriceInput(nz(regular, null)); $(px + 'Price').value = fmtPriceInput(nz(price, null)); }
   updateSaving(px); if ($(px + 'PackInfo')) updatePackInfo(px);
 }
 function readPrices(px) {
@@ -2030,7 +2071,7 @@ function saveArtMaster(name, detail, extra = {}) {
   data.arts = data.arts || {};
   const k = keyOf(name, detail), prev = data.arts[k] && !data.arts[k].deleted ? data.arts[k] : {};
   const pack = readPack('s'), dep = parsePrice($('sDeposit').value), shop = $('sShop').value.trim();
-  data.arts[k] = { ...prev, name: cap(name), detail: String(detail || '').trim(), cat: extra.cat || prev.cat || null, unit: extra.unit ?? prev.unit ?? '',
+  data.arts[k] = { ...prev, name: cap(name), detail: String(detail || '').trim(), cat: extra.cat || prev.cat || null, unit: nz(extra.unit, nz(prev.unit, '')),
     shop: shop || prev.shop || '', pack: pack || null, deposit: pack || dep ? (dep || null) : null, updatedAt: now() };
   delete data.arts[k].deleted;
 }
@@ -2088,7 +2129,7 @@ $('listMain').addEventListener('click', e => {
   const act = e.target.closest('[data-act]'); if (!act) return;
   if (act.dataset.act === 'cleardone') return clearDone();
   if (act.dataset.act === 'bon') return openBon();
-  const id = e.target.closest('.item')?.dataset.id;
+  const id = (e.target.closest('.item') || { dataset: {} }).dataset.id;
   if (act.dataset.act === 'toggle') toggle(id);
   if (act.dataset.act === 'edit') { const it = data.items.find(i => i.id === id); if (it) openItemSheet('edit', it); }
 });
@@ -2111,7 +2152,7 @@ $('favMain').addEventListener('click', e => {
   if (o) { const f = data.favs[o.dataset.often]; if (f) openItemSheet('often', { favKey: o.dataset.often, name: f.name, detail: f.detail, unit: f.unit, cat: f.cat, qty: f.qty || 1, note: f.note || '', offer: f.offer || null }); return; }
   const row = e.target.closest('[data-star]'); if (!row) return;
   const s = data.stars[row.dataset.star]; if (!s) return;
-  const act = e.target.closest('[data-act]')?.dataset.act;
+  const act = (e.target.closest('[data-act]') || { dataset: {} }).dataset.act;
   if (act === 'starAdd') addItem({ name: s.name, detail: s.detail, qty: s.qty || 1, unit: s.unit || '', cat: s.cat, note: s.note || '' });
   else openItemSheet('fav', { name: s.name, detail: s.detail, qty: s.qty || 1, unit: s.unit || '', cat: s.cat, note: s.note || '' });
 });
@@ -2238,7 +2279,7 @@ async function push() {
   const res = await gh('PUT', body);
   if (res.status === 409 || res.status === 422) return 'conflict';
   if (!res.ok) throw new Error('Speichern fehlgeschlagen (' + res.status + ')');
-  const j = await res.json(); remoteSha = j.content?.sha || null;
+  const j = await res.json(); remoteSha = (j.content || {}).sha || null;
   return 'ok';
 }
 /* Siri-Eingang: Kurzbefehl legt Textdateien in eingang/ ab */
@@ -2340,6 +2381,63 @@ $('gSave').onclick = () => {
   cfg = readCfgForm(); localStorage.setItem(LS_CFG, JSON.stringify(cfg));
   remoteSha = null; closeSheets(); toast('Gespeichert'); sync('Einrichtung');
 };
+/* Einrichtung auf ein anderes Gerät übertragen (QR-Code / AirDrop / Kopieren) */
+function setupCodeOf(c) { return 'EKL1:' + b64encode(JSON.stringify({ o: c.owner, r: c.repo, t: c.token, b: c.branch || 'main' })); }
+function parseSetupCode(txt) {
+  const m = String(txt || '').trim().match(/EKL1:([A-Za-z0-9+\/=_-]+)/); if (!m) return null;
+  try { const j = JSON.parse(b64decode(m[1].replace(/-/g, '+').replace(/_/g, '/'))); return j && j.o && j.r && j.t ? { owner: j.o, repo: j.r, token: j.t, branch: j.b || 'main' } : null; } catch (e) { return null; }
+}
+function copyText(t) {
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t).then(() => true, () => legacyCopy(t));
+  return Promise.resolve(legacyCopy(t));
+}
+function legacyCopy(t) {   // iOS 12: über ein unsichtbares Textfeld
+  const ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.top = '-1000px'; document.body.appendChild(ta);
+  const r = document.createRange(); r.selectNodeContents(ta); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); ta.setSelectionRange(0, t.length);
+  let ok = false; try { ok = document.execCommand('copy'); } catch (e) {} document.body.removeChild(ta); return ok;
+}
+$('gShare').onclick = async () => {
+  const c = readCfgForm();
+  if (!c.owner || !c.repo || !c.token) { toast('Bitte zuerst Benutzer, Repository und Token eintragen'); return; }
+  const code = setupCodeOf(c), url = location.origin + location.pathname + '#setup=' + encodeURIComponent(code);
+  $('shareCode').value = code; $('shareQr').innerHTML = '';
+  openSheet('shareSheet');
+  try {
+    if (!window.QRCode) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js');
+    new QRCode($('shareQr'), { text: url, width: 240, height: 240, correctLevel: QRCode.CorrectLevel.L });
+  } catch (e) { $('shareQr').innerHTML = '<div class="hint">QR-Code konnte nicht geladen werden – bitte Teilen oder Kopieren nutzen.</div>'; }
+};
+$('shareCopy').onclick = () => copyText($('shareCode').value).then(ok => toast(ok ? 'Code kopiert' : 'Bitte Text markieren und kopieren'));
+$('shareSend').onclick = () => {
+  const t = $('shareCode').value;
+  if (navigator.share) navigator.share({ title: 'Einkaufsliste – Einrichtung', text: t }).catch(() => {});
+  else copyText(t).then(ok => toast(ok ? 'Teilen nicht verfügbar – Code kopiert' : 'Bitte Text markieren und kopieren'));
+};
+$('gCode').addEventListener('input', () => {
+  const c = parseSetupCode($('gCode').value); if (!c) return;
+  $('gOwner').value = c.owner; $('gRepo').value = c.repo; $('gToken').value = c.token; $('gCode').value = '';
+  $('gCode').blur();
+  toast('✓ Einrichtung übernommen – wird gespeichert');
+  setTimeout(() => $('gSave').click(), 400);
+});
+let setupIncoming = null;
+function checkSetupLink() {
+  const m = location.hash.match(/^#setup=(.+)$/); if (!m) return;
+  const code = decodeURIComponent(m[1]);
+  history.replaceState(null, '', location.pathname + location.search);   // Token nicht in der Adresszeile lassen
+  const c = parseSetupCode(code); if (!c) { toast('Einrichtungs-Code ungültig'); return; }
+  setupIncoming = c;
+  $('setupInfo').textContent = `Sync für ${c.owner} / ${c.repo} auf diesem Gerät einrichten?`;
+  $('setupCode').value = code;
+  openSheet('setupSheet');
+}
+$('setupApply').onclick = () => {
+  if (!setupIncoming) return;
+  cfg = { ...cfg, ...setupIncoming }; localStorage.setItem(LS_CFG, JSON.stringify(cfg));
+  remoteSha = null; closeSheets(); toast('✓ Sync eingerichtet'); sync('Einrichtung');
+};
+$('setupCopy').onclick = () => copyText($('setupCode').value).then(ok => toast(ok ? 'Code kopiert – jetzt die App öffnen' : 'Bitte Text markieren und kopieren'));
+setTimeout(checkSetupLink, 300);
 $('gTest').onclick = async () => {
   const old = cfg; cfg = readCfgForm();
   try {
@@ -2516,7 +2614,7 @@ function renderPurchases() {
 function exportPurchasesCsv() {
   const rows = filteredPurchases().sort((a, b) => a.date.localeCompare(b.date));
   const num = v => v == null ? '' : String(Math.round(v * 100) / 100).replace('.', ',');
-  const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
   const lines = [['Datum', 'Artikel', 'Bezeichnung', 'Bereich', 'Markt', 'Menge', 'Einheit', 'Anzahl', 'Einzelpreis', 'Summe', 'Pfand', 'Preisart', 'geschätzt'].join(';'),
     ...rows.map(p => [p.date.split('-').reverse().join('.'), q(p.name), q(p.detail), q(catName(p.cat).replace(/^\S+\s/, '')), q(p.shop), p.qty, q(p.unit), p.n, num(p.price), num(p.price != null ? pTotal(p) : null), num(pDep(p) || null), p.type === 'normal' ? 'Normal' : p.type === 'app' ? 'App' : 'Angebot', p.est ? 'ja' : ''].join(';'))];
   const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
@@ -2669,9 +2767,10 @@ function parseOfferText(raw) {
 
   // Preis-Token finden (mit Position)
   const toks = [];
-  const re = /(?<![\d,.])(?:(\d{1,3})\s?[,.]\s?(\d{2})|(\d{1,3})\s?[,.]\s?-{1,2}|-\s?[,.]\s?(\d{2}))(?![\d%])/g;
+  const re = /(?:(\d{1,3})\s?[,.]\s?(\d{2})|(\d{1,3})\s?[,.]\s?-{1,2}|-\s?[,.]\s?(\d{2}))(?![\d%])/g;
   let m;
   while ((m = re.exec(all))) {
+    if (m.index > 0 && /[\d,.]/.test(all[m.index - 1])) { re.lastIndex = m.index + 1; continue; }   // (statt Lookbehind – ältere iPhones)
     let v = null;
     if (m[1] != null) v = +(m[1] + '.' + m[2]);
     else if (m[3] != null) v = +m[3];
@@ -2741,7 +2840,7 @@ function parseOfferText(raw) {
         const v = +(s.slice(0, i) + r + s.slice(i + 1));
         if (Math.abs(v - expect) / expect <= 0.06) fixed = v;
       }
-      res.regular = fixed ?? Math.round(expect * 100) / 100;
+      res.regular = fixed != null ? fixed : Math.round(expect * 100) / 100;
       res.regularGuessed = !fixed;
     }
   }
@@ -2760,9 +2859,10 @@ function parseOfferText(raw) {
   let pk = all.match(/(\d{1,2})\s?[x×]\s?(\d{1,4}(?:[,.]\d{1,3})?)\s?-?\s?(kg|g|ml|l)\b/i);
   if (pk) res.pack = mkPack(+pk[1], pk[2], pk[3]);
   else {
-    const reS = /(?<![\d,.=])(\d{1,4}(?:[,.]\d{1,3})?)\s?-?\s?(kg|g|ml|l|liter)\b(?!\s?=)/gi;
+    const reS = /(\d{1,4}(?:[,.]\d{1,3})?)\s?-?\s?(kg|g|ml|l|liter)\b(?!\s?=)/gi;
     let s;
     while ((s = reS.exec(all))) {
+      if (s.index > 0 && /[\d,.=]/.test(all[s.index - 1])) { reS.lastIndex = s.index + 1; continue; }
       const ctxB = all.slice(Math.max(0, s.index - 3), s.index);
       if (/=\s?$|\/\s?$/.test(ctxB)) continue;                 // Teil einer Grundpreisangabe
       if (/^1$|^100$/.test(s[1]) && /^\s?-?\s?(kg|g|l|ml)\s?=/.test(all.slice(s.index + s[1].length))) continue;
@@ -2879,14 +2979,14 @@ function bonDate(text, fileName) {
 function parseReceipt(raw, fileName) {
   let text = String(raw || '').replace(/\r/g, '').replace(/[–—]/g, '-').replace(/ /g, ' ');
   // typische Lesefehler bei Ziffern
-  text = text.replace(/(?<=[\d\s])[@O](?=[,.]\d)/g, '0').replace(/(\d)\s?[,.]\s(\d{2})(?!\d)/g, '$1,$2').replace(/(\d) , (\d{2})/g, '$1,$2').replace(/(\d) (\d{2}) ?€/g, '$1,$2 €');
+  text = text.replace(/([\d\s])[@O](?=[,.]\d)/g, (m0, a) => a + '0').replace(/(\d)\s?[,.]\s(\d{2})(?!\d)/g, '$1,$2').replace(/(\d) , (\d{2})/g, '$1,$2').replace(/(\d) (\d{2}) ?€/g, '$1,$2 €');
   // Schmale Schrift (EDEKA-App): Komma verschluckt, Ziffern als Buchstaben gelesen („139€“, „2il€“, „1/5€“) – reparieren und als unsicher markieren
   const CONF = { l: '1', I: '1', i: '1', '|': '1', '!': '1', L: '1', T: '7', '/': '7', A: '4', S: '5', O: '0', o: '0', B: '13', Z: '2', G: '6' };   // „B“ = zusammengelaufene „13“
   const lines0 = text.split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim().replace(/€\s+\S{1,2}$/, '€')).filter(Boolean).map(l => {
     const m = l.match(/^(.*[a-zäöü].*?)\s+(-?)(\S{2,6})\s?€$/i);
     if (!m || /^\d{1,4},\d{2}$/.test(m[3])) return l;
     if (/^(summe|zu (be)?zahlen|gespart|gesamt)/i.test(m[1])) return l;
-    const raw = m[3].replace(/[,.]/g, ''), mapped = raw.split('').map(c => /\d/.test(c) ? c : (CONF[c] ?? '?')).join('');
+    const raw = m[3].replace(/[,.]/g, ''), mapped = raw.split('').map(c => /\d/.test(c) ? c : nz(CONF[c], '?')).join('');
     if (/^\d{3,4}$/.test(mapped) && /\d/.test(raw)) return `${m[1]}\u2047 ${m[2]}${mapped.slice(0, -2)},${mapped.slice(-2)} €`;
     return `${m[1]}\u2049 0,00 €`;   // Preis nicht lesbar
   });
@@ -3543,6 +3643,14 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.36', '21.10.2026', [
+    'Neu in ⚙️ → Sync: „📲 Einrichtung an anderes Handy“ – per QR-Code, AirDrop oder Kopieren, ohne den Token abzutippen',
+    'Feld „Einrichtungs-Code einfügen“ – Code einsetzen, fertig'
+  ]],
+  ['v1.35', '21.10.2026', [
+    'Läuft jetzt auch auf älteren iPhones (z. B. iPhone 6 Plus mit iOS 12): neuere Programmier-Kürzel ersetzt, die dort alle Knöpfe lahmgelegt haben',
+    'Abstände zwischen Knöpfen auch auf älteren iPhones'
+  ]],
   ['v1.34', '18.10.2026', [
     'Packungsgröße jetzt auch in Stück („Stk“) – z. B. Sagrotan Tücher 60 Stk, mit Preis pro Stück',
     'Strichcode und Kassenbon erkennen Stück-Angaben wie „60 Tücher“, „20 Tabs“, „8 Rollen“'
