@@ -565,7 +565,8 @@ summary{cursor:pointer;font-weight:600}
   </div>
   <div class="row"><button class="btn" id="gShare">📲 Einrichtung an anderes Handy</button></div>
   <label>Einrichtungs-Code vom anderen Handy einfügen</label>
-  <input class="field" id="gCode" placeholder="EKL1:…" autocapitalize="off" autocorrect="off" autocomplete="off">
+  <div class="offerrow"><input class="field" id="gCode" placeholder="EKL1:…" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false"><button class="btn" id="gCodeGo" style="max-width:120px">Übernehmen</button></div>
+  <div class="hint" id="gCodeMsg"></div>
   </details>
   <details>
     <summary>Händler-Suchlinks</summary>
@@ -599,7 +600,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.36';
+const APP_VERSION = 'v1.37';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -2203,7 +2204,7 @@ async function gh(method, body, attempt = 0) {
     });
   } catch (err) {
     if (attempt < 2) { await new Promise(r => setTimeout(r, 800 * (attempt + 1))); return gh(method, body, attempt + 1); }
-    throw new Error('Keine Verbindung');
+    throw new Error('Keine Verbindung' + netHint());
   }
   if ((res.status === 429 || res.status >= 500) && attempt < 2) {
     await new Promise(r => setTimeout(r, 1500 * (attempt + 1))); return gh(method, body, attempt + 1);
@@ -2384,8 +2385,10 @@ $('gSave').onclick = () => {
 /* Einrichtung auf ein anderes Gerät übertragen (QR-Code / AirDrop / Kopieren) */
 function setupCodeOf(c) { return 'EKL1:' + b64encode(JSON.stringify({ o: c.owner, r: c.repo, t: c.token, b: c.branch || 'main' })); }
 function parseSetupCode(txt) {
-  const m = String(txt || '').trim().match(/EKL1:([A-Za-z0-9+\/=_-]+)/); if (!m) return null;
-  try { const j = JSON.parse(b64decode(m[1].replace(/-/g, '+').replace(/_/g, '/'))); return j && j.o && j.r && j.t ? { owner: j.o, repo: j.r, token: j.t, branch: j.b || 'main' } : null; } catch (e) { return null; }
+  // Leerzeichen, Zeilenumbrüche und unsichtbare Zeichen (z. B. aus Notizen/AirDrop) entfernen
+  const m = String(txt || '').replace(/[\s\u00AD\u200B-\u200D\u2060\uFEFF]/g, '').match(/EKL1:([A-Za-z0-9+\/=_%-]+)/); if (!m) return null;
+  let b = m[1]; if (/%[0-9A-F]{2}/i.test(b)) { try { b = decodeURIComponent(b); } catch (e) {} }
+  try { const j = JSON.parse(b64decode(b.replace(/-/g, '+').replace(/_/g, '/'))); return j && j.o && j.r && j.t ? { owner: j.o, repo: j.r, token: j.t, branch: j.b || 'main' } : null; } catch (e) { return null; }
 }
 function copyText(t) {
   if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t).then(() => true, () => legacyCopy(t));
@@ -2413,13 +2416,18 @@ $('shareSend').onclick = () => {
   if (navigator.share) navigator.share({ title: 'Einkaufsliste – Einrichtung', text: t }).catch(() => {});
   else copyText(t).then(ok => toast(ok ? 'Teilen nicht verfügbar – Code kopiert' : 'Bitte Text markieren und kopieren'));
 };
-$('gCode').addEventListener('input', () => {
-  const c = parseSetupCode($('gCode').value); if (!c) return;
+function applySetupField(manual) {
+  const v = $('gCode').value;
+  const c = parseSetupCode(v);
+  if (!c) { if (manual || v.length > 60) $('gCodeMsg').textContent = v.trim() ? '⚠︎ Code nicht vollständig oder beschädigt (' + v.replace(/\s/g, '').length + ' Zeichen) – bitte am anderen Handy neu kopieren.' : ''; return; }
   $('gOwner').value = c.owner; $('gRepo').value = c.repo; $('gToken').value = c.token; $('gCode').value = '';
+  $('gCodeMsg').textContent = '✓ Token übernommen (' + c.token.length + ' Zeichen)';
   $('gCode').blur();
   toast('✓ Einrichtung übernommen – wird gespeichert');
-  setTimeout(() => $('gSave').click(), 400);
-});
+  setTimeout(() => $('gSave').click(), 600);
+}
+['input', 'change', 'paste'].forEach(ev => $('gCode').addEventListener(ev, () => setTimeout(() => applySetupField(false), 50)));
+$('gCodeGo').onclick = () => applySetupField(true);
 let setupIncoming = null;
 function checkSetupLink() {
   const m = location.hash.match(/^#setup=(.+)$/); if (!m) return;
@@ -2448,6 +2456,12 @@ $('gTest').onclick = async () => {
   } catch (e) { toast('✗ ' + e.message); }
   cfg = old;
 };
+// Häufigste Ursache auf alten Handys ohne SIM: falsches Datum → sichere Verbindung wird abgelehnt
+function netHint() {
+  if (new Date().getFullYear() < 2026) return ' – Datum/Uhrzeit am Handy falsch! Einstellungen → Allgemein → Datum & Uhrzeit → „Automatisch“';
+  if (navigator.onLine === false) return ' – kein Internet (WLAN prüfen)';
+  return ' – WLAN sowie Datum & Uhrzeit am Handy prüfen';
+}
 $('exportBtn').onclick = () => {
   const blob = new Blob([JSON.stringify({ app: 'Einkaufsliste', version: APP_VERSION, ...data }, null, 1)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -3643,6 +3657,10 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.37', '21.10.2026', [
+    'Einrichtungs-Code: Leerzeichen/Zeilenumbrüche (z. B. aus AirDrop oder Notizen) werden ignoriert; neuer Knopf „Übernehmen“ mit klarer Meldung',
+    'Verbindungsfehler nennen jetzt die wahrscheinliche Ursache (z. B. falsches Datum am Handy)'
+  ]],
   ['v1.36', '21.10.2026', [
     'Neu in ⚙️ → Sync: „📲 Einrichtung an anderes Handy“ – per QR-Code, AirDrop oder Kopieren, ohne den Token abzutippen',
     'Feld „Einrichtungs-Code einfügen“ – Code einsetzen, fertig'
