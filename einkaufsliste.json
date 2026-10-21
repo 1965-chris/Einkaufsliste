@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.40",
- "savedAt": "2026-10-21T21:40:30.043Z",
+ "savedAt": "2026-10-21T21:41:51.386Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3631,14 +3631,14 @@
   "dmvimytottwpbo": {
    "firstSeen": 1792618830029,
    "id": "dmvimytottwpbo",
-   "name": "iPhone 16 Pro Max/17 Pro Max",
+   "name": "iPhone 16 Pro Max / iPhone v. Christian",
    "model": "iPhone 16 Pro Max/17 Pro Max",
    "os": "iOS 18.7",
    "browser": "Safari",
    "app": "Homebildschirm-App",
    "version": "v1.40",
    "lastSeen": 1792618830029,
-   "updatedAt": 1792618830029
+   "updatedAt": 1792618908702
   }
  }
 }
