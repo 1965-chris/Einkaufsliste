@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.40",
- "savedAt": "2026-10-21T21:41:51.386Z",
+ "savedAt": "2026-10-21T21:43:19.945Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3639,6 +3639,18 @@
    "version": "v1.40",
    "lastSeen": 1792618830029,
    "updatedAt": 1792618908702
+  },
+  "dmvin2gqiezawm": {
+   "firstSeen": 1792618999868,
+   "id": "dmvin2gqiezawm",
+   "name": "iPhone 6/7/8 Plus",
+   "model": "iPhone 6/7/8 Plus",
+   "os": "iOS 15.8",
+   "browser": "Safari",
+   "app": "Homebildschirm-App",
+   "version": "v1.40",
+   "lastSeen": 1792618999868,
+   "updatedAt": 1792618999868
   }
  }
 }
