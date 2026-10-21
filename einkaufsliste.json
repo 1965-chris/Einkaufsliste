@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.40",
- "savedAt": "2026-10-21T22:00:07.673Z",
+ "savedAt": "2026-10-21T22:00:19.685Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1273,6 +1273,15 @@
    "on": true,
    "updatedAt": 1792307659355,
    "note": ""
+  },
+  "family cappuccino|barissimo family cappuccino - choco": {
+   "name": "Family Cappuccino",
+   "detail": "Barissimo Family Cappuccino - Choco",
+   "cat": "kaffee",
+   "unit": "Pck.",
+   "qty": 1,
+   "on": true,
+   "updatedAt": 1792620017550
   }
  },
  "custom": {
