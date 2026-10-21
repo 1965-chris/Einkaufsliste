@@ -138,6 +138,11 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .dupgrp label{display:flex;align-items:center;gap:8px;margin:6px 0 0;font-size:14px;color:var(--ink)}
 .dupgrp input{width:18px;height:18px;accent-color:var(--accent);flex:none}
 .dupgrp .dm{color:var(--muted);font-size:12px}
+.devrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.devrow:first-child{border-top:0}
+.devrow .dv{flex:1;font-size:15px}
+.devrow .dv small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.devrow .me{font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .okmark{color:var(--accent);font-weight:700}
 .badge{display:inline-block;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .chk{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink);margin:10px 0 0}
@@ -575,6 +580,11 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
     <div class="hint">So hinterlegst du einen direkten Link: Auf der Seite des Händlers nach <b>spaghetti</b> suchen, die Adresse der Ergebnisseite kopieren und hier einfügen. Leer lassen = Google-Suche auf der Händlerseite.</div>
     <div id="linkEdit"></div>
   </details>
+  <details id="devBox">
+    <summary>📱 Angemeldete Geräte</summary>
+    <div class="hint">Alle Geräte, die mit dieser Liste abgleichen. Das Modell wird aus der Bildschirmgröße geschätzt – den Namen kannst du ändern.</div>
+    <div id="devList"></div>
+  </details>
   <details>
     <summary>Sync-Verlauf</summary>
     <div class="log" id="syncLog"></div>
@@ -602,7 +612,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.39';
+const APP_VERSION = 'v1.40';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1032,7 +1042,7 @@ function loadJSON(key, fallback) {
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap), eans: obj(d.eans), arts: obj(d.arts) };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap), eans: obj(d.eans), arts: obj(d.arts), devices: obj(d.devices) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -2241,6 +2251,7 @@ function mergeData(local, remote) {
   const bonmap = mergeByUpdated(local.bonmap, remote.bonmap);
   const eans = mergeByUpdated(local.eans, remote.eans);
   const arts = mergeByUpdated(local.arts, remote.arts);
+  const devices = mergeByUpdated(local.devices, remote.devices);
   Object.keys(purchases).forEach(k => { if (purchases[k].deleted && (purchases[k].updatedAt || 0) < cutoff) delete purchases[k]; });
   Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
   // eigene Bezeichnungen beider Seiten zusammenführen – gelöschte (varDel) bleiben gelöscht, solange sie nicht neuer wieder angelegt wurden
@@ -2252,7 +2263,7 @@ function mergeData(local, remote) {
     [...(L.variants || []), ...(R.variants || [])].forEach(v => { const nv = norm(v); if (!vs.has(nv) && (!varDel[nv] || (varAdd[nv] || 0) > varDel[nv])) vs.set(nv, v); });
     custom[k] = { ...custom[k], variants: [...vs.values()], ...(Object.keys(varAdd).length ? { varAdd } : {}), ...(Object.keys(varDel).length ? { varDel } : {}) };
   });
-  return { items, favs, stars, custom, prices, brands, purchases, bonmap, eans, arts };
+  return { items, favs, stars, custom, prices, brands, purchases, bonmap, eans, arts, devices };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
@@ -2260,20 +2271,20 @@ function canon(d) {
   const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap), eans: mapC(d.eans), arts: mapC(d.arts)
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap), eans: mapC(d.eans), arts: mapC(d.arts), devices: mapC(d.devices)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {}, eans: {}, arts: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {}, eans: {}, arts: {}, devices: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
   const p = JSON.parse(b64decode(j.content || ''));
-  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts) };
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts), devices: obj(p.devices) };
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
@@ -2328,6 +2339,7 @@ async function sync(reason) {
       const remote = await pull();
       const merged = mergeData(data, remote);
       backfillPurchases(merged);
+      touchDevice(merged);
       const localChanged = !sameData(merged, data);
       const remoteChanged = !sameData(merged, remote);
       if (localChanged) { data = merged; saveLocal(); renderAll(); }
@@ -2376,7 +2388,7 @@ function openSettings() {
   renderLinkEdit();
   $('gOwner').value = cfg.owner || ''; $('gRepo').value = cfg.repo || ''; $('gToken').value = cfg.token || '';
   $('syncBox').open = !cfg.token;   // eingeklappt, solange der Sync eingerichtet ist
-  renderLog(); openSheet('setSheet');
+  renderLog(); if ($('devBox').open) renderDevices(); openSheet('setSheet');
 }
 $('settingsBtn').onclick = openSettings;
 function readCfgForm() { return { owner: $('gOwner').value.trim(), repo: $('gRepo').value.trim(), token: $('gToken').value.trim(), branch: cfg.branch || 'main' }; }
@@ -2384,14 +2396,83 @@ $('gSave').onclick = () => {
   cfg = readCfgForm(); localStorage.setItem(LS_CFG, JSON.stringify(cfg));
   remoteSha = null; closeSheets(); toast('Gespeichert'); sync('Einrichtung');
 };
+/* ---------- Angemeldete Geräte ---------- */
+const LS_DEV = 'ekl-device';
+function myDeviceId() {
+  let id = loadJSON(LS_DEV, null);
+  if (!id) { id = 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); localStorage.setItem(LS_DEV, JSON.stringify(id)); }
+  return id;
+}
+function deviceInfo() {
+  const ua = navigator.userAgent, w = Math.min(screen.width, screen.height), h = Math.max(screen.width, screen.height);
+  let os = '', kind = 'Gerät', m;
+  if ((m = ua.match(/iPhone OS (\d+)_(\d+)/))) { kind = 'iPhone'; os = 'iOS ' + m[1] + '.' + m[2]; }
+  else if (/iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) { kind = 'iPad'; m = ua.match(/OS (\d+)_(\d+)/) || ua.match(/Version\/(\d+)\.(\d+)/); os = m ? 'iPadOS ' + m[1] + '.' + m[2] : 'iPadOS'; }
+  else if ((m = ua.match(/Android (\d+)/))) { kind = 'Android'; os = 'Android ' + m[1]; }
+  else if (/Windows/.test(ua)) { kind = 'Windows-PC'; os = 'Windows'; }
+  else if (/Macintosh/.test(ua)) { kind = 'Mac'; os = 'macOS'; }
+  const br = /Firefox\//.test(ua) ? 'Firefox' : /Edg\//.test(ua) ? 'Edge' : /CriOS|Chrome\//.test(ua) ? 'Chrome' : /Safari\//.test(ua) ? 'Safari' : '';
+  const IPH = { '414x736': 'iPhone 6/7/8 Plus', '375x667': 'iPhone 6/7/8/SE', '320x568': 'iPhone 5/SE (1.)', '375x812': 'iPhone X/XS/11 Pro/mini', '414x896': 'iPhone XR/11/XS Max',
+    '390x844': 'iPhone 12–14', '428x926': 'iPhone 12–13 Pro Max/14 Plus', '393x852': 'iPhone 14 Pro/15/16', '430x932': 'iPhone 14–16 Pro Max/Plus', '402x874': 'iPhone 16 Pro/17', '440x956': 'iPhone 16 Pro Max/17 Pro Max' };
+  const model = kind === 'iPhone' ? (IPH[w + 'x' + h] || 'iPhone') : kind;
+  const standalone = window.navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+  return { model, os, browser: br, app: standalone ? 'Homebildschirm-App' : 'Browser' };
+}
+// beim Abgleich: eigenes Gerät eintragen bzw. „zuletzt aktiv“ auffrischen (höchstens alle 30 Min., damit nicht ständig gespeichert wird)
+function touchDevice(d) {
+  d.devices = d.devices || {};
+  const id = myDeviceId(), prev = d.devices[id], info = deviceInfo(), t = now();
+  if (prev && !prev.deleted && prev.version === APP_VERSION && prev.os === info.os && prev.app === info.app && t - (prev.lastSeen || 0) < 30 * 60000) return false;
+  d.devices[id] = { ...(prev && !prev.deleted ? prev : { firstSeen: t }), id, name: (prev && !prev.deleted && prev.name) || info.model, ...info, version: APP_VERSION, lastSeen: t, updatedAt: t };
+  return true;
+}
+function fmtAgo(ts) {
+  const m = Math.round((now() - ts) / 60000);
+  if (m < 2) return 'gerade eben'; if (m < 60) return 'vor ' + m + ' Min.';
+  const h = Math.round(m / 60); if (h < 24) return 'vor ' + h + ' Std.';
+  const dd = Math.round(h / 24); return dd === 1 ? 'gestern' : 'vor ' + dd + ' Tagen';
+}
+function renderDevices() {
+  const me = myDeviceId();
+  const list = Object.values(data.devices || {}).filter(x => !x.deleted).sort((a, b) => (b.id === me) - (a.id === me) || (b.lastSeen || 0) - (a.lastSeen || 0));
+  if (!list.some(x => x.id === me)) list.unshift({ id: me, name: deviceInfo().model, ...deviceInfo(), version: APP_VERSION, lastSeen: null, pending: true });
+  $('devList').innerHTML = list.map(x => `<div class="devrow"><div class="dv"><b>${esc(x.name || x.model)}</b>${x.id === me ? '<span class="me">dieses Gerät</span>' : ''}
+      <small>${esc([x.name !== x.model ? x.model : '', x.os, x.browser, x.app].filter(Boolean).join(' · '))}</small>
+      <small>App ${esc(x.version || '?')} · ${x.pending ? 'noch nicht abgeglichen' : 'zuletzt aktiv ' + esc(fmtAgo(x.lastSeen))}</small></div>
+      <button class="link" data-devname="${esc(x.id)}">Name</button>${x.id === me ? '' : `<button class="link" data-devdel="${esc(x.id)}" style="color:var(--danger,#c0392b)">✕</button>`}</div>`).join('')
+    + (list.length > 1 ? '<div class="hint">✕ entfernt nur den Eintrag. Ein Gerät wirklich aussperren geht nur über einen neuen Token bei GitHub.</div>' : '');
+}
+$('devList').addEventListener('click', e => {
+  const n = e.target.closest('[data-devname]'), d = e.target.closest('[data-devdel]');
+  if (n) {
+    const id = n.dataset.devname; data.devices = data.devices || {};
+    if (!data.devices[id]) touchDevice(data);
+    const cur = data.devices[id];
+    const v = prompt('Name für dieses Gerät (z. B. „Christians iPhone“, „Birgit“, „Küche“):', cur.name || cur.model);
+    if (v && v.trim()) { cur.name = v.trim(); cur.updatedAt = now(); commit(); renderDevices(); }
+  }
+  if (d) {
+    const x = (data.devices || {})[d.dataset.devdel]; if (!x) return;
+    if (!confirm(`„${x.name || x.model}“ aus der Geräteliste entfernen?\n\nMeldet sich das Gerät wieder, erscheint es erneut.`)) return;
+    x.deleted = true; x.updatedAt = now(); commit(); renderDevices();
+  }
+});
+$('devBox').addEventListener('toggle', () => { if ($('devBox').open) renderDevices(); });
+
 /* Einrichtung auf ein anderes Gerät übertragen (QR-Code / AirDrop / Kopieren) */
 function setupCodeOf(c) { return 'EKL1:' + b64encode(JSON.stringify({ o: c.owner, r: c.repo, t: c.token, b: c.branch || 'main' })); }
 function parseSetupCode(txt) {
   // Leerzeichen, Zeilenumbrüche und unsichtbare Zeichen (z. B. aus Notizen/AirDrop) entfernen
-  const m = String(txt || '').replace(/[\s\u00AD\u200B-\u200D\u2060\uFEFF]/g, '').match(/EKL1:([A-Za-z0-9+\/=_%-]+)/i); if (!m) return null;   // „ekl1:“ (Kleinschreibung) auch akzeptieren
+  setupErr = '';
+  const m = String(txt || '').replace(/[\s\u00AD\u200B-\u200D\u2060\uFEFF]/g, '').match(/EKL1:([A-Za-z0-9+\/=_%-]+)/i);   // „ekl1:“ (Kleinschreibung) auch akzeptieren
+  if (!m) { setupErr = 'Anfang „EKL1:“ fehlt'; return null; }
   let b = m[1]; if (/%[0-9A-F]{2}/i.test(b)) { try { b = decodeURIComponent(b); } catch (e) {} }
-  try { const j = JSON.parse(b64decode(b.replace(/-/g, '+').replace(/_/g, '/'))); return j && j.o && j.r && j.t ? { owner: j.o, repo: j.r, token: j.t, branch: j.b || 'main' } : null; } catch (e) { return null; }
+  let txt2 = '';
+  try { txt2 = b64decode(b.replace(/-/g, '+').replace(/_/g, '/')); } catch (e) { setupErr = 'Entpacken fehlgeschlagen (' + (e.name || e) + ')'; return null; }
+  try { const j = JSON.parse(txt2); if (j && j.o && j.r && j.t) return { owner: j.o, repo: j.r, token: j.t, branch: j.b || 'main' }; setupErr = 'Angaben unvollständig'; return null; }
+  catch (e) { setupErr = 'Inhalt beschädigt'; return null; }
 }
+let setupErr = '';
 function copyText(t) {
   if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t).then(() => true, () => legacyCopy(t));
   return Promise.resolve(legacyCopy(t));
@@ -2421,7 +2502,7 @@ $('shareSend').onclick = () => {
 function applySetupField(manual) {
   const v = $('gCode').value;
   const c = parseSetupCode(v);
-  if (!c) { if (manual || v.length > 60) $('gCodeMsg').textContent = v.trim() ? '⚠︎ Code nicht vollständig oder beschädigt (' + v.replace(/\s/g, '').length + ' Zeichen) – bitte am anderen Handy neu kopieren.' : ''; return; }
+  if (!c) { if (manual || v.length > 60) $('gCodeMsg').textContent = v.trim() ? '⚠︎ Code wird nicht erkannt: ' + setupErr + ' (' + v.replace(/\s/g, '').length + ' Zeichen)' + (manual ? ' · ' + new Date().toLocaleTimeString('de-DE') : '') : ''; return; }
   $('gOwner').value = c.owner; $('gRepo').value = c.repo; $('gToken').value = c.token; $('gCode').value = '';
   $('gCodeMsg').textContent = '✓ Token übernommen (' + c.token.length + ' Zeichen)';
   $('gCode').blur();
@@ -2429,7 +2510,10 @@ function applySetupField(manual) {
   setTimeout(() => $('gSave').click(), 600);
 }
 ['input', 'change', 'paste'].forEach(ev => $('gCode').addEventListener(ev, () => setTimeout(() => applySetupField(false), 50)));
-$('gCodeGo').onclick = () => applySetupField(true);
+// iOS 12: Tipp kann beim Schließen der Tastatur verloren gehen – deshalb auch auf „touchend“ reagieren
+let gCodeTouch = 0;
+$('gCodeGo').addEventListener('touchend', e => { e.preventDefault(); gCodeTouch = Date.now(); $('gCode').blur(); $('gCodeMsg').textContent = 'Prüfe …'; setTimeout(() => applySetupField(true), 30); });
+$('gCodeGo').onclick = () => { if (Date.now() - gCodeTouch < 800) return; $('gCodeMsg').textContent = 'Prüfe …'; setTimeout(() => applySetupField(true), 30); };
 let setupIncoming = null;
 function checkSetupLink() {
   const m = location.hash.match(/^#setup=(.+)$/); if (!m) return;
@@ -2476,7 +2560,7 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap), eans: obj(j.eans), arts: obj(j.arts) });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap), eans: obj(j.eans), arts: obj(j.arts), devices: obj(j.devices) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
@@ -3659,8 +3743,13 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.40', '21.10.2026', [
+    'Neu in ⚙️: „📱 Angemeldete Geräte“ – welche Handys mit der Liste abgleichen, mit Modell, iOS-Version, App-Version und „zuletzt aktiv“',
+    'Geräte lassen sich benennen (z. B. „Birgit“, „iPhone 6 Plus Küche“)'
+  ]],
   ['v1.39', '21.10.2026', [
-    'Knöpfe lassen sich nicht mehr versehentlich als Text markieren (ältere iPhones)'
+    'Knöpfe lassen sich nicht mehr versehentlich als Text markieren (ältere iPhones)',
+    '„Übernehmen“ beim Einrichtungs-Code reagiert zuverlässiger und sagt genau, was am Code nicht stimmt'
   ]],
   ['v1.38', '21.10.2026', [
     'Einrichtungs-Code wird auch erkannt, wenn das iPhone den Anfang klein geschrieben hat („ekl1:“)'
