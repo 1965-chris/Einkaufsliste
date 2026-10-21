@@ -600,7 +600,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.37';
+const APP_VERSION = 'v1.38';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -2386,7 +2386,7 @@ $('gSave').onclick = () => {
 function setupCodeOf(c) { return 'EKL1:' + b64encode(JSON.stringify({ o: c.owner, r: c.repo, t: c.token, b: c.branch || 'main' })); }
 function parseSetupCode(txt) {
   // Leerzeichen, Zeilenumbrüche und unsichtbare Zeichen (z. B. aus Notizen/AirDrop) entfernen
-  const m = String(txt || '').replace(/[\s\u00AD\u200B-\u200D\u2060\uFEFF]/g, '').match(/EKL1:([A-Za-z0-9+\/=_%-]+)/); if (!m) return null;
+  const m = String(txt || '').replace(/[\s\u00AD\u200B-\u200D\u2060\uFEFF]/g, '').match(/EKL1:([A-Za-z0-9+\/=_%-]+)/i); if (!m) return null;   // „ekl1:“ (Kleinschreibung) auch akzeptieren
   let b = m[1]; if (/%[0-9A-F]{2}/i.test(b)) { try { b = decodeURIComponent(b); } catch (e) {} }
   try { const j = JSON.parse(b64decode(b.replace(/-/g, '+').replace(/_/g, '/'))); return j && j.o && j.r && j.t ? { owner: j.o, repo: j.r, token: j.t, branch: j.b || 'main' } : null; } catch (e) { return null; }
 }
@@ -3657,6 +3657,9 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.38', '21.10.2026', [
+    'Einrichtungs-Code wird auch erkannt, wenn das iPhone den Anfang klein geschrieben hat („ekl1:“)'
+  ]],
   ['v1.37', '21.10.2026', [
     'Einrichtungs-Code: Leerzeichen/Zeilenumbrüche (z. B. aus AirDrop oder Notizen) werden ignoriert; neuer Knopf „Übernehmen“ mit klarer Meldung',
     'Verbindungsfehler nennen jetzt die wahrscheinliche Ursache (z. B. falsches Datum am Handy)'
