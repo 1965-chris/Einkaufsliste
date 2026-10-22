@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-22T16:41:58.230Z",
+ "savedAt": "2026-10-22T16:42:09.180Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1154,7 +1154,8 @@
    "detail": "",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1792675286883
+   "last": 1792687327059,
+   "deleted": true
   }
  },
  "stars": {
