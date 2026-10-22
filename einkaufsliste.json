@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-22T15:23:59.058Z",
+ "savedAt": "2026-10-22T15:26:51.680Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -750,8 +750,9 @@
    "cat": "drogerie",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1792562686761
+   "checked": true,
+   "updatedAt": 1792682809302,
+   "checkedAt": 1792682809302
   },
   {
    "id": "mvj90g4c0qwtsl",
