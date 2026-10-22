@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-22T13:22:28.859Z",
+ "savedAt": "2026-10-22T13:22:56.529Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2779,7 +2779,8 @@
    "type": "angebot",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791916820934
+   "updatedAt": 1792675374382,
+   "deleted": true
   },
   "k-muyigk1e3ltp6h": {
    "id": "k-muyigk1e3ltp6h",
@@ -2796,7 +2797,8 @@
    "type": "angebot",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791916820934
+   "updatedAt": 1792675372982,
+   "deleted": true
   },
   "k-muyo5rk7znkq3g": {
    "id": "k-muyo5rk7znkq3g",
