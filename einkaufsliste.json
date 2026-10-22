@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.40",
- "savedAt": "2026-10-22T07:21:55.832Z",
+ "savedAt": "2026-10-22T07:23:45.404Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1645,6 +1645,18 @@
     "family cappuccino - choco": 1792489893835
    },
    "updatedAt": 1792489893835
+  },
+  "ravioli": {
+   "name": "Ravioli",
+   "variants": [
+    "Ravioli Bolognese"
+   ],
+   "cat": "vorrat",
+   "unit": "Glas",
+   "varAdd": {
+    "ravioli bolognese": 1792653823115
+   },
+   "updatedAt": 1792653823115
   }
  },
  "prices": {
@@ -3301,6 +3313,17 @@
     "u": "kg"
    },
    "updatedAt": 1792490134191
+  },
+  "8445290145567": {
+   "name": "Ravioli",
+   "detail": "Maggi Ravioli Bolognese",
+   "cat": "vorrat",
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "updatedAt": 1792653823115
   }
  },
  "arts": {
@@ -3643,6 +3666,20 @@
    },
    "deposit": null,
    "updatedAt": 1792490155544
+  },
+  "ravioli|maggi ravioli bolognese": {
+   "name": "Ravioli",
+   "detail": "Maggi Ravioli Bolognese",
+   "cat": "vorrat",
+   "unit": "Glas",
+   "shop": "",
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792653823115
   }
  },
  "devices": {
