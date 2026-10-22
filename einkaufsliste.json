@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.40",
- "savedAt": "2026-10-22T07:56:17.014Z",
+ "savedAt": "2026-10-22T07:57:39.508Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -750,6 +750,18 @@
    "offer": null,
    "checked": false,
    "updatedAt": 1792562686761
+  },
+  {
+   "id": "mvj90g4c0qwtsl",
+   "name": "TK-Gemüse",
+   "detail": "Spinat",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "tk",
+   "note": "",
+   "offer": null,
+   "checked": false,
+   "updatedAt": 1792655857308
   }
  ],
  "favs": {
@@ -1079,6 +1091,14 @@
    "cat": "obst",
    "unit": "Pck.",
    "last": 1792490155557
+  },
+  "tk-gemüse|spinat": {
+   "count": 1,
+   "name": "TK-Gemüse",
+   "detail": "Spinat",
+   "cat": "tk",
+   "unit": "Pck.",
+   "last": 1792655857308
   }
  },
  "stars": {
@@ -3680,6 +3700,16 @@
    },
    "deposit": null,
    "updatedAt": 1792653823115
+  },
+  "tk-gemüse|spinat": {
+   "name": "TK-Gemüse",
+   "detail": "Spinat",
+   "cat": "tk",
+   "unit": "Pck.",
+   "shop": "",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792655857307
   }
  },
  "devices": {
