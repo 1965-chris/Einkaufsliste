@@ -612,7 +612,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.40';
+const APP_VERSION = 'v1.41';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1835,7 +1835,9 @@ $('sArtDel').onclick = () => {
   c.deleted = true; c.updatedAt = now(); closeSheets(); commit();
   toast('„' + c.name + '“ aus dem Katalog gelöscht', () => { delete c.deleted; c.updatedAt = now(); commit(); });
 };
-$('newArt').onclick = () => { openItemSheet('add', { name: cap($('catSearch').value.trim()) }); if (!$('sName').value) $('sTitle').textContent = 'Neuer Artikel'; setTimeout(() => { if (!$('sName').value) $('sName').focus(); }, 250); };
+// Suchfeld leeren, sobald etwas ausgewählt oder neu angelegt wird
+function clearCatSearch() { if (!$('catSearch').value) return; $('catSearch').value = ''; $('catSearch').blur(); renderCatalog(); }
+$('newArt').onclick = () => { openItemSheet('add', { name: cap($('catSearch').value.trim()) }); clearCatSearch(); if (!$('sName').value) $('sTitle').textContent = 'Neuer Artikel'; setTimeout(() => { if (!$('sName').value) $('sName').focus(); }, 250); };
 
 /* „Meine Artikel“ bearbeiten */
 let artKey = null;
@@ -2155,9 +2157,10 @@ $('catMain').addEventListener('click', e => {
     const a = myArticles().find(x => x.key === m.dataset.myart); if (!a) return;
     const o = { shop: a.shop || '', price: a.normal ? a.normal.price : null, type: 'normal', pack: a.pack || null, deposit: a.deposit || null };
     openItemSheet('article', { name: a.name, detail: a.detail, cat: a.cat, unit: a.unit, offer: o });
+    clearCatSearch();
     return;
   }
-  const b = e.target.closest('[data-art]'); if (b) openItemSheet('add', { name: b.dataset.art });
+  const b = e.target.closest('[data-art]'); if (b) { openItemSheet('add', { name: b.dataset.art }); clearCatSearch(); }
 });
 $('favMain').addEventListener('click', e => {
   if (e.target.closest('[data-act="newFav"]')) { openItemSheet('fav', {}); return; }
@@ -3743,6 +3746,9 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.41', '22.10.2026', [
+    'Artikel-Suche: das Suchfeld wird geleert, sobald ein Artikel ausgewählt oder neu angelegt wird'
+  ]],
   ['v1.40', '21.10.2026', [
     'Neu in ⚙️: „📱 Angemeldete Geräte“ – welche Handys mit der Liste abgleichen, mit Modell, iOS-Version, App-Version und „zuletzt aktiv“',
     'Geräte lassen sich benennen (z. B. „Birgit“, „iPhone 6 Plus Küche“)'
