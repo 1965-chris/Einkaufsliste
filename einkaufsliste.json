@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-22T16:40:14.403Z",
+ "savedAt": "2026-10-22T16:41:58.230Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1733,6 +1733,18 @@
     "ravioli bolognese": 1792653823115
    },
    "updatedAt": 1792653823115
+  },
+  "schokolade": {
+   "name": "Schokolade",
+   "variants": [
+    "Baumkuchspitzen Vollmilchschokolade"
+   ],
+   "cat": "suess",
+   "unit": "Pck.",
+   "varAdd": {
+    "baumkuchspitzen vollmilchschokolade": 1792687316087
+   },
+   "updatedAt": 1792687316087
   }
  },
  "prices": {
@@ -3426,6 +3438,17 @@
     "u": "kg"
    },
    "updatedAt": 1792653823115
+  },
+  "4061459882841": {
+   "name": "Schokolade",
+   "detail": "Baumkuchspitzen Vollmilchschokolade",
+   "cat": "suess",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "updatedAt": 1792687316086
   }
  },
  "arts": {
@@ -3806,6 +3829,20 @@
    },
    "deposit": null,
    "updatedAt": 1792681138388
+  },
+  "schokolade|baumkuchspitzen vollmilchschokolade": {
+   "name": "Schokolade",
+   "detail": "Baumkuchspitzen Vollmilchschokolade",
+   "cat": "suess",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792687316086
   }
  },
  "devices": {
