@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-22T14:57:59.747Z",
+ "savedAt": "2026-10-22T14:58:59.364Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -776,6 +776,32 @@
    "updatedAt": 1792675311562,
    "checkedAt": 1792675301540,
    "deleted": true
+  },
+  {
+   "id": "mvjo2b59h4jqis",
+   "name": "Pudding",
+   "detail": "Milsani Schoko mit Sahnehaube",
+   "qty": 3,
+   "unit": "",
+   "cat": "kuehl",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.39,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.2,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1792681138413
   }
  ],
  "favs": {
@@ -937,12 +963,12 @@
    "deleted": true
   },
   "pudding|milsani schoko mit sahnehaube": {
-   "count": 1,
+   "count": 2,
    "name": "Pudding",
    "detail": "Milsani Schoko mit Sahnehaube",
    "cat": "kuehl",
-   "unit": "Becher",
-   "last": 1792307727554,
+   "unit": "",
+   "last": 1792681138414,
    "qty": 1,
    "note": "",
    "offer": {
@@ -955,8 +981,7 @@
     "pack": null,
     "deposit": null,
     "regular": null
-   },
-   "deleted": true
+   }
   },
   "gehackte tomaten|": {
    "count": 1,
@@ -3758,6 +3783,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792655857307
+  },
+  "pudding|milsani schoko mit sahnehaube": {
+   "name": "Pudding",
+   "detail": "Milsani Schoko mit Sahnehaube",
+   "cat": "kuehl",
+   "unit": "",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792681138388
   }
  },
  "devices": {
