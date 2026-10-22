@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-22T15:30:58.737Z",
+ "savedAt": "2026-10-22T15:37:34.243Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -620,9 +620,9 @@
     "deposit": null,
     "regular": null
    },
-   "checked": false,
-   "updatedAt": 1792682636844,
-   "checkedAt": null
+   "checked": true,
+   "updatedAt": 1792683453994,
+   "checkedAt": 1792683453994
   },
   {
    "id": "mvgi1z70tn3r1n",
@@ -647,8 +647,9 @@
     "deposit": null,
     "regular": null
    },
-   "checked": false,
-   "updatedAt": 1792489646700
+   "checked": true,
+   "updatedAt": 1792683451930,
+   "checkedAt": 1792683451930
   },
   {
    "id": "mvgi4fj2tn5i3v",
@@ -700,8 +701,9 @@
     "deposit": 3.49,
     "regular": null
    },
-   "checked": false,
-   "updatedAt": 1792489930085
+   "checked": true,
+   "updatedAt": 1792683450436,
+   "checkedAt": 1792683450436
   },
   {
    "id": "mvgicvtxrn7dv0",
