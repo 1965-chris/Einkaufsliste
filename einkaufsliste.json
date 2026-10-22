@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-22T15:30:24.315Z",
+ "savedAt": "2026-10-22T15:30:58.737Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -739,8 +739,9 @@
    "cat": "kuehl",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1792561429167
+   "checked": true,
+   "updatedAt": 1792683056201,
+   "checkedAt": 1792683056201
   },
   {
    "id": "mvhpjh9ks45kpw",
@@ -764,8 +765,9 @@
    "cat": "tk",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1792655857308
+   "checked": true,
+   "updatedAt": 1792683058700,
+   "checkedAt": 1792683058700
   },
   {
    "id": "mvjkkw2rqjvxze",
