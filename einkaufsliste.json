@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:24:43.950Z",
+ "savedAt": "2026-10-23T06:25:49.275Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2906,6 +2906,23 @@
    },
    "deposit": null,
    "updatedAt": 1792736424084
+  },
+  "shampoo|pantene spülung vol. pur|dm|2026-10-23": {
+   "id": "shampoo|pantene spülung vol. pur|dm|2026-10-23",
+   "key": "shampoo|pantene spülung vol. pur",
+   "name": "Shampoo",
+   "detail": "Pantene Spülung Vol. Pur",
+   "date": "2026-10-23",
+   "shop": "dm",
+   "price": 3.95,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.3
+   },
+   "deposit": null,
+   "updatedAt": 1792736747205
   }
  },
  "brands": {
@@ -4489,6 +4506,19 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792736681858
+  },
+  "shampoo|pantene spülung vol. pur": {
+   "name": "Shampoo",
+   "detail": "Pantene Spülung Vol. Pur",
+   "cat": "drogerie",
+   "unit": "",
+   "shop": "dm",
+   "pack": {
+    "n": 1,
+    "size": 0.3
+   },
+   "deposit": null,
+   "updatedAt": 1792736747191
   }
  },
  "devices": {
