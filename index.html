@@ -481,6 +481,22 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
     <button class="btn primary" id="sumOk">✓ Speichern</button>
   </div>
 </div>
+<div class="sheet" id="stockSheet">
+  <h3>📦 Ins Lager einbuchen</h3>
+  <div class="hint">Für Vorrat, der schon zu Hause liegt (Inventur). Artikel eintippen oder aus der Liste wählen – nach dem Einbuchen kannst du gleich den nächsten erfassen.</div>
+  <label>Artikel</label>
+  <div class="offerrow" style="margin-top:0"><input class="field" id="stName" list="stArts" placeholder="z. B. Kaffee · Dallmayr Prodomo" autocomplete="off"><button type="button" class="btn" id="stScan" style="max-width:56px" aria-label="Strichcode scannen"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="vertical-align:-4px"><path fill="currentColor" d="M2 5h2v14H2zm3 0h1v14H5zm2 0h2v14H7zm3 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h1v14h-1zm2 0h2v14h-2z"/></svg></button></div>
+  <datalist id="stArts"></datalist>
+  <div class="hint" id="stInfo" style="margin-top:4px"></div>
+  <label>Menge</label>
+  <div class="qtyrow"><button id="stMinus" type="button">−</button><input class="field" id="stQty" type="number" inputmode="numeric" min="1" value="1"><button id="stPlus" type="button">+</button></div>
+  <label>Mindestbestand (optional – darunter Hinweis „nachkaufen“)</label>
+  <input class="field" id="stMin" inputmode="decimal" placeholder="z. B. 2">
+  <div class="row" style="margin-top:14px">
+    <button class="btn" data-close>Fertig</button>
+    <button class="btn primary" id="stGo">Einbuchen</button>
+  </div>
+</div>
 <div class="sheet" id="pickSheet">
   <h3 id="pickTitle">Artikel</h3>
   <div class="hint">Deine Sorten – <b>＋</b> setzt sie direkt auf die Liste, antippen zum Bearbeiten.</div>
@@ -1603,6 +1619,7 @@ function renderLager() {
   if (n) list = list.filter(s => norm(s.name + ' ' + s.detail).includes(n));
   if (stockFilter === 'low') list = list.filter(s => low.includes(s));
   let html = '<p class="intro" style="margin-top:0">Dein Vorrat – z. B. was im Angebot günstig auf Vorrat gekauft wurde. Beim Eintragen auf die Liste <b>„📦 Lager / Vorrat“</b> wählen; abgehakt kommt die Menge hierher. <b>−</b> nimmt etwas heraus (z. B. für die Küche). Bei 0 ohne Mindestbestand verschwindet der Artikel von selbst.</p>';
+  html += '<button class="btn primary" data-act="stockin" style="width:100%;margin:2px 0 8px">＋ Vorhandenes einbuchen (Inventur)</button>';
   html += `<div class="chips wrap">${[['', 'Alle'], ['low', '⚠︎ Nachkaufen (' + low.length + ')']].map(([v, l]) => `<button class="chip${v === stockFilter ? ' sel' : ''}" data-stf="${v}">${l}</button>`).join('')}${low.length ? '<button class="chip" data-act="stocklist">🛒 Fehlende auf die Liste</button>' : ''}</div>`;
   if (!list.length) html += `<div class="empty"><b>📦</b>${stockFilter === 'low' ? 'Alles ausreichend vorrätig.' : 'Das Lager ist leer.<br><br>Beim Eintragen auf die Einkaufsliste „📦 Lager / Vorrat“ wählen – nach dem Abhaken steht der Artikel hier.'}</div>`;
   const onList = new Set(liveItems().filter(i => !i.checked).map(i => keyOf(i.name, i.detail)));
@@ -1647,6 +1664,7 @@ function stockClick(e) {
     const q = parseDecimal(v); if (q == null || q < 0) return true;
     s.min = q; s.updatedAt = now(); commit(); return true;
   }
+  if (e.target.closest('[data-act="stockin"]')) { openStockIn(); return true; }
   if ((b = t('data-stbuy'))) { const s = stockOf(b.dataset.stbuy); if (s) stockToList(s); return true; }
   if (e.target.closest('[data-act="stocklist"]')) {
     const low = Object.values(data.stock || {}).filter(s => stockVisible(s) && (s.min || 0) > 0 && (s.qty || 0) <= s.min);
@@ -1664,6 +1682,46 @@ function stockClick(e) {
   }
   return false;
 }
+
+/* Vorhandenen Vorrat einbuchen (Inventur) */
+let stockArtMap = {};
+function openStockIn(prefill) {
+  stockArtMap = {};
+  const opts = [];
+  myArticles().filter(a => !a.onlyCustom).forEach(a => { const l = a.name + (a.detail ? ' · ' + a.detail : ''); stockArtMap[norm(l)] = a; opts.push(l); });
+  Object.values(CAT_INDEX).forEach(a => { if (!stockArtMap[norm(a.name)]) { stockArtMap[norm(a.name)] = { name: a.name, detail: '', cat: a.cat }; opts.push(a.name); } });
+  $('stArts').innerHTML = opts.sort((a, b) => a.localeCompare(b, 'de')).map(o => `<option value="${esc(o)}">`).join('');
+  $('stName').value = prefill || ''; $('stQty').value = 1; $('stMin').value = ''; stockInInfo();
+  openSheet('stockSheet');
+  if (!prefill) setTimeout(() => $('stName').focus(), 250);
+}
+function stockInTarget() {
+  const raw = $('stName').value.trim(); if (!raw) return null;
+  const hit = stockArtMap[norm(raw)];
+  if (hit) return { name: hit.name, detail: hit.detail || '', cat: hit.cat };
+  const [n, ...rest] = raw.split('·');   // „Name · Bezeichnung“ selbst getippt
+  return { name: cap(n.trim()), detail: rest.join('·').trim(), cat: guessCat(n.trim()) };
+}
+function stockInInfo() {
+  const t = stockInTarget(), st = t ? stockOf(keyOf(t.name, t.detail)) : null;
+  $('stInfo').textContent = st && stockVisible(st) ? `Schon im Lager: ${fmtNum(st.qty || 0, 2)}${st.min ? ' · Mindestbestand ' + fmtNum(st.min, 2) : ''}` : '';
+  if (st && st.min && !$('stMin').value) $('stMin').placeholder = 'bisher ' + fmtNum(st.min, 2);
+}
+$('stName').addEventListener('input', stockInInfo);
+$('stMinus').onclick = () => { $('stQty').value = Math.max(1, (parseInt($('stQty').value, 10) || 1) - 1); };
+$('stPlus').onclick = () => { $('stQty').value = (parseInt($('stQty').value, 10) || 0) + 1; };
+$('stGo').onclick = () => {
+  const t = stockInTarget(); if (!t) { toast('Bitte einen Artikel eintragen'); $('stName').focus(); return; }
+  const n = parseDecimal($('stQty').value) || 1, mn = parseDecimal($('stMin').value);
+  const st = stockAdd(t.name, t.detail, n, t.cat);
+  if (mn != null) st.min = mn;
+  rememberArticle(t.name, t.detail, t.cat || guessCat(t.name), '');
+  commit();
+  toast(`📦 ${t.name}${t.detail ? ' · ' + t.detail : ''}: +${fmtNum(n, 2)} (jetzt ${fmtNum(st.qty, 2)})`);
+  $('stName').value = ''; $('stQty').value = 1; $('stMin').value = ''; $('stMin').placeholder = 'z. B. 2'; stockInInfo();
+  setTimeout(() => $('stName').focus(), 100);   // gleich den nächsten erfassen
+};
+$('stScan').onclick = () => openScan('stock');
 
 /* Schnell auf die Liste: Artikel mit Markt, Preis und Größe übernehmen */
 function articleOffer(a) {
@@ -4025,6 +4083,13 @@ function mapOffProduct(p) {
   return { name, detail, cat, pack, brand, title };
 }
 function applyScan(code, r) {
+  if (scanMode === 'stock' && $('stockSheet').classList.contains('open')) {
+    if (!r) { toast('Strichcode unbekannt – bitte Artikel eintippen'); return; }
+    $('stName').value = r.name + (r.detail ? ' · ' + r.detail : ''); stockInInfo();
+    if (!stockArtMap[norm($('stName').value)]) stockArtMap[norm($('stName').value)] = { name: r.name, detail: r.detail || '', cat: r.cat };
+    toast('✓ ' + $('stName').value);
+    return;
+  }
   if (scanMode === 'fill' && $('itemSheet').classList.contains('open')) {
     scanEan = code;
     if (!r) { toast('Strichcode unbekannt – einfach ausfüllen, die App merkt ihn sich'); return; }
@@ -4180,6 +4245,7 @@ const CHANGELOG = [
     'Beim Eintragen auf die Liste wählen: „🍳 Küche – normaler Einkauf“ (Standard) oder „📦 Lager / Vorrat“ – nur Vorrat-Käufe kommen beim Abhaken ins Lager (Kassenbon ebenso)',
     'Im Angebot? Das Fenster weist darauf hin, dass sich Vorrat lohnen könnte',
     'Auf der Einkaufsliste hat jeder Artikel einen Knopf „🍳 Küche / 📦 Lager“ – ein Tipp schaltet um, auch nachträglich im Wagen',
+    'Im Lager: „＋ Vorhandenes einbuchen (Inventur)“ – Vorrat, der schon zu Hause liegt, direkt erfassen (auch per Strichcode)',
     'Entnehmen mit −, dazu mit +, Bestand antippen zum Korrigieren; Mindestbestand je Artikel',
     'Fällt der Bestand auf den Mindestbestand: Hinweis mit „Auf die Liste“; „⚠︎ Nachkaufen“ und „🛒 Fehlende auf die Liste“'
   ]],
