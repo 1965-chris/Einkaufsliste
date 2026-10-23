@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T13:14:28.726Z",
+ "savedAt": "2026-10-23T13:16:08.556Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1653,11 +1653,11 @@
     "Laktosefrei"
    ],
    "cat": "vorrat",
-   "unit": "Pck.",
+   "unit": "",
    "varAdd": {
     "laktosefrei": 1791835551769
    },
-   "updatedAt": 1792761265984
+   "updatedAt": 1792761365771
   },
   "slipeinlagen": {
    "name": "Slipeinlagen",
@@ -5237,6 +5237,16 @@
    "qty": 5,
    "min": 2,
    "updatedAt": 1792758646409
+  },
+  "h-milch 1,5%|laktosefrei": {
+   "key": "h-milch 1,5%|laktosefrei",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "cat": "vorrat",
+   "unit": "",
+   "qty": 10,
+   "min": 4,
+   "updatedAt": 1792761365770
   }
  }
 }
