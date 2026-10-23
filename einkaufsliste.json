@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:37:31.918Z",
+ "savedAt": "2026-10-23T06:38:09.729Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -4810,8 +4810,8 @@
    "browser": "Safari",
    "app": "Homebildschirm-App",
    "version": "v1.41",
-   "lastSeen": 1792735663743,
-   "updatedAt": 1792735663743
+   "lastSeen": 1792737489696,
+   "updatedAt": 1792737489696
   },
   "dmvin2gqiezawm": {
    "firstSeen": 1792618999868,
