@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:25:44.679Z",
+ "savedAt": "2026-10-23T12:26:24.256Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5084,8 +5084,8 @@
    "updatedAt": 1792738849419
   },
   "kaffee|": {
-   "ts": 1792758342058,
-   "updatedAt": 1792758342058
+   "ts": 1792758381686,
+   "updatedAt": 1792758381686
   }
  },
  "stock": {
@@ -5095,9 +5095,9 @@
    "detail": "",
    "cat": "kaffee",
    "unit": "",
-   "qty": 5,
+   "qty": 4,
    "min": 2,
-   "updatedAt": 1792746851675
+   "updatedAt": 1792758384121
   },
   "coca cola|": {
    "key": "coca cola|",
