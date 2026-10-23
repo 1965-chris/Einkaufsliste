@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:12:54.999Z",
+ "savedAt": "2026-10-23T06:13:41.922Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2712,6 +2712,24 @@
    },
    "deposit": null,
    "updatedAt": 1792735972617
+  },
+  "feiner stuten|harry|ohne markt|2026-10-23": {
+   "id": "feiner stuten|harry|ohne markt|2026-10-23",
+   "key": "feiner stuten|harry",
+   "name": "Feiner Stuten",
+   "detail": "Harry",
+   "date": "2026-10-23",
+   "shop": "ohne Markt",
+   "price": 1.39,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736019777
   }
  },
  "brands": {
@@ -4046,7 +4064,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792735823973
+   "updatedAt": 1792736019765
   },
   "wein|aldi weinsauerkraut mild aus weißkohl": {
    "name": "Wein",
