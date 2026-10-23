@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.42",
- "savedAt": "2026-10-23T07:00:00.275Z",
+ "savedAt": "2026-10-23T07:00:52.277Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1932,17 +1932,16 @@
   },
   "schinken": {
    "name": "Schinken",
-   "variants": [
-    "Gut drei Eichen Koch-Hinterschinken"
-   ],
+   "variants": [],
    "cat": "fleisch",
    "unit": "Pck.",
    "varAdd": {
     "gut drei eichen koch-hinterschinken": 1792736934365
    },
-   "updatedAt": 1792737906612,
+   "updatedAt": 1792738849420,
    "varDel": {
-    "koch-hinterschinken": 1792737906612
+    "koch-hinterschinken": 1792737906612,
+    "gut drei eichen koch-hinterschinken": 1792738849420
    }
   },
   "wursz": {
@@ -5043,5 +5042,10 @@
    "updatedAt": 1792737209547
   }
  },
- "artDel": {}
+ "artDel": {
+  "schinken|gut drei eichen koch-hinterschinken": {
+   "ts": 1792738849419,
+   "updatedAt": 1792738849419
+  }
+ }
 }
