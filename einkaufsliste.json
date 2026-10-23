@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.42",
- "savedAt": "2026-10-23T07:00:52.277Z",
+ "savedAt": "2026-10-23T07:02:33.151Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1571,16 +1571,18 @@
    "name": "Taschentücher",
    "variants": [
     "Taschentücher BoxBadezimmer",
-    "Taschentücher"
+    "Taschentücher 4 lagig"
    ],
    "cat": "drogerie",
    "unit": "Pck.",
-   "updatedAt": 1792736833208,
+   "updatedAt": 1792738950846,
    "varDel": {
-    "taschentücher badezimmer": 1791834672533
+    "taschentücher badezimmer": 1791834672533,
+    "taschentücher": 1792738950846
    },
    "varAdd": {
-    "taschentücher": 1792736833208
+    "taschentücher": 1792736833208,
+    "taschentücher 4 lagig": 1792738950846
    }
   },
   "zucker": {
@@ -4303,10 +4305,10 @@
   },
   "4061462397691": {
    "name": "Taschentücher",
-   "detail": "Kokett Taschentücher",
+   "detail": "Kokett Taschentücher 4 lagig",
    "cat": "drogerie",
    "pack": null,
-   "updatedAt": 1792736833208
+   "updatedAt": 1792738950846
   },
   "4061459434866": {
    "name": "Schinken",
@@ -4904,7 +4906,8 @@
    "shop": "ALDI",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1792736833208
+   "updatedAt": 1792738950846,
+   "deleted": true
   },
   "schinken|gut drei eichen gut drei eichen koch-hinterschinken": {
    "name": "Schinken",
@@ -4990,6 +4993,20 @@
    },
    "deposit": null,
    "updatedAt": 1792737859535
+  },
+  "taschentücher|kokett taschentücher 4 lagig": {
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher 4 lagig",
+   "cat": "drogerie",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 42,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1792738950846
   }
  },
  "devices": {
