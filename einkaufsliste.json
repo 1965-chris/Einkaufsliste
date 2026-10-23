@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T09:14:14.202Z",
+ "savedAt": "2026-10-23T09:14:41.194Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1463,8 +1463,8 @@
    "name": "Coca Cola",
    "variants": [],
    "cat": "getraenk",
-   "unit": "Tray",
-   "updatedAt": 1791448697781
+   "unit": "",
+   "updatedAt": 1792746878431
   },
   "pizza": {
    "name": "Pizza",
@@ -5094,6 +5094,16 @@
    "qty": 5,
    "min": 2,
    "updatedAt": 1792746851675
+  },
+  "coca cola|": {
+   "key": "coca cola|",
+   "name": "Coca Cola",
+   "detail": "",
+   "cat": "getraenk",
+   "unit": "",
+   "qty": 5,
+   "min": 2,
+   "updatedAt": 1792746878430
   }
  }
 }
