@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:29:11.754Z",
+ "savedAt": "2026-10-23T12:29:41.320Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -920,6 +920,19 @@
    "checkedAt": 1792758512314,
    "stockAdded": 5,
    "deleted": true
+  },
+  {
+   "id": "mvky64dm0w96vy",
+   "name": "Coca Cola",
+   "detail": "",
+   "qty": 1,
+   "unit": "Tray",
+   "cat": "getraenk",
+   "note": "",
+   "offer": null,
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1792758578602
   }
  ],
  "favs": {
@@ -948,13 +961,12 @@
    "last": 1792561429168
   },
   "coca cola|": {
-   "count": 1,
+   "count": 2,
    "name": "Coca Cola",
    "detail": "",
    "cat": "getraenk",
    "unit": "Tray",
-   "last": 1792307727554,
-   "deleted": true
+   "last": 1792758578602
   },
   "pizza|thunfisch": {
    "count": 1,
@@ -1501,8 +1513,8 @@
    "name": "Coca Cola",
    "variants": [],
    "cat": "getraenk",
-   "unit": "",
-   "updatedAt": 1792746878431
+   "unit": "Tray",
+   "updatedAt": 1792758578602
   },
   "pizza": {
    "name": "Pizza",
@@ -5086,6 +5098,19 @@
    },
    "deposit": null,
    "updatedAt": 1792738974881
+  },
+  "coca cola|": {
+   "name": "Coca Cola",
+   "detail": "",
+   "cat": "getraenk",
+   "unit": "Tray",
+   "shop": "",
+   "pack": {
+    "n": 6,
+    "size": 1.25
+   },
+   "deposit": 1.5,
+   "updatedAt": 1792758578581
   }
  },
  "devices": {
