@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:34:07.099Z",
+ "savedAt": "2026-10-23T06:34:39.636Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1941,6 +1941,18 @@
     "schweinebraten": 1792737168200
    },
    "updatedAt": 1792737168200
+  },
+  "wurst": {
+   "name": "Wurst",
+   "variants": [
+    "Puten Kochschinken"
+   ],
+   "cat": "sonst",
+   "unit": "Pck.",
+   "varAdd": {
+    "puten kochschinken": 1792737278959
+   },
+   "updatedAt": 1792737278959
   }
  },
  "prices": {
@@ -3138,6 +3150,16 @@
     "sonst": 1
    },
    "updatedAt": 1792737168199
+  },
+  "güldenhof": {
+   "name": "Güldenhof",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "sonst": 1
+   },
+   "updatedAt": 1792737278959
   }
  },
  "purchases": {
@@ -4685,6 +4707,20 @@
    },
    "deposit": null,
    "updatedAt": 1792737168199
+  },
+  "wurst|güldenhof puten kochschinken": {
+   "name": "Wurst",
+   "detail": "Güldenhof Puten Kochschinken",
+   "cat": "sonst",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737278959
   }
  },
  "devices": {
