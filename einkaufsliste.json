@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:10:00.390Z",
+ "savedAt": "2026-10-23T06:10:26.564Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1794,6 +1794,13 @@
     "all seasons": 1792735797540
    },
    "updatedAt": 1792735797540
+  },
+  "feiner stuten": {
+   "name": "Feiner Stuten",
+   "variants": [],
+   "cat": "getraenk",
+   "unit": "",
+   "updatedAt": 1792735823973
   }
  },
  "prices": {
@@ -3538,6 +3545,17 @@
     "u": "kg"
    },
    "updatedAt": 1792735797540
+  },
+  "4061458154604": {
+   "name": "Feiner Stuten",
+   "detail": "Harry",
+   "cat": "getraenk",
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "updatedAt": 1792735823973
   }
  },
  "arts": {
@@ -3984,6 +4002,20 @@
    },
    "deposit": null,
    "updatedAt": 1792735797540
+  },
+  "feiner stuten|harry": {
+   "name": "Feiner Stuten",
+   "detail": "Harry",
+   "cat": "getraenk",
+   "unit": "",
+   "shop": "",
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792735823973
   }
  },
  "devices": {
