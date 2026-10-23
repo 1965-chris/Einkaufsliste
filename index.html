@@ -485,8 +485,8 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
   <h3>📦 Ins Lager einbuchen</h3>
   <div class="hint">Für Vorrat, der schon zu Hause liegt (Inventur). Artikel eintippen oder aus der Liste wählen – nach dem Einbuchen kannst du gleich den nächsten erfassen.</div>
   <label>Artikel</label>
-  <div class="offerrow" style="margin-top:0"><input class="field" id="stName" list="stArts" placeholder="z. B. Kaffee · Dallmayr Prodomo" autocomplete="off"><button type="button" class="btn" id="stScan" style="max-width:56px" aria-label="Strichcode scannen"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="vertical-align:-4px"><path fill="currentColor" d="M2 5h2v14H2zm3 0h1v14H5zm2 0h2v14H7zm3 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h1v14h-1zm2 0h2v14h-2z"/></svg></button></div>
-  <datalist id="stArts"></datalist>
+  <div class="offerrow" style="margin-top:0"><input class="field" id="stName" placeholder="z. B. Kaffee · Dallmayr Prodomo" autocomplete="off"><button type="button" class="btn" id="stScan" style="max-width:56px" aria-label="Strichcode scannen"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="vertical-align:-4px"><path fill="currentColor" d="M2 5h2v14H2zm3 0h1v14H5zm2 0h2v14H7zm3 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h1v14h-1zm2 0h2v14h-2z"/></svg></button></div>
+  <div class="chips wrap" id="stSug" style="padding-top:8px"></div>
   <div class="hint" id="stInfo" style="margin-top:4px"></div>
   <label>Menge</label>
   <div class="qtyrow"><button id="stMinus" type="button">−</button><input class="field" id="stQty" type="number" inputmode="numeric" min="1" value="1"><button id="stPlus" type="button">+</button></div>
@@ -1690,8 +1690,7 @@ function openStockIn(prefill) {
   const opts = [];
   myArticles().filter(a => !a.onlyCustom).forEach(a => { const l = a.name + (a.detail ? ' · ' + a.detail : ''); stockArtMap[norm(l)] = a; opts.push(l); });
   Object.values(CAT_INDEX).forEach(a => { if (!stockArtMap[norm(a.name)]) { stockArtMap[norm(a.name)] = { name: a.name, detail: '', cat: a.cat }; opts.push(a.name); } });
-  $('stArts').innerHTML = opts.sort((a, b) => a.localeCompare(b, 'de')).map(o => `<option value="${esc(o)}">`).join('');
-  $('stName').value = prefill || ''; $('stQty').value = 1; $('stMin').value = ''; stockInInfo();
+  $('stName').value = prefill || ''; $('stQty').value = 1; $('stMin').value = ''; stockInInfo(); stockInSuggest();
   openSheet('stockSheet');
   if (!prefill) setTimeout(() => $('stName').focus(), 250);
 }
@@ -1702,12 +1701,33 @@ function stockInTarget() {
   const [n, ...rest] = raw.split('·');   // „Name · Bezeichnung“ selbst getippt
   return { name: cap(n.trim()), detail: rest.join('·').trim(), cat: guessCat(n.trim()) };
 }
+// Vorschläge wie auf der Liste: deine Artikel zuerst, dann Katalog
+function stockInSuggest() {
+  const q = norm($('stName').value), out = [];
+  const mine = myArticles().filter(a => !a.onlyCustom);
+  const label = a => a.name + (a.detail ? ' · ' + a.detail : '');
+  if (!q) {
+    // ohne Eingabe: was schon im Lager liegt und zuletzt Gekauftes/Angelegtes
+    const st = Object.values(data.stock || {}).filter(stockVisible).map(x => mine.find(a => a.key === x.key) || { name: x.name, detail: x.detail, cat: x.cat });
+    [...st, ...mine.sort((a, b) => (b.ts || 0) - (a.ts || 0))].forEach(a => { if (out.length < 14 && !out.some(o => label(o) === label(a))) out.push(a); });
+  } else {
+    const words = q.split(' ').filter(Boolean), hit = t => words.every(w => norm(t).includes(w));
+    mine.filter(a => hit(label(a))).sort((a, b) => (norm(a.name).startsWith(q) ? 0 : 1) - (norm(b.name).startsWith(q) ? 0 : 1) || label(a).localeCompare(label(b), 'de')).forEach(a => { if (out.length < 14) out.push(a); });
+    Object.values(CAT_INDEX).filter(a => hit(a.name) && !out.some(o => norm(o.name) === norm(a.name))).forEach(a => { if (out.length < 16) out.push({ name: a.name, detail: '', cat: a.cat, cata: true }); });
+  }
+  $('stSug').innerHTML = out.map(a => { const st = stockOf(keyOf(a.name, a.detail || '')); return `<button type="button" class="chip${a.cata ? '' : ' sel'}" data-stsug="${esc(label(a))}">${esc(label(a))}${stockVisible(st) ? ' · 📦' + fmtNum(st.qty || 0, 2) : ''}</button>`; }).join('')
+    || (q ? '<span class="hint" style="margin:0">Kein Treffer – wird als neuer Artikel angelegt („Name · Bezeichnung“).</span>' : '');
+}
+$('stSug').addEventListener('click', e => {
+  const b = e.target.closest('[data-stsug]'); if (!b) return;
+  $('stName').value = b.dataset.stsug; $('stName').blur(); stockInInfo(); stockInSuggest();
+});
 function stockInInfo() {
   const t = stockInTarget(), st = t ? stockOf(keyOf(t.name, t.detail)) : null;
   $('stInfo').textContent = st && stockVisible(st) ? `Schon im Lager: ${fmtNum(st.qty || 0, 2)}${st.min ? ' · Mindestbestand ' + fmtNum(st.min, 2) : ''}` : '';
   if (st && st.min && !$('stMin').value) $('stMin').placeholder = 'bisher ' + fmtNum(st.min, 2);
 }
-$('stName').addEventListener('input', stockInInfo);
+$('stName').addEventListener('input', () => { stockInInfo(); stockInSuggest(); });
 $('stMinus').onclick = () => { $('stQty').value = Math.max(1, (parseInt($('stQty').value, 10) || 1) - 1); };
 $('stPlus').onclick = () => { $('stQty').value = (parseInt($('stQty').value, 10) || 0) + 1; };
 $('stGo').onclick = () => {
@@ -1718,7 +1738,7 @@ $('stGo').onclick = () => {
   rememberArticle(t.name, t.detail, t.cat || guessCat(t.name), '');
   commit();
   toast(`📦 ${t.name}${t.detail ? ' · ' + t.detail : ''}: +${fmtNum(n, 2)} (jetzt ${fmtNum(st.qty, 2)})`);
-  $('stName').value = ''; $('stQty').value = 1; $('stMin').value = ''; $('stMin').placeholder = 'z. B. 2'; stockInInfo();
+  $('stName').value = ''; $('stQty').value = 1; $('stMin').value = ''; $('stMin').placeholder = 'z. B. 2'; stockInInfo(); stockInSuggest();
   setTimeout(() => $('stName').focus(), 100);   // gleich den nächsten erfassen
 };
 $('stScan').onclick = () => openScan('stock');
@@ -4085,7 +4105,7 @@ function mapOffProduct(p) {
 function applyScan(code, r) {
   if (scanMode === 'stock' && $('stockSheet').classList.contains('open')) {
     if (!r) { toast('Strichcode unbekannt – bitte Artikel eintippen'); return; }
-    $('stName').value = r.name + (r.detail ? ' · ' + r.detail : ''); stockInInfo();
+    $('stName').value = r.name + (r.detail ? ' · ' + r.detail : ''); stockInInfo(); stockInSuggest();
     if (!stockArtMap[norm($('stName').value)]) stockArtMap[norm($('stName').value)] = { name: r.name, detail: r.detail || '', cat: r.cat };
     toast('✓ ' + $('stName').value);
     return;
