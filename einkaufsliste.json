@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.48",
- "savedAt": "2026-10-23T13:31:21.316Z",
+ "savedAt": "2026-10-23T13:31:58.257Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5254,9 +5254,9 @@
    "detail": "Aldi Tomaten gehackt",
    "cat": "vorrat",
    "unit": "",
-   "qty": 1,
+   "qty": 0,
    "min": 0,
-   "updatedAt": 1792762278315
+   "updatedAt": 1792762315673
   }
  }
 }
