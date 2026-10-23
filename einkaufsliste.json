@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:38:09.729Z",
+ "savedAt": "2026-10-23T06:39:10.957Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3040,6 +3040,24 @@
    },
    "deposit": null,
    "updatedAt": 1792736747205
+  },
+  "käse|meine käsetheke caverna dänischer schnittkäse|aldi|2026-10-23": {
+   "id": "käse|meine käsetheke caverna dänischer schnittkäse|aldi|2026-10-23",
+   "key": "käse|meine käsetheke caverna dänischer schnittkäse",
+   "name": "Käse",
+   "detail": "Meine Käsetheke Caverna Dänischer Schnittkäse",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 2.29,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737548780
   }
  },
  "brands": {
@@ -4797,7 +4815,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792737449771
+   "updatedAt": 1792737548761
   }
  },
  "devices": {
