@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:08:43.606Z",
+ "savedAt": "2026-10-23T06:09:30.604Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1770,6 +1770,18 @@
     "kassler minutensteaks": 1792735722097
    },
    "updatedAt": 1792735722097
+  },
+  "wein": {
+   "name": "Wein",
+   "variants": [
+    "Grobe Bratwurst vom Schwein"
+   ],
+   "cat": "getraenk",
+   "unit": "Fl.",
+   "varAdd": {
+    "grobe bratwurst vom schwein": 1792735768501
+   },
+   "updatedAt": 1792735768501
   }
  },
  "prices": {
@@ -3496,6 +3508,13 @@
     "u": "kg"
    },
    "updatedAt": 1792735722096
+  },
+  "4069366381532": {
+   "name": "Wein",
+   "detail": "Meine Metzgerei Grobe Bratwurst vom Schwein",
+   "cat": "getraenk",
+   "pack": null,
+   "updatedAt": 1792735768501
   }
  },
  "arts": {
@@ -3918,6 +3937,16 @@
    },
    "deposit": null,
    "updatedAt": 1792735722096
+  },
+  "wein|meine metzgerei grobe bratwurst vom schwein": {
+   "name": "Wein",
+   "detail": "Meine Metzgerei Grobe Bratwurst vom Schwein",
+   "cat": "getraenk",
+   "unit": "Fl.",
+   "shop": "",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792735768501
   }
  },
  "devices": {
