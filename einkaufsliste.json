@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:22:04.068Z",
+ "savedAt": "2026-10-23T06:22:08.457Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1146,7 +1146,8 @@
    "detail": "Spinat",
    "cat": "tk",
    "unit": "Pck.",
-   "last": 1792655857308
+   "last": 1792736526317,
+   "deleted": true
   },
   "kaffee|": {
    "count": 1,
@@ -4125,7 +4126,8 @@
    "shop": "",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1792655857307
+   "updatedAt": 1792736526317,
+   "deleted": true
   },
   "pudding|milsani schoko mit sahnehaube": {
    "name": "Pudding",
