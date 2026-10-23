@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:35:23.455Z",
+ "savedAt": "2026-10-23T06:37:31.918Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1958,6 +1958,18 @@
     "puten kochschinken": 1792737278959
    },
    "updatedAt": 1792737278959
+  },
+  "käse": {
+   "name": "Käse",
+   "variants": [
+    "Caverna Dänischer Schnittkäse"
+   ],
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "varAdd": {
+    "caverna dänischer schnittkäse": 1792737449771
+   },
+   "updatedAt": 1792737449771
   }
  },
  "prices": {
@@ -3165,6 +3177,16 @@
     "sonst": 1
    },
    "updatedAt": 1792737278959
+  },
+  "meine käsetheke": {
+   "name": "Meine Käsetheke",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "kuehl": 1
+   },
+   "updatedAt": 1792737449771
   }
  },
  "purchases": {
@@ -4142,6 +4164,17 @@
     "u": "kg"
    },
    "updatedAt": 1792737321271
+  },
+  "4061462417092": {
+   "name": "Käse",
+   "detail": "Meine Käsetheke Caverna Dänischer Schnittkäse",
+   "cat": "kuehl",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "updatedAt": 1792737449771
   }
  },
  "arts": {
@@ -4751,6 +4784,20 @@
    },
    "deposit": null,
    "updatedAt": 1792737321271
+  },
+  "käse|meine käsetheke caverna dänischer schnittkäse": {
+   "name": "Käse",
+   "detail": "Meine Käsetheke Caverna Dänischer Schnittkäse",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737449771
   }
  },
  "devices": {
