@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:28:57.991Z",
+ "savedAt": "2026-10-23T06:32:50.309Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1903,6 +1903,18 @@
     "gut drei eichen koch-hinterschinken": 1792736934365
    },
    "updatedAt": 1792736934365
+  },
+  "wursz": {
+   "name": "Wursz",
+   "variants": [
+    "Schweinebraten"
+   ],
+   "cat": "sonst",
+   "unit": "Pck.",
+   "varAdd": {
+    "schweinebraten": 1792737168200
+   },
+   "updatedAt": 1792737168200
   }
  },
  "prices": {
@@ -3096,9 +3108,10 @@
     "ALDI": 1
    },
    "cats": {
-    "fleisch": 1
+    "fleisch": 1,
+    "sonst": 1
    },
-   "updatedAt": 1792736934364
+   "updatedAt": 1792737168199
   }
  },
  "purchases": {
@@ -4054,6 +4067,17 @@
     "u": "kg"
    },
    "updatedAt": 1792736934364
+  },
+  "4069366050285": {
+   "name": "Wursz",
+   "detail": "Gut Drei Eichen Schweinebraten",
+   "cat": "sonst",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "updatedAt": 1792737168199
   }
  },
  "arts": {
@@ -4621,6 +4645,20 @@
    },
    "deposit": null,
    "updatedAt": 1792736934364
+  },
+  "wursz|gut drei eichen schweinebraten": {
+   "name": "Wursz",
+   "detail": "Gut Drei Eichen Schweinebraten",
+   "cat": "sonst",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737168199
   }
  },
  "devices": {
