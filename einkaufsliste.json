@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:43:22.168Z",
+ "savedAt": "2026-10-23T06:44:21.630Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1946,27 +1946,30 @@
   },
   "wursz": {
    "name": "Wursz",
-   "variants": [
-    "Schweinebraten"
-   ],
+   "variants": [],
    "cat": "sonst",
    "unit": "Pck.",
    "varAdd": {
     "schweinebraten": 1792737168200
    },
-   "updatedAt": 1792737168200
+   "updatedAt": 1792737859535,
+   "varDel": {
+    "schweinebraten": 1792737859535
+   }
   },
   "wurst": {
    "name": "Wurst",
    "variants": [
-    "Puten Kochschinken"
+    "Puten Kochschinken",
+    "Schweinebraten"
    ],
    "cat": "sonst",
    "unit": "Pck.",
    "varAdd": {
-    "puten kochschinken": 1792737278959
+    "puten kochschinken": 1792737278959,
+    "schweinebraten": 1792737859536
    },
-   "updatedAt": 1792737278959
+   "updatedAt": 1792737859536
   },
   "käse": {
    "name": "Käse",
@@ -3121,6 +3124,24 @@
    },
    "deposit": null,
    "updatedAt": 1792737763283
+  },
+  "wurst|gut drei eichen schweinebraten|aldi|2026-10-23": {
+   "id": "wurst|gut drei eichen schweinebraten|aldi|2026-10-23",
+   "key": "wurst|gut drei eichen schweinebraten",
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Schweinebraten",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 2.39,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737859536
   }
  },
  "brands": {
@@ -4298,7 +4319,7 @@
    "updatedAt": 1792736934364
   },
   "4069366050285": {
-   "name": "Wursz",
+   "name": "Wurst",
    "detail": "Gut Drei Eichen Schweinebraten",
    "cat": "sonst",
    "pack": {
@@ -4306,7 +4327,7 @@
     "size": 0.15,
     "u": "kg"
    },
-   "updatedAt": 1792737168199
+   "updatedAt": 1792737859535
   },
   "4061458015219": {
    "name": "Salami",
@@ -4909,7 +4930,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792737168199
+   "updatedAt": 1792737859535,
+   "deleted": true
   },
   "wurst|güldenhof puten kochschinken": {
    "name": "Wurst",
@@ -4952,6 +4974,20 @@
    },
    "deposit": null,
    "updatedAt": 1792737548761
+  },
+  "wurst|gut drei eichen schweinebraten": {
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Schweinebraten",
+   "cat": "sonst",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737859535
   }
  },
  "devices": {
