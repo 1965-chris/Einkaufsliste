@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:26:30.099Z",
+ "savedAt": "2026-10-23T12:26:55.994Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5096,8 +5096,8 @@
    "cat": "kaffee",
    "unit": "",
    "qty": 0,
-   "min": 2,
-   "updatedAt": 1792758386787
+   "min": 0,
+   "updatedAt": 1792758413397
   },
   "coca cola|": {
    "key": "coca cola|",
