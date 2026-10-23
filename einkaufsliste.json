@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T13:12:01.889Z",
+ "savedAt": "2026-10-23T13:14:28.726Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1652,12 +1652,12 @@
    "variants": [
     "Laktosefrei"
    ],
-   "cat": "kuehl",
+   "cat": "vorrat",
    "unit": "Pck.",
    "varAdd": {
     "laktosefrei": 1791835551769
    },
-   "updatedAt": 1791836209048
+   "updatedAt": 1792761265984
   },
   "slipeinlagen": {
    "name": "Slipeinlagen",
@@ -5132,6 +5132,19 @@
    },
    "deposit": 1.5,
    "updatedAt": 1792758597224
+  },
+  "h-milch 1,5%|laktosefrei": {
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 1
+   },
+   "deposit": null,
+   "updatedAt": 1792761265964
   }
  },
  "devices": {
