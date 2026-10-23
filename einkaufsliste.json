@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:27:16.230Z",
+ "savedAt": "2026-10-23T06:28:57.991Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -832,6 +832,32 @@
    "offer": null,
    "checked": false,
    "updatedAt": 1792736681874
+  },
+  {
+   "id": "mvkla7kts9ulek",
+   "name": "Schinken",
+   "detail": "Gut Drei Eichen Gut drei Eichen Koch-Hinterschinken",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "fleisch",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.2,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "checked": false,
+   "updatedAt": 1792736934365
   }
  ],
  "favs": {
@@ -1177,6 +1203,14 @@
    "unit": "Pck.",
    "last": 1792687327059,
    "deleted": true
+  },
+  "schinken|gut drei eichen gut drei eichen koch-hinterschinken": {
+   "count": 1,
+   "name": "Schinken",
+   "detail": "Gut Drei Eichen Gut drei Eichen Koch-Hinterschinken",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "last": 1792736934365
   }
  },
  "stars": {
@@ -1857,6 +1891,18 @@
     "weinsauerkraut mild aus weißkohl": 1792736344396
    },
    "updatedAt": 1792736344396
+  },
+  "schinken": {
+   "name": "Schinken",
+   "variants": [
+    "Gut drei Eichen Koch-Hinterschinken"
+   ],
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "varAdd": {
+    "gut drei eichen koch-hinterschinken": 1792736934365
+   },
+   "updatedAt": 1792736934365
   }
  },
  "prices": {
@@ -3043,6 +3089,16 @@
     "brot": 1
    },
    "updatedAt": 1792307251776
+  },
+  "gut drei eichen": {
+   "name": "Gut Drei Eichen",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "fleisch": 1
+   },
+   "updatedAt": 1792736934364
   }
  },
  "purchases": {
@@ -3987,6 +4043,17 @@
    "cat": "drogerie",
    "pack": null,
    "updatedAt": 1792736833208
+  },
+  "4061459434866": {
+   "name": "Schinken",
+   "detail": "Gut Drei Eichen Gut drei Eichen Koch-Hinterschinken",
+   "cat": "fleisch",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "updatedAt": 1792736934364
   }
  },
  "arts": {
@@ -4540,6 +4607,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792736833208
+  },
+  "schinken|gut drei eichen gut drei eichen koch-hinterschinken": {
+   "name": "Schinken",
+   "detail": "Gut Drei Eichen Gut drei Eichen Koch-Hinterschinken",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736934364
   }
  },
  "devices": {
