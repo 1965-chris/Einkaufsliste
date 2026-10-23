@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:19:06.690Z",
+ "savedAt": "2026-10-23T06:20:26.160Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1774,18 +1774,17 @@
   },
   "wein": {
    "name": "Wein",
-   "variants": [
-    "Grobe Bratwurst vom Schwein"
-   ],
+   "variants": [],
    "cat": "getraenk",
    "unit": "Fl.",
    "varAdd": {
     "grobe bratwurst vom schwein": 1792735768501,
     "aldi weinsauerkraut mild aus weißkohl": 1792735866755
    },
-   "updatedAt": 1792736344396,
+   "updatedAt": 1792736424084,
    "varDel": {
-    "aldi weinsauerkraut mild aus weißkohl": 1792736344396
+    "aldi weinsauerkraut mild aus weißkohl": 1792736344396,
+    "grobe bratwurst vom schwein": 1792736424084
    }
   },
   "rahmspinat": {
@@ -1810,14 +1809,16 @@
   "fleisch": {
    "name": "Fleisch",
    "variants": [
-    "Kassler Minutensteaks"
+    "Kassler Minutensteaks",
+    "Grobe Bratwurst vom Schwein"
    ],
    "cat": "fleisch",
    "unit": "Pck.",
    "varAdd": {
-    "kassler minutensteaks": 1792736258130
+    "kassler minutensteaks": 1792736258130,
+    "grobe bratwurst vom schwein": 1792736424084
    },
-   "updatedAt": 1792736258130
+   "updatedAt": 1792736424084
   },
   "sauerkraut": {
    "name": "Sauerkraut",
@@ -2865,6 +2866,24 @@
    },
    "deposit": null,
    "updatedAt": 1792736344396
+  },
+  "fleisch|meine metzgerei grobe bratwurst vom schwein|aldi|2026-10-23": {
+   "id": "fleisch|meine metzgerei grobe bratwurst vom schwein|aldi|2026-10-23",
+   "key": "fleisch|meine metzgerei grobe bratwurst vom schwein",
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Grobe Bratwurst vom Schwein",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 3.49,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.6,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736424084
   }
  },
  "brands": {
@@ -3702,11 +3721,11 @@
    "updatedAt": 1792736258130
   },
   "4069366381532": {
-   "name": "Wein",
+   "name": "Fleisch",
    "detail": "Meine Metzgerei Grobe Bratwurst vom Schwein",
    "cat": "getraenk",
    "pack": null,
-   "updatedAt": 1792735768501
+   "updatedAt": 1792736424084
   },
   "4061462880650": {
    "name": "Rahmspinat",
@@ -4172,7 +4191,8 @@
    "shop": "",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1792735768501
+   "updatedAt": 1792736424084,
+   "deleted": true
   },
   "rahmspinat|all seasons": {
    "name": "Rahmspinat",
@@ -4244,6 +4264,20 @@
    },
    "deposit": null,
    "updatedAt": 1792736344396
+  },
+  "fleisch|meine metzgerei grobe bratwurst vom schwein": {
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Grobe Bratwurst vom Schwein",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.6,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736424084
   }
  },
  "devices": {
