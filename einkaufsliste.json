@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:25:49.275Z",
+ "savedAt": "2026-10-23T06:27:16.230Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1498,13 +1498,17 @@
   "taschentücher": {
    "name": "Taschentücher",
    "variants": [
-    "Taschentücher BoxBadezimmer"
+    "Taschentücher BoxBadezimmer",
+    "Taschentücher"
    ],
    "cat": "drogerie",
    "unit": "Pck.",
-   "updatedAt": 1791834672533,
+   "updatedAt": 1792736833208,
    "varDel": {
     "taschentücher badezimmer": 1791834672533
+   },
+   "varAdd": {
+    "taschentücher": 1792736833208
    }
   },
   "zucker": {
@@ -3976,6 +3980,13 @@
     "u": "kg"
    },
    "updatedAt": 1792736344396
+  },
+  "4061462397691": {
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher",
+   "cat": "drogerie",
+   "pack": null,
+   "updatedAt": 1792736833208
   }
  },
  "arts": {
@@ -4519,6 +4530,16 @@
    },
    "deposit": null,
    "updatedAt": 1792736747191
+  },
+  "taschentücher|kokett taschentücher": {
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher",
+   "cat": "drogerie",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792736833208
   }
  },
  "devices": {
