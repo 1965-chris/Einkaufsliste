@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:30:05.410Z",
+ "savedAt": "2026-10-23T12:30:18.169Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -4189,7 +4189,8 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1792758605272
+   "updatedAt": 1792758615456,
+   "deleted": true
   }
  },
  "bonmap": {
