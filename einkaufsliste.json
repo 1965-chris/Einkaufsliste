@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:39:47.010Z",
+ "savedAt": "2026-10-23T06:41:58.430Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3076,6 +3076,24 @@
    },
    "deposit": null,
    "updatedAt": 1792737584812
+  },
+  "schinken|gut drei eichen gut drei eichen koch-hinterschinken|aldi|2026-10-23": {
+   "id": "schinken|gut drei eichen gut drei eichen koch-hinterschinken|aldi|2026-10-23",
+   "key": "schinken|gut drei eichen gut drei eichen koch-hinterschinken",
+   "name": "Schinken",
+   "detail": "Gut Drei Eichen Gut drei Eichen Koch-Hinterschinken",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 1.59,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737716350
   }
  },
  "brands": {
@@ -4777,7 +4795,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792736934364
+   "updatedAt": 1792737716331
   },
   "wursz|gut drei eichen schweinebraten": {
    "name": "Wursz",
