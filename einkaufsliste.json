@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:14:14.269Z",
+ "savedAt": "2026-10-23T06:14:37.909Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2748,6 +2748,24 @@
    },
    "deposit": null,
    "updatedAt": 1792736051662
+  },
+  "rahmspinat|all seasons|aldi|2026-10-23": {
+   "id": "rahmspinat|all seasons|aldi|2026-10-23",
+   "key": "rahmspinat|all seasons",
+   "name": "Rahmspinat",
+   "detail": "All Seasons",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 1.89,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736075753
   }
  },
  "brands": {
@@ -4068,7 +4086,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792735797540
+   "updatedAt": 1792736075738
   },
   "feiner stuten|harry": {
    "name": "Feiner Stuten",
