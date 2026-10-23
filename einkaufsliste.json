@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.43",
- "savedAt": "2026-10-23T07:30:48.822Z",
+ "savedAt": "2026-10-23T07:31:12.276Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1966,13 +1966,13 @@
     "Puten Kochschinken",
     "Schweinebraten"
    ],
-   "cat": "sonst",
+   "cat": "fleisch",
    "unit": "Pck.",
    "varAdd": {
     "puten kochschinken": 1792737278959,
     "schweinebraten": 1792737859536
    },
-   "updatedAt": 1792737859536
+   "updatedAt": 1792740669916
   },
   "käse": {
    "name": "Käse",
@@ -3297,9 +3297,10 @@
     "ALDI": 1
    },
    "cats": {
-    "sonst": 1
+    "sonst": 1,
+    "fleisch": 1
    },
-   "updatedAt": 1792737278959
+   "updatedAt": 1792740669899
   },
   "meine käsetheke": {
    "name": "Meine Käsetheke",
@@ -4959,7 +4960,7 @@
   "wurst|güldenhof puten kochschinken": {
    "name": "Wurst",
    "detail": "Güldenhof Puten Kochschinken",
-   "cat": "sonst",
+   "cat": "fleisch",
    "unit": "Pck.",
    "shop": "ALDI",
    "pack": {
@@ -4968,7 +4969,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792737763263
+   "updatedAt": 1792740669900
   },
   "salami|gut drei eichen herzhafte edelsalami geräuchert": {
    "name": "Salami",
