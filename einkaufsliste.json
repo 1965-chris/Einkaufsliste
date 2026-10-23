@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:08:13.745Z",
+ "savedAt": "2026-10-23T06:08:43.606Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1758,6 +1758,18 @@
     "aldi": 1792735693547
    },
    "updatedAt": 1792735693547
+  },
+  "steak": {
+   "name": "Steak",
+   "variants": [
+    "Kassler Minutensteaks"
+   ],
+   "cat": "fleisch",
+   "unit": "",
+   "varAdd": {
+    "kassler minutensteaks": 1792735722097
+   },
+   "updatedAt": 1792735722097
   }
  },
  "prices": {
@@ -3473,6 +3485,17 @@
     "u": "kg"
    },
    "updatedAt": 1792735693546
+  },
+  "4069365323854": {
+   "name": "Steak",
+   "detail": "Meine Metzgerei Kassler Minutensteaks",
+   "cat": "fleisch",
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "updatedAt": 1792735722096
   }
  },
  "arts": {
@@ -3881,6 +3904,20 @@
    },
    "deposit": null,
    "updatedAt": 1792735693547
+  },
+  "steak|meine metzgerei kassler minutensteaks": {
+   "name": "Steak",
+   "detail": "Meine Metzgerei Kassler Minutensteaks",
+   "cat": "fleisch",
+   "unit": "",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792735722096
   }
  },
  "devices": {
