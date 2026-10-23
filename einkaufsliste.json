@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:34:39.636Z",
+ "savedAt": "2026-10-23T06:35:23.455Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1470,10 +1470,15 @@
   },
   "salami": {
    "name": "Salami",
-   "variants": [],
+   "variants": [
+    "Herzhafte Edelsalami geräuchert"
+   ],
    "cat": "fleisch",
    "unit": "",
-   "updatedAt": 1791411509959
+   "updatedAt": 1792737321271,
+   "varAdd": {
+    "herzhafte edelsalami geräuchert": 1792737321271
+   }
   },
   "sellerie": {
    "name": "Sellerie",
@@ -4126,6 +4131,17 @@
     "u": "kg"
    },
    "updatedAt": 1792737168199
+  },
+  "4061458015219": {
+   "name": "Salami",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "cat": "fleisch",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "updatedAt": 1792737321271
   }
  },
  "arts": {
@@ -4721,6 +4737,20 @@
    },
    "deposit": null,
    "updatedAt": 1792737278959
+  },
+  "salami|gut drei eichen herzhafte edelsalami geräuchert": {
+   "name": "Salami",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "cat": "fleisch",
+   "unit": "",
+   "shop": "",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737321271
   }
  },
  "devices": {
