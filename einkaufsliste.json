@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:24:59.111Z",
+ "savedAt": "2026-10-23T12:25:37.655Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5082,6 +5082,10 @@
   "schinken|gut drei eichen koch-hinterschinken": {
    "ts": 1792738849419,
    "updatedAt": 1792738849419
+  },
+  "kaffee|": {
+   "ts": 1792758334375,
+   "updatedAt": 1792758334375
   }
  },
  "stock": {
