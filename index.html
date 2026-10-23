@@ -263,6 +263,13 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
 /* iPhone: Beschriftungen und Hinweise nicht versehentlich markieren – nur Eingabefelder bleiben markierbar */
 body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+/* Hilfe */
+.help details{margin-top:0;border-top:1px solid var(--line);padding:12px 0 2px}
+.help details:first-child{border-top:0}
+.help summary{font-size:16px;padding:2px 0 8px}
+.help p{margin:0 0 10px;line-height:1.45;font-size:15px}
+.help mark{background:#ffe58a;color:inherit;border-radius:3px}
+@media (max-width:360px){header{gap:6px}.iconbtn{width:36px}}
 </style>
 </head>
 <body>
@@ -270,6 +277,7 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
 <header>
   <h1 id="title">Einkauf <span class="count" id="count"></span></h1>
   <button class="iconbtn" id="lagerBtn" title="Lager">📦</button>
+  <button class="iconbtn" id="helpBtn" title="Hilfe">❓</button>
   <button class="iconbtn" id="infoBtn" title="Info">ℹ️</button>
   <button class="iconbtn" id="syncBtn" title="Synchronisieren">⟳<span class="dot" id="syncDot"></span></button>
   <button class="iconbtn" id="settingsBtn" title="Einstellungen">⚙︎</button>
@@ -609,6 +617,95 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
   </div>
 </div>
 
+<!-- Hilfe -->
+<div class="sheet" id="helpSheet">
+  <h3>❓ Hilfe</h3>
+  <input class="field" id="helpSearch" type="search" placeholder="Hilfe durchsuchen … z. B. Lager, Bon, Preis" autocomplete="off">
+  <div class="hint" id="helpNone" style="display:none;margin-top:10px">Nichts gefunden – anderes Stichwort versuchen.</div>
+  <div class="help" id="helpBody">
+  <details><summary>🚀 Erste Schritte</summary>
+    <p>Die App ist eine gemeinsame Einkaufsliste für mehrere Handys. Alles, was du einträgst, bleibt auf dem Gerät gespeichert und wird – wenn der Sync eingerichtet ist – mit den anderen Geräten abgeglichen.</p>
+    <p><b>Oben:</b> 📦 Lager · ❓ diese Hilfe · ℹ️ Version &amp; Neuigkeiten · ⟳ jetzt synchronisieren (Punkt grün = alles abgeglichen) · ⚙︎ Einstellungen.</p>
+    <p><b>Unten:</b> 🧾 Liste · 📚 Artikel · ⭐ Favoriten · 🏷 Angebote · 📈 Preise. Die App startet immer mit der Liste.</p>
+    <p><b>Zum Homebildschirm:</b> In Safari auf Teilen → „Zum Home-Bildschirm“. Dann startet sie wie eine richtige App.</p>
+  </details>
+  <details><summary>🧾 Liste &amp; Einkaufen</summary>
+    <p><b>Eintragen:</b> Oben ins Feld tippen – Vorschläge erscheinen schon beim Tippen (Katalog, eigene Artikel, Favoriten). Vorschlag antippen oder mit ＋ neu anlegen. Das Suchfeld leert sich danach von selbst.</p>
+    <p>Die Liste ist nach <b>Bereichen im Markt</b> sortiert (Obst &amp; Gemüse, Kühlregal …), damit du ohne Hin- und Herlaufen einkaufst.</p>
+    <p><b>Abhaken:</b> Kreis links antippen → der Artikel wandert nach unten zu „Im Wagen“. Nochmal antippen holt ihn zurück.</p>
+    <p><b>Bearbeiten:</b> Namen antippen – Menge, Sorte, Marke, Markt, Preis, Notiz.</p>
+    <p><b>„Alle entfernen“</b> bei „Im Wagen“ räumt die erledigten Artikel weg. Sie landen dabei in der Auswertung unter Preise → Einkäufe.</p>
+    <p><b>🍳 / 📦 rechts in der Zeile:</b> 🍳 Küche = normaler Einkauf (Standard). Antippen schaltet auf 📦 Lager/Vorrat – nur solche Artikel werden beim Abhaken ins Lager gebucht.</p>
+  </details>
+  <details><summary>📚 Artikel: Katalog &amp; Meine Artikel</summary>
+    <p><b>📚 Katalog:</b> Vorgegebene Artikel nach Bereichen. Bereich antippen, dann Artikel – grüne Chips mit Zahl haben schon eigene Sorten; antippen öffnet die Sortenauswahl (dort auch „Alle Sorten löschen“).</p>
+    <p><b>🗂 Meine Artikel:</b> Alle Artikel, die ihr selbst angelegt habt, nach Bereichen gruppiert, mit letztem Preis je Markt. Filter-Chips oben zeigen nur einen Bereich. ＋ legt den Artikel direkt auf die Liste, Antippen öffnet ihn zum Bearbeiten.</p>
+    <p><b>⚠︎ Unvollständig</b> heißt: Normalpreis oder Größe fehlt (Angebots- und App-Preise zählen nicht).</p>
+    <p><b>Gleicher Artikel, andere Marke</b> (z. B. Thunfisch von EDEKA und von ALDI) wird zusammen angezeigt, jede Marke behält ihre eigenen Preise. Marken merken sich Markt und Bereich.</p>
+    <p><b>🧹 Doppelte suchen</b> findet ähnliche Einträge und führt sie zusammen. Umbenennen auf einen vorhandenen Namen führt ebenfalls zusammen.</p>
+    <p><b>Löschen:</b> Artikel öffnen → Löschen. Entfernt Preise, Favorit, Strichcode- und Bon-Zuordnung. Kurz danach lässt es sich noch rückgängig machen.</p>
+    <p>Beim Neuanlegen zeigt die App vor dem Speichern eine <b>Zusammenfassung</b> zum Prüfen (abschaltbar in ⚙︎).</p>
+  </details>
+  <details><summary>💶 Preise eintragen</summary>
+    <p>Im Artikel-Fenster zuerst die Art wählen: <b>Normal</b>, <b>Angebot</b> oder <b>App</b>.</p>
+    <p><b>Preis</b> (oben) ist immer der normale Preis. Bei Angebot/App kommt darunter der <b>Angebotspreis</b> bzw. <b>App-Preis</b> und ein Zeitraum (von–bis). Bei „Normal“ gibt es kein Datum.</p>
+    <p><b>Markt wechseln</b> lädt automatisch den letzten Preis dieses Marktes.</p>
+    <p><b>Größe &amp; Pfand:</b> Packungsgröße in g, kg, ml, l oder Stk – daraus rechnet die App Preis pro kg/l/Stück. Pfand wird extra gemerkt.</p>
+    <p>Marke, Markt und Größe bleiben auch ohne Preis gespeichert.</p>
+  </details>
+  <details><summary>📈 Preisverlauf &amp; Einkäufe</summary>
+    <p><b>Preise → Verlauf:</b> Alle Preise je Artikel (Sorten als Chips). Filter nach Normal / Angebot / App mit günstigstem, Durchschnitts- und teuerstem Preis, Entwicklung je Markt mit ▲ teurer / ▼ günstiger.</p>
+    <p><b>Preise → 🧾 Einkäufe:</b> Was ihr gekauft habt – filterbar nach Jahr, Monat, Bereich und Markt, gruppiert nach Artikel, Monat, Markt, Bereich oder einzeln. „CSV“ exportiert für Excel.</p>
+    <p>Hatte ein Einkauf keinen Preis, wird der erste später erfasste Preis genommen (markiert mit ≈).</p>
+  </details>
+  <details><summary>🏷 Angebote</summary>
+    <p>Hier stehen alle aktuellen Angebots- und App-Preise mit Zeitraum. Abgelaufene werden als „abgelaufen“ markiert.</p>
+    <p><b>📷 Angebot aus Bild lesen:</b> Foto vom Prospekt, Preisschild oder Bildschirmfoto – die App liest Name und Preis und du prüfst nur noch.</p>
+    <p>Ist ein Artikel im Angebot, weist das Fenster darauf hin, dass sich ein Vorrat fürs Lager lohnen könnte.</p>
+  </details>
+  <details><summary>🧾 Kassenbon einlesen</summary>
+    <p>Über 📷 → „Kassenbon einlesen“ oder bei „Im Wagen“ → „🧾 Bon“.</p>
+    <p><b>Am besten:</b> Bon in der EDEKA- oder Lidl-Plus-App öffnen, Text lange drücken → alles markieren → kopieren und in das Textfeld einfügen (Live Text ist genauer als ein Foto). dm-eBon als PDF geht direkt.</p>
+    <p>Danach zeigt die App alle Zeilen: Haken weg = nicht übernehmen, Namen zuordnen (wird gemerkt), <b>gelb</b> = unsicher gelesener Preis, bitte prüfen. Die Summe wird mit dem Bon verglichen.</p>
+    <p>Coupons, Lidl-Plus-Rabatt (zählt als App-Preis) und Pfand werden erkannt. Ein doppelt eingelesener Bon wird erkannt.</p>
+    <p>Nur Artikel, die auf der Liste als 📦 Lager markiert waren, werden ins Lager gebucht.</p>
+  </details>
+  <details><summary>▥ Strichcode scannen</summary>
+    <p>Über 📷 → „Strichcode scannen“. Kamera erlauben und Strichcode in den Rahmen halten.</p>
+    <p>Bekannte Codes öffnen sofort euren Artikel. Neue Codes werden in Open Food Facts / Open Beauty Facts nachgeschlagen – Name, Marke und Größe werden vorausgefüllt. Die Zuordnung Code → Artikel wird gemerkt.</p>
+  </details>
+  <details><summary>📦 Lager &amp; Inventur</summary>
+    <p>Öffnen mit 📦 oben oder Artikel → 📦 Lager. Gedacht für Vorrat, der regelmäßig gebraucht wird und im Angebot günstig ist.</p>
+    <p><b>Einbuchen beim Einkauf:</b> Artikel auf der Liste auf 📦 stellen → beim Abhaken kommt er ins Lager. Wieder zurückholen oder auf 🍳 stellen bucht ihn aus.</p>
+    <p><b>Schon vorhandenen Vorrat erfassen:</b> „＋ Vorhandenes einbuchen (Inventur)“ oder oben suchen und den Artikel antippen – auch Katalog-Sorten wie „Tomaten (Dose) · gehackt“, ohne sie neu anzulegen. Strichcode geht auch.</p>
+    <p><b>−/＋</b> verändert den Bestand, Zahl antippen setzt ihn direkt. Mit <b>Mindestbestand</b> meldet die App „⚠︎ Nachkaufen“, und „🛒 Fehlende auf die Liste“ trägt alles Fehlende ein.</p>
+  </details>
+  <details><summary>⭐ Favoriten &amp; Häufig gekauft</summary>
+    <p>Favoriten sind Artikel, die ihr immer wieder kauft. Sie kommen erst mit ＋ auf die Liste. Namen antippen zum Bearbeiten.</p>
+    <p>„Häufig gekauft“ füllt sich von selbst und zeigt, wie oft etwas gekauft wurde. Leeren in ⚙︎ Einstellungen.</p>
+  </details>
+  <details><summary>🎙 Siri</summary>
+    <p>Mit dem Siri-Kurzbefehl kannst du Artikel per Sprache eintragen („Hey Siri, Einkaufsliste …“). Sie landen beim nächsten Sync auf der Liste.</p>
+    <p>Der Kurzbefehl enthält den GitHub-Token: nur per AirDrop weitergeben, nie als iCloud-Link.</p>
+  </details>
+  <details><summary>🔄 Sync, Geräte &amp; neues Handy</summary>
+    <p><b>Einrichten:</b> ⚙︎ → „Gemeinsamer Sync über GitHub“: Benutzer, Repository und Token eintragen, „Verbindung testen“, „Speichern“. Alle Geräte brauchen dieselben Angaben.</p>
+    <p>Abgeglichen wird alle 30 Sekunden und beim Öffnen; ⟳ synchronisiert sofort. Gelöschtes bleibt auch auf den anderen Geräten gelöscht.</p>
+    <p><b>Neues Handy einrichten:</b> ⚙︎ → Sync → „📲 Einrichtung an anderes Handy“ (QR-Code, AirDrop oder kopieren). Auf dem neuen Gerät den Code bei „Einrichtungs-Code einfügen“ einfügen → „Übernehmen“.</p>
+    <p>⚠︎ Der Einrichtungs-Code enthält den Token – kein Bildschirmfoto, nur an eigene Geräte.</p>
+    <p><b>📱 Angemeldete Geräte</b> in ⚙︎ zeigt, welche Handys zuletzt synchronisiert haben.</p>
+  </details>
+  <details><summary>🛠 Probleme lösen</summary>
+    <p><b>Neue Version kommt nicht an:</b> App ganz schließen und neu öffnen. Bei ℹ️ steht die installierte Version.</p>
+    <p><b>Sync-Fehler / keine Verbindung:</b> Internet prüfen; ⚙︎ → „Verbindung testen“. Steht dort ein Uhrzeit-Hinweis: Datum &amp; Uhrzeit des Handys auf „Automatisch“ stellen (wichtig beim alten iPhone ohne SIM).</p>
+    <p><b>Token abgelaufen:</b> Auf GitHub einen neuen erstellen und in ⚙︎ eintragen – dann per „Einrichtung übertragen“ an die anderen Geräte.</p>
+    <p><b>Versehentlich gelöscht:</b> Direkt danach auf „Rückgängig“ in der Meldung unten tippen.</p>
+    <p><b>Sicherung:</b> ⚙︎ → Daten → „Exportieren“ speichert alles als Datei; „Importieren“ führt sie wieder zusammen.</p>
+  </details>
+  </div>
+  <div class="row"><button class="btn primary" data-close>Schließen</button></div>
+</div>
+
 <!-- Info -->
 <div class="sheet" id="infoSheet">
   <div class="infohead">
@@ -620,6 +717,7 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
   <select class="field" id="verSelect"></select>
   <div class="hint" id="verDate" style="margin-top:8px"></div>
   <ul class="changes" id="verChanges"></ul>
+  <div class="row"><button class="btn" id="infoHelp">❓ Hilfe öffnen</button></div>
   <div class="credit">Entwickelt von <b>Christian Mättig</b><br>in Kooperation mit <b>Claude</b> (Anthropic)</div>
   <div class="row"><button class="btn primary" data-close>Schließen</button></div>
 </div>
@@ -681,7 +779,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.48';
+const APP_VERSION = 'v1.49';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -4295,6 +4393,11 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.49', '23.10.2026', [
+    'Neu: ❓ Hilfe – Knopf oben neben 📦, auch im Info-Fenster',
+    'Alle Themen zum Aufklappen: Liste, Artikel, Preise, Angebote, Kassenbon, Strichcode, Lager, Favoriten, Siri, Sync & neues Handy, Probleme lösen',
+    'Suchfeld in der Hilfe: zeigt nur passende Themen und markiert die Fundstellen gelb'
+  ]],
   ['v1.48', '23.10.2026', [
     'Lager: Die Suche oben findet jetzt auch Artikel zum Einlagern – eigene Artikel, Katalog-Artikel und Sorten (z. B. „Tomaten (Dose) · gehackt“), ohne sie neu anzulegen',
     'Im Lager öffnet „+“ oben das Einbuchen',
@@ -4563,6 +4666,47 @@ function openInfo() {
 }
 $('verSelect').onchange = () => renderVersion($('verSelect').value);
 $('infoBtn').onclick = openInfo;
+
+/* ---------- Hilfe ---------- */
+let helpOrig = null;
+function helpFilter() {
+  const body = $('helpBody'), q = norm($('helpSearch').value.trim());
+  const secs = Array.prototype.slice.call(body.querySelectorAll('details'));
+  if (!helpOrig) helpOrig = secs.map(d => d.innerHTML);
+  let hits = 0;
+  secs.forEach((d, i) => {
+    d.innerHTML = helpOrig[i];
+    if (!q) { d.style.display = ''; return; }
+    const ok = norm(d.textContent).indexOf(q) >= 0;
+    d.style.display = ok ? '' : 'none';
+    d.open = ok;
+    if (ok) { hits++; helpMark(d, $('helpSearch').value.trim()); }
+  });
+  $('helpNone').style.display = q && !hits ? '' : 'none';
+}
+// Treffer gelb markieren (nur in Textknoten, Groß-/Kleinschreibung egal)
+function helpMark(root, q) {
+  if (q.length < 2) return;
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false), nodes = [];
+  while (walk.nextNode()) nodes.push(walk.currentNode);
+  nodes.forEach(n => {
+    if (!re.test(n.nodeValue)) return; re.lastIndex = 0;
+    const span = document.createElement('span');
+    span.innerHTML = esc(n.nodeValue).replace(re, '<mark>$1</mark>');
+    n.parentNode.replaceChild(span, n);
+  });
+}
+function openHelp(topic) {
+  closeSheets();
+  $('helpSearch').value = '';
+  helpFilter();
+  Array.prototype.forEach.call($('helpBody').querySelectorAll('details'), d => { d.open = false; });
+  openSheet('helpSheet');
+}
+$('helpBtn').onclick = () => openHelp();
+$('infoHelp').onclick = () => openHelp();
+$('helpSearch').oninput = helpFilter;
 
 /* ---------- Icon, Manifest, Service Worker ---------- */
 (async function setupPwa() {
