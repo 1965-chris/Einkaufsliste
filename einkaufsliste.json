@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:17:40.292Z",
+ "savedAt": "2026-10-23T06:19:06.690Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1775,8 +1775,7 @@
   "wein": {
    "name": "Wein",
    "variants": [
-    "Grobe Bratwurst vom Schwein",
-    "Aldi Weinsauerkraut mild aus Weißkohl"
+    "Grobe Bratwurst vom Schwein"
    ],
    "cat": "getraenk",
    "unit": "Fl.",
@@ -1784,7 +1783,10 @@
     "grobe bratwurst vom schwein": 1792735768501,
     "aldi weinsauerkraut mild aus weißkohl": 1792735866755
    },
-   "updatedAt": 1792735866755
+   "updatedAt": 1792736344396,
+   "varDel": {
+    "aldi weinsauerkraut mild aus weißkohl": 1792736344396
+   }
   },
   "rahmspinat": {
    "name": "Rahmspinat",
@@ -1816,6 +1818,18 @@
     "kassler minutensteaks": 1792736258130
    },
    "updatedAt": 1792736258130
+  },
+  "sauerkraut": {
+   "name": "Sauerkraut",
+   "variants": [
+    "Weinsauerkraut mild aus Weißkohl"
+   ],
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "varAdd": {
+    "weinsauerkraut mild aus weißkohl": 1792736344396
+   },
+   "updatedAt": 1792736344396
   }
  },
  "prices": {
@@ -2833,6 +2847,24 @@
    },
    "deposit": null,
    "updatedAt": 1792736258131
+  },
+  "sauerkraut|weinsauerkraut mild aus weißkohl|aldi|2026-10-23": {
+   "id": "sauerkraut|weinsauerkraut mild aus weißkohl|aldi|2026-10-23",
+   "key": "sauerkraut|weinsauerkraut mild aus weißkohl",
+   "name": "Sauerkraut",
+   "detail": "Weinsauerkraut mild aus Weißkohl",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 0.89,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.52,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736344396
   }
  },
  "brands": {
@@ -3699,15 +3731,15 @@
    "updatedAt": 1792735823973
   },
   "4061462918728": {
-   "name": "Wein",
-   "detail": "Aldi Weinsauerkraut mild aus Weißkohl",
+   "name": "Sauerkraut",
+   "detail": "Weinsauerkraut mild aus Weißkohl",
    "cat": "getraenk",
    "pack": {
     "n": 1,
     "size": 0.52,
     "u": "kg"
    },
-   "updatedAt": 1792735866755
+   "updatedAt": 1792736344396
   }
  },
  "arts": {
@@ -4182,7 +4214,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792735866755
+   "updatedAt": 1792736344396,
+   "deleted": true
   },
   "fleisch|meine metzgerei kassler minutensteaks": {
    "name": "Fleisch",
@@ -4197,6 +4230,20 @@
    },
    "deposit": null,
    "updatedAt": 1792736258130
+  },
+  "sauerkraut|weinsauerkraut mild aus weißkohl": {
+   "name": "Sauerkraut",
+   "detail": "Weinsauerkraut mild aus Weißkohl",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.52,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736344396
   }
  },
  "devices": {
