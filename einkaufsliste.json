@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:14:57.735Z",
+ "savedAt": "2026-10-23T06:15:34.843Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2784,6 +2784,24 @@
    },
    "deposit": null,
    "updatedAt": 1792736095474
+  },
+  "taschentücher|kokett taschentücher boxbadezimmer|ohne markt|2026-10-23": {
+   "id": "taschentücher|kokett taschentücher boxbadezimmer|ohne markt|2026-10-23",
+   "key": "taschentücher|kokett taschentücher boxbadezimmer",
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher BoxBadezimmer",
+   "date": "2026-10-23",
+   "shop": "ohne Markt",
+   "price": 0.85,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 100,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1792736132470
   }
  },
  "brands": {
@@ -3944,7 +3962,7 @@
     "u": "st"
    },
    "deposit": null,
-   "updatedAt": 1792309140586
+   "updatedAt": 1792736132455
   },
   "slipeinlagen|extra lang": {
    "name": "Slipeinlagen",
