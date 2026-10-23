@@ -260,12 +260,16 @@ summary{cursor:pointer;font-weight:600}
 }
 /* Knöpfe: kein Markieren von Text beim Antippen (ältere iPhones) */
 button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+/* iPhone: Beschriftungen und Hinweise nicht versehentlich markieren – nur Eingabefelder bleiben markierbar */
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 </style>
 </head>
 <body>
 
 <header>
   <h1 id="title">Einkauf <span class="count" id="count"></span></h1>
+  <button class="iconbtn" id="lagerBtn" title="Lager">📦</button>
   <button class="iconbtn" id="infoBtn" title="Info">ℹ️</button>
   <button class="iconbtn" id="syncBtn" title="Synchronisieren">⟳<span class="dot" id="syncDot"></span></button>
   <button class="iconbtn" id="settingsBtn" title="Einstellungen">⚙︎</button>
@@ -677,7 +681,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.47';
+const APP_VERSION = 'v1.48';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1621,7 +1625,14 @@ function renderLager() {
   let html = '<p class="intro" style="margin-top:0">Dein Vorrat – z. B. was im Angebot günstig auf Vorrat gekauft wurde. Beim Eintragen auf die Liste <b>„📦 Lager / Vorrat“</b> wählen; abgehakt kommt die Menge hierher. <b>−</b> nimmt etwas heraus (z. B. für die Küche). Bei 0 ohne Mindestbestand verschwindet der Artikel von selbst.</p>';
   html += '<button class="btn primary" data-act="stockin" style="width:100%;margin:2px 0 8px">＋ Vorhandenes einbuchen (Inventur)</button>';
   html += `<div class="chips wrap">${[['', 'Alle'], ['low', '⚠︎ Nachkaufen (' + low.length + ')']].map(([v, l]) => `<button class="chip${v === stockFilter ? ' sel' : ''}" data-stf="${v}">${l}</button>`).join('')}${low.length ? '<button class="chip" data-act="stocklist">🛒 Fehlende auf die Liste</button>' : ''}</div>`;
-  if (!list.length) html += `<div class="empty"><b>📦</b>${stockFilter === 'low' ? 'Alles ausreichend vorrätig.' : 'Das Lager ist leer.<br><br>Beim Eintragen auf die Einkaufsliste „📦 Lager / Vorrat“ wählen – nach dem Abhaken steht der Artikel hier.'}</div>`;
+  if (!list.length && !n) html += `<div class="empty"><b>📦</b>${stockFilter === 'low' ? 'Alles ausreichend vorrätig.' : 'Das Lager ist leer.<br><br>Beim Eintragen auf die Einkaufsliste „📦 Lager / Vorrat“ wählen – nach dem Abhaken steht der Artikel hier.'}</div>`;
+  if (n) {
+    // Suchtext eingegeben: passende Artikel zum Einlagern anbieten – ohne sie neu anlegen zu müssen
+    const inStock = new Set(list.map(s => s.key));
+    const cands = articleCandidates($('catSearch').value, 20).filter(c => !inStock.has(keyOf(c.name, c.detail)));
+    if (cands.length) html += `<section class="group"><h2>Einlagern – passende Artikel</h2><div class="list">${cands.map(c => `<div class="item"><div class="body" data-stin="${esc(c.label)}"><div class="name">${esc(c.name)}</div>${c.detail ? `<div class="detail">${esc(c.detail)}</div>` : ''}${c.mine ? '' : '<div class="note">aus dem Katalog</div>'}</div><button class="qadd" data-stin="${esc(c.label)}" aria-label="einbuchen">📦</button></div>`).join('')}</div></section>`;
+    else if (!list.length) html += `<div class="empty">Kein Artikel „${esc($('catSearch').value)}“ gefunden.<br><br><button class="btn primary" data-stin="${esc(cap($('catSearch').value.trim()))}">„${esc(cap($('catSearch').value.trim()))}“ einbuchen</button></div>`;
+  }
   const onList = new Set(liveItems().filter(i => !i.checked).map(i => keyOf(i.name, i.detail)));
   CATS.forEach(([c, label]) => {
     const g = list.filter(s => (s.cat || 'sonst') === c).sort((a, b) => a.name.localeCompare(b.name, 'de') || a.detail.localeCompare(b.detail, 'de'));
@@ -1665,6 +1676,7 @@ function stockClick(e) {
     s.min = q; s.updatedAt = now(); commit(); return true;
   }
   if (e.target.closest('[data-act="stockin"]')) { openStockIn(); return true; }
+  if ((b = t('data-stin'))) { openStockIn(b.dataset.stin); clearCatSearch(); return true; }
   if ((b = t('data-stbuy'))) { const s = stockOf(b.dataset.stbuy); if (s) stockToList(s); return true; }
   if (e.target.closest('[data-act="stocklist"]')) {
     const low = Object.values(data.stock || {}).filter(s => stockVisible(s) && (s.min || 0) > 0 && (s.qty || 0) <= s.min);
@@ -1683,6 +1695,23 @@ function stockClick(e) {
   return false;
 }
 
+/* Artikel-Kandidaten für Suche: eigene Artikel, Katalog-Artikel und deren Sorten („Tomaten (Dose) · gehackt“) */
+function articleCandidates(q, limit) {
+  const words = norm(q).split(' ').filter(Boolean), hit = t => words.every(w => norm(t).includes(w));
+  const out = [], seen = new Set();
+  const push = (name, detail, cat, mine, ts) => {
+    const label = name + (detail ? ' · ' + detail : ''), k = norm(label);
+    if (seen.has(k) || !hit(label)) return; seen.add(k);
+    out.push({ label, name, detail: detail || '', cat, mine, ts: ts || 0 });
+  };
+  myArticles().filter(a => !a.onlyCustom).forEach(a => push(a.name, a.detail, a.cat, true, a.ts));
+  Object.values(CAT_INDEX).forEach(a => { push(a.name, '', a.cat, false); articleInfo(a.name).variants.forEach(v => push(a.name, v, a.cat, false)); });
+  customArts().filter(c => !CAT_INDEX[norm(c.name)]).forEach(c => { push(c.name, '', c.cat, false); (c.variants || []).forEach(v => push(c.name, v, c.cat, false)); });
+  const qn = norm(q);
+  out.sort((a, b) => (b.mine - a.mine) || ((norm(a.name).startsWith(qn) ? 0 : 1) - (norm(b.name).startsWith(qn) ? 0 : 1)) || a.label.localeCompare(b.label, 'de'));
+  return limit ? out.slice(0, limit) : out;
+}
+
 /* Vorhandenen Vorrat einbuchen (Inventur) */
 let stockArtMap = {};
 function openStockIn(prefill) {
@@ -1696,7 +1725,7 @@ function openStockIn(prefill) {
 }
 function stockInTarget() {
   const raw = $('stName').value.trim(); if (!raw) return null;
-  const hit = stockArtMap[norm(raw)];
+  const hit = stockArtMap[norm(raw)] || articleCandidates(raw).find(c => norm(c.label) === norm(raw));
   if (hit) return { name: hit.name, detail: hit.detail || '', cat: hit.cat };
   const [n, ...rest] = raw.split('·');   // „Name · Bezeichnung“ selbst getippt
   return { name: cap(n.trim()), detail: rest.join('·').trim(), cat: guessCat(n.trim()) };
@@ -1711,9 +1740,7 @@ function stockInSuggest() {
     const st = Object.values(data.stock || {}).filter(stockVisible).map(x => mine.find(a => a.key === x.key) || { name: x.name, detail: x.detail, cat: x.cat });
     [...st, ...mine.sort((a, b) => (b.ts || 0) - (a.ts || 0))].forEach(a => { if (out.length < 14 && !out.some(o => label(o) === label(a))) out.push(a); });
   } else {
-    const words = q.split(' ').filter(Boolean), hit = t => words.every(w => norm(t).includes(w));
-    mine.filter(a => hit(label(a))).sort((a, b) => (norm(a.name).startsWith(q) ? 0 : 1) - (norm(b.name).startsWith(q) ? 0 : 1) || label(a).localeCompare(label(b), 'de')).forEach(a => { if (out.length < 14) out.push(a); });
-    Object.values(CAT_INDEX).filter(a => hit(a.name) && !out.some(o => norm(o.name) === norm(a.name))).forEach(a => { if (out.length < 16) out.push({ name: a.name, detail: '', cat: a.cat, cata: true }); });
+    articleCandidates(q, 16).forEach(c => out.push({ name: c.name, detail: c.detail, cat: c.cat, cata: !c.mine }));
   }
   $('stSug').innerHTML = out.map(a => { const st = stockOf(keyOf(a.name, a.detail || '')); return `<button type="button" class="chip${a.cata ? '' : ' sel'}" data-stsug="${esc(label(a))}">${esc(label(a))}${stockVisible(st) ? ' · 📦' + fmtNum(st.qty || 0, 2) : ''}</button>`; }).join('')
     || (q ? '<span class="hint" style="margin:0">Kein Treffer – wird als neuer Artikel angelegt („Name · Bezeichnung“).</span>' : '');
@@ -1929,6 +1956,12 @@ function showTab(t) {
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
   window.scrollTo(0, 0);
 }
+// 📦 oben: direkt ins Lager
+function openLager() {
+  catMode = 'lager'; $('catMode').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.cm === 'lager'));
+  $('catSearch').value = ''; showTab('artikel'); renderCatalog();
+}
+$('lagerBtn').onclick = openLager;
 $('tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) showTab(b.dataset.tab); });
 
 /* ---------- Artikel-Blatt ---------- */
@@ -2152,7 +2185,9 @@ $('sArtDel').onclick = () => {
 };
 // Suchfeld leeren, sobald etwas ausgewählt oder neu angelegt wird
 function clearCatSearch() { if (!$('catSearch').value) return; $('catSearch').value = ''; $('catSearch').blur(); renderCatalog(); }
-$('newArt').onclick = () => { openItemSheet('add', { name: cap($('catSearch').value.trim()) }); clearCatSearch(); if (!$('sName').value) $('sTitle').textContent = 'Neuer Artikel'; setTimeout(() => { if (!$('sName').value) $('sName').focus(); }, 250); };
+$('newArt').onclick = () => {
+  if (catMode === 'lager') { const t = $('catSearch').value.trim(); openStockIn(t ? cap(t) : ''); clearCatSearch(); return; }   // im Lager: „+“ = einbuchen
+  openItemSheet('add', { name: cap($('catSearch').value.trim()) }); clearCatSearch(); if (!$('sName').value) $('sTitle').textContent = 'Neuer Artikel'; setTimeout(() => { if (!$('sName').value) $('sName').focus(); }, 250); };
 
 /* „Meine Artikel“ bearbeiten */
 let artKey = null;
@@ -4260,6 +4295,14 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.48', '23.10.2026', [
+    'Lager: Die Suche oben findet jetzt auch Artikel zum Einlagern – eigene Artikel, Katalog-Artikel und Sorten (z. B. „Tomaten (Dose) · gehackt“), ohne sie neu anzulegen',
+    'Im Lager öffnet „+“ oben das Einbuchen',
+    'Einbuchen-Vorschläge zeigen auch Katalog-Sorten',
+    'iPhone: Beschriftungen und Hinweise werden beim Antippen nicht mehr als Text markiert (überall in der App)',
+    'Die App startet immer mit der Einkaufsliste',
+    'Neuer Knopf 📦 oben neben ℹ️: öffnet direkt das Lager'
+  ]],
   ['v1.47', '23.10.2026', [
     'Neu: 📦 Lager (Vorrat zu Hause) – unter Artikel → „📦 Lager“',
     'Beim Eintragen auf die Liste wählen: „🍳 Küche – normaler Einkauf“ (Standard) oder „📦 Lager / Vorrat“ – nur Vorrat-Käufe kommen beim Abhaken ins Lager (Kassenbon ebenso)',
@@ -4554,7 +4597,7 @@ document.addEventListener('gesturechange', e => e.preventDefault());
 let lastTouch = 0;
 document.addEventListener('touchend', e => { const t = Date.now(); if (t - lastTouch < 300 && !e.target.closest('input,textarea,select')) e.preventDefault(); lastTouch = t; }, { passive: false });
 $('ver').textContent = 'Einkaufsliste ' + APP_VERSION;
-showTab(['liste','artikel','favoriten','angebote','preise'].includes(currentTab) ? currentTab : 'liste');
+showTab('liste');   // Startseite ist immer die Einkaufsliste
 renderAll();
 sync('Start');
 // Nach einem Update einmal die Neuerungen zeigen
