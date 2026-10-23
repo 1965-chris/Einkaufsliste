@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:13:41.922Z",
+ "savedAt": "2026-10-23T06:14:14.269Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2730,6 +2730,24 @@
    },
    "deposit": null,
    "updatedAt": 1792736019777
+  },
+  "leberwurst|aldi|aldi|2026-10-23": {
+   "id": "leberwurst|aldi|aldi|2026-10-23",
+   "key": "leberwurst|aldi",
+   "name": "Leberwurst",
+   "detail": "Aldi",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 1.29,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.175,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736051662
   }
  },
  "brands": {
@@ -4012,7 +4030,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792735693547
+   "updatedAt": 1792736051646
   },
   "steak|meine metzgerei kassler minutensteaks": {
    "name": "Steak",
