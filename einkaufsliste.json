@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:39:10.957Z",
+ "savedAt": "2026-10-23T06:39:47.010Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3058,6 +3058,24 @@
    },
    "deposit": null,
    "updatedAt": 1792737548780
+  },
+  "salami|gut drei eichen herzhafte edelsalami geräuchert|ohne markt|2026-10-23": {
+   "id": "salami|gut drei eichen herzhafte edelsalami geräuchert|ohne markt|2026-10-23",
+   "key": "salami|gut drei eichen herzhafte edelsalami geräuchert",
+   "name": "Salami",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "date": "2026-10-23",
+   "shop": "ohne Markt",
+   "price": 1.39,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737584812
   }
  },
  "brands": {
@@ -4801,7 +4819,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792737321271
+   "updatedAt": 1792737584794
   },
   "käse|meine käsetheke caverna dänischer schnittkäse": {
    "name": "Käse",
