@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.43",
- "savedAt": "2026-10-23T07:31:12.276Z",
+ "savedAt": "2026-10-23T07:31:28.203Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5002,7 +5002,7 @@
   "wurst|gut drei eichen schweinebraten": {
    "name": "Wurst",
    "detail": "Gut Drei Eichen Schweinebraten",
-   "cat": "sonst",
+   "cat": "fleisch",
    "unit": "Pck.",
    "shop": "ALDI",
    "pack": {
@@ -5011,7 +5011,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792737859535
+   "updatedAt": 1792740686014
   },
   "taschentücher|kokett taschentücher 4 lagig": {
    "name": "Taschentücher",
