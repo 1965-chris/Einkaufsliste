@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:30:18.169Z",
+ "savedAt": "2026-10-23T12:30:46.429Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5212,8 +5212,8 @@
    "cat": "getraenk",
    "unit": "",
    "qty": 5,
-   "min": 0,
-   "updatedAt": 1792758602439
+   "min": 2,
+   "updatedAt": 1792758639107
   },
   "melita bella crema ganze bohnen|": {
    "key": "melita bella crema ganze bohnen|",
@@ -5222,8 +5222,8 @@
    "cat": "vorrat",
    "unit": "Pck.",
    "qty": 5,
-   "min": 0,
-   "updatedAt": 1792758512314
+   "min": 2,
+   "updatedAt": 1792758646409
   }
  }
 }
