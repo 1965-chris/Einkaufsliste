@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:27:18.449Z",
+ "savedAt": "2026-10-23T12:27:26.756Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5105,9 +5105,9 @@
    "detail": "",
    "cat": "getraenk",
    "unit": "",
-   "qty": 3,
+   "qty": 0,
    "min": 0,
-   "updatedAt": 1792758437554
+   "updatedAt": 1792758444304
   }
  }
 }
