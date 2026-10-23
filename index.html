@@ -612,7 +612,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.41';
+const APP_VERSION = 'v1.42';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1042,7 +1042,7 @@ function loadJSON(key, fallback) {
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap), eans: obj(d.eans), arts: obj(d.arts), devices: obj(d.devices) };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap), eans: obj(d.eans), arts: obj(d.arts), devices: obj(d.devices), artDel: obj(d.artDel) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -1390,21 +1390,24 @@ function myArticles() {
   const add = (name, detail, extra = {}) => {
     if (!name) return; name = cap(name); detail = String(detail || '').trim();
     const k = keyOf(name, detail);
-    const a = map.get(k) || { key: k, name, detail, cat: null, unit: '', qty: 0, onlyCustom: true };
+    const a = map.get(k) || { key: k, name, detail, cat: null, unit: '', qty: 0, onlyCustom: true, ts: 0 };
     if (!extra.fromCustom) a.onlyCustom = false;
+    a.ts = Math.max(a.ts, extra._ts || 0);
     if (!a.cat && extra.cat) a.cat = extra.cat;
     if (!a.unit && extra.unit) a.unit = extra.unit;
     if (!a.pack && extra.pack) a.pack = extra.pack;
     if (a.deposit == null && extra.deposit) a.deposit = extra.deposit;
     map.set(k, a);
   };
-  customArts().forEach(c => { if (c.variants && c.variants.length) c.variants.forEach(v => add(c.name, v, { ...c, fromCustom: true })); else if (!CAT_INDEX[norm(c.name)]) add(c.name, '', { ...c, fromCustom: true }); });
-  Object.values(data.favs).filter(f => !f.deleted).forEach(f => add(f.name, f.detail, { ...f, pack: f.offer && f.offer.pack, deposit: f.offer && f.offer.deposit }));
-  Object.values(data.stars).filter(st => st.on).forEach(st => add(st.name, st.detail, st));
-  data.items.filter(i => !i.deleted).forEach(i => add(i.name, i.detail, { ...i, pack: i.offer && i.offer.pack, deposit: i.offer && i.offer.deposit }));
+  customArts().forEach(c => { if (c.variants && c.variants.length) c.variants.forEach(v => add(c.name, v, { ...c, fromCustom: true, _ts: (c.varAdd && c.varAdd[norm(v)]) || c.updatedAt })); else if (!CAT_INDEX[norm(c.name)]) add(c.name, '', { ...c, fromCustom: true, _ts: c.updatedAt }); });
+  Object.values(data.favs).filter(f => !f.deleted).forEach(f => add(f.name, f.detail, { ...f, pack: f.offer && f.offer.pack, deposit: f.offer && f.offer.deposit, _ts: f.last }));
+  Object.values(data.stars).filter(st => st.on).forEach(st => add(st.name, st.detail, { ...st, _ts: st.updatedAt }));
+  data.items.filter(i => !i.deleted).forEach(i => add(i.name, i.detail, { ...i, pack: i.offer && i.offer.pack, deposit: i.offer && i.offer.deposit, _ts: i.updatedAt }));
   const pe = priceEntries().sort((a, b) => b.date.localeCompare(a.date) || (b.updatedAt || 0) - (a.updatedAt || 0));
-  pe.forEach(e => add(e.name, e.detail, { pack: e.pack, deposit: e.deposit }));
-  Object.values(data.arts || {}).filter(a => !a.deleted).forEach(a => add(a.name, a.detail, a));
+  pe.forEach(e => add(e.name, e.detail, { pack: e.pack, deposit: e.deposit, _ts: e.updatedAt }));
+  Object.values(data.arts || {}).filter(a => !a.deleted).forEach(a => add(a.name, a.detail, { ...a, _ts: a.updatedAt }));
+  // gelöschte Artikel bleiben weg – außer sie wurden danach neu angelegt, gekauft oder bepreist
+  Object.entries(data.artDel || {}).forEach(([k, d]) => { const a = map.get(k); if (a && d && !d.undone && (d.ts || 0) >= (a.ts || 0)) map.delete(k); });
   // Bezeichnungs-Knöpfe aus dem Katalog nicht doppelt zeigen, wenn es den Artikel schon (mit Marke) gibt
   [...map.values()].filter(a => a.onlyCustom).forEach(a => {
     const rest = norm(splitBrand(a.detail).rest);
@@ -1898,17 +1901,52 @@ function saveArticleFromSheet() {
 }
 $('sArtSave').onclick = () => { if (!saveArticleFromSheet()) return; closeSheets(); commit(); toast('Gespeichert'); };
 $('sArtList').onclick = () => { const v = saveArticleFromSheet(); if (!v) return; closeSheets(); addItem(v); };
+// Artikel wirklich löschen: Preise, Favorit, „Häufig gekauft“, Stammdaten, Bezeichnungs-Knopf, Strichcode- und Bon-Zuordnung
+function deleteArticle(key, alsoList) {
+  const undo = [];
+  const mark = (obj, patch) => { undo.push([obj, { ...obj }]); Object.assign(obj, patch); };
+  const t = now(), loose = x => norm(x).replace(/[^a-zäöüß0-9]/g, '');
+  priceEntries().filter(e => e.key === key).forEach(e => mark(e, { deleted: true, updatedAt: t }));
+  const am = (data.arts || {})[key]; if (am && !am.deleted) mark(am, { deleted: true, updatedAt: t });
+  const f = data.favs[key]; if (f && !f.deleted) mark(f, { deleted: true, last: t });
+  const st = data.stars[key]; if (st && st.on) mark(st, { on: false, updatedAt: t });
+  // Bezeichnungs-Knopf: auch andere Schreibweisen (mit/ohne Marke, „Thunfisch-Filet“ ↔ „Thunfischfilet“)
+  const [nk, dk] = key.split('|'), cu = data.custom[nk];
+  if (cu && !cu.deleted) {
+    const rest = splitBrand(dk || '').rest;
+    const hit = (cu.variants || []).filter(v => [dk, rest].some(x => x && loose(x) === loose(v)) || loose(splitBrand(v).rest) === loose(rest));
+    if (hit.length || (!dk && !(cu.variants || []).length)) {
+      mark(cu, {});
+      hit.forEach(v => removeVariant(cu, norm(v)));
+      if (!dk && !(cu.variants || []).length && !CAT_INDEX[nk]) { cu.deleted = true; cu.updatedAt = t; }
+    }
+  }
+  Object.values(data.eans || {}).forEach(x => { if (!x.deleted && keyOf(x.name, x.detail) === key) mark(x, { deleted: true, updatedAt: t }); });
+  Object.values(data.bonmap || {}).forEach(x => { if (!x.deleted && keyOf(x.name, x.detail) === key) mark(x, { deleted: true, updatedAt: t }); });
+  if (alsoList) liveItems().filter(i => keyOf(i.name, i.detail) === key).forEach(i => mark(i, { deleted: true, updatedAt: t }));
+  data.artDel = data.artDel || {};
+  const prevDel = data.artDel[key];
+  data.artDel[key] = { ts: t, updatedAt: t };
+  return () => {   // Rückgängig
+    const u = now();
+    undo.reverse().forEach(([obj, prev]) => {
+      Object.keys(obj).forEach(k => { if (!(k in prev)) delete obj[k]; });
+      Object.assign(obj, prev, 'last' in prev ? { last: u } : {}, { updatedAt: u });
+      if (Array.isArray(prev.variants)) { obj.varAdd = { ...(obj.varAdd || {}) }; prev.variants.forEach(v => { obj.varAdd[norm(v)] = u; }); }   // Bezeichnungen gegen Lösch-Merker des anderen Handys durchsetzen
+    });
+    data.artDel[key] = prevDel ? { ...prevDel, undone: true, updatedAt: u } : { ts: 0, undone: true, updatedAt: u };
+  };
+}
 $('sArtRemove').onclick = () => {
-  const a = myArticles().find(x => x.key === artKey); if (!a) return closeSheets();
+  const a = myArticles().find(x => x.key === artKey);
+  const label = a ? a.name + (a.detail ? ' · ' + a.detail : '') : artKey;
   const pe = priceEntries().filter(e => e.key === artKey);
-  if (!confirm(`„${a.name}${a.detail ? ' · ' + a.detail : ''}“ aus „Meine Artikel“ löschen?` + (pe.length ? `\n\nDabei werden auch ${pe.length} Preis${pe.length > 1 ? 'e' : ''} aus dem Preisverlauf gelöscht.` : '') + '\n\nDie Einkaufsliste bleibt unverändert.')) return;
-  pe.forEach(e => { e.deleted = true; e.updatedAt = now(); });
-  const am = (data.arts || {})[artKey]; if (am && !am.deleted) { am.deleted = true; am.updatedAt = now(); }
-  const f = data.favs[artKey]; if (f && !f.deleted) { f.deleted = true; f.last = now(); }
-  const st = data.stars[artKey]; if (st && st.on) { st.on = false; st.updatedAt = now(); }
-  const sk = splitKeyArticle(artKey);
-  if (sk) { if (sk.variant) removeVariant(sk.cu, sk.variant); else if (!(sk.cu.variants || []).length) { sk.cu.deleted = true; sk.cu.updatedAt = now(); } }
-  closeSheets(); commit(); toast('Gelöscht');
+  const onList = liveItems().filter(i => keyOf(i.name, i.detail) === artKey);
+  if (!confirm(`„${label}“ löschen?` + (pe.length ? `\n\nDabei werden auch ${pe.length} Preis${pe.length > 1 ? 'e' : ''} aus dem Preisverlauf gelöscht.` : '') + '\n\nDeine Einkäufe (Auswertung) bleiben erhalten.')) return;
+  const alsoList = onList.length ? confirm(`„${label}“ steht auch auf der Einkaufsliste.\n\nDort ebenfalls entfernen?`) : false;
+  const undo = deleteArticle(artKey, alsoList);
+  closeSheets(); commit();
+  toast(`„${a ? a.name : 'Artikel'}“ gelöscht`, () => { undo(); commit(); });
 };
 
 /* „Häufig gekauft“ bearbeiten */
@@ -2255,6 +2293,7 @@ function mergeData(local, remote) {
   const eans = mergeByUpdated(local.eans, remote.eans);
   const arts = mergeByUpdated(local.arts, remote.arts);
   const devices = mergeByUpdated(local.devices, remote.devices);
+  const artDel = mergeByUpdated(local.artDel, remote.artDel);
   Object.keys(purchases).forEach(k => { if (purchases[k].deleted && (purchases[k].updatedAt || 0) < cutoff) delete purchases[k]; });
   Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
   // eigene Bezeichnungen beider Seiten zusammenführen – gelöschte (varDel) bleiben gelöscht, solange sie nicht neuer wieder angelegt wurden
@@ -2266,7 +2305,7 @@ function mergeData(local, remote) {
     [...(L.variants || []), ...(R.variants || [])].forEach(v => { const nv = norm(v); if (!vs.has(nv) && (!varDel[nv] || (varAdd[nv] || 0) > varDel[nv])) vs.set(nv, v); });
     custom[k] = { ...custom[k], variants: [...vs.values()], ...(Object.keys(varAdd).length ? { varAdd } : {}), ...(Object.keys(varDel).length ? { varDel } : {}) };
   });
-  return { items, favs, stars, custom, prices, brands, purchases, bonmap, eans, arts, devices };
+  return { items, favs, stars, custom, prices, brands, purchases, bonmap, eans, arts, devices, artDel };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
@@ -2274,20 +2313,20 @@ function canon(d) {
   const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap), eans: mapC(d.eans), arts: mapC(d.arts), devices: mapC(d.devices)
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap), eans: mapC(d.eans), arts: mapC(d.arts), devices: mapC(d.devices), artDel: mapC(d.artDel)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {}, eans: {}, arts: {}, devices: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {}, eans: {}, arts: {}, devices: {}, artDel: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
   const p = JSON.parse(b64decode(j.content || ''));
-  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts), devices: obj(p.devices) };
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts), devices: obj(p.devices), artDel: obj(p.artDel) };
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
@@ -2563,7 +2602,7 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap), eans: obj(j.eans), arts: obj(j.arts), devices: obj(j.devices) });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap), eans: obj(j.eans), arts: obj(j.arts), devices: obj(j.devices), artDel: obj(j.artDel) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
@@ -3746,6 +3785,12 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.42', '23.10.2026', [
+    'Fehler behoben: Gelöschte Artikel in „Meine Artikel“ tauchten oft wieder auf (andere Schreibweise des Bezeichnungs-Knopfs, Artikel stand noch auf der Liste)',
+    'Löschen entfernt jetzt alles zum Artikel: Preise, Favorit, Häufig gekauft, Stammdaten, Strichcode- und Bon-Zuordnung',
+    'Steht der Artikel auf der Einkaufsliste, fragt die App, ob er dort auch weg soll',
+    'Gelöschtes bleibt auch nach dem Abgleich mit dem anderen Handy gelöscht – mit „Rückgängig“'
+  ]],
   ['v1.41', '22.10.2026', [
     'Artikel-Suche: das Suchfeld wird geleert, sobald ein Artikel ausgewählt oder neu angelegt wird'
   ]],
