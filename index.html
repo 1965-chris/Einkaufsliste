@@ -151,6 +151,21 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .bpair .qchip{border-radius:0 14px 14px 0;background:var(--accent);color:#fff;font-weight:700;padding-left:9px;padding-right:9px;margin-left:1px}
 .bpair .qchip.on{background:var(--chip);color:var(--ink)}
 .picklist .item{cursor:pointer}
+.sumrow{display:flex;gap:10px;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer;align-items:baseline}
+.sumrow:first-child{border-top:0}
+.sumrow .sl{width:96px;flex:none;color:var(--muted);font-size:13px}
+.sumrow .sv{flex:1;font-size:15px}
+.sumrow .sv.miss{color:#9a5b00;font-size:13px}
+.sumrow .se{color:var(--accent);font-size:14px}
+.stepper{display:flex;align-items:center;gap:4px;flex:none}
+.stepper button{width:34px;height:34px;border:0;border-radius:10px;background:var(--chip);font-size:20px;color:var(--ink);cursor:pointer}
+.stepper b{min-width:34px;text-align:center;font-size:17px;cursor:pointer}
+.stockrow.low{background:#fffaf0}
+.lnk{color:var(--accent);cursor:pointer}
+.forbtn{flex:none;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:10px;font-weight:600;line-height:1.25;border-radius:10px;padding:4px 6px;min-width:46px;cursor:pointer}
+.forbtn.lager{background:#e8f1ff;border-color:#9cc0f5;color:#1d4f91}
+.item.done .forbtn{opacity:.7}
+.lagerbadge{display:inline-block;font-size:11px;font-weight:600;background:var(--chip);color:var(--ink);border-radius:6px;padding:1px 6px;margin-left:6px}
 .okmark{color:var(--accent);font-weight:700}
 .badge{display:inline-block;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .chk{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink);margin:10px 0 0}
@@ -278,7 +293,7 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
 <section class="view" id="v-artikel">
   <div class="addbar">
     <div class="addrow"><input class="inp search" id="catSearch" placeholder="Artikel suchen …" autocomplete="off" style="flex:1;margin:0"><button type="button" class="plus" id="newArt" aria-label="Neuer Artikel">+</button></div>
-    <div class="seg" id="catMode" style="margin-top:8px;display:flex"><button data-cm="katalog" class="on" style="flex:1">📚 Katalog</button><button data-cm="meine" style="flex:1">🗂 Meine Artikel</button></div>
+    <div class="seg" id="catMode" style="margin-top:8px;display:flex"><button data-cm="katalog" class="on" style="flex:1">📚 Katalog</button><button data-cm="meine" style="flex:1">🗂 Meine Artikel</button><button data-cm="lager" style="flex:1">📦 Lager</button></div>
   </div>
   <main id="catMain"></main>
 </section>
@@ -326,6 +341,11 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
     <input class="field" id="sQty" type="number" inputmode="numeric" min="1" max="9999">
     <button id="sPlus" type="button">+</button>
     <select class="field" id="sUnit"></select>
+  </div>
+  <div id="sLagerRow" style="margin-top:12px">
+    <label style="margin-top:0">Wofür wird gekauft?</label>
+    <div class="seg" id="sFor" style="display:flex"><button type="button" data-for="kueche" class="on" style="flex:1">🍳 Küche – normaler Einkauf</button><button type="button" data-for="lager" style="flex:1">📦 Lager / Vorrat</button></div>
+    <div class="hint" id="sForHint" style="margin-top:4px"></div>
   </div>
   <label>Bereich im Markt</label>
   <select class="field" id="sCat"></select>
@@ -449,6 +469,16 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
   <div class="row">
     <button class="btn" id="setupCopy">Code kopieren</button>
     <button class="btn" data-close>Schließen</button>
+  </div>
+</div>
+<div class="sheet" id="sumSheet" style="z-index:23">
+  <h3 id="sumTitle">Das wird gespeichert</h3>
+  <div class="hint">Antippen, um etwas zu ändern oder zu ergänzen.</div>
+  <div class="list" id="sumList" style="margin-top:8px"></div>
+  <label class="chk"><input type="checkbox" id="sumOff"> Übersicht künftig nicht mehr zeigen</label>
+  <div class="row" style="margin-top:12px">
+    <button class="btn" id="sumBack">✏️ Ändern</button>
+    <button class="btn primary" id="sumOk">✓ Speichern</button>
   </div>
 </div>
 <div class="sheet" id="pickSheet">
@@ -598,6 +628,7 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
     <div class="hint">So hinterlegst du einen direkten Link: Auf der Seite des Händlers nach <b>spaghetti</b> suchen, die Adresse der Ergebnisseite kopieren und hier einfügen. Leer lassen = Google-Suche auf der Händlerseite.</div>
     <div id="linkEdit"></div>
   </details>
+  <label class="chk" style="margin-top:14px"><input type="checkbox" id="sumOn"> Beim Anlegen eine Übersicht vor dem Speichern zeigen</label>
   <details id="devBox">
     <summary>📱 Angemeldete Geräte</summary>
     <div class="hint">Alle Geräte, die mit dieser Liste abgleichen. Das Modell wird aus der Bildschirmgröße geschätzt – den Namen kannst du ändern.</div>
@@ -630,7 +661,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.44';
+const APP_VERSION = 'v1.47';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1060,7 +1091,7 @@ function loadJSON(key, fallback) {
 function obj(o) { return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }
 function loadData() {
   const d = loadJSON(LS_DATA, null) || {};
-  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap), eans: obj(d.eans), arts: obj(d.arts), devices: obj(d.devices), artDel: obj(d.artDel) };
+  return { items: Array.isArray(d.items) ? d.items : [], favs: obj(d.favs), stars: obj(d.stars), custom: obj(d.custom), prices: obj(d.prices), brands: obj(d.brands), purchases: obj(d.purchases), bonmap: obj(d.bonmap), eans: obj(d.eans), arts: obj(d.arts), devices: obj(d.devices), artDel: obj(d.artDel), stock: obj(d.stock) };
 }
 function saveLocal() { localStorage.setItem(LS_DATA, JSON.stringify(data)); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -1205,20 +1236,21 @@ function spokenLabel(it) {
 /* ---------- Aktionen ---------- */
 function liveItems() { return data.items.filter(i => !i.deleted); }
 
-function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '', offer = null }, opts = {}) {
+function addItem({ name, detail = '', qty = 1, unit = '', cat, note = '', offer = null, forStock }, opts = {}) {
   name = cap(name); detail = String(detail || '').trim();
   if (!name) return;
   cat = cat || guessCat(name);
   const k = keyOf(name, detail);
+  forStock = !!forStock;   // Standard: Küche (normaler Einkauf)
   const same = liveItems().filter(i => keyOf(i.name, i.detail) === k);
   const open = same.find(i => !i.checked && (i.unit || '') === unit);
   if (open) {
-    open.qty = clampQty((open.qty || 1) + qty); if (offer) open.offer = offer; open.updatedAt = now();
+    open.qty = clampQty((open.qty || 1) + qty); if (offer) open.offer = offer; if (forStock) open.forStock = true; open.updatedAt = now();
     if (!opts.silent) toast(`${open.name}: jetzt ${qtyLabel(open) || '1×'}`);
   } else {
     const done = same.find(i => i.checked);
-    if (done) Object.assign(done, { checked: false, qty: clampQty(qty), unit, cat, note: note || done.note || '', offer, updatedAt: now() });
-    else data.items.push({ id: uid(), name, detail, qty: clampQty(qty), unit, cat, note, offer, checked: false, updatedAt: now() });
+    if (done) Object.assign(done, { checked: false, qty: clampQty(qty), unit, cat, note: note || done.note || '', offer, forStock: !!forStock, stockAdded: 0, updatedAt: now() });
+    else data.items.push({ id: uid(), name, detail, qty: clampQty(qty), unit, cat, note, offer, forStock: !!forStock, checked: false, updatedAt: now() });
     if (!opts.silent) toast(`${name}${detail ? ' – ' + detail : ''} hinzugefügt`);
   }
   bumpFav(name, detail, cat, unit);
@@ -1237,7 +1269,29 @@ function setStar(name, detail, on, extra = {}) {
   data.stars[k] = { ...(data.stars[k] || {}), name, detail, ...extra, on, updatedAt: now() };
 }
 function isStar(name, detail) { const s = data.stars[keyOf(name, detail)]; return !!(s && s.on); }
-function toggle(id) { const it = data.items.find(i => i.id === id); if (!it) return; it.checked = !it.checked; it.checkedAt = it.checked ? now() : null; it.updatedAt = now(); commit(); }
+// Küche ↔ Lager direkt auf der Liste umschalten (auch für Spontankäufe im Laden)
+function toggleForStock(id) {
+  const it = data.items.find(i => i.id === id); if (!it) return;
+  it.forStock = !it.forStock; it.updatedAt = now();
+  let msg = it.forStock ? `📦 ${it.name}: fürs Lager` : `🍳 ${it.name}: für die Küche`;
+  if (it.checked) {   // schon im Wagen: Lager gleich mitkorrigieren
+    if (it.forStock && !it.stockAdded) { const n = WEIGHT_UNITS.includes(it.unit) ? 1 : (it.qty || 1); const st = stockAdd(it.name, it.detail, n, it.cat, it.unit); it.stockAdded = n; msg += ` – +${n} ins Lager (jetzt ${fmtNum(st.qty, 2)})`; }
+    else if (!it.forStock && it.stockAdded) { stockAdd(it.name, it.detail, -it.stockAdded); it.stockAdded = 0; msg += ' – aus dem Lager zurückgebucht'; }
+  }
+  commit(); toast(msg);
+}
+function toggle(id) {
+  const it = data.items.find(i => i.id === id); if (!it) return;
+  it.checked = !it.checked; it.checkedAt = it.checked ? now() : null; it.updatedAt = now();
+  // Lagerartikel: abgehakt = gekauft → Vorrat erhöhen (wieder aufgehakt → zurückbuchen)
+  if (it.checked && it.forStock && !it.stockAdded) {
+    const n = WEIGHT_UNITS.includes(it.unit) ? 1 : (it.qty || 1);
+    const st = stockAdd(it.name, it.detail, n, it.cat, it.unit); it.stockAdded = n;
+    commit(); toast(`📦 ${it.name}: +${n} ins Lager (jetzt ${fmtNum(st.qty, 2)})`); return;
+  }
+  if (!it.checked && it.stockAdded) { stockAdd(it.name, it.detail, -it.stockAdded); it.stockAdded = 0; }
+  commit();
+}
 /* Einkauf archivieren: abgehakte Artikel landen beim Entfernen in der Auswertung */
 const WEIGHT_UNITS = ['g', 'kg', 'ml', 'l'];
 function lastKnownPrice(key, shop) {
@@ -1319,6 +1373,7 @@ function itemHtml(i) {
   return `<div class="item${i.checked ? ' done' : ''}" data-id="${i.id}">
     <button class="check" data-act="toggle" aria-label="abhaken">${i.checked ? '✓' : ''}</button>
     <div class="body" data-act="edit"><div class="name">${isStar(i.name, i.detail) ? '<span class="star">★</span> ' : ''}${esc(i.name)}</div>${i.detail ? `<div class="detail">${detailHtml(i.detail)}</div>` : ''}${i.note ? `<div class="note">${esc(i.note)}</div>` : ''}${offer}</div>
+    <button type="button" class="forbtn${i.forStock ? ' lager' : ''}" data-act="forstock" aria-label="Küche oder Lager">${i.forStock ? '📦<br>Lager' : '🍳<br>Küche'}</button>
     ${q ? `<span class="qty">${esc(q)}</span>` : ''}
   </div>`;
 }
@@ -1472,7 +1527,8 @@ function renderMyArticles() {
       const cheapest = a.shops.length > 1 ? Math.min(...a.shops.map(e => e.price)) : null;
       const shopLine = a.shops.map(e => { const t = `${e.shop} ${fmtPrice(e.price)}${offerType(e) === 'angebot' ? ' (Angebot)' : offerType(e) === 'app' ? ' (App)' : ''}`; return e.price === cheapest ? `<b>${esc(t)}</b>` : esc(t); }).join(' · ');
       const meta = [!a.shops.length && a.normal ? fmtPrice(a.normal.price) : '', !a.shops.length && a.shop ? a.shop : '', a.pack ? packLabel(a.pack) : ''].filter(Boolean).join(' · ');
-      return `<div class="item${sub ? ' insub' : ''}" data-myart="${esc(a.key)}"><div class="body"><div class="name">${esc(sub ? (a.detail || 'ohne Bezeichnung') : a.name)}</div>${!sub && a.detail ? `<div class="detail">${esc(a.detail)}</div>` : ''}${meta ? `<div class="note">${esc(meta)}</div>` : ''}${shopLine ? `<div class="note">🏪 ${shopLine}</div>` : ''}${a.missing.length ? `<span class="warn">⚠︎ fehlt: ${a.missing.join(', ')}</span>` : ''}</div>${addBtn(a)}</div>`;
+      const st = stockOf(a.key);
+      return `<div class="item${sub ? ' insub' : ''}" data-myart="${esc(a.key)}"><div class="body"><div class="name">${esc(sub ? (a.detail || 'ohne Bezeichnung') : a.name)}${stockVisible(st) ? `<span class="lagerbadge">📦 ${fmtNum(st.qty || 0, 2)}</span>` : ''}</div>${!sub && a.detail ? `<div class="detail">${esc(a.detail)}</div>` : ''}${meta ? `<div class="note">${esc(meta)}</div>` : ''}${shopLine ? `<div class="note">🏪 ${shopLine}</div>` : ''}${a.missing.length ? `<span class="warn">⚠︎ fehlt: ${a.missing.join(', ')}</span>` : ''}</div>${addBtn(a)}</div>`;
     };
     // gleiches Produkt, verschiedene Marken (z. B. Thunfisch von Gut & Günstig (EDEKA), Almare (Lidl) …) = ein Artikel mit Preisen je Markt
     const productRow = (c, g) => {
@@ -1527,6 +1583,88 @@ function productClusters(g) {
   const out = {}; g.forEach((a, i) => (out[find(i)] = out[find(i)] || []).push(a));
   return Object.values(out);
 }
+/* ---------- Lager (Vorrat zu Hause) ---------- */
+function stockOf(key) { const s = (data.stock || {})[key]; return s && !s.deleted ? s : null; }
+function stockQty(s) { return s ? (s.qty || 0) : 0; }
+function stockVisible(s) { return s && !s.deleted && ((s.qty || 0) > 0 || (s.min || 0) > 0); }
+function stockAdd(name, detail, n, cat, unit) {
+  data.stock = data.stock || {};
+  const k = keyOf(name, detail);
+  let s = stockOf(k);
+  if (!s) { s = { key: k, name: cap(name), detail: String(detail || '').trim(), cat: cat || guessCat(name), unit: unit || '', qty: 0, min: 0 }; data.stock[k] = s; }
+  s.qty = Math.max(0, Math.round(((s.qty || 0) + n) * 100) / 100); s.updatedAt = now();
+  return s;
+}
+let stockFilter = '';
+function renderLager() {
+  const n = norm($('catSearch').value);
+  let list = Object.values(data.stock || {}).filter(stockVisible);
+  const low = list.filter(s => (s.min || 0) > 0 && (s.qty || 0) <= s.min);
+  if (n) list = list.filter(s => norm(s.name + ' ' + s.detail).includes(n));
+  if (stockFilter === 'low') list = list.filter(s => low.includes(s));
+  let html = '<p class="intro" style="margin-top:0">Dein Vorrat – z. B. was im Angebot günstig auf Vorrat gekauft wurde. Beim Eintragen auf die Liste <b>„📦 Lager / Vorrat“</b> wählen; abgehakt kommt die Menge hierher. <b>−</b> nimmt etwas heraus (z. B. für die Küche). Bei 0 ohne Mindestbestand verschwindet der Artikel von selbst.</p>';
+  html += `<div class="chips wrap">${[['', 'Alle'], ['low', '⚠︎ Nachkaufen (' + low.length + ')']].map(([v, l]) => `<button class="chip${v === stockFilter ? ' sel' : ''}" data-stf="${v}">${l}</button>`).join('')}${low.length ? '<button class="chip" data-act="stocklist">🛒 Fehlende auf die Liste</button>' : ''}</div>`;
+  if (!list.length) html += `<div class="empty"><b>📦</b>${stockFilter === 'low' ? 'Alles ausreichend vorrätig.' : 'Das Lager ist leer.<br><br>Beim Eintragen auf die Einkaufsliste „📦 Lager / Vorrat“ wählen – nach dem Abhaken steht der Artikel hier.'}</div>`;
+  const onList = new Set(liveItems().filter(i => !i.checked).map(i => keyOf(i.name, i.detail)));
+  CATS.forEach(([c, label]) => {
+    const g = list.filter(s => (s.cat || 'sonst') === c).sort((a, b) => a.name.localeCompare(b.name, 'de') || a.detail.localeCompare(b.detail, 'de'));
+    if (!g.length) return;
+    html += `<section class="group"><h2>${esc(label)}</h2><div class="list">${g.map(s => {
+      const isLow = low.includes(s);
+      return `<div class="item stockrow${isLow ? ' low' : ''}"><div class="body" data-stedit="${esc(s.key)}"><div class="name">${esc(s.name)}</div>${s.detail ? `<div class="detail">${esc(s.detail)}</div>` : ''}<div class="note">${s.min ? 'Mindestens ' + fmtNum(s.min, 2) : 'Kein Mindestbestand'} · <span class="lnk" data-stmin="${esc(s.key)}">ändern</span>${isLow ? ' · <b style="color:#9a5b00">nachkaufen</b>' : ''}</div></div>
+        <div class="stepper"><button data-stdec="${esc(s.key)}" aria-label="entnehmen">−</button><b data-stset="${esc(s.key)}">${fmtNum(s.qty || 0, 2)}</b><button data-stinc="${esc(s.key)}" aria-label="dazu">+</button></div>
+        <button class="qadd${onList.has(s.key) ? ' on' : ''}" data-stbuy="${esc(s.key)}" aria-label="auf die Liste">${onList.has(s.key) ? '🛒' : '＋'}</button></div>`;
+    }).join('')}</div></section>`;
+  });
+  $('catMain').innerHTML = html;
+}
+function stockLowCheck(s) {
+  if ((s.min || 0) > 0 && (s.qty || 0) <= s.min) {
+    const onList = liveItems().some(i => !i.checked && keyOf(i.name, i.detail) === s.key);
+    if (!onList) toast(`📦 ${s.name}: nur noch ${fmtNum(s.qty, 2)} im Lager`, () => stockToList(s), 'Auf die Liste');
+    else toast(`📦 ${s.name}: noch ${fmtNum(s.qty, 2)} – steht schon auf der Liste`);
+  }
+}
+function stockToList(s) {
+  const a = myArticles().find(x => x.key === s.key);
+  addItem({ name: s.name, detail: s.detail, cat: s.cat, unit: s.unit || '', qty: Math.max(1, Math.ceil((s.min || 1) - (s.qty || 0)) || 1), offer: a ? articleOffer(a) : null, forStock: true });
+}
+function stockClick(e) {
+  const t = k => e.target.closest('[' + k + ']');
+  let b;
+  if ((b = t('data-stf'))) { stockFilter = b.dataset.stf; renderLager(); return true; }
+  if ((b = t('data-stdec'))) { const s = stockOf(b.dataset.stdec); if (!s) return true; if ((s.qty || 0) <= 0) { toast('Bestand ist schon 0'); return true; } stockAdd(s.name, s.detail, -1); commit(); stockLowCheck(s); return true; }
+  if ((b = t('data-stinc'))) { const s = stockOf(b.dataset.stinc); if (s) { stockAdd(s.name, s.detail, 1); commit(); } return true; }
+  if ((b = t('data-stset'))) {
+    const s = stockOf(b.dataset.stset); if (!s) return true;
+    const v = prompt(`Bestand „${s.name}${s.detail ? ' · ' + s.detail : ''}“:`, fmtNum(s.qty || 0, 2)); if (v === null) return true;
+    const q = parseDecimal(v); if (q == null || q < 0) return true;
+    s.qty = q; s.updatedAt = now(); commit(); stockLowCheck(s); return true;
+  }
+  if ((b = t('data-stmin'))) {
+    const s = stockOf(b.dataset.stmin); if (!s) return true;
+    const v = prompt(`Mindestbestand für „${s.name}“ (darunter: nachkaufen). 0 = keiner`, fmtNum(s.min || 0, 2)); if (v === null) return true;
+    const q = parseDecimal(v); if (q == null || q < 0) return true;
+    s.min = q; s.updatedAt = now(); commit(); return true;
+  }
+  if ((b = t('data-stbuy'))) { const s = stockOf(b.dataset.stbuy); if (s) stockToList(s); return true; }
+  if (e.target.closest('[data-act="stocklist"]')) {
+    const low = Object.values(data.stock || {}).filter(s => stockVisible(s) && (s.min || 0) > 0 && (s.qty || 0) <= s.min);
+    const onList = new Set(liveItems().filter(i => !i.checked).map(i => keyOf(i.name, i.detail)));
+    const todo = low.filter(s => !onList.has(s.key));
+    todo.forEach(s => stockToList(s));
+    toast(todo.length ? `🛒 ${todo.length} Artikel auf die Liste gesetzt` : 'Alle stehen schon auf der Liste');
+    return true;
+  }
+  if ((b = t('data-stedit'))) {
+    const s = stockOf(b.dataset.stedit); if (!s) return true;
+    const a = myArticles().find(x => x.key === s.key);
+    openItemSheet('article', { name: s.name, detail: s.detail, cat: s.cat, unit: s.unit, offer: a ? { shop: a.shop || '', price: a.normal ? a.normal.price : null, type: 'normal', pack: a.pack || null, deposit: a.deposit || null } : null });
+    return true;
+  }
+  return false;
+}
+
 /* Schnell auf die Liste: Artikel mit Markt, Preis und Größe übernehmen */
 function articleOffer(a) {
   const price = a.normal ? a.normal.price : null;
@@ -1643,6 +1781,7 @@ $('dupGo').onclick = () => {
 /* Artikel-Katalog */
 function renderCatalog() {
   if (catMode === 'meine') return renderMyArticles();
+  if (catMode === 'lager') return renderLager();
   const n = norm($('catSearch').value);
   const mineCount = {}; myArticles().filter(a => !a.onlyCustom).forEach(a => { mineCount[norm(a.name)] = (mineCount[norm(a.name)] || 0) + 1; });
   let html = '';
@@ -1781,6 +1920,7 @@ function renderVariants() {
 }
 function updateSheetExtras() {
   const name = $('sName').value.trim(), detail = sheetDetail();
+  if (sheetMode === 'add' || sheetMode === 'edit') forHint();
   sheetStar = isStar(name, detail);
   $('sStar').textContent = sheetStar ? '★' : '☆';
   $('sStar').classList.toggle('on', sheetStar);
@@ -1788,8 +1928,20 @@ function updateSheetExtras() {
   $('sSearch').innerHTML = searchChips((name + (detail ? ' ' + detail : '')).trim());
   $('sHistory').style.display = priceEntries(keyOf(cap(name), detail)).length ? 'block' : 'none';
 }
+function setFor(v) { $('sFor').querySelectorAll('[data-for]').forEach(b => b.classList.toggle('on', b.dataset.for === v)); forHint(); }
+function getFor() { const b = $('sFor').querySelector('.on'); return b ? b.dataset.for : 'kueche'; }
+// Hinweis: gerade im Angebot und schon mal gelagert → Vorrat anlegen lohnt sich vielleicht
+function forHint() {
+  const k = keyOf(cap($('sName').value.trim()), sheetDetail()), st = stockOf(k), pr = readPrices('s');
+  const deal = pr.price != null && getType('s') !== 'normal';
+  $('sForHint').textContent = getFor() === 'lager' ? `Beim Abhaken kommt die Menge ins Lager${st ? ' (jetzt ' + fmtNum(stockQty(st), 2) + ')' : ''}.`
+    : deal ? '🏷 Im Angebot – vielleicht auf Vorrat kaufen?' : (st && stockQty(st) > 0 ? `Im Lager vorrätig: ${fmtNum(stockQty(st), 2)}` : '');
+}
+$('sFor').addEventListener('click', e => { const b = e.target.closest('[data-for]'); if (b) setFor(b.dataset.for); });
 function openItemSheet(mode, src) {
   scanEan = null;
+  setFor(mode === 'edit' && src.forStock ? 'lager' : 'kueche');   // Standard: normaler Einkauf für die Küche
+  $('sLagerRow').style.display = mode === 'add' || mode === 'edit' || mode === 'often' ? '' : 'none';
   sheetMode = mode; editingId = mode === 'edit' ? src.id : null;
   favEditKey = mode === 'fav' && src.name ? keyOf(src.name, src.detail) : null;
   oftenKey = mode === 'often' ? (src.favKey || keyOf(src.name, src.detail)) : null;
@@ -2085,8 +2237,24 @@ function sheetOffer() {
   const pack = readPack('s'), deposit = parsePrice($('sDeposit').value);
   return (shop || price != null) ? { shop, price, from, until, type, special: type !== 'normal', pack, deposit: deposit || null, regular } : null;
 }
+// letzter bekannter Preis eines Artikels bei einem Markt (Normalpreis bevorzugt)
+function lastShopPrice(key, shop) {
+  const pe = priceEntries(key).filter(e => norm(e.shop) === norm(shop)).sort((a, b) => b.date.localeCompare(a.date) || (b.updatedAt || 0) - (a.updatedAt || 0));
+  return pe.find(e => offerType(e) === 'normal') || pe[0] || null;
+}
 $('sShops').addEventListener('click', e => {
   const b = e.target.closest('[data-shop]'); if (!b) return;
+  // Preisfeld an den neuen Markt anpassen – aber nur, wenn dort nicht gerade ein eigener Preis eingetippt wurde
+  const prevShop = $('sShop').value.trim(), key = keyOf(cap($('sName').value), sheetDetail());
+  if ($('sName').value.trim() && norm(prevShop) !== norm(b.dataset.shop)) {
+    const cur = readPrices('s'), prevE = prevShop ? lastShopPrice(key, prevShop) : null;
+    const untouched = cur.price == null || (prevE && Math.abs(prevE.price - cur.price) < 0.005);
+    if (untouched) {
+      const ne = lastShopPrice(key, b.dataset.shop);
+      if (ne) { writePrices('s', offerType(ne) === 'normal' ? 'normal' : getType('s'), ne.price, null); toast(`Letzter Preis bei ${b.dataset.shop}: ${fmtPrice(ne.price)} (${fmtDay(ne.date)})`); }
+      else if (cur.price != null) { writePrices('s', getType('s'), null, null); toast(`Bei ${b.dataset.shop} noch kein Preis – bitte eintragen`); }
+    }
+  }
   $('sShop').value = b.dataset.shop;
   if (getType('s') !== 'normal' && !$('sFrom').value && !$('sUntil').value) { const w = offerWeek(); $('sFrom').value = w.from; $('sUntil').value = w.until; }
   // Gebinde/Pfand vom letzten erfassten Preis übernehmen
@@ -2217,9 +2385,68 @@ function sheetValues() {
            unit: $('sUnit').value, cat: $('sCat').value, note: $('sNote').value.trim(), offer: sheetOffer() };
   rememberEan(v.name, v.detail, v.cat);
   saveArtMaster(v.name, v.detail, { cat: v.cat, unit: v.unit });
+  v.forStock = (sheetMode === 'add' || sheetMode === 'edit' || sheetMode === 'often') && getFor() === 'lager';
   return v;
 }
 $('sAdd').onclick = () => { const v = sheetValues(); if (!v.name) return; closeSheets(); recordPrice(v.name, v.detail, v.offer); addItem(v); };
+
+/* Übersicht vor dem Speichern eines neuen Artikels – mit Sprung zum Ändern */
+const LS_SUMOFF = 'ekl-sumoff';
+function sheetSummaryRows() {
+  const name = cap($('sName').value.trim()), brand = $('sBrand').value.trim(), det = $('sDetail').value.trim();
+  const shop = $('sShop').value.trim(), cat = $('sCat').value, catL = (CATS.find(c => c[0] === cat) || [, ''])[1];
+  const unitOpt = $('sUnit').selectedOptions && $('sUnit').selectedOptions[0];
+  const qty = clampQty($('sQty').value) + ' ' + (unitOpt ? unitOpt.text : '');
+  const pr = readPrices('s'), type = pr.type, from = $('sFrom').value, until = $('sUntil').value;
+  const pack = readPack('s'), dep = parsePrice($('sDeposit').value), note = $('sNote').value.trim();
+  const priceTxt = pr.price == null ? '' : (type === 'normal' ? fmtPrice(pr.price) : `${fmtPrice(pr.price)} ${type === 'app' ? '📱 App-Preis' : '🏷 Angebot'}${pr.regular ? ' (statt ' + fmtPrice(pr.regular) + ')' : ''}`);
+  const fmtD = d => d ? d.split('-').reverse().join('.') : '';
+  const per = pack && pr.price != null ? perLitre(pr.price, pack) : null;
+  return [
+    ['Artikel', name, 'sName', true],
+    ['Marke', brand, 'sBrand'],
+    ['Bezeichnung', det, 'sDetail'],
+    ['Markt', shop, 'sShop'],
+    ['Bereich', catL, 'sCat'],
+    ['Menge', qty, 'sQty'],
+    ['Preis', priceTxt, type === 'normal' ? 'sRegular' : 'sPrice'],
+    type !== 'normal' && pr.price != null ? ['Gültig', from || until ? `${fmtD(from)} – ${fmtD(until)}` : '', 'sFrom'] : null,
+    ['Größe', pack ? packLabel(pack) + (per != null ? ' · ' + fmtPerLitre(per, packUnit(pack)) : '') : '', 'sPackSize'],
+    dep ? ['Pfand', fmtPrice(dep), 'sDeposit'] : null,
+    note ? ['Notiz', note, 'sNote'] : null
+  ].filter(Boolean);
+}
+let sumAction = null;
+function showSummary(label, action) {
+  sumAction = action;
+  $('sumTitle').textContent = label;
+  $('sumList').innerHTML = sheetSummaryRows().map(([l, v, field, must]) => `<div class="sumrow" data-sumfield="${field}"><span class="sl">${esc(l)}</span><span class="sv${v ? '' : ' miss'}">${v ? esc(v) : (must ? '⚠︎ bitte eintragen' : '– noch leer, antippen zum Ergänzen')}</span><span class="se">›</span></div>`).join('');
+  $('sumOff').checked = false;
+  $('backdrop').classList.add('open'); $('sumSheet').classList.add('open'); $('sumSheet').scrollTop = 0;
+}
+function closeSummary() { $('sumSheet').classList.remove('open'); }
+$('sumBack').onclick = closeSummary;
+$('sumList').addEventListener('click', e => {
+  const r = e.target.closest('[data-sumfield]'); if (!r) return;
+  closeSummary();
+  const f = $(r.dataset.sumfield); if (!f) return;
+  if (['sPackSize', 'sDeposit'].includes(r.dataset.sumfield)) $('sPackBox').open = true;
+  if (r.dataset.sumfield === 'sPrice' && $('sPriceRow') && $('sPriceRow').style.display === 'none') setType('s', 'angebot');
+  setTimeout(() => { try { f.scrollIntoView({ block: 'center' }); } catch (x) {} f.focus(); }, 80);
+});
+$('sumOk').onclick = () => {
+  if ($('sumOff').checked) localStorage.setItem(LS_SUMOFF, '1');
+  const a = sumAction; sumAction = null; closeSummary(); if (a) a();
+};
+// Nur beim Neuanlegen („Auf die Liste“, „Nur Favorit“, „Nur Artikel“) – Bearbeiten speichert wie gewohnt direkt
+[['sAdd', '🛒 Auf die Liste – das wird gespeichert'], ['sFavOnly', '⭐ Als Favorit – das wird gespeichert'], ['sArtOnly', '📚 Als Artikel – das wird gespeichert']].forEach(([id, label]) => {
+  const orig = $(id).onclick;
+  $(id).onclick = e => {
+    if (sheetMode !== 'add' || localStorage.getItem(LS_SUMOFF) === '1') return orig(e);
+    if (!$('sName').value.trim()) { toast('Bitte einen Artikel eingeben'); $('sName').focus(); return; }
+    showSummary(label, () => orig(e));
+  };
+});
 $('sSave').onclick = () => {
   const it = data.items.find(i => i.id === editingId); if (!it) return closeSheets();
   const v = sheetValues(); if (!v.name) return;
@@ -2266,10 +2493,12 @@ $('listMain').addEventListener('click', e => {
   if (act.dataset.act === 'bon') return openBon();
   const id = (e.target.closest('.item') || { dataset: {} }).dataset.id;
   if (act.dataset.act === 'toggle') toggle(id);
+  if (act.dataset.act === 'forstock') toggleForStock(id);
   if (act.dataset.act === 'edit') { const it = data.items.find(i => i.id === id); if (it) openItemSheet('edit', it); }
 });
 $('catSearch').addEventListener('input', renderCatalog);
 $('catMain').addEventListener('click', e => {
+  if (catMode === 'lager') { stockClick(e); return; }
   const qa = e.target.closest('[data-quickadd]'); if (qa) { quickAddArticle(qa.dataset.quickadd); return; }
   const mc = e.target.closest('[data-mycat]'); if (mc) { myCat = mc.dataset.mycat; renderMyArticles(); return; }
   const f = e.target.closest('[data-myf]'); if (f) { myFilter = f.dataset.myf; renderMyArticles(); return; }
@@ -2302,9 +2531,9 @@ $('favMain').addEventListener('click', e => {
 
 /* ---------- Toast ---------- */
 let toastTimer;
-function toast(text, undo) {
+function toast(text, undo, label) {
   $('toastText').textContent = text;
-  const btn = $('toastBtn'); btn.hidden = !undo;
+  const btn = $('toastBtn'); btn.hidden = !undo; btn.textContent = label || 'Rückgängig';
   btn.onclick = () => { $('toast').classList.remove('show'); undo && undo(); };
   $('toast').classList.add('show');
   clearTimeout(toastTimer);
@@ -2371,7 +2600,7 @@ async function pullLegacy() {
     const r = await ghPath('GET', DATA_FILE);
     if (!r.ok) return null;
     const p = JSON.parse(b64decode((await r.json()).content || ''));
-    return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts), devices: obj(p.devices), artDel: obj(p.artDel) };
+    return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts), devices: obj(p.devices), artDel: obj(p.artDel), stock: obj(p.stock) };
   } catch (e) { return null; }
 }
 async function gh(method, body, attempt = 0) {
@@ -2423,6 +2652,7 @@ function mergeData(local, remote) {
   const arts = mergeByUpdated(local.arts, remote.arts);
   const devices = mergeByUpdated(local.devices, remote.devices);
   const artDel = mergeByUpdated(local.artDel, remote.artDel);
+  const stock = mergeByUpdated(local.stock, remote.stock);
   Object.keys(purchases).forEach(k => { if (purchases[k].deleted && (purchases[k].updatedAt || 0) < cutoff) delete purchases[k]; });
   Object.keys(prices).forEach(k => { if (prices[k].deleted && (prices[k].updatedAt || 0) < cutoff) delete prices[k]; });
   // eigene Bezeichnungen beider Seiten zusammenführen – gelöschte (varDel) bleiben gelöscht, solange sie nicht neuer wieder angelegt wurden
@@ -2434,7 +2664,7 @@ function mergeData(local, remote) {
     [...(L.variants || []), ...(R.variants || [])].forEach(v => { const nv = norm(v); if (!vs.has(nv) && (!varDel[nv] || (varAdd[nv] || 0) > varDel[nv])) vs.set(nv, v); });
     custom[k] = { ...custom[k], variants: [...vs.values()], ...(Object.keys(varAdd).length ? { varAdd } : {}), ...(Object.keys(varDel).length ? { varDel } : {}) };
   });
-  return { items, favs, stars, custom, prices, brands, purchases, bonmap, eans, arts, devices, artDel };
+  return { items, favs, stars, custom, prices, brands, purchases, bonmap, eans, arts, devices, artDel, stock };
 }
 // Reihenfolge-unabhängiger Vergleich, damit der 30-Sekunden-Abgleich nicht unnötig speichert
 function canon(d) {
@@ -2442,20 +2672,20 @@ function canon(d) {
   const mapC = m => Object.keys(obj(m)).sort().map(k => [k, sortKeys(m[k])]);
   return JSON.stringify({
     items: [...(d.items || [])].sort((a, b) => a.id < b.id ? -1 : 1).map(sortKeys),
-    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap), eans: mapC(d.eans), arts: mapC(d.arts), devices: mapC(d.devices), artDel: mapC(d.artDel)
+    favs: mapC(d.favs), stars: mapC(d.stars), custom: mapC(d.custom), prices: mapC(d.prices), brands: mapC(d.brands), purchases: mapC(d.purchases), bonmap: mapC(d.bonmap), eans: mapC(d.eans), arts: mapC(d.arts), devices: mapC(d.devices), artDel: mapC(d.artDel), stock: mapC(d.stock)
   });
 }
 function sameData(a, b) { return canon(a) === canon(b); }
 
 async function pull() {
   const res = await gh('GET');
-  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {}, eans: {}, arts: {}, devices: {}, artDel: {} }; }
+  if (res.status === 404) { remoteSha = null; return { items: [], favs: {}, stars: {}, custom: {}, prices: {}, brands: {}, purchases: {}, bonmap: {}, eans: {}, arts: {}, devices: {}, artDel: {}, stock: {} }; }
   if (res.status === 401 || res.status === 403) throw new Error('Token ungültig oder ohne Berechtigung (' + res.status + ')');
   if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ')');
   const j = await res.json();
   remoteSha = j.sha;
   const p = JSON.parse(b64decode(j.content || ''));
-  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts), devices: obj(p.devices), artDel: obj(p.artDel) };
+  return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts), devices: obj(p.devices), artDel: obj(p.artDel), stock: obj(p.stock) };
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
@@ -2562,6 +2792,7 @@ function openSettings() {
   renderLinkEdit();
   $('gOwner').value = cfg.owner || ''; $('gRepo').value = cfg.repo || ''; $('gToken').value = cfg.token || '';
   $('syncBox').open = !cfg.token;   // eingeklappt, solange der Sync eingerichtet ist
+  $('sumOn').checked = localStorage.getItem(LS_SUMOFF) !== '1';
   renderLog(); if ($('devBox').open) renderDevices(); openSheet('setSheet');
 }
 $('settingsBtn').onclick = openSettings;
@@ -2631,6 +2862,7 @@ $('devList').addEventListener('click', e => {
     x.deleted = true; x.updatedAt = now(); commit(); renderDevices();
   }
 });
+$('sumOn').addEventListener('change', () => { if ($('sumOn').checked) localStorage.removeItem(LS_SUMOFF); else localStorage.setItem(LS_SUMOFF, '1'); });
 $('devBox').addEventListener('toggle', () => { if ($('devBox').open) renderDevices(); });
 
 /* Einrichtung auf ein anderes Gerät übertragen (QR-Code / AirDrop / Kopieren) */
@@ -2734,7 +2966,7 @@ $('importFile').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const j = JSON.parse(await f.text());
-    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap), eans: obj(j.eans), arts: obj(j.arts), devices: obj(j.devices), artDel: obj(j.artDel) });
+    data = mergeData(data, { items: j.items || [], favs: obj(j.favs), stars: obj(j.stars), custom: obj(j.custom), prices: obj(j.prices), brands: obj(j.brands), purchases: obj(j.purchases), bonmap: obj(j.bonmap), eans: obj(j.eans), arts: obj(j.arts), devices: obj(j.devices), artDel: obj(j.artDel), stock: obj(j.stock) });
     commit(); toast('Importiert und zusammengeführt');
   } catch { toast('Datei konnte nicht gelesen werden'); }
   e.target.value = '';
@@ -2749,7 +2981,7 @@ function shopColor(s, all) {
   const others = all.filter(x => !SHOP_COLORS[norm(x)]);
   return EXTRA_COLORS[Math.max(0, others.indexOf(s)) % EXTRA_COLORS.length];
 }
-let priceKey = null, priceShop = '', priceVar = '';   // priceKey = Artikelname (norm), priceVar = Sorte (key) oder ''
+let priceKey = null, priceShop = '', priceVar = '', priceKind = '';   // priceKey = Artikelname (norm), priceVar = Sorte (key) oder ''
 function priceEntries(key) {
   return Object.values(data.prices || {}).filter(e => !e.deleted && (!key || e.key === key));
 }
@@ -2931,7 +3163,10 @@ function renderPrices() {
   const varLabel = k => { const e = allVar.find(x => x.key === k); return e.detail || 'ohne Bezeichnung'; };
   const shops = [...new Set(entries.map(e => e.shop))].sort((a, b) => a.localeCompare(b, 'de'));
   if (priceShop && !shops.includes(priceShop)) priceShop = '';
-  const shown = entries.filter(e => !priceShop || e.shop === priceShop).sort((a, b) => b.date.localeCompare(a.date));
+  const byShop = entries.filter(e => !priceShop || e.shop === priceShop);
+  const kindCount = { normal: 0, angebot: 0, app: 0 }; byShop.forEach(e => { kindCount[offerType(e)] = (kindCount[offerType(e)] || 0) + 1; });
+  if (priceKind && !kindCount[priceKind]) priceKind = '';
+  const shown = byShop.filter(e => !priceKind || offerType(e) === priceKind).sort((a, b) => b.date.localeCompare(a.date));
   const showShops = priceShop ? [priceShop] : shops;
   const unitCount = {};
   shown.forEach(e => { if (perLitre(e.price, e.pack) != null) unitCount[packUnit(e.pack)] = (unitCount[packUnit(e.pack)] || 0) + 1; });
@@ -2947,14 +3182,33 @@ function renderPrices() {
   const minE = basisList.find(e => pval(e) === min);
   html += `<div class="pricehead"><button class="back" data-act="pback">‹ Alle</button><h3>${esc(entries[0].name)}${!multiVar && entries[0].detail ? ' <span class="hint" style="font-size:15px">' + esc(entries[0].detail) + '</span>' : ''}</h3></div>`;
   if (multiVar) html += `<div class="chips">${[['', 'Alle Sorten'], ...varKeys.map(k => [k, varLabel(k)])].map(([v, l]) => `<button class="chip${v === priceVar ? ' sel' : ''}" data-pvar="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
-  html += `<div class="chips">${[['', 'Alle'], ...shops.map(s => [s, s])].map(([v, l]) => `<button class="chip${v === priceShop ? ' sel' : ''}" data-pshop="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
+  html += `<div class="chips">${[['', 'Alle Märkte'], ...shops.map(s => [s, s])].map(([v, l]) => `<button class="chip${v === priceShop ? ' sel' : ''}" data-pshop="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
+  html += `<div class="chips">${[['', 'Alle Preisarten', byShop.length], ['normal', 'Normalpreis', kindCount.normal], ['angebot', '🏷 Angebot', kindCount.angebot], ['app', '📱 App', kindCount.app]].filter(x => !x[0] || x[2]).map(([v, l, n]) => `<button class="chip${v === priceKind ? ' sel' : ''}" data-pkind="${v}">${l}${v ? ' ' + n : ''}</button>`).join('')}</div>`;
   if (hasPack) html += `<div class="seg" style="margin-top:8px;display:inline-flex">${[['price', 'Packungspreis'], ['l', 'Grundpreis €/' + (basisUnit === 'st' ? 'Stk' : basisUnit)]].map(([v, l]) => `<button data-basis="${v}" class="${v === priceBasis ? 'on' : ''}">${l}</button>`).join('')}</div>`;
   html += `<div class="chartbox">${priceChart(shown, showShops)}<div class="legend">${showShops.map(s => `<span><i style="background:${shopColor(s, shops)}"></i>${esc(s)}</span>`).join('')}<span><i style="background:#888;box-shadow:0 0 0 2px #f2c14e"></i>Angebot</span><span><i style="background:#888;box-shadow:0 0 0 2px #8b6cff"></i>App-Preis</span><span><i style="background:transparent;border:2px solid #888;width:6px;height:6px"></i>Normalpreis</span></div></div>`;
-  html += `<div class="stats">
+  if (!priceKind) html += `<div class="stats">
     <div class="stat"><small>Tiefstpreis</small><b>${esc(fmtV(min))}</b><small>${esc(minE.shop)}${offerType(minE) === 'angebot' ? ' · Angebot' : offerType(minE) === 'app' ? ' · App' : ''}</small></div>
     <div class="stat"><small>Ø Normalpreis</small><b>${avg != null ? esc(fmtV(avg)) : '–'}</b><small>${normal.length} Wert${normal.length === 1 ? '' : 'e'}</small></div>
     <div class="stat"><small>Angebote · App</small><b>${nAng} · ${nApp}</b><small>von ${shown.length}</small></div>
   </div>`;
+  else {
+    // Entwicklung der gewählten Preisart: je Markt erster → letzter Wert
+    const kindName = { normal: 'Normalpreis', angebot: 'Angebotspreis', app: 'App-Preis' }[priceKind];
+    const max = Math.max(...basisList.map(pval)), maxE = basisList.find(e => pval(e) === max);
+    const avgK = basisList.reduce((t, e) => t + pval(e), 0) / basisList.length;
+    const trend = showShops.map(sh => {
+      const pts = basisList.filter(e => e.shop === sh).sort((a, b) => a.date.localeCompare(b.date));
+      if (pts.length < 2) return null;
+      const a = pval(pts[0]), z = pval(pts[pts.length - 1]), d = z - a;
+      return `<div class="prow"><span class="ps"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${shopColor(sh, shops)};margin-right:6px"></i>${esc(sh)}<span class="pmeta">${esc(fmtDay(pts[0].date))} ${esc(fmtV(a))} → ${esc(fmtDay(pts[pts.length - 1].date))} ${esc(fmtV(z))}</span></span><span class="pp" style="color:${d > 0.004 ? '#c0392b' : d < -0.004 ? 'var(--accent)' : 'var(--muted)'}">${d > 0.004 ? '▲ +' : d < -0.004 ? '▼ ' : '= '}${esc(fmtV(Math.abs(d) < 0.005 ? 0 : d).replace('-', '−'))}${a ? ` (${d >= 0 ? '+' : '−'}${Math.abs(Math.round(d / a * 100))} %)` : ''}</span></div>`;
+    }).filter(Boolean);
+    html += `<div class="stats">
+      <div class="stat"><small>Tiefster ${kindName}</small><b>${esc(fmtV(min))}</b><small>${esc(minE.shop)} · ${esc(fmtDay(minE.date))}</small></div>
+      <div class="stat"><small>Ø ${kindName}</small><b>${esc(fmtV(avgK))}</b><small>${basisList.length} Wert${basisList.length === 1 ? '' : 'e'}</small></div>
+      <div class="stat"><small>Höchster</small><b>${esc(fmtV(max))}</b><small>${esc(maxE.shop)} · ${esc(fmtDay(maxE.date))}</small></div>
+    </div>`;
+    html += `<section class="group"><h2>Entwicklung ${kindName}</h2><div class="list">${trend.join('') || '<div class="empty" style="padding:14px">Noch zu wenige Werte – ab 2 Preisen je Markt sichtbar.</div>'}</div></section>`;
+  }
   html += `<section class="group"><h2>Alle Preise</h2><div class="list">${shown.map(e => `<div class="prow"><span class="pd">${esc(fmtDay(e.date))}${e.date.slice(0, 4) !== todayStr().slice(0, 4) ? e.date.slice(2, 4) : ''}</span><span class="ps"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${shopColor(e.shop, shops)};margin-right:6px"></i>${esc(e.shop)}${multiVar && !priceVar ? `<span class="pmeta">${esc(e.detail || 'ohne Bezeichnung')}</span>` : ''}${offerType(e) === 'angebot' ? '<span class="sp">Angebot</span>' : offerType(e) === 'app' ? '<span class="sp app">📱 App</span>' : ''}${e.pack ? `<span class="pmeta">${esc(packLabel(e.pack))}${perLitre(e.price, e.pack) != null ? ' · ' + esc(fmtPerLitre(perLitre(e.price, e.pack), packUnit(e.pack))) : ''}</span>` : ''}</span><span class="pp">${esc(fmtPrice(e.price))}${e.deposit ? `<span class="pmeta">+ ${esc(fmtPrice(e.deposit))} Pfand</span>` : ''}</span><button class="pdel" data-pdel="${esc(e.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
   html += '<button class="btn primary addprice" data-act="addprice">＋ Preis erfassen</button>';
   $('priceMain').innerHTML = html;
@@ -2963,6 +3217,7 @@ $('priceMain').addEventListener('change', e => { const s = e.target.closest('[da
 $('priceMain').addEventListener('click', e => {
   const k = e.target.closest('[data-pkey]'); if (k) { priceKey = k.dataset.pkey; priceVar = ''; priceShop = ''; renderPrices(); window.scrollTo(0, 0); return; }
   const pv = e.target.closest('[data-pvar]'); if (pv) { priceVar = pv.dataset.pvar; renderPrices(); return; }
+  const pk = e.target.closest('[data-pkind]'); if (pk) { priceKind = pk.dataset.pkind; renderPrices(); return; }
   const vw = e.target.closest('[data-pview]'); if (vw) { priceView = vw.dataset.pview; renderPrices(); return; }
   const pfb = e.target.closest('[data-pf]'); if (pfb) { pf[pfb.dataset.pf] = pfb.dataset.v; renderPrices(); return; }
   const pg = e.target.closest('[data-pgroup]'); if (pg) { pf.group = pg.dataset.pgroup; renderPrices(); return; }
@@ -2984,7 +3239,7 @@ $('priceMain').addEventListener('click', e => {
     return;
   }
   const a = e.target.closest('[data-act]'); if (!a) return;
-  if (a.dataset.act === 'pback') { priceKey = null; priceVar = ''; renderPrices(); }
+  if (a.dataset.act === 'pback') { priceKey = null; priceVar = ''; priceKind = ''; renderPrices(); }
   if (a.dataset.act === 'addprice') openPriceSheet();
   if (a.dataset.act === 'csv') exportPurchasesCsv();
   if (a.dataset.act === 'bon') openBon();
@@ -3636,6 +3891,9 @@ $('bonApply').onclick = () => {
     const id = 'b-' + date + '-' + norm(shop).replace(/\W/g, '') + '-' + idx + '-' + norm(it.raw).replace(/[^a-z0-9äöü]/g, '').slice(0, 24);
     data.purchases[id] = { id, date, name, detail, cat, qty: it.weight || q, unit: it.weight ? 'kg' : '', n: q, shop, price: eff, est: false, type, pack, deposit, raw: it.raw, updatedAt: now() };
     keys.add(norm(name));
+    const sk = keyOf(name, detail);
+    const forLager = data.items.find(i => !i.deleted && i.forStock && keyOf(i.name, i.detail) === sk);
+    if (forLager && !forLager.stockAdded) { stockAdd(name, detail, q, cat); forLager.stockAdded = q; }
   });
   // Einkäufe desselben Tages, die schon über „abgehakt + entfernt“ erfasst wurden, ersetzt der Bon
   Object.values(data.purchases).forEach(p => { if (!p.deleted && p.id.startsWith('k-') && p.date === date && keys.has(norm(p.name))) { p.deleted = true; p.updatedAt = now(); } });
@@ -3917,6 +4175,24 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.47', '23.10.2026', [
+    'Neu: 📦 Lager (Vorrat zu Hause) – unter Artikel → „📦 Lager“',
+    'Beim Eintragen auf die Liste wählen: „🍳 Küche – normaler Einkauf“ (Standard) oder „📦 Lager / Vorrat“ – nur Vorrat-Käufe kommen beim Abhaken ins Lager (Kassenbon ebenso)',
+    'Im Angebot? Das Fenster weist darauf hin, dass sich Vorrat lohnen könnte',
+    'Auf der Einkaufsliste hat jeder Artikel einen Knopf „🍳 Küche / 📦 Lager“ – ein Tipp schaltet um, auch nachträglich im Wagen',
+    'Entnehmen mit −, dazu mit +, Bestand antippen zum Korrigieren; Mindestbestand je Artikel',
+    'Fällt der Bestand auf den Mindestbestand: Hinweis mit „Auf die Liste“; „⚠︎ Nachkaufen“ und „🛒 Fehlende auf die Liste“'
+  ]],
+  ['v1.46', '23.10.2026', [
+    'Beim Wechsel des Markts trägt die App den letzten Preis dieses Markts ein (oder leert das Feld, wenn dort noch keiner bekannt ist)',
+    'Preisverlauf: neuer Filter „Normalpreis / Angebot / App“ – getrennte Entwicklung je Preisart',
+    'Dazu Tiefst-, Durchschnitts- und Höchstpreis sowie die Entwicklung je Markt (▲ teurer / ▼ günstiger, in € und %)'
+  ]],
+  ['v1.45', '23.10.2026', [
+    'Beim Anlegen eines Artikels erscheint vor dem Speichern eine Übersicht: Artikel, Marke, Bezeichnung, Markt, Bereich, Menge, Preis, Größe …',
+    'Fehlende Angaben sind markiert – antippen springt direkt ins passende Feld zum Ergänzen',
+    'Lässt sich abschalten (Häkchen in der Übersicht oder unter ⚙️)'
+  ]],
   ['v1.44', '23.10.2026', [
     'Die Daten liegen jetzt im eigenen Zweig „daten“: Speichern startet bei GitHub keinen Seiten-Neubau mehr – neue App-Versionen kommen dadurch zuverlässig an',
     'Umstellung automatisch beim ersten Abgleich; 14 Tage lang wird zusätzlich die alte Datei mitgelesen'
