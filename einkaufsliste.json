@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.42",
- "savedAt": "2026-10-23T07:02:33.151Z",
+ "savedAt": "2026-10-23T07:02:57.249Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3145,6 +3145,24 @@
    },
    "deposit": null,
    "updatedAt": 1792737859536
+  },
+  "taschentücher|kokett taschentücher 4 lagig|aldi|2026-10-23": {
+   "id": "taschentücher|kokett taschentücher 4 lagig|aldi|2026-10-23",
+   "key": "taschentücher|kokett taschentücher 4 lagig",
+   "name": "Taschentücher",
+   "detail": "Kokett Taschentücher 4 lagig",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 3.85,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 42,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1792738974900
   }
  },
  "brands": {
@@ -5006,7 +5024,7 @@
     "u": "st"
    },
    "deposit": null,
-   "updatedAt": 1792738950846
+   "updatedAt": 1792738974881
   }
  },
  "devices": {
