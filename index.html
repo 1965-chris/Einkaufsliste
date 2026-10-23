@@ -630,7 +630,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.43';
+const APP_VERSION = 'v1.44';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -2334,9 +2334,49 @@ function b64decode(b64) {
   const bin = atob(b64.replace(/\s/g, ''));
   return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
 }
+/* Daten liegen im eigenen Zweig „daten“: Speichern löst dann keinen GitHub-Pages-Neubau mehr aus
+   (vorher startete jeder Abgleich einen Neubau – das hat das Veröffentlichen neuer App-Versionen blockiert) */
+const DATA_BRANCH = 'daten', LS_DB = 'ekl-databranch';
+function dataBranch() { const st = loadJSON(LS_DB, null); return st && st.ok && st.repo === cfg.owner + '/' + cfg.repo ? DATA_BRANCH : (cfg.branch || 'main'); }
+async function ghApi(method, path, body) {
+  return fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/${path}`, { method, cache: 'no-store',
+    headers: { 'Authorization': 'Bearer ' + cfg.token, 'Accept': 'application/vnd.github+json', ...(body ? { 'Content-Type': 'application/json' } : {}) },
+    body: body ? JSON.stringify(body) : undefined });
+}
+async function ensureDataBranch() {
+  const st = loadJSON(LS_DB, null), repo = cfg.owner + '/' + cfg.repo;
+  if (st && st.repo === repo && (st.ok || (st.failedAt && Date.now() - st.failedAt < 6 * 3600000))) return;
+  try {
+    let r = await ghApi('GET', 'git/ref/heads/' + DATA_BRANCH + '?t=' + Date.now());
+    if (r.status === 404) {
+      const m = await ghApi('GET', 'git/ref/heads/' + encodeURIComponent(cfg.branch || 'main') + '?t=' + Date.now());
+      if (!m.ok) throw new Error('main ' + m.status);
+      const sha = ((await m.json()).object || {}).sha;
+      r = await ghApi('POST', 'git/refs', { ref: 'refs/heads/' + DATA_BRANCH, sha });
+      if (!r.ok && r.status !== 422) throw new Error('anlegen ' + r.status);
+      log('Daten-Zweig „' + DATA_BRANCH + '“ angelegt – Speichern startet keinen Seiten-Neubau mehr');
+    } else if (!r.ok) throw new Error('prüfen ' + r.status);
+    localStorage.setItem(LS_DB, JSON.stringify({ ok: true, repo, since: (st && st.since) || Date.now() }));
+    remoteSha = null;
+  } catch (e) {
+    localStorage.setItem(LS_DB, JSON.stringify({ ok: false, repo, failedAt: Date.now() }));
+    log('Daten-Zweig nicht möglich (' + e.message + ') – speichere weiter im Hauptzweig', true);
+  }
+}
+// Übergang: 14 Tage lang zusätzlich die alte Datei im Hauptzweig lesen (falls ein Gerät noch die alte App-Version hatte)
+async function pullLegacy() {
+  const st = loadJSON(LS_DB, null);
+  if (!st || !st.ok || Date.now() - (st.since || 0) > 14 * 864e5) return null;
+  try {
+    const r = await ghPath('GET', DATA_FILE);
+    if (!r.ok) return null;
+    const p = JSON.parse(b64decode((await r.json()).content || ''));
+    return { items: p.items || [], favs: obj(p.favs), stars: obj(p.stars), custom: obj(p.custom), prices: obj(p.prices), brands: obj(p.brands), purchases: obj(p.purchases), bonmap: obj(p.bonmap), eans: obj(p.eans), arts: obj(p.arts), devices: obj(p.devices), artDel: obj(p.artDel) };
+  } catch (e) { return null; }
+}
 async function gh(method, body, attempt = 0) {
   const url = `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${DATA_FILE}`
-            + (method === 'GET' ? `?ref=${encodeURIComponent(cfg.branch || 'main')}&t=${Date.now()}` : '');
+            + (method === 'GET' ? `?ref=${encodeURIComponent(dataBranch())}&t=${Date.now()}` : '');
   let res;
   try {
     res = await fetch(url, {
@@ -2419,7 +2459,7 @@ async function pull() {
 }
 async function push() {
   const payload = { app: 'Einkaufsliste', version: APP_VERSION, savedAt: new Date().toISOString(), ...data };
-  const body = { message: 'Einkaufsliste aktualisiert', content: b64encode(JSON.stringify(payload, null, 1)), branch: cfg.branch || 'main' };
+  const body = { message: 'Einkaufsliste aktualisiert', content: b64encode(JSON.stringify(payload, null, 1)), branch: dataBranch() };
   if (remoteSha) body.sha = remoteSha;
   const res = await gh('PUT', body);
   if (res.status === 409 || res.status === 422) return 'conflict';
@@ -2466,9 +2506,12 @@ async function sync(reason) {
   syncing = true; setDot('busy');
   try {
     try { await processInbox(); } catch (e) { log('Eingang: ' + e.message, true); }
+    await ensureDataBranch();
+    const legacy = await pullLegacy();
     for (let round = 0; round < 3; round++) {
       const remote = await pull();
-      const merged = mergeData(data, remote);
+      let merged = mergeData(data, remote);
+      if (legacy) merged = mergeData(merged, legacy);
       backfillPurchases(merged);
       touchDevice(merged);
       const localChanged = !sameData(merged, data);
@@ -3874,6 +3917,10 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.44', '23.10.2026', [
+    'Die Daten liegen jetzt im eigenen Zweig „daten“: Speichern startet bei GitHub keinen Seiten-Neubau mehr – neue App-Versionen kommen dadurch zuverlässig an',
+    'Umstellung automatisch beim ersten Abgleich; 14 Tage lang wird zusätzlich die alte Datei mitgelesen'
+  ]],
   ['v1.43', '23.10.2026', [
     '„Meine Artikel“ nach Bereichen gegliedert (wie im Katalog) – mit Filter „Alle Bereiche / Obst & Gemüse / …“',
     'Neuer ＋-Knopf an jedem Artikel: setzt ihn mit Markt, Preis und Größe direkt auf die Liste (🛒 = steht schon drauf)',
