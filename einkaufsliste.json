@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
- "version": "v1.43",
- "savedAt": "2026-10-23T07:31:28.203Z",
+ "version": "v1.41",
+ "savedAt": "2026-10-23T13:20:30.707Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5050,8 +5050,8 @@
    "browser": "Safari",
    "app": "Homebildschirm-App",
    "version": "v1.41",
-   "lastSeen": 1792681079709,
-   "updatedAt": 1792681079709
+   "lastSeen": 1792761630579,
+   "updatedAt": 1792761630579
   },
   "dmvino2cftqf1h": {
    "firstSeen": 1792620007648,
@@ -5076,12 +5076,6 @@
    "version": "v1.41",
    "lastSeen": 1792737209547,
    "updatedAt": 1792737209547
-  }
- },
- "artDel": {
-  "schinken|gut drei eichen koch-hinterschinken": {
-   "ts": 1792738849419,
-   "updatedAt": 1792738849419
   }
  }
 }
