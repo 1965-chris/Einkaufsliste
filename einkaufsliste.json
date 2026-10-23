@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:43:19.024Z",
+ "savedAt": "2026-10-23T06:43:22.168Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -830,8 +830,10 @@
    "cat": "fleisch",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1792736681874
+   "checked": true,
+   "updatedAt": 1792737801955,
+   "checkedAt": 1792737799805,
+   "deleted": true
   },
   {
    "id": "mvkla7kts9ulek",
@@ -857,8 +859,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1792737796737,
-   "checkedAt": 1792737796737
+   "updatedAt": 1792737801955,
+   "checkedAt": 1792737796737,
+   "deleted": true
   },
   {
    "id": "mvklggpsm2409m",
@@ -4013,6 +4016,45 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792737791309
+  },
+  "k-mvkl4sr6owjsql": {
+   "id": "k-mvkl4sr6owjsql",
+   "date": "2026-10-23",
+   "name": "Salami",
+   "detail": "",
+   "cat": "fleisch",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "ohne Markt",
+   "price": 1.39,
+   "est": true,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792737801956,
+   "later": "2026-10-23"
+  },
+  "k-mvkla7kts9ulek": {
+   "id": "k-mvkla7kts9ulek",
+   "date": "2026-10-23",
+   "name": "Schinken",
+   "detail": "Gut Drei Eichen Gut drei Eichen Koch-Hinterschinken",
+   "cat": "fleisch",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.59,
+   "est": true,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792737801955
   }
  },
  "bonmap": {
