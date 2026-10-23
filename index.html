@@ -143,6 +143,14 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .devrow .dv{flex:1;font-size:15px}
 .devrow .dv small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 .devrow .me{font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.qadd{flex:none;border:0;background:var(--accent);color:#fff;width:38px;height:38px;border-radius:12px;font-size:20px;font-weight:700;cursor:pointer}
+.qadd.on{background:var(--chip);font-size:17px}
+.bpair{display:inline-flex}
+.bpair .chip{margin:0}
+.bpair .chip:first-child{border-radius:14px 0 0 14px}
+.bpair .qchip{border-radius:0 14px 14px 0;background:var(--accent);color:#fff;font-weight:700;padding-left:9px;padding-right:9px;margin-left:1px}
+.bpair .qchip.on{background:var(--chip);color:var(--ink)}
+.picklist .item{cursor:pointer}
 .okmark{color:var(--accent);font-weight:700}
 .badge{display:inline-block;font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .chk{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink);margin:10px 0 0}
@@ -443,6 +451,16 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
     <button class="btn" data-close>Schließen</button>
   </div>
 </div>
+<div class="sheet" id="pickSheet">
+  <h3 id="pickTitle">Artikel</h3>
+  <div class="hint">Deine Sorten – <b>＋</b> setzt sie direkt auf die Liste, antippen zum Bearbeiten.</div>
+  <div class="list picklist" id="pickList" style="margin-top:8px"></div>
+  <div class="row" style="margin-top:12px">
+    <button class="btn" data-close>Schließen</button>
+    <button class="btn primary" id="pickNew">＋ Andere Sorte / neu</button>
+  </div>
+  <div style="text-align:center;margin-top:10px"><button type="button" class="link" id="pickDel">🗑 Alle Sorten löschen</button></div>
+</div>
 <div class="sheet" id="dupSheet">
   <h3>🧹 Doppelte Artikel</h3>
   <div class="hint">Gleiche Produkte, die mehrfach angelegt sind (z. B. „Thunfischfilet“ und „Thunfisch-Filet“). Beim Zusammenführen wandern Preise aller Märkte, Größe, Favorit, Strichcode und Einkäufe zum behaltenen Artikel. Verschiedene Marken bleiben getrennt.</div>
@@ -612,7 +630,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.42';
+const APP_VERSION = 'v1.43';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1431,22 +1449,30 @@ function myArticles() {
   });
   return [...map.values()].sort((a, b) => a.name.localeCompare(b.name, 'de') || a.detail.localeCompare(b.detail, 'de'));
 }
+let myCat = '';
 function renderMyArticles() {
   const n = norm($('catSearch').value);
   let arts = myArticles();
   const nOpen = arts.filter(a => a.missing.length).length;
   if (n) arts = arts.filter(a => norm(a.name + ' ' + a.detail).includes(n));
   if (myFilter === 'open') arts = arts.filter(a => a.missing.length);
+  const catCount = {}; arts.forEach(a => { catCount[a.cat || 'sonst'] = (catCount[a.cat || 'sonst'] || 0) + 1; });
+  if (myCat && !catCount[myCat]) myCat = '';
+  const onList = new Set(liveItems().filter(i => !i.checked).map(i => keyOf(i.name, i.detail)));
   let html = `<p class="intro" style="margin-top:0">Alle Artikel, die du schon angelegt oder gekauft hast. <b>Komplett</b> ist ein Artikel mit Normalpreis und Größe – Angebots- und App-Preise zählen nicht. Antippen zum Bearbeiten.</p>`;
   html += `<div class="chips wrap">${[['', 'Alle'], ['open', '⚠︎ Unvollständig (' + nOpen + ')']].map(([v, l]) => `<button class="chip${v === myFilter ? ' sel' : ''}" data-myf="${v}">${l}</button>`).join('')}<button class="chip" data-act="dups">🧹 Doppelte suchen</button></div>`;
+  html += `<div class="chips">${[['', 'Alle Bereiche'], ...CATS.filter(([c]) => catCount[c])].map(([c, l]) => `<button class="chip${c === myCat ? ' sel' : ''}" data-mycat="${c}">${esc(c ? l : l)}${c ? ' ' + catCount[c] : ''}</button>`).join('')}</div>`;
+  if (myCat) arts = arts.filter(a => (a.cat || 'sonst') === myCat);
   if (!arts.length) html += `<div class="empty">${myFilter === 'open' ? '🎉 Alles komplett.' : 'Noch keine eigenen Artikel.'}</div>`;
   else {
     const groups = []; arts.forEach(a => { const g = groups[groups.length - 1]; if (g && norm(g[0].name) === norm(a.name)) g.push(a); else groups.push([a]); });
+    groups.forEach(g => { const c = (CAT_INDEX[norm(g[0].name)] || {}).cat || g[0].cat || 'sonst'; g.forEach(a => { a.cat = c; }); });
+    const addBtn = a => `<button class="qadd${onList.has(a.key) ? ' on' : ''}" data-quickadd="${esc(a.key)}" aria-label="auf die Liste">${onList.has(a.key) ? '🛒' : '＋'}</button>`;
     const rowHtml = (a, sub) => {
       const cheapest = a.shops.length > 1 ? Math.min(...a.shops.map(e => e.price)) : null;
       const shopLine = a.shops.map(e => { const t = `${e.shop} ${fmtPrice(e.price)}${offerType(e) === 'angebot' ? ' (Angebot)' : offerType(e) === 'app' ? ' (App)' : ''}`; return e.price === cheapest ? `<b>${esc(t)}</b>` : esc(t); }).join(' · ');
       const meta = [!a.shops.length && a.normal ? fmtPrice(a.normal.price) : '', !a.shops.length && a.shop ? a.shop : '', a.pack ? packLabel(a.pack) : ''].filter(Boolean).join(' · ');
-      return `<div class="item${sub ? ' insub' : ''}" data-myart="${esc(a.key)}"><div class="body"><div class="name">${esc(sub ? (a.detail || 'ohne Bezeichnung') : a.name)}</div>${!sub && a.detail ? `<div class="detail">${esc(a.detail)}</div>` : ''}${meta ? `<div class="note">${esc(meta)}</div>` : ''}${shopLine ? `<div class="note">🏪 ${shopLine}</div>` : ''}${a.missing.length ? `<span class="warn">⚠︎ fehlt: ${a.missing.join(', ')}</span>` : ''}</div>${a.missing.length ? '' : '<span class="qty"><span class="okmark">✓</span></span>'}</div>`;
+      return `<div class="item${sub ? ' insub' : ''}" data-myart="${esc(a.key)}"><div class="body"><div class="name">${esc(sub ? (a.detail || 'ohne Bezeichnung') : a.name)}</div>${!sub && a.detail ? `<div class="detail">${esc(a.detail)}</div>` : ''}${meta ? `<div class="note">${esc(meta)}</div>` : ''}${shopLine ? `<div class="note">🏪 ${shopLine}</div>` : ''}${a.missing.length ? `<span class="warn">⚠︎ fehlt: ${a.missing.join(', ')}</span>` : ''}</div>${addBtn(a)}</div>`;
     };
     // gleiches Produkt, verschiedene Marken (z. B. Thunfisch von Gut & Günstig (EDEKA), Almare (Lidl) …) = ein Artikel mit Preisen je Markt
     const productRow = (c, g) => {
@@ -1457,10 +1483,10 @@ function renderMyArticles() {
       const open = c.filter(a => a.missing.length).length;
       return `<div class="item${g.length > 1 ? ' insub' : ''} prodrow"><div class="body"><div class="name">${esc(g.length > 1 ? (rest || 'ohne Bezeichnung') : c[0].name + (rest ? ' · ' + rest : ''))} <span class="pbadge">${c.length} Marken</span></div>
         ${line ? `<div class="note">🏪 ${line}</div>` : ''}
-        <div class="brandchips">${c.map(a => `<button class="chip" data-myart="${esc(a.key)}">${esc(splitBrand(a.detail).brand || a.detail || 'ohne Marke')}${a.pack ? ' · ' + esc(packLabel(a.pack)) : ''}${a.missing.length ? ' ⚠︎' : ' ✓'}</button>`).join('')}</div>
+        <div class="brandchips">${c.map(a => `<span class="bpair"><button class="chip" data-myart="${esc(a.key)}">${esc(splitBrand(a.detail).brand || a.detail || 'ohne Marke')}${a.pack ? ' · ' + esc(packLabel(a.pack)) : ''}${a.missing.length ? ' ⚠︎' : ' ✓'}</button><button class="chip qchip${onList.has(a.key) ? ' on' : ''}" data-quickadd="${esc(a.key)}">${onList.has(a.key) ? '🛒' : '＋'}</button></span>`).join('')}</div>
         ${open ? `<span class="warn">⚠︎ ${open} Marke${open > 1 ? 'n' : ''} unvollständig – antippen zum Bearbeiten</span>` : ''}</div></div>`;
     };
-    html += `<div class="list">${groups.map(g => {
+    const groupHtml = g => {
       const cl = productClusters(g);
       let head = '';
       if (g.length > 1) {
@@ -1470,7 +1496,13 @@ function renderMyArticles() {
         head = `<div class="mygrp"><b>${esc(g[0].name)}</b> · ${cl.length > 1 ? cl.length + ' Sorten' : g.length + ' Marken'}${best ? ` · günstigster: ${esc(best.a.detail || 'ohne Bezeichnung')} bei ${esc(best.e.shop)} ${esc(fmtPrice(best.e.price))}` : ''}</div>`;
       }
       return head + cl.map(c => c.length > 1 ? productRow(c, g) : rowHtml(c[0], g.length > 1)).join('');
-    }).join('')}</div>`;
+    };
+    // nach Bereich im Markt gliedern (wie im Katalog)
+    CATS.forEach(([c, label]) => {
+      const gs = groups.filter(g => (g[0].cat || 'sonst') === c);
+      if (!gs.length) return;
+      html += `<section class="group"><h2>${esc(label)} <span style="font-weight:400">· ${gs.reduce((t, g) => t + g.length, 0)}</span></h2><div class="list">${gs.map(groupHtml).join('')}</div></section>`;
+    });
   }
   $('catMain').innerHTML = html;
 }
@@ -1495,6 +1527,55 @@ function productClusters(g) {
   const out = {}; g.forEach((a, i) => (out[find(i)] = out[find(i)] || []).push(a));
   return Object.values(out);
 }
+/* Schnell auf die Liste: Artikel mit Markt, Preis und Größe übernehmen */
+function articleOffer(a) {
+  const price = a.normal ? a.normal.price : null;
+  return a.shop || price != null || a.pack ? { shop: a.shop || '', price, type: 'normal', special: false, pack: a.pack || null, deposit: a.deposit || null } : null;
+}
+function quickAddArticle(key) {
+  const a = myArticles().find(x => x.key === key); if (!a) return;
+  const am = artMaster(a.name, a.detail) || {};
+  addItem({ name: a.name, detail: a.detail, cat: a.cat, unit: am.unit || a.unit || '', offer: articleOffer(a) });
+  if ($('pickSheet').classList.contains('open')) renderPick();
+}
+// Katalog-Artikel antippen: erst die eigenen Sorten zeigen
+let pickName = '';
+function openPick(name) { pickName = name; renderPick(); openSheet('pickSheet'); }
+function renderPick() {
+  const mine = myArticles().filter(a => norm(a.name) === norm(pickName) && !a.onlyCustom);
+  const onList = new Set(liveItems().filter(i => !i.checked).map(i => keyOf(i.name, i.detail)));
+  $('pickTitle').textContent = cap(pickName);
+  $('pickList').innerHTML = mine.map(a => {
+    const best = a.shops.length ? a.shops.reduce((m, e) => e.price < m.price ? e : m) : null;
+    const meta = [a.pack && packLabel(a.pack), best ? best.shop + ' ' + fmtPrice(best.price) : (a.normal ? fmtPrice(a.normal.price) : ''), !best && a.shop].filter(Boolean).join(' · ');
+    return `<div class="item" data-pickedit="${esc(a.key)}"><div class="body"><div class="name">${esc(a.detail || 'ohne Bezeichnung')}</div>${meta ? `<div class="note">${esc(meta)}</div>` : ''}</div><button class="qadd${onList.has(a.key) ? ' on' : ''}" data-pickadd="${esc(a.key)}">${onList.has(a.key) ? '🛒' : '＋'}</button></div>`;
+  }).join('') || '<div class="empty">Noch keine Sorten.</div>';
+}
+$('pickList').addEventListener('click', e => {
+  const ad = e.target.closest('[data-pickadd]'); if (ad) { quickAddArticle(ad.dataset.pickadd); return; }
+  const ed = e.target.closest('[data-pickedit]');
+  if (ed) {
+    const a = myArticles().find(x => x.key === ed.dataset.pickedit); if (!a) return;
+    closeSheets();
+    setTimeout(() => openItemSheet('article', { name: a.name, detail: a.detail, cat: a.cat, unit: a.unit, offer: { shop: a.shop || '', price: a.normal ? a.normal.price : null, type: 'normal', pack: a.pack || null, deposit: a.deposit || null } }), 50);
+  }
+});
+$('pickDel').onclick = () => {
+  const mine = myArticles().filter(a => norm(a.name) === norm(pickName) && !a.onlyCustom);
+  const own = isOwnArticle(pickName);
+  if (!confirm(`Alle ${mine.length} Sorte${mine.length === 1 ? '' : 'n'} von „${cap(pickName)}“ löschen?` + (own ? '\n\nDer eigene Artikel verschwindet auch aus dem Katalog.' : '') + '\n\nDeine Einkäufe (Auswertung) bleiben erhalten.')) return;
+  const keys = new Set(mine.map(a => a.key));
+  const onList = liveItems().some(i => keys.has(keyOf(i.name, i.detail)));
+  const alsoList = onList ? confirm('Einige davon stehen auf der Einkaufsliste.\n\nDort ebenfalls entfernen?') : false;
+  const undos = mine.map(a => deleteArticle(a.key, alsoList));
+  const cu = data.custom[norm(pickName)];
+  const cuPrev = cu ? { ...cu } : null;
+  if (own && cu) { cu.deleted = true; cu.updatedAt = now(); }
+  closeSheets(); commit();
+  toast(`„${cap(pickName)}“ gelöscht`, () => { undos.forEach(u => u()); if (cu && cuPrev) { Object.assign(cu, cuPrev, { updatedAt: now() }); delete cu.deleted; } commit(); });
+};
+$('pickNew').onclick = () => { const n = pickName; closeSheets(); setTimeout(() => openItemSheet('add', { name: n }), 50); };
+
 /* Doppelte Artikel finden und zusammenführen */
 let dupGroups = [];
 function findDupGroups() {
@@ -1563,6 +1644,7 @@ $('dupGo').onclick = () => {
 function renderCatalog() {
   if (catMode === 'meine') return renderMyArticles();
   const n = norm($('catSearch').value);
+  const mineCount = {}; myArticles().filter(a => !a.onlyCustom).forEach(a => { mineCount[norm(a.name)] = (mineCount[norm(a.name)] || 0) + 1; });
   let html = '';
   CATS.forEach(([cat, label]) => {
     const names = new Map();
@@ -1572,9 +1654,9 @@ function renderCatalog() {
     if (n) list = list.filter(x => norm(x).includes(n));
     if (!list.length) return;
     list.sort((a, b) => a.localeCompare(b, 'de'));
-    html += `<section class="group catsec"><h2>${esc(label)}</h2><div class="chips wrap">${list.map(x => `<button class="chip" data-art="${esc(x)}">${esc(x)}</button>`).join('')}</div></section>`;
+    html += `<section class="group catsec"><h2>${esc(label)}</h2><div class="chips wrap">${list.map(x => `<button class="chip${mineCount[norm(x)] ? ' sel' : ''}" data-art="${esc(x)}">${esc(x)}${mineCount[norm(x)] ? ' · ' + mineCount[norm(x)] : ''}</button>`).join('')}</div></section>`;
   });
-  html = '<p class="intro" style="margin-top:0">Antippen zum Auf-die-Liste-Setzen, als Favorit merken oder nur im Katalog speichern. Mit ＋ legst du einen neuen Artikel an.</p>' + html;
+  html = '<p class="intro" style="margin-top:0">Antippen zum Auf-die-Liste-Setzen, als Favorit merken oder nur im Katalog speichern. <b>Grün mit Zahl</b> = du hast davon schon eigene Sorten – antippen zeigt sie zur Auswahl. Mit ＋ legst du einen neuen Artikel an.</p>' + html;
   if (n && !html.includes('catsec')) html = `<div class="empty">Nichts gefunden.<br><br><button class="btn primary" data-art="${esc(cap($('catSearch').value))}">„${esc(cap($('catSearch').value))}“ als neuen Artikel anlegen</button></div>`;
   $('catMain').innerHTML = html;
 }
@@ -2188,6 +2270,8 @@ $('listMain').addEventListener('click', e => {
 });
 $('catSearch').addEventListener('input', renderCatalog);
 $('catMain').addEventListener('click', e => {
+  const qa = e.target.closest('[data-quickadd]'); if (qa) { quickAddArticle(qa.dataset.quickadd); return; }
+  const mc = e.target.closest('[data-mycat]'); if (mc) { myCat = mc.dataset.mycat; renderMyArticles(); return; }
   const f = e.target.closest('[data-myf]'); if (f) { myFilter = f.dataset.myf; renderMyArticles(); return; }
   if (e.target.closest('[data-act="dups"]')) { openDups(); return; }
   const m = e.target.closest('[data-myart]');
@@ -2198,7 +2282,12 @@ $('catMain').addEventListener('click', e => {
     clearCatSearch();
     return;
   }
-  const b = e.target.closest('[data-art]'); if (b) { openItemSheet('add', { name: b.dataset.art }); clearCatSearch(); }
+  const b = e.target.closest('[data-art]');
+  if (b) {
+    const mine = myArticles().filter(a => norm(a.name) === norm(b.dataset.art) && !a.onlyCustom);
+    if (mine.length) openPick(b.dataset.art, mine); else openItemSheet('add', { name: b.dataset.art });
+    clearCatSearch();
+  }
 });
 $('favMain').addEventListener('click', e => {
   if (e.target.closest('[data-act="newFav"]')) { openItemSheet('fav', {}); return; }
@@ -3785,6 +3874,12 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.43', '23.10.2026', [
+    '„Meine Artikel“ nach Bereichen gegliedert (wie im Katalog) – mit Filter „Alle Bereiche / Obst & Gemüse / …“',
+    'Neuer ＋-Knopf an jedem Artikel: setzt ihn mit Markt, Preis und Größe direkt auf die Liste (🛒 = steht schon drauf)',
+    'Katalog: Artikel, von denen du eigene Sorten hast, sind grün mit Anzahl – antippen zeigt deine Sorten zum Auswählen',
+    'Dort auch „🗑 Alle Sorten löschen“ – eigene Artikel verschwinden damit auch aus dem Katalog'
+  ]],
   ['v1.42', '23.10.2026', [
     'Fehler behoben: Gelöschte Artikel in „Meine Artikel“ tauchten oft wieder auf (andere Schreibweise des Bezeichnungs-Knopfs, Artikel stand noch auf der Liste)',
     'Löschen entfernt jetzt alles zum Artikel: Preise, Favorit, Häufig gekauft, Stammdaten, Strichcode- und Bon-Zuordnung',
