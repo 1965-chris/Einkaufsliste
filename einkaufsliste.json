@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:33:59.178Z",
+ "savedAt": "2026-10-23T06:34:07.099Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -868,8 +868,9 @@
    "cat": "drogerie",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1792737226145
+   "checked": true,
+   "updatedAt": 1792737244191,
+   "checkedAt": 1792737244191
   },
   {
    "id": "mvklgp4cci88rv",
@@ -880,8 +881,9 @@
    "cat": "brot",
    "note": "",
    "offer": null,
-   "checked": false,
-   "updatedAt": 1792737237036
+   "checked": true,
+   "updatedAt": 1792737244987,
+   "checkedAt": 1792737244987
   }
  ],
  "favs": {
