@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:22:08.457Z",
+ "savedAt": "2026-10-23T06:23:37.541Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -621,8 +621,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1792683453994,
-   "checkedAt": 1792683453994
+   "updatedAt": 1792736615306,
+   "checkedAt": 1792683453994,
+   "deleted": true
   },
   {
    "id": "mvgi1z70tn3r1n",
@@ -648,8 +649,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1792683451930,
-   "checkedAt": 1792683451930
+   "updatedAt": 1792736615306,
+   "checkedAt": 1792683451930,
+   "deleted": true
   },
   {
    "id": "mvgi4fj2tn5i3v",
@@ -675,8 +677,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1792683023749,
-   "checkedAt": 1792683023749
+   "updatedAt": 1792736615306,
+   "checkedAt": 1792683023749,
+   "deleted": true
   },
   {
    "id": "mvgi81uti1in2q",
@@ -702,8 +705,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1792683450436,
-   "checkedAt": 1792683450436
+   "updatedAt": 1792736615306,
+   "checkedAt": 1792683450436,
+   "deleted": true
   },
   {
    "id": "mvgicvtxrn7dv0",
@@ -729,8 +733,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1792682626466,
-   "checkedAt": 1792682626466
+   "updatedAt": 1792736615306,
+   "checkedAt": 1792682626466,
+   "deleted": true
   },
   {
    "id": "mvhosiwe7q56cs",
@@ -742,8 +747,9 @@
    "note": "",
    "offer": null,
    "checked": true,
-   "updatedAt": 1792683056201,
-   "checkedAt": 1792683056201
+   "updatedAt": 1792736615306,
+   "checkedAt": 1792683056201,
+   "deleted": true
   },
   {
    "id": "mvhpjh9ks45kpw",
@@ -755,8 +761,9 @@
    "note": "",
    "offer": null,
    "checked": true,
-   "updatedAt": 1792682809302,
-   "checkedAt": 1792682809302
+   "updatedAt": 1792736615306,
+   "checkedAt": 1792682809302,
+   "deleted": true
   },
   {
    "id": "mvj90g4c0qwtsl",
@@ -768,8 +775,9 @@
    "note": "",
    "offer": null,
    "checked": true,
-   "updatedAt": 1792683058700,
-   "checkedAt": 1792683058700
+   "updatedAt": 1792736615306,
+   "checkedAt": 1792683058700,
+   "deleted": true
   },
   {
    "id": "mvjkkw2rqjvxze",
@@ -809,8 +817,9 @@
     "regular": null
    },
    "checked": true,
-   "updatedAt": 1792683021834,
-   "checkedAt": 1792683021834
+   "updatedAt": 1792736615306,
+   "checkedAt": 1792683021834,
+   "deleted": true
   }
  ],
  "favs": {
@@ -3538,6 +3547,183 @@
    "deposit": null,
    "updatedAt": 1792675346549,
    "deleted": true
+  },
+  "k-mvgi1pooid5pv3": {
+   "id": "k-mvgi1pooid5pv3",
+   "date": "2026-10-22",
+   "name": "Brötchen",
+   "detail": "Goldähren Krüstchen",
+   "cat": "brot",
+   "qty": 2,
+   "unit": "Pck.",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 1.79,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.48,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736615306
+  },
+  "k-mvgi1z70tn3r1n": {
+   "id": "k-mvgi1z70tn3r1n",
+   "date": "2026-10-22",
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "cat": "brot",
+   "qty": 3,
+   "unit": "Pck.",
+   "n": 3,
+   "shop": "ALDI",
+   "price": 1.19,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.56,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736615306
+  },
+  "k-mvgi4fj2tn5i3v": {
+   "id": "k-mvgi4fj2tn5i3v",
+   "date": "2026-10-22",
+   "name": "Salzbutter",
+   "detail": "Milsani",
+   "cat": "kuehl",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.29,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736615306
+  },
+  "k-mvgi81uti1in2q": {
+   "id": "k-mvgi81uti1in2q",
+   "date": "2026-10-22",
+   "name": "Family Cappuccino",
+   "detail": "Barissimo Family Cappuccino - Choco",
+   "cat": "kaffee",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 3.49,
+   "est": true,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": 3.49,
+   "updatedAt": 1792736615306
+  },
+  "k-mvgicvtxrn7dv0": {
+   "id": "k-mvgicvtxrn7dv0",
+   "date": "2026-10-22",
+   "name": "Kartoffeln",
+   "detail": "festkochend",
+   "cat": "obst",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 2.49,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 2.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736615306
+  },
+  "k-mvhosiwe7q56cs": {
+   "id": "k-mvhosiwe7q56cs",
+   "date": "2026-10-22",
+   "name": "Butter",
+   "detail": "",
+   "cat": "kuehl",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ohne Markt",
+   "price": 2.19,
+   "est": true,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792736615306
+  },
+  "k-mvhpjh9ks45kpw": {
+   "id": "k-mvhpjh9ks45kpw",
+   "date": "2026-10-22",
+   "name": "Küchenrolle",
+   "detail": "Kokett 3-lagig 4 Rollen a 64 Blatt",
+   "cat": "drogerie",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 2.65,
+   "est": true,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792736615306
+  },
+  "k-mvj90g4c0qwtsl": {
+   "id": "k-mvj90g4c0qwtsl",
+   "date": "2026-10-22",
+   "name": "TK-Gemüse",
+   "detail": "Spinat",
+   "cat": "tk",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ohne Markt",
+   "price": null,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792736615306
+  },
+  "k-mvjo2b59h4jqis": {
+   "id": "k-mvjo2b59h4jqis",
+   "date": "2026-10-22",
+   "name": "Pudding",
+   "detail": "Milsani Schoko mit Sahnehaube",
+   "cat": "kuehl",
+   "qty": 3,
+   "unit": "",
+   "n": 3,
+   "shop": "ALDI",
+   "price": 0.39,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736615306
   }
  },
  "bonmap": {
