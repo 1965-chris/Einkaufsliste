@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:25:37.655Z",
+ "savedAt": "2026-10-23T12:25:44.679Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5084,8 +5084,8 @@
    "updatedAt": 1792738849419
   },
   "kaffee|": {
-   "ts": 1792758334375,
-   "updatedAt": 1792758334375
+   "ts": 1792758342058,
+   "updatedAt": 1792758342058
   }
  },
  "stock": {
