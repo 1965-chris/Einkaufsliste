@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:09:30.604Z",
+ "savedAt": "2026-10-23T06:10:00.390Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1782,6 +1782,18 @@
     "grobe bratwurst vom schwein": 1792735768501
    },
    "updatedAt": 1792735768501
+  },
+  "rahmspinat": {
+   "name": "Rahmspinat",
+   "variants": [
+    "All Seasons"
+   ],
+   "cat": "tk",
+   "unit": "",
+   "varAdd": {
+    "all seasons": 1792735797540
+   },
+   "updatedAt": 1792735797540
   }
  },
  "prices": {
@@ -3515,6 +3527,17 @@
    "cat": "getraenk",
    "pack": null,
    "updatedAt": 1792735768501
+  },
+  "4061462880650": {
+   "name": "Rahmspinat",
+   "detail": "All Seasons",
+   "cat": "tk",
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "updatedAt": 1792735797540
   }
  },
  "arts": {
@@ -3947,6 +3970,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1792735768501
+  },
+  "rahmspinat|all seasons": {
+   "name": "Rahmspinat",
+   "detail": "All Seasons",
+   "cat": "tk",
+   "unit": "",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792735797540
   }
  },
  "devices": {
