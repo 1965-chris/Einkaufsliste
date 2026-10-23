@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:45:01.875Z",
+ "savedAt": "2026-10-23T06:45:08.733Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1940,9 +1940,9 @@
    "varAdd": {
     "gut drei eichen koch-hinterschinken": 1792736934365
    },
-   "updatedAt": 1792737899450,
+   "updatedAt": 1792737906612,
    "varDel": {
-    "koch-hinterschinken": 1792737899450
+    "koch-hinterschinken": 1792737906612
    }
   },
   "wursz": {
