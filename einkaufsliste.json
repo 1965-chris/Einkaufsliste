@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:10:26.564Z",
+ "savedAt": "2026-10-23T06:11:09.549Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1774,14 +1774,16 @@
   "wein": {
    "name": "Wein",
    "variants": [
-    "Grobe Bratwurst vom Schwein"
+    "Grobe Bratwurst vom Schwein",
+    "Aldi Weinsauerkraut mild aus Weißkohl"
    ],
    "cat": "getraenk",
    "unit": "Fl.",
    "varAdd": {
-    "grobe bratwurst vom schwein": 1792735768501
+    "grobe bratwurst vom schwein": 1792735768501,
+    "aldi weinsauerkraut mild aus weißkohl": 1792735866755
    },
-   "updatedAt": 1792735768501
+   "updatedAt": 1792735866755
   },
   "rahmspinat": {
    "name": "Rahmspinat",
@@ -3556,6 +3558,17 @@
     "u": "kg"
    },
    "updatedAt": 1792735823973
+  },
+  "4061462918728": {
+   "name": "Wein",
+   "detail": "Aldi Weinsauerkraut mild aus Weißkohl",
+   "cat": "getraenk",
+   "pack": {
+    "n": 1,
+    "size": 0.52,
+    "u": "kg"
+   },
+   "updatedAt": 1792735866755
   }
  },
  "arts": {
@@ -4016,6 +4029,20 @@
    },
    "deposit": null,
    "updatedAt": 1792735823973
+  },
+  "wein|aldi weinsauerkraut mild aus weißkohl": {
+   "name": "Wein",
+   "detail": "Aldi Weinsauerkraut mild aus Weißkohl",
+   "cat": "getraenk",
+   "unit": "Fl.",
+   "shop": "",
+   "pack": {
+    "n": 1,
+    "size": 0.52,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792735866755
   }
  },
  "devices": {
