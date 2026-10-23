@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:15:34.843Z",
+ "savedAt": "2026-10-23T06:17:40.292Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1761,15 +1761,16 @@
   },
   "steak": {
    "name": "Steak",
-   "variants": [
-    "Kassler Minutensteaks"
-   ],
+   "variants": [],
    "cat": "fleisch",
    "unit": "",
    "varAdd": {
     "kassler minutensteaks": 1792735722097
    },
-   "updatedAt": 1792735722097
+   "updatedAt": 1792736258130,
+   "varDel": {
+    "kassler minutensteaks": 1792736258130
+   }
   },
   "wein": {
    "name": "Wein",
@@ -1803,6 +1804,18 @@
    "cat": "getraenk",
    "unit": "",
    "updatedAt": 1792735823973
+  },
+  "fleisch": {
+   "name": "Fleisch",
+   "variants": [
+    "Kassler Minutensteaks"
+   ],
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "varAdd": {
+    "kassler minutensteaks": 1792736258130
+   },
+   "updatedAt": 1792736258130
   }
  },
  "prices": {
@@ -2802,6 +2815,24 @@
    },
    "deposit": null,
    "updatedAt": 1792736132470
+  },
+  "fleisch|meine metzgerei kassler minutensteaks|aldi|2026-10-23": {
+   "id": "fleisch|meine metzgerei kassler minutensteaks|aldi|2026-10-23",
+   "key": "fleisch|meine metzgerei kassler minutensteaks",
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Kassler Minutensteaks",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 3.99,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736258131
   }
  },
  "brands": {
@@ -3628,7 +3659,7 @@
    "updatedAt": 1792735693546
   },
   "4069365323854": {
-   "name": "Steak",
+   "name": "Fleisch",
    "detail": "Meine Metzgerei Kassler Minutensteaks",
    "cat": "fleisch",
    "pack": {
@@ -3636,7 +3667,7 @@
     "size": 0.4,
     "u": "kg"
    },
-   "updatedAt": 1792735722096
+   "updatedAt": 1792736258130
   },
   "4069366381532": {
    "name": "Wein",
@@ -4098,7 +4129,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792735722096
+   "updatedAt": 1792736258130,
+   "deleted": true
   },
   "wein|meine metzgerei grobe bratwurst vom schwein": {
    "name": "Wein",
@@ -4151,6 +4183,20 @@
    },
    "deposit": null,
    "updatedAt": 1792735866755
+  },
+  "fleisch|meine metzgerei kassler minutensteaks": {
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Kassler Minutensteaks",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.4,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792736258130
   }
  },
  "devices": {
