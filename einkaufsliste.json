@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:28:35.035Z",
+ "savedAt": "2026-10-23T12:28:40.415Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -916,9 +916,10 @@
    },
    "forStock": true,
    "checked": true,
-   "updatedAt": 1792758512314,
+   "updatedAt": 1792758517847,
    "checkedAt": 1792758512314,
-   "stockAdded": 5
+   "stockAdded": 5,
+   "deleted": true
   }
  ],
  "favs": {
@@ -4135,6 +4136,27 @@
    },
    "deposit": null,
    "updatedAt": 1792737801955
+  },
+  "k-mvky4frr6te8cy": {
+   "id": "k-mvky4frr6te8cy",
+   "date": "2026-10-23",
+   "name": "Melita Bella Crema Ganze Bohnen",
+   "detail": "",
+   "cat": "vorrat",
+   "qty": 5,
+   "unit": "Pck.",
+   "n": 5,
+   "shop": "EDEKA",
+   "price": 19.99,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792758517847
   }
  },
  "bonmap": {
