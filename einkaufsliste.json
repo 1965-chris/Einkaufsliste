@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T12:29:59.682Z",
+ "savedAt": "2026-10-23T12:30:05.410Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -931,8 +931,11 @@
    "note": "",
    "offer": null,
    "forStock": true,
-   "checked": false,
-   "updatedAt": 1792758597224
+   "checked": true,
+   "updatedAt": 1792758605271,
+   "checkedAt": 1792758602439,
+   "stockAdded": 5,
+   "deleted": true
   }
  ],
  "favs": {
@@ -4170,6 +4173,23 @@
    "deposit": null,
    "updatedAt": 1792758549027,
    "deleted": true
+  },
+  "k-mvky64dm0w96vy": {
+   "id": "k-mvky64dm0w96vy",
+   "date": "2026-10-23",
+   "name": "Coca Cola",
+   "detail": "",
+   "cat": "getraenk",
+   "qty": 5,
+   "unit": "Tray",
+   "n": 5,
+   "shop": "Lidl",
+   "price": 5.94,
+   "est": true,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792758605272
   }
  },
  "bonmap": {
@@ -5190,9 +5210,9 @@
    "detail": "",
    "cat": "getraenk",
    "unit": "",
-   "qty": 0,
+   "qty": 5,
    "min": 0,
-   "updatedAt": 1792758444304
+   "updatedAt": 1792758602439
   },
   "melita bella crema ganze bohnen|": {
    "key": "melita bella crema ganze bohnen|",
