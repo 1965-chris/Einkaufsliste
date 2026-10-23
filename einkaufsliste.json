@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:07:43.756Z",
+ "savedAt": "2026-10-23T06:08:13.745Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1746,6 +1746,18 @@
     "baumkuchspitzen vollmilchschokolade": 1792687316087
    },
    "updatedAt": 1792687316087
+  },
+  "leberwurst": {
+   "name": "Leberwurst",
+   "variants": [
+    "Aldi"
+   ],
+   "cat": "fleisch",
+   "unit": "",
+   "varAdd": {
+    "aldi": 1792735693547
+   },
+   "updatedAt": 1792735693547
   }
  },
  "prices": {
@@ -3450,6 +3462,17 @@
     "u": "kg"
    },
    "updatedAt": 1792687316086
+  },
+  "4069365678336": {
+   "name": "Leberwurst",
+   "detail": "Aldi",
+   "cat": "fleisch",
+   "pack": {
+    "n": 1,
+    "size": 0.175,
+    "u": "kg"
+   },
+   "updatedAt": 1792735693546
   }
  },
  "arts": {
@@ -3844,6 +3867,20 @@
    },
    "deposit": null,
    "updatedAt": 1792687316086
+  },
+  "leberwurst|aldi": {
+   "name": "Leberwurst",
+   "detail": "Aldi",
+   "cat": "fleisch",
+   "unit": "",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.175,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1792735693547
   }
  },
  "devices": {
