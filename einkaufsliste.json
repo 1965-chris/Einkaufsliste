@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T13:16:08.556Z",
+ "savedAt": "2026-10-23T13:16:22.738Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5244,9 +5244,9 @@
    "detail": "Laktosefrei",
    "cat": "vorrat",
    "unit": "",
-   "qty": 10,
+   "qty": 1,
    "min": 4,
-   "updatedAt": 1792761365770
+   "updatedAt": 1792761382334
   }
  }
 }
