@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.47",
- "savedAt": "2026-10-23T09:13:18.258Z",
+ "savedAt": "2026-10-23T09:14:14.202Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -5084,5 +5084,16 @@
    "updatedAt": 1792738849419
   }
  },
- "stock": {}
+ "stock": {
+  "kaffee|": {
+   "key": "kaffee|",
+   "name": "Kaffee",
+   "detail": "",
+   "cat": "kaffee",
+   "unit": "",
+   "qty": 5,
+   "min": 2,
+   "updatedAt": 1792746851675
+  }
+ }
 }
