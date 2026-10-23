@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.43",
- "savedAt": "2026-10-23T07:29:29.965Z",
+ "savedAt": "2026-10-23T07:30:48.822Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1807,9 +1807,9 @@
   "spagethi": {
    "name": "Spagethi",
    "variants": [],
-   "cat": "sonst",
+   "cat": "vorrat",
    "unit": "",
-   "updatedAt": 1792309246379
+   "updatedAt": 1792740646630
   },
   "family cappuccino": {
    "name": "Family Cappuccino",
@@ -4675,7 +4675,7 @@
   "spagethi|": {
    "name": "Spagethi",
    "detail": "",
-   "cat": "sonst",
+   "cat": "vorrat",
    "unit": "",
    "shop": "ALDI",
    "pack": {
@@ -4684,7 +4684,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792309246362
+   "updatedAt": 1792740646609
   },
   "family cappuccino|barissimo family cappuccino - choco": {
    "name": "Family Cappuccino",
