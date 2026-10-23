@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.41",
- "savedAt": "2026-10-23T06:43:00.941Z",
+ "savedAt": "2026-10-23T06:43:13.421Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -869,8 +869,9 @@
    "note": "",
    "offer": null,
    "checked": true,
-   "updatedAt": 1792737244191,
-   "checkedAt": 1792737244191
+   "updatedAt": 1792737791309,
+   "checkedAt": 1792737244191,
+   "deleted": true
   },
   {
    "id": "mvklgp4cci88rv",
@@ -882,8 +883,9 @@
    "note": "",
    "offer": null,
    "checked": true,
-   "updatedAt": 1792737244987,
-   "checkedAt": 1792737244987
+   "updatedAt": 1792737791309,
+   "checkedAt": 1792737244987,
+   "deleted": true
   }
  ],
  "favs": {
@@ -3976,6 +3978,40 @@
    },
    "deposit": null,
    "updatedAt": 1792736615306
+  },
+  "k-mvklggpsm2409m": {
+   "id": "k-mvklggpsm2409m",
+   "date": "2026-10-23",
+   "name": "Küchenrolle",
+   "detail": "Kokett 3-lagig 4 Rollen a 64 Blatt",
+   "cat": "drogerie",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 2.65,
+   "est": true,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792737791309
+  },
+  "k-mvklgp4cci88rv": {
+   "id": "k-mvklgp4cci88rv",
+   "date": "2026-10-23",
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "cat": "brot",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.19,
+   "est": true,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1792737791309
   }
  },
  "bonmap": {
