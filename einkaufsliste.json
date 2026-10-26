@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:26:52.238Z",
+ "savedAt": "2026-10-26T13:27:11.937Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1102,9 +1102,9 @@
     "deposit": null,
     "regular": 19.99
    },
-   "forStock": false,
+   "forStock": true,
    "checked": false,
-   "updatedAt": 1793021209488
+   "updatedAt": 1793021229232
   }
  ],
  "favs": {
@@ -4992,7 +4992,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793021209469
+   "updatedAt": 1793021229232
   },
   "reiniger|sagrotan hygiene spray": {
    "name": "Reiniger",
