@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:06:25.312Z",
+ "savedAt": "2026-10-26T13:07:22.347Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1016,6 +1016,19 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793019982690
+  },
+  {
+   "id": "mvp9u4w2ngvxyb",
+   "name": "Paniermehl",
+   "detail": "",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "vorrat",
+   "note": "",
+   "offer": null,
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793020039490
   }
  ],
  "favs": {
@@ -1384,6 +1397,14 @@
    "cat": "brot",
    "unit": "Pck.",
    "last": 1793019934892
+  },
+  "paniermehl|": {
+   "count": 1,
+   "name": "Paniermehl",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "last": 1793020039490
   }
  },
  "stars": {
@@ -2125,6 +2146,13 @@
     "caverna dänischer schnittkäse": 1792737449771
    },
    "updatedAt": 1792737449771
+  },
+  "paniermehl": {
+   "name": "Paniermehl",
+   "variants": [],
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "updatedAt": 1793020039490
   }
  },
  "prices": {
@@ -5232,6 +5260,16 @@
    },
    "deposit": null,
    "updatedAt": 1793019982674
+  },
+  "paniermehl|": {
+   "name": "Paniermehl",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "shop": "",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793020039489
   }
  },
  "devices": {
