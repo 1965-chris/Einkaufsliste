@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:05:37.804Z",
+ "savedAt": "2026-10-26T13:05:49.054Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -963,6 +963,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793019934892
+  },
+  {
+   "id": "mvp9s4qm69a6c3",
+   "name": "Kartoffeln",
+   "detail": "festkochend",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "obst",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 2.49,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 2.5,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793019945982
   }
  ],
  "favs": {
@@ -1284,12 +1311,12 @@
    "last": 1792489930085
   },
   "kartoffeln|festkochend": {
-   "count": 1,
+   "count": 2,
    "name": "Kartoffeln",
    "detail": "festkochend",
    "cat": "obst",
    "unit": "Pck.",
-   "last": 1792490155557
+   "last": 1793019945982
   },
   "tk-gemüse|spinat": {
    "count": 1,
@@ -4841,7 +4868,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792490155544
+   "updatedAt": 1793019945961
   },
   "ravioli|maggi ravioli bolognese": {
    "name": "Ravioli",
