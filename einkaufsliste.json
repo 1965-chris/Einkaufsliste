@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:23:35.073Z",
+ "savedAt": "2026-10-26T13:23:54.170Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1046,7 +1046,7 @@
   {
    "id": "mvpaezc83fzb9f",
    "name": "Salz",
-   "detail": "",
+   "detail": "Jodsalz",
    "qty": 1,
    "unit": "Pck.",
    "cat": "vorrat",
@@ -1054,7 +1054,7 @@
    "offer": null,
    "forStock": false,
    "checked": false,
-   "updatedAt": 1793021012072
+   "updatedAt": 1793021031378
   }
  ],
  "favs": {
@@ -5346,6 +5346,16 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793021001060
+  },
+  "salz|jodsalz": {
+   "name": "Salz",
+   "detail": "Jodsalz",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "shop": "",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793021031378
   }
  },
  "devices": {
