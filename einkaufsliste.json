@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:07:22.347Z",
+ "savedAt": "2026-10-26T13:07:59.828Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1029,6 +1029,19 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793020039490
+  },
+  {
+   "id": "mvp9uxvsub0ymv",
+   "name": "Bohnen",
+   "detail": "",
+   "qty": 1,
+   "unit": "",
+   "cat": "tk",
+   "note": "",
+   "offer": null,
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793020077064
   }
  ],
  "favs": {
@@ -1405,6 +1418,14 @@
    "cat": "vorrat",
    "unit": "Pck.",
    "last": 1793020039490
+  },
+  "bohnen|": {
+   "count": 1,
+   "name": "Bohnen",
+   "detail": "",
+   "cat": "tk",
+   "unit": "",
+   "last": 1793020077065
   }
  },
  "stars": {
@@ -2153,6 +2174,13 @@
    "cat": "vorrat",
    "unit": "Pck.",
    "updatedAt": 1793020039490
+  },
+  "bohnen": {
+   "name": "Bohnen",
+   "variants": [],
+   "cat": "tk",
+   "unit": "",
+   "updatedAt": 1793020077065
   }
  },
  "prices": {
@@ -5270,6 +5298,16 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793020039489
+  },
+  "bohnen|": {
+   "name": "Bohnen",
+   "detail": "",
+   "cat": "tk",
+   "unit": "",
+   "shop": "",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793020077064
   }
  },
  "devices": {
