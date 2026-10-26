@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:25:02.093Z",
+ "savedAt": "2026-10-26T13:26:52.238Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1078,6 +1078,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793021099291
+  },
+  {
+   "id": "mvpaj7o09kv4u7",
+   "name": "Melita Bella Crema Ganze Bohnen",
+   "detail": "",
+   "qty": 3,
+   "unit": "Pck.",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "EDEKA",
+    "price": 11.99,
+    "from": "2026-10-26",
+    "until": "2026-10-31",
+    "type": "app",
+    "special": true,
+    "pack": {
+     "n": 1,
+     "size": 1,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": 19.99
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793021209488
   }
  ],
  "favs": {
@@ -1432,12 +1459,12 @@
    "last": 1792736934365
   },
   "melita bella crema ganze bohnen|": {
-   "count": 1,
+   "count": 2,
    "name": "Melita Bella Crema Ganze Bohnen",
    "detail": "",
    "cat": "vorrat",
    "unit": "Pck.",
-   "last": 1792758500055
+   "last": 1793021209488
   },
   "frischei-waffeln|meine küchen welt frischei waffeln": {
    "count": 1,
@@ -3435,6 +3462,43 @@
    },
    "deposit": null,
    "updatedAt": 1793020986921
+  },
+  "melita bella crema ganze bohnen||edeka|2026-10-26": {
+   "id": "melita bella crema ganze bohnen||edeka|2026-10-26",
+   "key": "melita bella crema ganze bohnen|",
+   "name": "Melita Bella Crema Ganze Bohnen",
+   "detail": "",
+   "date": "2026-10-26",
+   "shop": "EDEKA",
+   "price": 11.99,
+   "type": "app",
+   "special": true,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793021209488
+  },
+  "melita bella crema ganze bohnen||edeka|2026-10-26|statt": {
+   "id": "melita bella crema ganze bohnen||edeka|2026-10-26|statt",
+   "key": "melita bella crema ganze bohnen|",
+   "name": "Melita Bella Crema Ganze Bohnen",
+   "detail": "",
+   "date": "2026-10-26",
+   "shop": "EDEKA",
+   "price": 19.99,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "note": "Vergleichspreis",
+   "updatedAt": 1793021209488
   }
  },
  "brands": {
@@ -4928,7 +4992,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792758500037
+   "updatedAt": 1793021209469
   },
   "reiniger|sagrotan hygiene spray": {
    "name": "Reiniger",
