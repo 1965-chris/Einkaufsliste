@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:05:12.910Z",
+ "savedAt": "2026-10-26T13:05:37.804Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -936,6 +936,33 @@
    "checkedAt": 1792758602439,
    "stockAdded": 5,
    "deleted": true
+  },
+  {
+   "id": "mvp9rw6kk3noim",
+   "name": "Frischei-Waffeln",
+   "detail": "meine Küchen Welt Frischei Waffeln",
+   "qty": 2,
+   "unit": "Pck.",
+   "cat": "brot",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.25,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793019934892
   }
  ],
  "favs": {
@@ -1297,6 +1324,14 @@
    "cat": "vorrat",
    "unit": "Pck.",
    "last": 1792758500055
+  },
+  "frischei-waffeln|meine küchen welt frischei waffeln": {
+   "count": 1,
+   "name": "Frischei-Waffeln",
+   "detail": "meine Küchen Welt Frischei Waffeln",
+   "cat": "brot",
+   "unit": "Pck.",
+   "last": 1793019934892
   }
  },
  "stars": {
@@ -4480,7 +4515,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792253250820
+   "updatedAt": 1793019934873
   },
   "gehackte tomaten|": {
    "name": "Gehackte Tomaten",
