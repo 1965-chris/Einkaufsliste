@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:05:49.054Z",
+ "savedAt": "2026-10-26T13:06:25.312Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -990,6 +990,32 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793019945982
+  },
+  {
+   "id": "mvp9sx2a00y4mj",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "qty": 10,
+   "unit": "Pck.",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.09,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 1
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793019982690
   }
  ],
  "favs": {
@@ -1198,13 +1224,12 @@
    "deleted": true
   },
   "h-milch 1,5%|laktosefrei": {
-   "count": 10,
+   "count": 11,
    "name": "H-Milch 1,5%",
    "detail": "Laktosefrei",
-   "cat": "kuehl",
+   "cat": "vorrat",
    "unit": "Pck.",
-   "last": 1792307727554,
-   "deleted": true
+   "last": 1793019982690
   },
   "slipeinlagen|extra lang": {
    "count": 1,
@@ -1715,11 +1740,11 @@
     "Laktosefrei"
    ],
    "cat": "vorrat",
-   "unit": "",
+   "unit": "Pck.",
    "varAdd": {
     "laktosefrei": 1791835551769
    },
-   "updatedAt": 1792761365771
+   "updatedAt": 1793019982689
   },
   "slipeinlagen": {
    "name": "Slipeinlagen",
@@ -5206,7 +5231,7 @@
     "size": 1
    },
    "deposit": null,
-   "updatedAt": 1792761265964
+   "updatedAt": 1793019982674
   }
  },
  "devices": {
