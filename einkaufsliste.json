@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:23:54.170Z",
+ "savedAt": "2026-10-26T13:25:02.093Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1055,6 +1055,29 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793021031378
+  },
+  {
+   "id": "mvpagumziffne7",
+   "name": "Mettenden",
+   "detail": "",
+   "qty": 2,
+   "unit": "Pck.",
+   "cat": "fleisch",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793021099291
   }
  ],
  "favs": {
@@ -1447,6 +1470,14 @@
    "cat": "vorrat",
    "unit": "Pck.",
    "last": 1793021012072
+  },
+  "mettenden|": {
+   "count": 1,
+   "name": "Mettenden",
+   "detail": "",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "last": 1793021099292
   }
  },
  "stars": {
@@ -2202,6 +2233,13 @@
    "cat": "tk",
    "unit": "Pck.",
    "updatedAt": 1793021001060
+  },
+  "mettenden": {
+   "name": "Mettenden",
+   "variants": [],
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "updatedAt": 1793021099292
   }
  },
  "prices": {
@@ -5356,6 +5394,16 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793021031378
+  },
+  "mettenden|": {
+   "name": "Mettenden",
+   "detail": "",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793021099291
   }
  },
  "devices": {
