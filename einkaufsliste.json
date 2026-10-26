@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:07:59.828Z",
+ "savedAt": "2026-10-26T13:23:09.773Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1013,9 +1013,9 @@
     "deposit": null,
     "regular": null
    },
-   "forStock": false,
+   "forStock": true,
    "checked": false,
-   "updatedAt": 1793019982690
+   "updatedAt": 1793020986921
   },
   {
    "id": "mvp9u4w2ngvxyb",
@@ -1540,11 +1540,11 @@
   "h-milch 1,5%|laktosefrei": {
    "name": "H-Milch 1,5%",
    "detail": "Laktosefrei",
-   "cat": "kuehl",
+   "cat": "vorrat",
    "unit": "Pck.",
    "qty": 1,
    "on": true,
-   "updatedAt": 1791836286969,
+   "updatedAt": 1793020986922,
    "note": ""
   },
   "sonntagsbrötchen|": {
@@ -3359,6 +3359,23 @@
    },
    "deposit": null,
    "updatedAt": 1792738974900
+  },
+  "h-milch 1,5%|laktosefrei|aldi|2026-10-26": {
+   "id": "h-milch 1,5%|laktosefrei|aldi|2026-10-26",
+   "key": "h-milch 1,5%|laktosefrei",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "date": "2026-10-26",
+   "shop": "ALDI",
+   "price": 1.09,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1
+   },
+   "deposit": null,
+   "updatedAt": 1793020986921
   }
  },
  "brands": {
@@ -5287,7 +5304,7 @@
     "size": 1
    },
    "deposit": null,
-   "updatedAt": 1793019982674
+   "updatedAt": 1793020986921
   },
   "paniermehl|": {
    "name": "Paniermehl",
