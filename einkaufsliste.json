@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-26T13:23:23.957Z",
+ "savedAt": "2026-10-26T13:23:35.073Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1042,6 +1042,19 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793021001060
+  },
+  {
+   "id": "mvpaezc83fzb9f",
+   "name": "Salz",
+   "detail": "",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "vorrat",
+   "note": "",
+   "offer": null,
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793021012072
   }
  ],
  "favs": {
@@ -1426,6 +1439,14 @@
    "cat": "tk",
    "unit": "Pck.",
    "last": 1793020077065
+  },
+  "salz|": {
+   "count": 1,
+   "name": "Salz",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "last": 1793021012072
   }
  },
  "stars": {
