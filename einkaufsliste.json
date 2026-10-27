@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T19:59:06.630Z",
+ "savedAt": "2026-10-27T19:59:25.385Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1224,6 +1224,30 @@
    "updatedAt": 1793131058292,
    "checkedAt": 1793131010440,
    "deleted": true
+  },
+  {
+   "id": "mvr3zw49v49yim",
+   "name": "Melita Bella Crema Ganze Bohnen",
+   "detail": "",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "EDEKA",
+    "price": 19.99,
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 1,
+     "u": "kg"
+    },
+    "deposit": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793131162713
   }
  ],
  "favs": {
@@ -1576,12 +1600,12 @@
    "last": 1792736934365
   },
   "melita bella crema ganze bohnen|": {
-   "count": 3,
+   "count": 4,
    "name": "Melita Bella Crema Ganze Bohnen",
    "detail": "",
    "cat": "vorrat",
    "unit": "Pck.",
-   "last": 1793103325861
+   "last": 1793131162713
   },
   "frischei-waffeln|meine küchen welt frischei waffeln": {
    "count": 1,
@@ -1909,8 +1933,8 @@
    "name": "Melita Bella Crema Ganze Bohnen",
    "variants": [],
    "cat": "vorrat",
-   "unit": "",
-   "updatedAt": 1793103360968
+   "unit": "Pck.",
+   "updatedAt": 1793131162713
   },
   "joghurt": {
    "name": "Joghurt",
