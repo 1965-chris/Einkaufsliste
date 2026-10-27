@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T19:51:23.482Z",
+ "savedAt": "2026-10-27T19:53:26.248Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1162,6 +1162,33 @@
    "checked": true,
    "updatedAt": 1793130507874,
    "checkedAt": 1793101170123
+  },
+  {
+   "id": "mvr3s6rchl7den",
+   "name": "Eier",
+   "detail": "Gut & Günstig Bodenhaltung",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "kuehl",
+   "note": "",
+   "offer": {
+    "shop": "EDEKA",
+    "price": 2.49,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 10,
+     "u": "st"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793130803256
   }
  ],
  "favs": {
@@ -1560,6 +1587,14 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "last": 1793021099292
+  },
+  "eier|gut & günstig bodenhaltung": {
+   "count": 1,
+   "name": "Eier",
+   "detail": "Gut & Günstig Bodenhaltung",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "last": 1793130803257
   }
  },
  "stars": {
@@ -3618,6 +3653,24 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793130680729
+  },
+  "eier|gut & günstig bodenhaltung|edeka|2026-10-27": {
+   "id": "eier|gut & günstig bodenhaltung|edeka|2026-10-27",
+   "key": "eier|gut & günstig bodenhaltung",
+   "name": "Eier",
+   "detail": "Gut & Günstig Bodenhaltung",
+   "date": "2026-10-27",
+   "shop": "EDEKA",
+   "price": 2.49,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 10,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793130803255
   }
  },
  "brands": {
@@ -5598,6 +5651,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793130680729
+  },
+  "eier|gut & günstig bodenhaltung": {
+   "name": "Eier",
+   "detail": "Gut & Günstig Bodenhaltung",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "shop": "EDEKA",
+   "pack": {
+    "n": 1,
+    "size": 10,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793130803254
   }
  },
  "devices": {
