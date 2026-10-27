@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T20:00:53.238Z",
+ "savedAt": "2026-10-27T20:00:57.945Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1249,8 +1249,10 @@
     "regular": 19.99
    },
    "forStock": true,
-   "checked": false,
-   "updatedAt": 1793131250555
+   "checked": true,
+   "updatedAt": 1793131256187,
+   "checkedAt": 1793131256187,
+   "stockAdded": 3
   }
  ],
  "favs": {
@@ -5976,9 +5978,9 @@
    "detail": "",
    "cat": "vorrat",
    "unit": "Pck.",
-   "qty": 9,
+   "qty": 12,
    "min": 2,
-   "updatedAt": 1793103421004
+   "updatedAt": 1793131256188
   },
   "h-milch 1,5%|laktosefrei": {
    "key": "h-milch 1,5%|laktosefrei",
