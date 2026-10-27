@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T06:09:08.409Z",
+ "savedAt": "2026-10-27T06:09:32.517Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1105,6 +1105,19 @@
    "forStock": true,
    "checked": false,
    "updatedAt": 1793021229232
+  },
+  {
+   "id": "mvqacnbq3h20o8",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
+   "qty": 1,
+   "unit": "",
+   "cat": "tk",
+   "note": "",
+   "offer": null,
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793081369366
   }
  ],
  "favs": {
@@ -1238,13 +1251,12 @@
    "last": 1792737226145
   },
   "pizza|dr. oetker die ofenfrische thunfisch": {
-   "count": 1,
+   "count": 2,
    "name": "Pizza",
    "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
    "cat": "tk",
    "unit": "",
-   "last": 1792307727554,
-   "deleted": true
+   "last": 1793081369367
   },
   "pizza|dr. oetker die ofenfrische diavolo": {
    "count": 1,
