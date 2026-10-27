@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T19:57:12.180Z",
+ "savedAt": "2026-10-27T19:57:40.929Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1051,8 +1051,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793130680729,
-   "checkedAt": 1793101177561
+   "updatedAt": 1793131058292,
+   "checkedAt": 1793101177561,
+   "deleted": true
   },
   {
    "id": "mvpaezc83fzb9f",
@@ -1112,9 +1113,10 @@
    },
    "forStock": true,
    "checked": true,
-   "updatedAt": 1793103421004,
+   "updatedAt": 1793131058292,
    "checkedAt": 1793103397252,
-   "stockAdded": 1
+   "stockAdded": 1,
+   "deleted": true
   },
   {
    "id": "mvqacnbq3h20o8",
@@ -1161,8 +1163,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793130507874,
-   "checkedAt": 1793101170123
+   "updatedAt": 1793131058292,
+   "checkedAt": 1793101170123,
+   "deleted": true
   },
   {
    "id": "mvr3s6rchl7den",
@@ -1189,8 +1192,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793131004720,
-   "checkedAt": 1793131004720
+   "updatedAt": 1793131058292,
+   "checkedAt": 1793131004720,
+   "deleted": true
   },
   {
    "id": "mvr3wbpxe9rv9j",
@@ -1217,8 +1221,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793131010440,
-   "checkedAt": 1793131010440
+   "updatedAt": 1793131058292,
+   "checkedAt": 1793131010440,
+   "deleted": true
   }
  ],
  "favs": {
@@ -4725,6 +4730,103 @@
    "deposit": null,
    "updatedAt": 1792758615456,
    "deleted": true
+  },
+  "k-mvp9uxvsub0ymv": {
+   "id": "k-mvp9uxvsub0ymv",
+   "date": "2026-10-27",
+   "name": "Brechbohnen TK",
+   "detail": "Gut & Günstig",
+   "cat": "tk",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "EDEKA",
+   "price": 2.49,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793131058293
+  },
+  "k-mvpaj7o09kv4u7": {
+   "id": "k-mvpaj7o09kv4u7",
+   "date": "2026-10-27",
+   "name": "Melita Bella Crema Ganze Bohnen",
+   "detail": "",
+   "cat": "vorrat",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "EDEKA",
+   "price": 19.99,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793131058293
+  },
+  "k-mvqfvorq4x60x5": {
+   "id": "k-mvqfvorq4x60x5",
+   "date": "2026-10-27",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Diavolo",
+   "cat": "tk",
+   "qty": 6,
+   "unit": "",
+   "n": 6,
+   "shop": "EDEKA",
+   "price": 1.99,
+   "est": false,
+   "type": "angebot",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793131058293
+  },
+  "k-mvr3s6rchl7den": {
+   "id": "k-mvr3s6rchl7den",
+   "date": "2026-10-27",
+   "name": "Eier",
+   "detail": "Gut & Günstig Bodenhaltung",
+   "cat": "kuehl",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "EDEKA",
+   "price": 2.49,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 10,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793131058293
+  },
+  "k-mvr3wbpxe9rv9j": {
+   "id": "k-mvr3wbpxe9rv9j",
+   "date": "2026-10-27",
+   "name": "Tee",
+   "detail": "Meßmer Pfirsich",
+   "cat": "kaffee",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "EDEKA",
+   "price": 2.45,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 20,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793131058293
   }
  },
  "bonmap": {
