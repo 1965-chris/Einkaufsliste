@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T06:09:32.517Z",
+ "savedAt": "2026-10-27T06:10:55.399Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1114,10 +1114,20 @@
    "unit": "",
    "cat": "tk",
    "note": "",
-   "offer": null,
+   "offer": {
+    "shop": "EDEKA",
+    "price": 1.99,
+    "from": "2026-10-26",
+    "until": "2026-10-31",
+    "type": "angebot",
+    "special": true,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
    "forStock": false,
    "checked": false,
-   "updatedAt": 1793081369366
+   "updatedAt": 1793081452695
   }
  ],
  "favs": {
@@ -1606,7 +1616,7 @@
    "qty": 1,
    "note": "",
    "on": true,
-   "updatedAt": 1792307692671
+   "updatedAt": 1793081452696
   },
   "pizza|dr. oetker die ofenfrische diavolo": {
    "name": "Pizza",
@@ -3511,14 +3521,29 @@
    "deposit": null,
    "note": "Vergleichspreis",
    "updatedAt": 1793021209488
+  },
+  "pizza|dr. oetker die ofenfrische thunfisch|edeka|2026-10-26": {
+   "id": "pizza|dr. oetker die ofenfrische thunfisch|edeka|2026-10-26",
+   "key": "pizza|dr. oetker die ofenfrische thunfisch",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
+   "date": "2026-10-26",
+   "shop": "EDEKA",
+   "price": 1.99,
+   "type": "angebot",
+   "special": true,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793081452695
   }
  },
  "brands": {
   "dr. oetker die ofenfrische": {
    "name": "Dr. Oetker Die Ofenfrische",
-   "updatedAt": 1792391715901,
+   "updatedAt": 1793081452692,
    "shops": {
-    "ALDI": 1
+    "ALDI": 1,
+    "EDEKA": 1
    },
    "cats": {
     "tk": 1
@@ -4963,10 +4988,10 @@
    "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
    "cat": "tk",
    "unit": "",
-   "shop": "",
+   "shop": "EDEKA",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1792307692671
+   "updatedAt": 1793081452695
   },
   "pizza|dr. oetker die ofenfrische diavolo": {
    "name": "Pizza",
