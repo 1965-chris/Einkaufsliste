@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T19:59:56.501Z",
+ "savedAt": "2026-10-27T20:00:53.238Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1229,28 +1229,28 @@
    "id": "mvr3zw49v49yim",
    "name": "Melita Bella Crema Ganze Bohnen",
    "detail": "",
-   "qty": 4,
+   "qty": 3,
    "unit": "Pck.",
    "cat": "vorrat",
    "note": "",
    "offer": {
     "shop": "EDEKA",
-    "price": 19.99,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
+    "price": 11.99,
+    "from": "2026-10-26",
+    "until": "2026-10-31",
+    "type": "app",
+    "special": true,
     "pack": {
      "n": 1,
      "size": 1,
      "u": "kg"
     },
     "deposit": null,
-    "regular": null
+    "regular": 19.99
    },
-   "forStock": false,
+   "forStock": true,
    "checked": false,
-   "updatedAt": 1793131193984
+   "updatedAt": 1793131250555
   }
  ],
  "favs": {
@@ -5373,7 +5373,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793131193946
+   "updatedAt": 1793131250555
   },
   "reiniger|sagrotan hygiene spray": {
    "name": "Reiniger",
