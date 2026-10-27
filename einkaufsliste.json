@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T08:45:09.462Z",
+ "savedAt": "2026-10-27T08:45:35.977Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1137,10 +1137,20 @@
    "unit": "",
    "cat": "tk",
    "note": "",
-   "offer": null,
+   "offer": {
+    "shop": "EDEKA",
+    "price": 1.99,
+    "from": "2026-10-26",
+    "until": "2026-10-31",
+    "type": "angebot",
+    "special": true,
+    "pack": null,
+    "deposit": null,
+    "regular": 3.69
+   },
    "forStock": false,
    "checked": false,
-   "updatedAt": 1793090655782
+   "updatedAt": 1793090733236
   }
  ],
  "favs": {
@@ -1638,7 +1648,7 @@
    "qty": 1,
    "note": "",
    "on": true,
-   "updatedAt": 1793081325747
+   "updatedAt": 1793090733236
   },
   "salzbutter|milsani": {
    "name": "Salzbutter",
@@ -3547,6 +3557,35 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793081452695
+  },
+  "pizza|dr. oetker die ofenfrische diavolo|edeka|2026-10-26": {
+   "id": "pizza|dr. oetker die ofenfrische diavolo|edeka|2026-10-26",
+   "key": "pizza|dr. oetker die ofenfrische diavolo",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Diavolo",
+   "date": "2026-10-26",
+   "shop": "EDEKA",
+   "price": 1.99,
+   "type": "angebot",
+   "special": true,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793090733236
+  },
+  "pizza|dr. oetker die ofenfrische diavolo|edeka|2026-10-26|statt": {
+   "id": "pizza|dr. oetker die ofenfrische diavolo|edeka|2026-10-26|statt",
+   "key": "pizza|dr. oetker die ofenfrische diavolo",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Diavolo",
+   "date": "2026-10-26",
+   "shop": "EDEKA",
+   "price": 3.69,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "note": "Vergleichspreis",
+   "updatedAt": 1793090733236
   }
  },
  "brands": {
@@ -5010,10 +5049,10 @@
    "detail": "Dr. Oetker Die Ofenfrische Diavolo",
    "cat": "tk",
    "unit": "",
-   "shop": "",
+   "shop": "EDEKA",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1793090655764
+   "updatedAt": 1793090733235
   },
   "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt": {
    "name": "Küchenrolle",
