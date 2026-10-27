@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T19:47:58.615Z",
+ "savedAt": "2026-10-27T19:48:28.109Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1133,7 +1133,7 @@
    "id": "mvqfvorq4x60x5",
    "name": "Pizza",
    "detail": "Dr. Oetker Die Ofenfrische Diavolo",
-   "qty": 2,
+   "qty": 6,
    "unit": "",
    "cat": "tk",
    "note": "",
@@ -1150,7 +1150,7 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793101170123,
+   "updatedAt": 1793130507874,
    "checkedAt": 1793101170123
   }
  ],
@@ -1649,7 +1649,7 @@
    "qty": 1,
    "note": "",
    "on": true,
-   "updatedAt": 1793090733236
+   "updatedAt": 1793130507875
   },
   "salzbutter|milsani": {
    "name": "Salzbutter",
@@ -5053,7 +5053,7 @@
    "shop": "EDEKA",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1793090733235
+   "updatedAt": 1793130507874
   },
   "küchenrolle|kokett 3-lagig 4 rollen a 64 blatt": {
    "name": "Küchenrolle",
