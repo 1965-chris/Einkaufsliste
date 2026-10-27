@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T12:15:34.003Z",
+ "savedAt": "2026-10-27T12:16:03.701Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1821,8 +1821,8 @@
    "name": "Melita Bella Crema Ganze Bohnen",
    "variants": [],
    "cat": "vorrat",
-   "unit": "Pck.",
-   "updatedAt": 1792307805655
+   "unit": "",
+   "updatedAt": 1793103360968
   },
   "joghurt": {
    "name": "Joghurt",
@@ -5646,9 +5646,9 @@
    "detail": "",
    "cat": "vorrat",
    "unit": "Pck.",
-   "qty": 7,
+   "qty": 8,
    "min": 2,
-   "updatedAt": 1793103331215
+   "updatedAt": 1793103360968
   },
   "h-milch 1,5%|laktosefrei": {
    "key": "h-milch 1,5%|laktosefrei",
