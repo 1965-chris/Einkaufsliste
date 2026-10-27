@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T19:59:25.385Z",
+ "savedAt": "2026-10-27T19:59:56.501Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1229,13 +1229,15 @@
    "id": "mvr3zw49v49yim",
    "name": "Melita Bella Crema Ganze Bohnen",
    "detail": "",
-   "qty": 1,
+   "qty": 4,
    "unit": "Pck.",
    "cat": "vorrat",
    "note": "",
    "offer": {
     "shop": "EDEKA",
     "price": 19.99,
+    "from": "",
+    "until": "",
     "type": "normal",
     "special": false,
     "pack": {
@@ -1243,11 +1245,12 @@
      "size": 1,
      "u": "kg"
     },
-    "deposit": null
+    "deposit": null,
+    "regular": null
    },
    "forStock": false,
    "checked": false,
-   "updatedAt": 1793131162713
+   "updatedAt": 1793131193984
   }
  ],
  "favs": {
@@ -1600,12 +1603,12 @@
    "last": 1792736934365
   },
   "melita bella crema ganze bohnen|": {
-   "count": 4,
+   "count": 5,
    "name": "Melita Bella Crema Ganze Bohnen",
    "detail": "",
    "cat": "vorrat",
    "unit": "Pck.",
-   "last": 1793131162713
+   "last": 1793131193984
   },
   "frischei-waffeln|meine küchen welt frischei waffeln": {
    "count": 1,
@@ -5370,7 +5373,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793021229232
+   "updatedAt": 1793131193946
   },
   "reiniger|sagrotan hygiene spray": {
    "name": "Reiniger",
