@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T19:53:26.248Z",
+ "savedAt": "2026-10-27T19:56:39.198Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1189,6 +1189,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793130803256
+  },
+  {
+   "id": "mvr3wbpxe9rv9j",
+   "name": "Tee",
+   "detail": "Meßmer Pfirsich",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "kaffee",
+   "note": "",
+   "offer": {
+    "shop": "EDEKA",
+    "price": 2.45,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 20,
+     "u": "st"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793130996309
   }
  ],
  "favs": {
@@ -1595,6 +1622,14 @@
    "cat": "kuehl",
    "unit": "Pck.",
    "last": 1793130803257
+  },
+  "tee|meßmer pfirsich": {
+   "count": 1,
+   "name": "Tee",
+   "detail": "Meßmer Pfirsich",
+   "cat": "kaffee",
+   "unit": "Pck.",
+   "last": 1793130996310
   }
  },
  "stars": {
@@ -2364,6 +2399,18 @@
    "cat": "tk",
    "unit": "Pck.",
    "updatedAt": 1793130680730
+  },
+  "tee": {
+   "name": "Tee",
+   "variants": [
+    "Pfirsich"
+   ],
+   "cat": "kaffee",
+   "unit": "Pck.",
+   "varAdd": {
+    "pfirsich": 1793130996311
+   },
+   "updatedAt": 1793130996311
   }
  },
  "prices": {
@@ -3671,6 +3718,24 @@
    },
    "deposit": null,
    "updatedAt": 1793130803255
+  },
+  "tee|meßmer pfirsich|edeka|2026-10-27": {
+   "id": "tee|meßmer pfirsich|edeka|2026-10-27",
+   "key": "tee|meßmer pfirsich",
+   "name": "Tee",
+   "detail": "Meßmer Pfirsich",
+   "date": "2026-10-27",
+   "shop": "EDEKA",
+   "price": 2.45,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 20,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793130996309
   }
  },
  "brands": {
@@ -3820,6 +3885,16 @@
     "kuehl": 1
    },
    "updatedAt": 1792737449771
+  },
+  "meßmer": {
+   "name": "Meßmer",
+   "shops": {
+    "EDEKA": 1
+   },
+   "cats": {
+    "kaffee": 1
+   },
+   "updatedAt": 1793130996308
   }
  },
  "purchases": {
@@ -5665,6 +5740,20 @@
    },
    "deposit": null,
    "updatedAt": 1793130803254
+  },
+  "tee|meßmer pfirsich": {
+   "name": "Tee",
+   "detail": "Meßmer Pfirsich",
+   "cat": "kaffee",
+   "unit": "Pck.",
+   "shop": "EDEKA",
+   "pack": {
+    "n": 1,
+    "size": 20,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793130996308
   }
  },
  "devices": {
