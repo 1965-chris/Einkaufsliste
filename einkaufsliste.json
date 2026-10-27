@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-27T19:48:28.109Z",
+ "savedAt": "2026-10-27T19:51:23.482Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1032,16 +1032,26 @@
   },
   {
    "id": "mvp9uxvsub0ymv",
-   "name": "Bohnen",
-   "detail": "",
-   "qty": 2,
+   "name": "Brechbohnen TK",
+   "detail": "Gut & Günstig",
+   "qty": 1,
    "unit": "Pck.",
    "cat": "tk",
    "note": "",
-   "offer": null,
+   "offer": {
+    "shop": "EDEKA",
+    "price": 2.49,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793101177561,
+   "updatedAt": 1793130680729,
    "checkedAt": 1793101177561
   },
   {
@@ -2312,6 +2322,13 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "updatedAt": 1793021099292
+  },
+  "brechbohnen tk": {
+   "name": "Brechbohnen TK",
+   "variants": [],
+   "cat": "tk",
+   "unit": "Pck.",
+   "updatedAt": 1793130680730
   }
  },
  "prices": {
@@ -3587,6 +3604,20 @@
    "deposit": null,
    "note": "Vergleichspreis",
    "updatedAt": 1793090733236
+  },
+  "brechbohnen tk|gut & günstig|edeka|2026-10-27": {
+   "id": "brechbohnen tk|gut & günstig|edeka|2026-10-27",
+   "key": "brechbohnen tk|gut & günstig",
+   "name": "Brechbohnen TK",
+   "detail": "Gut & Günstig",
+   "date": "2026-10-27",
+   "shop": "EDEKA",
+   "price": 2.49,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793130680729
   }
  },
  "brands": {
@@ -5557,6 +5588,16 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793021099291
+  },
+  "brechbohnen tk|gut & günstig": {
+   "name": "Brechbohnen TK",
+   "detail": "Gut & Günstig",
+   "cat": "tk",
+   "unit": "Pck.",
+   "shop": "EDEKA",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793130680729
   }
  },
  "devices": {
