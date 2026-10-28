@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:39:16.712Z",
+ "savedAt": "2026-10-28T17:40:17.048Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1324,6 +1324,29 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793209154000
+  },
+  {
+   "id": "mvsegtcfrizpij",
+   "name": "Knoblauch",
+   "detail": "Frisch",
+   "qty": 1,
+   "unit": "",
+   "cat": "obst",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.29,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793209214607
   }
  ],
  "favs": {
@@ -1763,6 +1786,14 @@
    "cat": "vorrat",
    "unit": "Dose",
    "last": 1793209154001
+  },
+  "knoblauch|frisch": {
+   "count": 1,
+   "name": "Knoblauch",
+   "detail": "Frisch",
+   "cat": "obst",
+   "unit": "",
+   "last": 1793209214607
   }
  },
  "stars": {
@@ -2560,6 +2591,18 @@
    "cat": "vorrat",
    "unit": "Dose",
    "updatedAt": 1793209154001
+  },
+  "knoblauch": {
+   "name": "Knoblauch",
+   "variants": [
+    "Frisch"
+   ],
+   "cat": "obst",
+   "unit": "",
+   "varAdd": {
+    "frisch": 1793209214608
+   },
+   "updatedAt": 1793209214608
   }
  },
  "prices": {
@@ -3972,6 +4015,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793209154000
+  },
+  "knoblauch|frisch|aldi|2026-10-28": {
+   "id": "knoblauch|frisch|aldi|2026-10-28",
+   "key": "knoblauch|frisch",
+   "name": "Knoblauch",
+   "detail": "Frisch",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 1.29,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793209214607
   }
  },
  "brands": {
@@ -6181,6 +6238,16 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793209154000
+  },
+  "knoblauch|frisch": {
+   "name": "Knoblauch",
+   "detail": "Frisch",
+   "cat": "obst",
+   "unit": "",
+   "shop": "ALDI",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793209214607
   }
  },
  "devices": {
