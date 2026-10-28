@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:46:57.950Z",
+ "savedAt": "2026-10-28T17:47:42.917Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1451,6 +1451,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793209615310
+  },
+  {
+   "id": "mvseqdcrm4a8no",
+   "name": "Schokolade",
+   "detail": "Baumkuchspitzen Vollmilchschokolade",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "suess",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 2.79,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.15,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793209660443
   }
  ],
  "favs": {
@@ -1930,6 +1957,14 @@
    "cat": "fleisch",
    "unit": "",
    "last": 1793209615310
+  },
+  "schokolade|baumkuchspitzen vollmilchschokolade": {
+   "count": 1,
+   "name": "Schokolade",
+   "detail": "Baumkuchspitzen Vollmilchschokolade",
+   "cat": "suess",
+   "unit": "Pck.",
+   "last": 1793209660443
   }
  },
  "stars": {
@@ -4246,6 +4281,24 @@
    },
    "deposit": null,
    "updatedAt": 1793209601263
+  },
+  "schokolade|baumkuchspitzen vollmilchschokolade|aldi|2026-10-28": {
+   "id": "schokolade|baumkuchspitzen vollmilchschokolade|aldi|2026-10-28",
+   "key": "schokolade|baumkuchspitzen vollmilchschokolade",
+   "name": "Schokolade",
+   "detail": "Baumkuchspitzen Vollmilchschokolade",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 2.79,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793209660442
   }
  },
  "brands": {
@@ -6059,7 +6112,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792736095459
+   "updatedAt": 1793209660425
   },
   "leberwurst|aldi": {
    "name": "Leberwurst",
