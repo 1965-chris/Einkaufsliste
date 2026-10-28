@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:35:15.811Z",
+ "savedAt": "2026-10-28T17:35:31.860Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1063,7 +1063,7 @@
    "id": "mvpaezc83fzb9f",
    "name": "Salz",
    "detail": "Bad Reichenhall Jodsalz",
-   "qty": 1,
+   "qty": 2,
    "unit": "Pck.",
    "cat": "vorrat",
    "note": "",
@@ -1084,7 +1084,7 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793208912987,
+   "updatedAt": 1793208929176,
    "checkedAt": 1793188341307
   },
   {
@@ -6039,7 +6039,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793208912987
+   "updatedAt": 1793208929176
   }
  },
  "devices": {
