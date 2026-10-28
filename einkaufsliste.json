@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:55:46.076Z",
+ "savedAt": "2026-10-28T17:58:01.748Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1090,25 +1090,29 @@
   {
    "id": "mvpagumziffne7",
    "name": "Mettenden",
-   "detail": "",
+   "detail": "Willms Schinkenmettwurst",
    "qty": 2,
    "unit": "Pck.",
    "cat": "fleisch",
    "note": "",
    "offer": {
     "shop": "ALDI",
-    "price": null,
+    "price": 3.59,
     "from": "",
     "until": "",
     "type": "normal",
     "special": false,
-    "pack": null,
+    "pack": {
+     "n": 1,
+     "size": 0.5,
+     "u": "kg"
+    },
     "deposit": null,
     "regular": null
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793188329106,
+   "updatedAt": 1793210279023,
    "checkedAt": 1793188329106
   },
   {
@@ -2836,10 +2840,15 @@
   },
   "mettenden": {
    "name": "Mettenden",
-   "variants": [],
+   "variants": [
+    "Schinkenmettwurst"
+   ],
    "cat": "fleisch",
    "unit": "Pck.",
-   "updatedAt": 1793021099292
+   "updatedAt": 1793210279024,
+   "varAdd": {
+    "schinkenmettwurst": 1793210279024
+   }
   },
   "brechbohnen tk": {
    "name": "Brechbohnen TK",
@@ -4472,6 +4481,24 @@
    },
    "deposit": null,
    "updatedAt": 1793210143315
+  },
+  "mettenden|willms schinkenmettwurst|aldi|2026-10-28": {
+   "id": "mettenden|willms schinkenmettwurst|aldi|2026-10-28",
+   "key": "mettenden|willms schinkenmettwurst",
+   "name": "Mettenden",
+   "detail": "Willms Schinkenmettwurst",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 3.59,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210279023
   }
  },
  "brands": {
@@ -4671,6 +4698,16 @@
     "vorrat": 1
    },
    "updatedAt": 1793209542590
+  },
+  "willms": {
+   "name": "Willms",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "fleisch": 1
+   },
+   "updatedAt": 1793210279023
   }
  },
  "purchases": {
@@ -6791,6 +6828,20 @@
    },
    "deposit": null,
    "updatedAt": 1793210143314
+  },
+  "mettenden|willms schinkenmettwurst": {
+   "name": "Mettenden",
+   "detail": "Willms Schinkenmettwurst",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210279023
   }
  },
  "devices": {
