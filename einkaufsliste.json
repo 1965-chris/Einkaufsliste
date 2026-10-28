@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:31:15.642Z",
+ "savedAt": "2026-10-28T17:33:37.464Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1260,6 +1260,33 @@
    "checkedAt": 1793131256187,
    "stockAdded": 3,
    "deleted": true
+  },
+  {
+   "id": "mvse88yvsj3nxn",
+   "name": "Toilettenpapier",
+   "detail": "Kokett 4-lagig",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "drogerie",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 4.85,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 10,
+     "u": "st"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793208814953
   }
  ],
  "favs": {
@@ -1674,6 +1701,14 @@
    "cat": "kaffee",
    "unit": "Pck.",
    "last": 1793130996310
+  },
+  "toilettenpapier|kokett 4-lagig": {
+   "count": 1,
+   "name": "Toilettenpapier",
+   "detail": "Kokett 4-lagig",
+   "cat": "drogerie",
+   "unit": "Pck.",
+   "last": 1793208814953
   }
  },
  "stars": {
@@ -3780,6 +3815,24 @@
    },
    "deposit": null,
    "updatedAt": 1793130996309
+  },
+  "toilettenpapier|kokett 4-lagig|aldi|2026-10-28": {
+   "id": "toilettenpapier|kokett 4-lagig|aldi|2026-10-28",
+   "key": "toilettenpapier|kokett 4-lagig",
+   "name": "Toilettenpapier",
+   "detail": "Kokett 4-lagig",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 4.85,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 10,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793208814951
   }
  },
  "brands": {
@@ -5917,6 +5970,20 @@
    },
    "deposit": null,
    "updatedAt": 1793130996308
+  },
+  "toilettenpapier|kokett 4-lagig": {
+   "name": "Toilettenpapier",
+   "detail": "Kokett 4-lagig",
+   "cat": "drogerie",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 10,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793208814950
   }
  },
  "devices": {
