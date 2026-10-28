@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:04:24.358Z",
+ "savedAt": "2026-10-28T18:11:41.388Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2032,7 +2032,8 @@
    "detail": "",
    "cat": "fleisch",
    "unit": "Pck.",
-   "last": 1793021099292
+   "last": 1793211098613,
+   "deleted": true
   },
   "eier|gut & günstig bodenhaltung": {
    "count": 1,
@@ -2153,6 +2154,14 @@
    "cat": "brot",
    "unit": "",
    "last": 1793210613081
+  },
+  "mettenden|willms": {
+   "count": 1,
+   "name": "Mettenden",
+   "detail": "Willms",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "last": 1793211098613
   }
  },
  "stars": {
@@ -4639,6 +4648,20 @@
    },
    "deposit": null,
    "updatedAt": 1793210613080
+  },
+  "mettenden|willms|aldi|2026-10-28": {
+   "id": "mettenden|willms|aldi|2026-10-28",
+   "key": "mettenden|willms",
+   "name": "Mettenden",
+   "detail": "Willms",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 3.59,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793211098614
   }
  },
  "brands": {
@@ -7153,7 +7176,8 @@
    "shop": "ALDI",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1793021099291
+   "updatedAt": 1793211098613,
+   "deleted": true
   },
   "brechbohnen tk|gut & günstig": {
    "name": "Brechbohnen TK",
@@ -7376,6 +7400,16 @@
    },
    "deposit": null,
    "updatedAt": 1793210613080
+  },
+  "mettenden|willms": {
+   "name": "Mettenden",
+   "detail": "Willms",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793211098613
   }
  },
  "devices": {
