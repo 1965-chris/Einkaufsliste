@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:11:41.388Z",
+ "savedAt": "2026-10-28T18:12:17.143Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2008,7 +2008,8 @@
    "detail": "",
    "cat": "vorrat",
    "unit": "Pck.",
-   "last": 1793020039490
+   "last": 1793211134474,
+   "deleted": true
   },
   "bohnen|": {
    "count": 1,
@@ -2162,6 +2163,14 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "last": 1793211098613
+  },
+  "paniermehl|goldähren": {
+   "count": 1,
+   "name": "Paniermehl",
+   "detail": "Goldähren",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "last": 1793211134474
   }
  },
  "stars": {
@@ -7146,7 +7155,8 @@
    "shop": "",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1793020039489
+   "updatedAt": 1793211134473,
+   "deleted": true
   },
   "bohnen|": {
    "name": "Bohnen",
@@ -7166,7 +7176,8 @@
    "shop": "",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1793021031378
+   "updatedAt": 1793211134474,
+   "deleted": true
   },
   "mettenden|": {
    "name": "Mettenden",
@@ -7243,7 +7254,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793208929176
+   "updatedAt": 1793211134474
   },
   "butter|milsani deutsche markenbutter sauerrahm": {
    "name": "Butter",
@@ -7385,7 +7396,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210428789
+   "updatedAt": 1793211134473
   },
   "steinofen baquette|goldähren": {
    "name": "Steinofen Baquette",
