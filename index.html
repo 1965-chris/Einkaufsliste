@@ -263,6 +263,13 @@ button,.btn,.chip{-webkit-user-select:none;user-select:none;-webkit-touch-callou
 /* iPhone: Beschriftungen und Hinweise nicht versehentlich markieren – nur Eingabefelder bleiben markierbar */
 body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+/* Pfand / Leergut */
+.pfandbox{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-top:8px}
+.pfandbox>div{flex:1;min-width:0;font-size:14px}
+.pfandbox>div>span{display:block}
+.pfandbox .btn{flex:none;padding:8px 10px;font-size:14px}
+.lgamt{color:#2e9b5f;font-weight:600}
+.pgroups button{font-size:13px}
 /* Hilfe */
 .help details{margin-top:0;border-top:1px solid var(--line);padding:12px 0 2px}
 .help details:first-child{border-top:0}
@@ -534,6 +541,7 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
     <button class="btn" data-menu="scan"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="vertical-align:-4px"><path fill="currentColor" d="M2 5h2v14H2zm3 0h1v14H5zm2 0h2v14H7zm3 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h1v14h-1zm2 0h2v14h-2z"/></svg> Strichcode scannen<small>Packung scannen – Name, Marke und Größe werden ausgefüllt</small></button>
     <button class="btn" data-menu="read">📷 Angebot aus Bild lesen<small>Prospekt, Preisschild oder Bildschirmfoto</small></button>
     <button class="btn" data-menu="bon">🧾 Kassenbon einlesen<small>dm-eBon, EDEKA-App, Lidl Plus</small></button>
+    <button class="btn" data-menu="leergut">♻️ Leergut abgegeben<small>Pfandbon-Betrag gutschreiben</small></button>
   </div>
   <div class="row" style="margin-top:12px"><button class="btn" data-close>Abbrechen</button></div>
 </div>
@@ -617,6 +625,26 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
   </div>
 </div>
 
+<!-- Leergut -->
+<div class="sheet" id="lgSheet">
+  <h3>♻️ Leergut abgegeben</h3>
+  <div class="hint">Betrag vom Pfandbon eintragen. Er wird vom bezahlten Pfand abgezogen – so siehst du, was noch „im Keller steht“.</div>
+  <div class="hint" id="lgOpen" style="margin-top:6px;font-weight:600"></div>
+  <label>Betrag (Pfandbon)</label>
+  <input class="field pricefield" id="lgAmount" placeholder="€" inputmode="decimal" autocomplete="off">
+  <label>Markt</label>
+  <div class="chips wrap" id="lgShops" style="padding-top:0"></div>
+  <input class="field" id="lgShop" placeholder="anderer Markt …" autocomplete="off" style="margin-top:8px">
+  <label>Datum</label>
+  <input class="field" id="lgDate" type="date">
+  <label>Notiz (optional)</label>
+  <input class="field" id="lgNote" placeholder="z. B. 2 Kisten Wasser" autocomplete="off">
+  <div class="row">
+    <button class="btn" data-close>Abbrechen</button>
+    <button class="btn primary" id="lgSave">Gutschreiben</button>
+  </div>
+</div>
+
 <!-- Hilfe -->
 <div class="sheet" id="helpSheet">
   <h3>❓ Hilfe</h3>
@@ -653,9 +681,15 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
     <p><b>Größe &amp; Pfand:</b> Packungsgröße in g, kg, ml, l oder Stk – daraus rechnet die App Preis pro kg/l/Stück. Pfand wird extra gemerkt.</p>
     <p>Marke, Markt und Größe bleiben auch ohne Preis gespeichert.</p>
   </details>
+  <details><summary>♻️ Pfand &amp; Leergut</summary>
+    <p>Pfand, den du beim Einkauf bezahlst, wird bei den Einkäufen mitgezählt. Gibst du Flaschen zurück, trägst du den Pfandbon ein: 📷 → „♻️ Leergut abgegeben“ oder Preise → Einkäufe → „＋ Leergut“.</p>
+    <p>Der Kasten <b>♻️ Pfand</b> zeigt dann: bezahlt · zurück · <b>offen</b> – also was noch im Keller steht. Wird der Pfandbon an der Kasse verrechnet, erkennt das Einlesen des Kassenbons die Leergut-Zeile von selbst.</p>
+    <p>Leergut-Einträge stehen bei „Einzeln“ mit ♻️ und lassen sich mit ✕ löschen.</p>
+  </details>
   <details><summary>📈 Preisverlauf &amp; Einkäufe</summary>
     <p><b>Preise → Verlauf:</b> Alle Preise je Artikel (Sorten als Chips). Filter nach Normal / Angebot / App mit günstigstem, Durchschnitts- und teuerstem Preis, Entwicklung je Markt mit ▲ teurer / ▼ günstiger.</p>
     <p><b>Preise → 🧾 Einkäufe:</b> Was ihr gekauft habt – filterbar nach Jahr, Monat, Bereich und Markt, gruppiert nach Artikel, Monat, Markt, Bereich oder einzeln. „CSV“ exportiert für Excel.</p>
+    <p><b>Tag:</b> Unter den Filtern „Alle Tage“ einen Einkaufstag wählen – gut zum Kontrollieren gegen den Kassenbon. Die Gruppierung „Tag“ zeigt jeden Einkauf (Tag + Markt) mit Summe; antippen zeigt die einzelnen Positionen.</p>
     <p>Hatte ein Einkauf keinen Preis, wird der erste später erfasste Preis genommen (markiert mit ≈).</p>
   </details>
   <details><summary>🏷 Angebote</summary>
@@ -779,7 +813,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.49';
+const APP_VERSION = 'v1.50';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1176,7 +1210,7 @@ function backfillBrandShops() {
     if (registerBrand(br, shop, cat || guessCat(name))) n++;
   };
   Object.values(data.prices || {}).filter(e => !e.deleted).forEach(e => take(e.name, e.detail, e.shop));
-  Object.values(data.purchases || {}).filter(p => !p.deleted).forEach(p => take(p.name, p.detail, p.shop, p.cat));
+  Object.values(data.purchases || {}).filter(p => !p.deleted && !isLg(p)).forEach(p => take(p.name, p.detail, p.shop, p.cat));
   Object.values(data.arts || {}).filter(a => !a.deleted).forEach(a => take(a.name, a.detail, a.shop, a.cat));
   liveItems().forEach(i => { const o = offerOf(i); if (o) take(i.name, i.detail, o.shop, i.cat); });
   return n;
@@ -1439,7 +1473,7 @@ function backfillPurchases(d = data) {
 }
 // Einkäufe ohne Preis: den ersten danach erfassten Preis übernehmen (gleicher Markt bevorzugt)
 function fillPurchasePrices(d = data) {
-  const open = Object.values(d.purchases || {}).filter(p => !p.deleted && p.price == null);
+  const open = Object.values(d.purchases || {}).filter(p => !p.deleted && p.price == null && !isLg(p));
   if (!open.length) return 0;
   const pe = Object.values(d.prices || {}).filter(e => !e.deleted && e.price != null).sort((a, b) => a.date.localeCompare(b.date) || (a.updatedAt || 0) - (b.updatedAt || 0));
   let n = 0;
@@ -2089,7 +2123,7 @@ function brandSuggestions() {
   const add = b => { const k = norm(b); if (k && !out.has(k)) out.set(k, b); };
   // schon genutzte Marken für diesen Artikel
   const used = [...liveItems(), ...Object.values(data.favs).filter(f => !f.deleted), ...Object.values(data.stars).filter(s => s.on), ...Object.values(data.prices || {}).filter(e => !e.deleted),
-    ...Object.values(data.arts || {}).filter(a => !a.deleted), ...Object.values(data.purchases || {}).filter(p => !p.deleted)]
+    ...Object.values(data.arts || {}).filter(a => !a.deleted), ...Object.values(data.purchases || {}).filter(p => !p.deleted && !isLg(p))]
     .filter(x => norm(x.name) === n).map(x => splitBrand(x.detail).brand).filter(Boolean);
   const shop = SHOPS.find(s => norm(s) === norm($('sShop').value));
   const hints = BRAND_HINTS[n] || [];
@@ -3256,7 +3290,8 @@ function priceChart(list, shops) {
 
 /* ---------- Auswertung der Einkäufe ---------- */
 let priceView = 'verlauf';
-const pf = { year: null, month: '', shop: '', cat: '', group: 'artikel' };
+const pf = { year: null, month: '', day: '', shop: '', cat: '', group: 'artikel' };
+function isLg(p) { return !!p && p.kind === 'leergut'; }   // ♻️ Leergut-Rückgabe (Pfandbon) – steht bei den Einkäufen mit negativem Pfand
 const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 function priceViewSeg() {
   return `<div class="seg" style="display:flex;margin-bottom:6px">${[['verlauf', '📈 Preisverlauf'], ['einkauf', '🧾 Einkäufe']].map(([v, l]) => `<button data-pview="${v}" class="${v === priceView ? 'on' : ''}" style="flex:1">${l}</button>`).join('')}</div>`;
@@ -3264,7 +3299,7 @@ function priceViewSeg() {
 function purchaseList() { return Object.values(data.purchases || {}).filter(p => !p.deleted); }
 function filteredPurchases() {
   return purchaseList().filter(p => (!pf.year || p.date.slice(0, 4) === pf.year) && (!pf.month || p.date.slice(5, 7) === pf.month)
-    && (!pf.shop || p.shop === pf.shop) && (!pf.cat || p.cat === pf.cat));
+    && (!pf.day || p.date === pf.day) && (!pf.shop || p.shop === pf.shop) && (!pf.cat || p.cat === pf.cat));
 }
 const pTotal = p => p.price != null ? p.price * (p.n || 1) : 0;
 const pDep = p => p.deposit ? p.deposit * (p.n || 1) : 0;
@@ -3295,32 +3330,46 @@ function renderPurchases() {
     <select class="field" data-pfsel="month"><option value="">Alle Monate</option>${MONTHS.map((m, i) => { const v = String(i + 1).padStart(2, '0'); return `<option value="${v}"${v === pf.month ? ' selected' : ''}>${m}</option>`; }).join('')}</select>
     <select class="field" data-pfsel="cat"><option value="">Alle Bereiche</option>${CATS.filter(c => cats.includes(c[0])).map(([v, l]) => `<option value="${v}"${v === pf.cat ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select>
   </div>`;
+  // Tage mit Einkäufen im gewählten Jahr/Monat
+  const dayMap = {};
+  all.filter(p => (!pf.year || p.date.slice(0, 4) === pf.year) && (!pf.month || p.date.slice(5, 7) === pf.month))
+    .forEach(p => { const m = dayMap[p.date] = dayMap[p.date] || {}; if (!isLg(p)) m[p.shop] = 1; });
+  const dayList = Object.keys(dayMap).sort().reverse();
+  if (pf.day && !dayMap[pf.day]) pf.day = '';
+  html += `<div class="pfil"><select class="field" data-pfsel="day"><option value="">Alle Tage</option>${dayList.map(d => `<option value="${d}"${d === pf.day ? ' selected' : ''}>${esc(fmtDayLong(d))}${Object.keys(dayMap[d]).length ? ' · ' + esc(Object.keys(dayMap[d]).join(', ')) : ' · ♻️'}</option>`).join('')}</select>${pf.day ? '<button class="chip sel" data-pf="day" data-v="" style="flex:none">✕ Tag</button>' : ''}</div>`;
   html += `<div class="chips">${[['', 'Alle Märkte'], ...shops.map(x => [x, x])].map(([v, l]) => `<button class="chip${v === pf.shop ? ' sel' : ''}" data-pf="shop" data-v="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
-  const rows = filteredPurchases().sort((a, b) => b.date.localeCompare(a.date) || a.name.localeCompare(b.name, 'de'));
+  const rowsAll = filteredPurchases().sort((a, b) => b.date.localeCompare(a.date) || a.name.localeCompare(b.name, 'de'));
+  const rows = rowsAll.filter(p => !isLg(p)), lgRows = rowsAll.filter(isLg);
   const sum = rows.reduce((t, p) => t + pTotal(p), 0), dep = rows.reduce((t, p) => t + pDep(p), 0);
+  const back = 0 - lgRows.reduce((t, p) => t + pDep(p), 0);
   const noPrice = rows.filter(p => p.price == null).length, est = rows.some(p => p.est);
   const days = new Set(rows.map(p => p.date + '|' + p.shop)).size;
   html += `<div class="stats">
-    <div class="stat"><small>Ausgaben</small><b>${est ? '≈ ' : ''}${esc(fmtPrice(sum))}</b><small>${dep ? '+ ' + esc(fmtPrice(dep)) + ' Pfand' : noPrice ? noPrice + ' ohne Preis' : '&nbsp;'}</small></div>
+    <div class="stat"><small>Ausgaben</small><b>${est ? '≈ ' : ''}${esc(fmtPrice(sum))}</b><small>${dep || back ? (Math.abs(dep - back) < 0.005 ? 'Pfand ausgeglichen' : (dep - back > 0 ? '+ ' : '− ') + esc(fmtPrice(Math.abs(dep - back))) + ' Pfand') : noPrice ? noPrice + ' ohne Preis' : '&nbsp;'}</small></div>
     <div class="stat"><small>Menge</small><b>${rows.reduce((t, p) => t + (p.n || 1), 0)}×</b><small>${rows.length} Position${rows.length === 1 ? '' : 'en'}</small></div>
     <div class="stat"><small>Einkäufe</small><b>${days}</b><small>${days ? 'Ø ' + esc(fmtPrice(sum / days)) : '&nbsp;'}</small></div>
   </div>`;
-  html += `<div class="seg" style="display:flex;margin-top:10px">${[['artikel', 'Artikel'], ['monat', 'Monat'], ['markt', 'Markt'], ['bereich', 'Bereich'], ['einzeln', 'Einzeln']].map(([v, l]) => `<button data-pgroup="${v}" class="${v === pf.group ? 'on' : ''}" style="flex:1;padding:6px 4px">${l}</button>`).join('')}</div>`;
-  if (!rows.length) html += '<div class="empty">Keine Einkäufe für diese Auswahl.</div>';
+  // ♻️ Pfand: bezahlt – zurück = offen; dazu der Gesamtstand über alle Einkäufe
+  const allDep = all.filter(p => !isLg(p)).reduce((t, p) => t + pDep(p), 0), allBack = 0 - all.filter(isLg).reduce((t, p) => t + pDep(p), 0);
+  const filtered = pf.year || pf.month || pf.day || pf.shop || pf.cat;
+  html += `<div class="pfandbox"><div><b>♻️ Pfand</b>${dep || back ? `<span>bezahlt ${esc(fmtPrice(dep))} · zurück ${esc(fmtPrice(back))} · <b>${dep - back >= 0 ? 'offen' : 'mehr zurück'} ${esc(fmtPrice(Math.abs(dep - back)))}</b></span>` : '<span>in dieser Auswahl kein Pfand</span>'}${filtered && (allDep || allBack) ? `<span class="pmeta">Insgesamt noch offen: ${esc(fmtPrice(Math.max(0, allDep - allBack)))}</span>` : ''}</div><button class="btn" data-act="leergut">＋ Leergut</button></div>`;
+  html += `<div class="seg pgroups" style="display:flex;margin-top:10px">${[['artikel', 'Artikel'], ['tag', 'Tag'], ['monat', 'Monat'], ['markt', 'Markt'], ['bereich', 'Bereich'], ['einzeln', 'Einzeln']].map(([v, l]) => `<button data-pgroup="${v}" class="${v === pf.group ? 'on' : ''}" style="flex:1;padding:6px 2px">${l}</button>`).join('')}</div>`;
+  if (!rows.length && !(pf.group === 'einzeln' && lgRows.length)) html += '<div class="empty">Keine Einkäufe für diese Auswahl.</div>';
   else if (pf.group === 'einzeln') {
-    html += `<section class="group"><div class="list">${rows.map(p => `<div class="prow"><span class="pd">${esc(fmtDay(p.date))}${p.date.slice(0, 4) !== todayStr().slice(0, 4) ? p.date.slice(2, 4) : ''}</span><span class="ps">${esc(p.name)}${p.type === 'angebot' ? '<span class="sp">Angebot</span>' : p.type === 'app' ? '<span class="sp app">📱 App</span>' : ''}<span class="pmeta">${esc([p.detail, p.shop, (p.qty > 1 || p.unit) ? qtyLabel(p) : ''].filter(Boolean).join(' · '))}</span></span><span class="pp">${p.price != null ? (p.est ? '<span class="est">≈</span> ' : '') + esc(fmtPrice(pTotal(p))) : '<span class="est">–</span>'}${p.n > 1 && p.price != null ? `<span class="pmeta">${p.n} × ${esc(fmtPrice(p.price))}</span>` : ''}</span><button class="pdel" data-pudel="${esc(p.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
+    html += `<section class="group"><div class="list">${rowsAll.map(p => isLg(p) ? lgRowHtml(p) : `<div class="prow"><span class="pd">${esc(fmtDay(p.date))}${p.date.slice(0, 4) !== todayStr().slice(0, 4) ? p.date.slice(2, 4) : ''}</span><span class="ps">${esc(p.name)}${p.type === 'angebot' ? '<span class="sp">Angebot</span>' : p.type === 'app' ? '<span class="sp app">📱 App</span>' : ''}<span class="pmeta">${esc([p.detail, p.shop, (p.qty > 1 || p.unit) ? qtyLabel(p) : ''].filter(Boolean).join(' · '))}</span></span><span class="pp">${p.price != null ? (p.est ? '<span class="est">≈</span> ' : '') + esc(fmtPrice(pTotal(p))) : '<span class="est">–</span>'}${p.n > 1 && p.price != null ? `<span class="pmeta">${p.n} × ${esc(fmtPrice(p.price))}</span>` : ''}</span><button class="pdel" data-pudel="${esc(p.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
   } else {
-    const keyFn = { artikel: p => norm(p.name), monat: p => p.date.slice(0, 7), markt: p => p.shop, bereich: p => p.cat }[pf.group];
+    const keyFn = { artikel: p => norm(p.name), tag: p => p.date + '|' + p.shop, monat: p => p.date.slice(0, 7), markt: p => p.shop, bereich: p => p.cat }[pf.group];
     const groups = {};
     rows.forEach(p => (groups[keyFn(p)] = groups[keyFn(p)] || []).push(p));
     let list = Object.entries(groups).map(([k, g]) => ({ k, g, sum: g.reduce((t, p) => t + pTotal(p), 0), est: g.some(p => p.est) }));
-    if (pf.group === 'monat') list.sort((a, b) => b.k.localeCompare(a.k)); else list.sort((a, b) => b.sum - a.sum || b.g.length - a.g.length);
+    if (pf.group === 'monat' || pf.group === 'tag') list.sort((a, b) => b.k.localeCompare(a.k)); else list.sort((a, b) => b.sum - a.sum || b.g.length - a.g.length);
     const max = Math.max(...list.map(x => x.sum), 0.01);
-    const label = x => pf.group === 'artikel' ? x.g[0].name : pf.group === 'monat' ? MONTHS[+x.k.slice(5, 7) - 1] + ' ' + x.k.slice(0, 4) : pf.group === 'bereich' ? catName(x.k) : x.k;
+    const label = x => pf.group === 'artikel' ? x.g[0].name : pf.group === 'tag' ? fmtDayLong(x.g[0].date) + ' · ' + x.g[0].shop : pf.group === 'monat' ? MONTHS[+x.k.slice(5, 7) - 1] + ' ' + x.k.slice(0, 4) : pf.group === 'bereich' ? catName(x.k) : x.k;
     const sub = x => {
       if (pf.group === 'artikel') { const prices = x.g.filter(p => p.price != null).map(p => p.price); const vs = [...new Set(x.g.map(p => p.detail).filter(Boolean))];
         return [mengeLabel(x.g), prices.length ? 'Ø ' + fmtPrice(prices.reduce((t, v) => t + v, 0) / prices.length) : '', vs.length > 1 ? vs.length + ' Sorten' : vs[0] || ''].filter(Boolean).join(' · '); }
-      return mengeLabel(x.g) + ' · ' + x.g.length + ' Position' + (x.g.length === 1 ? '' : 'en');
+      const d = pf.group === 'tag' ? x.g.reduce((t, p) => t + pDep(p), 0) : 0;
+      return mengeLabel(x.g) + ' · ' + x.g.length + ' Position' + (x.g.length === 1 ? '' : 'en') + (d ? ' · + ' + fmtPrice(d) + ' Pfand' : '');
     };
     html += `<section class="group"><div class="list">${list.map(x => `<div class="prow" ${pf.group === 'artikel' ? '' : `data-pdrill="${esc(x.k)}"`}><span class="ps"><b style="font-weight:600">${esc(label(x))}</b><span class="pmeta">${esc(sub(x))}</span><div class="pbar" style="width:${Math.max(2, Math.round(x.sum / max * 100))}%"></div></span><span class="pp">${x.g.some(p => p.price != null) ? (x.est ? '<span class="est">≈</span> ' : '') + esc(fmtPrice(x.sum)) : '<span class="est">–</span>'}</span></div>`).join('')}</div></section>`;
   }
@@ -3328,15 +3377,54 @@ function renderPurchases() {
   if (rows.length) html += '<button class="btn addprice" data-act="csv">⬇︎ Als Tabelle (CSV) speichern</button>';
   $('priceMain').innerHTML = html;
 }
+function fmtDayLong(s) { return new Date(s + 'T12:00:00').toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' }); }
+function lgRowHtml(p) {
+  return `<div class="prow lgrow"><span class="pd">${esc(fmtDay(p.date))}${p.date.slice(0, 4) !== todayStr().slice(0, 4) ? p.date.slice(2, 4) : ''}</span><span class="ps">♻️ Leergut zurück<span class="pmeta">${esc([p.shop, p.detail].filter(Boolean).join(' · '))}</span></span><span class="pp lgamt">− ${esc(fmtPrice(-pDep(p)))}</span><button class="pdel" data-pudel="${esc(p.id)}" aria-label="löschen">✕</button></div>`;
+}
+/* ♻️ Leergut abgeben: Pfandbon-Betrag wird vom bezahlten Pfand abgezogen */
+function saveLeergut(amount, shop, date, note, id) {
+  if (!(amount > 0)) return null;
+  data.purchases = data.purchases || {};
+  id = id || 'lg-' + date + '-' + Date.now().toString(36);
+  data.purchases[id] = { id, kind: 'leergut', date, name: 'Leergut', detail: note || '', cat: 'getraenk', qty: 1, unit: '', n: 1,
+    shop: shop || 'ohne Markt', price: null, est: false, type: 'normal', pack: null, deposit: -Math.round(amount * 100) / 100, updatedAt: now() };
+  return data.purchases[id];
+}
+function openLeergut() {
+  closeSheets();
+  $('lgAmount').value = ''; $('lgNote').value = ''; $('lgDate').value = todayStr();
+  const last = purchaseList().filter(p => !isLg(p) && pDep(p) > 0).sort((a, b) => b.date.localeCompare(a.date))[0];
+  $('lgShop').value = last && last.shop !== 'ohne Markt' ? last.shop : '';
+  renderLgShops();
+  const all = purchaseList(), open = all.filter(p => !isLg(p)).reduce((t, p) => t + pDep(p), 0) + all.filter(isLg).reduce((t, p) => t + pDep(p), 0);
+  $('lgOpen').textContent = open > 0 ? 'Noch offen: ' + fmtPrice(open) + ' Pfand (alle Einkäufe)' : '';
+  openSheet('lgSheet');
+  setTimeout(() => $('lgAmount').focus(), 250);
+}
+function renderLgShops() {
+  const cur = norm($('lgShop').value);
+  const used = [...new Set(purchaseList().map(p => p.shop).filter(x => x && x !== 'ohne Markt'))];
+  const list = [...new Set([...used, ...SHOPS])].slice(0, 12);
+  $('lgShops').innerHTML = list.map(x => `<button type="button" class="chip${norm(x) === cur ? ' sel' : ''}" data-lgshop="${esc(x)}">${esc(x)}</button>`).join('');
+}
+$('lgShops').addEventListener('click', e => { const b = e.target.closest('[data-lgshop]'); if (!b) return; $('lgShop').value = b.dataset.lgshop; renderLgShops(); });
+$('lgShop').addEventListener('input', renderLgShops);
+$('lgSave').onclick = () => {
+  const amount = parsePrice($('lgAmount').value);
+  if (!(amount > 0)) { toast('Bitte den Betrag vom Pfandbon eintragen'); $('lgAmount').focus(); return; }
+  const p = saveLeergut(amount, $('lgShop').value.trim(), $('lgDate').value || todayStr(), $('lgNote').value.trim());
+  closeSheets(); commit();
+  toast('♻️ Leergut ' + fmtPrice(amount) + ' gutgeschrieben', () => { p.deleted = true; p.updatedAt = now(); commit(); });
+};
 function exportPurchasesCsv() {
   const rows = filteredPurchases().sort((a, b) => a.date.localeCompare(b.date));
   const num = v => v == null ? '' : String(Math.round(v * 100) / 100).replace('.', ',');
   const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
   const lines = [['Datum', 'Artikel', 'Bezeichnung', 'Bereich', 'Markt', 'Menge', 'Einheit', 'Anzahl', 'Einzelpreis', 'Summe', 'Pfand', 'Preisart', 'geschätzt'].join(';'),
-    ...rows.map(p => [p.date.split('-').reverse().join('.'), q(p.name), q(p.detail), q(catName(p.cat).replace(/^\S+\s/, '')), q(p.shop), p.qty, q(p.unit), p.n, num(p.price), num(p.price != null ? pTotal(p) : null), num(pDep(p) || null), p.type === 'normal' ? 'Normal' : p.type === 'app' ? 'App' : 'Angebot', p.est ? 'ja' : ''].join(';'))];
+    ...rows.map(p => [p.date.split('-').reverse().join('.'), q(p.name), q(p.detail), q(catName(p.cat).replace(/^\S+\s/, '')), q(p.shop), p.qty, q(p.unit), p.n, num(p.price), num(p.price != null ? pTotal(p) : null), num(pDep(p) || null), isLg(p) ? 'Leergut' : p.type === 'normal' ? 'Normal' : p.type === 'app' ? 'App' : 'Angebot', p.est ? 'ja' : ''].join(';'))];
   const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'einkaeufe' + (pf.year ? '-' + pf.year : '') + (pf.month ? '-' + pf.month : '') + '.csv';
+  a.download = 'einkaeufe' + (pf.day ? '-' + pf.day : (pf.year ? '-' + pf.year : '') + (pf.month ? '-' + pf.month : '')) + '.csv';
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
 }
 
@@ -3424,17 +3512,18 @@ function renderPrices() {
   html += '<button class="btn primary addprice" data-act="addprice">＋ Preis erfassen</button>';
   $('priceMain').innerHTML = html;
 }
-$('priceMain').addEventListener('change', e => { const s = e.target.closest('[data-pfsel]'); if (s) { pf[s.dataset.pfsel] = s.value; renderPrices(); } });
+$('priceMain').addEventListener('change', e => { const s = e.target.closest('[data-pfsel]'); if (s) { pf[s.dataset.pfsel] = s.value; if (s.dataset.pfsel === 'month') pf.day = ''; renderPrices(); } });
 $('priceMain').addEventListener('click', e => {
   const k = e.target.closest('[data-pkey]'); if (k) { priceKey = k.dataset.pkey; priceVar = ''; priceShop = ''; renderPrices(); window.scrollTo(0, 0); return; }
   const pv = e.target.closest('[data-pvar]'); if (pv) { priceVar = pv.dataset.pvar; renderPrices(); return; }
   const pk = e.target.closest('[data-pkind]'); if (pk) { priceKind = pk.dataset.pkind; renderPrices(); return; }
   const vw = e.target.closest('[data-pview]'); if (vw) { priceView = vw.dataset.pview; renderPrices(); return; }
-  const pfb = e.target.closest('[data-pf]'); if (pfb) { pf[pfb.dataset.pf] = pfb.dataset.v; renderPrices(); return; }
+  const pfb = e.target.closest('[data-pf]'); if (pfb) { pf[pfb.dataset.pf] = pfb.dataset.v; if (pfb.dataset.pf === 'year') pf.day = ''; renderPrices(); return; }
   const pg = e.target.closest('[data-pgroup]'); if (pg) { pf.group = pg.dataset.pgroup; renderPrices(); return; }
   const dr = e.target.closest('[data-pdrill]');
   if (dr) { const k = dr.dataset.pdrill;
-    if (pf.group === 'monat') { pf.year = k.slice(0, 4); pf.month = k.slice(5, 7); } else if (pf.group === 'markt') pf.shop = k; else if (pf.group === 'bereich') pf.cat = k;
+    if (pf.group === 'tag') { const d = k.slice(0, 10); pf.year = d.slice(0, 4); pf.month = d.slice(5, 7); pf.day = d; pf.shop = k.slice(11); pf.group = 'einzeln'; renderPrices(); window.scrollTo(0, 0); return; }
+    if (pf.group === 'monat') { pf.year = k.slice(0, 4); pf.month = k.slice(5, 7); pf.day = ''; } else if (pf.group === 'markt') pf.shop = k; else if (pf.group === 'bereich') pf.cat = k;
     pf.group = 'artikel'; renderPrices(); window.scrollTo(0, 0); return; }
   const pu = e.target.closest('[data-pudel]');
   if (pu) { const en = data.purchases[pu.dataset.pudel]; if (!en) return;
@@ -3453,6 +3542,7 @@ $('priceMain').addEventListener('click', e => {
   if (a.dataset.act === 'pback') { priceKey = null; priceVar = ''; priceKind = ''; renderPrices(); }
   if (a.dataset.act === 'addprice') openPriceSheet();
   if (a.dataset.act === 'csv') exportPurchasesCsv();
+  if (a.dataset.act === 'leergut') openLeergut();
   if (a.dataset.act === 'bon') openBon();
 });
 function openPriceSheet() {
@@ -4111,8 +4201,13 @@ $('bonApply').onclick = () => {
   if ($('bonRemove').checked) {
     data.items.filter(i => !i.deleted && keys.has(norm(i.name))).forEach(i => { i.deleted = true; i.checked = false; i.updatedAt = now(); removed++; });
   }
+  // Leergut / Pfandbon auf dem Kassenbon
+  const lgSum = -(bon.discounts || []).filter(d => d.leergut).reduce((t, d) => t + d.amount, 0);
+  const lgId = 'lg-b-' + date + '-' + norm(shop).replace(/\W/g, '');
+  if (lgSum > 0.004) saveLeergut(lgSum, shop, date, 'vom Kassenbon', lgId);
+  else if (data.purchases[lgId] && !data.purchases[lgId].deleted) { data.purchases[lgId].deleted = true; data.purchases[lgId].updatedAt = now(); }
   closeSheets(); commit();
-  toast(`🧾 ${rows.length} Artikel übernommen` + (removed ? ` · ${removed} von der Liste genommen` : ''));
+  toast(`🧾 ${rows.length} Artikel übernommen` + (lgSum > 0.004 ? ` · ♻️ Leergut ${fmtPrice(lgSum)}` : '') + (removed ? ` · ${removed} von der Liste genommen` : ''));
   bon = null;
 };
 
@@ -4358,6 +4453,7 @@ $('addMenu').addEventListener('click', e => {
   if (b.dataset.menu === 'scan') openScan('new');
   if (b.dataset.menu === 'read') openReader('new');
   if (b.dataset.menu === 'bon') openBon();
+  if (b.dataset.menu === 'leergut') openLeergut();
 });
 $('sRead').onclick = () => openReader('fill');
 $('rCancel').onclick = closeReader;
@@ -4393,6 +4489,14 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.50', '28.10.2026', [
+    'Einkäufe: Neuer Filter „Tag“ – einzelnen Einkaufstag wählen, z. B. zum Kontrollieren gegen den Kassenbon',
+    'Einkäufe: Neue Gruppierung „Tag“ – jeder Einkauf (Tag + Markt) mit Summe und Pfand; antippen zeigt die Positionen',
+    'Neu: ♻️ Leergut abgeben – Pfandbon-Betrag gutschreiben (📷-Menü oder Einkäufe → „＋ Leergut“)',
+    'Pfand-Übersicht bei den Einkäufen: bezahlt · zurück · offen',
+    'Kassenbon: Leergut-/Pfandbon-Zeilen werden automatisch gutgeschrieben',
+    'CSV-Export enthält Leergut als eigene Zeilen'
+  ]],
   ['v1.49', '23.10.2026', [
     'Neu: ❓ Hilfe – Knopf oben neben 📦, auch im Info-Fenster',
     'Alle Themen zum Aufklappen: Liste, Artikel, Preise, Angebote, Kassenbon, Strichcode, Lager, Favoriten, Siri, Sync & neues Handy, Probleme lösen',
