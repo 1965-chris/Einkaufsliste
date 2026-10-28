@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:40:17.048Z",
+ "savedAt": "2026-10-28T17:41:27.505Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1347,6 +1347,29 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793209214607
+  },
+  {
+   "id": "mvseibao89os63",
+   "name": "Kidney Bohnen",
+   "detail": "",
+   "qty": 1,
+   "unit": "Dose",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.69,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793209284528
   }
  ],
  "favs": {
@@ -1794,6 +1817,14 @@
    "cat": "obst",
    "unit": "",
    "last": 1793209214607
+  },
+  "kidney bohnen|": {
+   "count": 1,
+   "name": "Kidney Bohnen",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "Dose",
+   "last": 1793209284529
   }
  },
  "stars": {
@@ -2603,6 +2634,13 @@
     "frisch": 1793209214608
    },
    "updatedAt": 1793209214608
+  },
+  "kidney bohnen": {
+   "name": "Kidney Bohnen",
+   "variants": [],
+   "cat": "vorrat",
+   "unit": "Dose",
+   "updatedAt": 1793209284529
   }
  },
  "prices": {
@@ -4029,6 +4067,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793209214607
+  },
+  "kidney bohnen||aldi|2026-10-28": {
+   "id": "kidney bohnen||aldi|2026-10-28",
+   "key": "kidney bohnen|",
+   "name": "Kidney Bohnen",
+   "detail": "",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 0.69,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793209284528
   }
  },
  "brands": {
@@ -6248,6 +6300,16 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793209214607
+  },
+  "kidney bohnen|": {
+   "name": "Kidney Bohnen",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "Dose",
+   "shop": "ALDI",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793209284528
   }
  },
  "devices": {
