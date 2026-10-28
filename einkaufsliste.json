@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:37:55.777Z",
+ "savedAt": "2026-10-28T17:39:16.712Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1301,6 +1301,29 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793208814953
+  },
+  {
+   "id": "mvsefikwjhovcy",
+   "name": "Mais",
+   "detail": "",
+   "qty": 1,
+   "unit": "Dose",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.89,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": null,
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793209154000
   }
  ],
  "favs": {
@@ -1732,6 +1755,14 @@
    "cat": "kuehl",
    "unit": "Pck.",
    "last": 1793209073261
+  },
+  "mais|": {
+   "count": 1,
+   "name": "Mais",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "Dose",
+   "last": 1793209154001
   }
  },
  "stars": {
@@ -2522,6 +2553,13 @@
     "pfirsich": 1793130996311
    },
    "updatedAt": 1793130996311
+  },
+  "mais": {
+   "name": "Mais",
+   "variants": [],
+   "cat": "vorrat",
+   "unit": "Dose",
+   "updatedAt": 1793209154001
   }
  },
  "prices": {
@@ -3920,6 +3958,20 @@
    },
    "deposit": null,
    "updatedAt": 1793209073261
+  },
+  "mais||aldi|2026-10-28": {
+   "id": "mais||aldi|2026-10-28",
+   "key": "mais|",
+   "name": "Mais",
+   "detail": "",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 0.89,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793209154000
   }
  },
  "brands": {
@@ -6119,6 +6171,16 @@
    },
    "deposit": null,
    "updatedAt": 1793209073246
+  },
+  "mais|": {
+   "name": "Mais",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "Dose",
+   "shop": "ALDI",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793209154000
   }
  },
  "devices": {
