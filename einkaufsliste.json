@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:13:32.179Z",
+ "savedAt": "2026-10-28T18:14:15.335Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -4688,6 +4688,20 @@
    },
    "deposit": null,
    "updatedAt": 1793211170319
+  },
+  "pizza|dr. oetker die ofenfrische thunfisch|edeka|2026-10-28": {
+   "id": "pizza|dr. oetker die ofenfrische thunfisch|edeka|2026-10-28",
+   "key": "pizza|dr. oetker die ofenfrische thunfisch",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
+   "date": "2026-10-28",
+   "shop": "EDEKA",
+   "price": 3.69,
+   "type": "normal",
+   "special": false,
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793211252789
   }
  },
  "brands": {
@@ -6689,7 +6703,7 @@
    "shop": "EDEKA",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1793090706250
+   "updatedAt": 1793211252768
   },
   "pizza|dr. oetker die ofenfrische diavolo": {
    "name": "Pizza",
