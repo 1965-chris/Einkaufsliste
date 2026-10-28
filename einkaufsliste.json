@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:42:55.998Z",
+ "savedAt": "2026-10-28T17:45:45.247Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1397,6 +1397,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793209373200
+  },
+  {
+   "id": "mvsenuf4evszhg",
+   "name": "Tomatenmark",
+   "detail": "Kings Crown",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.89,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.2,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793209542592
   }
  ],
  "favs": {
@@ -1860,6 +1887,14 @@
    "cat": "kuehl",
    "unit": "Pck.",
    "last": 1793209373200
+  },
+  "tomatenmark|kings crown": {
+   "count": 1,
+   "name": "Tomatenmark",
+   "detail": "Kings Crown",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "last": 1793209542593
   }
  },
  "stars": {
@@ -2123,10 +2158,9 @@
   "tomatenmark": {
    "name": "Tomatenmark",
    "variants": [],
-   "cat": "obst",
-   "unit": "",
-   "updatedAt": 1792309308595,
-   "deleted": true
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "updatedAt": 1793209542593
   },
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
@@ -4141,6 +4175,24 @@
    },
    "deposit": null,
    "updatedAt": 1793209373199
+  },
+  "tomatenmark|kings crown|aldi|2026-10-28": {
+   "id": "tomatenmark|kings crown|aldi|2026-10-28",
+   "key": "tomatenmark|kings crown",
+   "name": "Tomatenmark",
+   "detail": "Kings Crown",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 0.89,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793209542592
   }
  },
  "brands": {
@@ -4330,6 +4382,16 @@
     "kuehl": 1
    },
    "updatedAt": 1793209373199
+  },
+  "kings crown": {
+   "name": "Kings Crown",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "vorrat": 1
+   },
+   "updatedAt": 1793209542590
   }
  },
  "purchases": {
@@ -6394,6 +6456,20 @@
    },
    "deposit": null,
    "updatedAt": 1793209373199
+  },
+  "tomatenmark|kings crown": {
+   "name": "Tomatenmark",
+   "detail": "Kings Crown",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793209542591
   }
  },
  "devices": {
