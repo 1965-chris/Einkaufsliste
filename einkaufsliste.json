@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:46:43.736Z",
+ "savedAt": "2026-10-28T17:46:57.950Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1424,6 +1424,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793209542592
+  },
+  {
+   "id": "mvsepej2d1kwwi",
+   "name": "Salami",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "qty": 1,
+   "unit": "",
+   "cat": "fleisch",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.39,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.15,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793209615310
   }
  ],
  "favs": {
@@ -1895,6 +1922,14 @@
    "cat": "vorrat",
    "unit": "Pck.",
    "last": 1793209542593
+  },
+  "salami|gut drei eichen herzhafte edelsalami geräuchert": {
+   "count": 1,
+   "name": "Salami",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "cat": "fleisch",
+   "unit": "",
+   "last": 1793209615310
   }
  },
  "stars": {
@@ -6241,7 +6276,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793209601243
+   "updatedAt": 1793209615289
   },
   "käse|meine käsetheke caverna dänischer schnittkäse": {
    "name": "Käse",
