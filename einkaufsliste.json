@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:53:24.857Z",
+ "savedAt": "2026-10-28T17:54:52.527Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1505,6 +1505,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793210002354
+  },
+  {
+   "id": "mvsezkk1mmjxrk",
+   "name": "Schinkenlyoner",
+   "detail": "Güldenhof",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "fleisch",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.89,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.2,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793210089681
   }
  ],
  "favs": {
@@ -2000,6 +2027,14 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "last": 1793210002354
+  },
+  "schinkenlyoner|güldenhof": {
+   "count": 1,
+   "name": "Schinkenlyoner",
+   "detail": "Güldenhof",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "last": 1793210089681
   }
  },
  "stars": {
@@ -2829,6 +2864,13 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "updatedAt": 1793210002355
+  },
+  "schinkenlyoner": {
+   "name": "Schinkenlyoner",
+   "variants": [],
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "updatedAt": 1793210089682
   }
  },
  "prices": {
@@ -4359,6 +4401,24 @@
    },
    "deposit": null,
    "updatedAt": 1793210002354
+  },
+  "schinkenlyoner|güldenhof|aldi|2026-10-28": {
+   "id": "schinkenlyoner|güldenhof|aldi|2026-10-28",
+   "key": "schinkenlyoner|güldenhof",
+   "name": "Schinkenlyoner",
+   "detail": "Güldenhof",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 0.89,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210089681
   }
  },
  "brands": {
@@ -6650,6 +6710,20 @@
    },
    "deposit": null,
    "updatedAt": 1793210002353
+  },
+  "schinkenlyoner|güldenhof": {
+   "name": "Schinkenlyoner",
+   "detail": "Güldenhof",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210089681
   }
  },
  "devices": {
