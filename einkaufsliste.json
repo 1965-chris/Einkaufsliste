@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:14:46.287Z",
+ "savedAt": "2026-10-28T18:15:54.977Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2163,7 +2163,8 @@
    "detail": "Willms",
    "cat": "fleisch",
    "unit": "Pck.",
-   "last": 1793211098613
+   "last": 1793211352408,
+   "deleted": true
   },
   "paniermehl|goldähren": {
    "count": 1,
@@ -4687,7 +4688,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793211170319
+   "updatedAt": 1793211352408,
+   "deleted": true
   },
   "pizza|dr. oetker die ofenfrische thunfisch|edeka|2026-10-28": {
    "id": "pizza|dr. oetker die ofenfrische thunfisch|edeka|2026-10-28",
@@ -7489,7 +7491,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793211170298
+   "updatedAt": 1793211352408,
+   "deleted": true
   }
  },
  "devices": {
@@ -7550,6 +7553,10 @@
   "kaffee|": {
    "ts": 1792758381686,
    "updatedAt": 1792758381686
+  },
+  "mettenden|willms": {
+   "ts": 1793211352408,
+   "updatedAt": 1793211352408
   }
  },
  "stock": {
