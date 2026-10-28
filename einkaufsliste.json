@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:03:34.083Z",
+ "savedAt": "2026-10-28T18:03:52.648Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1317,8 +1317,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793208814953
+   "checked": true,
+   "updatedAt": 1793210630019,
+   "checkedAt": 1793210630019
   },
   {
    "id": "mvsefikwjhovcy",
@@ -1340,8 +1341,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793209154000
+   "checked": true,
+   "updatedAt": 1793210627218,
+   "checkedAt": 1793210627218
   },
   {
    "id": "mvsegtcfrizpij",
@@ -1363,8 +1365,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793209214607
+   "checked": true,
+   "updatedAt": 1793210621068,
+   "checkedAt": 1793210621068
   },
   {
    "id": "mvseibao89os63",
@@ -1386,8 +1389,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793210324384
+   "checked": true,
+   "updatedAt": 1793210625838,
+   "checkedAt": 1793210625838
   },
   {
    "id": "mvsek7ps6fj525",
@@ -1413,8 +1417,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793209373200
+   "checked": true,
+   "updatedAt": 1793210621680,
+   "checkedAt": 1793210621680
   },
   {
    "id": "mvsenuf4evszhg",
@@ -1440,8 +1445,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793209542592
+   "checked": true,
+   "updatedAt": 1793210627997,
+   "checkedAt": 1793210627997
   },
   {
    "id": "mvsepej2d1kwwi",
@@ -1467,8 +1473,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793209615310
+   "checked": true,
+   "updatedAt": 1793210624528,
+   "checkedAt": 1793210624528
   },
   {
    "id": "mvseqdcrm4a8no",
@@ -1494,8 +1501,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793209660443
+   "checked": true,
+   "updatedAt": 1793210628710,
+   "checkedAt": 1793210628710
   },
   {
    "id": "mvsexp6arirnam",
@@ -1521,8 +1529,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793210002354
+   "checked": true,
+   "updatedAt": 1793210623305,
+   "checkedAt": 1793210623305
   },
   {
    "id": "mvsezkk1mmjxrk",
@@ -1548,8 +1557,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793210089681
+   "checked": true,
+   "updatedAt": 1793210625176,
+   "checkedAt": 1793210625176
   },
   {
    "id": "mvsf0pxvamj4vo",
@@ -1575,8 +1585,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793210143315
+   "checked": true,
+   "updatedAt": 1793210623949,
+   "checkedAt": 1793210623949
   },
   {
    "id": "mvsfasex5ewkth",
@@ -1602,8 +1613,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793210613081
+   "checked": true,
+   "updatedAt": 1793210622489,
+   "checkedAt": 1793210622489
   }
  ],
  "favs": {
