@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:35:31.860Z",
+ "savedAt": "2026-10-28T17:37:55.777Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1326,7 +1326,8 @@
    "detail": "",
    "cat": "kuehl",
    "unit": "Pck.",
-   "last": 1792561429168
+   "last": 1793209073261,
+   "deleted": true
   },
   "coca cola|": {
    "count": 2,
@@ -1723,6 +1724,14 @@
    "cat": "drogerie",
    "unit": "Pck.",
    "last": 1793208814953
+  },
+  "butter|milsani deutsche markenbutter sauerrahm": {
+   "count": 2,
+   "name": "Butter",
+   "detail": "Milsani deutsche Markenbutter Sauerrahm",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "last": 1793209073261
   }
  },
  "stars": {
@@ -1732,8 +1741,8 @@
    "cat": "kuehl",
    "unit": "Pck.",
    "qty": 1,
-   "on": true,
-   "updatedAt": 1791450287964,
+   "on": false,
+   "updatedAt": 1793209073261,
    "note": ""
   },
   "coca cola|": {
@@ -1935,6 +1944,15 @@
    "qty": 1,
    "on": true,
    "updatedAt": 1792620128254
+  },
+  "butter|milsani deutsche markenbutter sauerrahm": {
+   "name": "Butter",
+   "detail": "Milsani deutsche Markenbutter Sauerrahm",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "qty": 1,
+   "on": true,
+   "updatedAt": 1793209073261
   }
  },
  "custom": {
@@ -2886,7 +2904,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1791833872820
+   "updatedAt": 1793209073261,
+   "deleted": true
   },
   "zucker|gut & günstig|edeka|2026-10-12": {
    "id": "zucker|gut & günstig|edeka|2026-10-12",
@@ -3865,6 +3884,42 @@
    },
    "deposit": null,
    "updatedAt": 1793208912987
+  },
+  "butter|milsani deutsche markenbutter sauerrahm|ohne markt|2026-10-12": {
+   "id": "butter|milsani deutsche markenbutter sauerrahm|ohne markt|2026-10-12",
+   "key": "butter|milsani deutsche markenbutter sauerrahm",
+   "name": "Butter",
+   "detail": "Milsani deutsche Markenbutter Sauerrahm",
+   "date": "2026-10-12",
+   "shop": "ohne Markt",
+   "price": 2.19,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793209073261
+  },
+  "butter|milsani deutsche markenbutter sauerrahm|aldi|2026-10-28": {
+   "id": "butter|milsani deutsche markenbutter sauerrahm|aldi|2026-10-28",
+   "key": "butter|milsani deutsche markenbutter sauerrahm",
+   "name": "Butter",
+   "detail": "Milsani deutsche Markenbutter Sauerrahm",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 1.19,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793209073261
   }
  },
  "brands": {
@@ -4034,6 +4089,16 @@
     "vorrat": 1
    },
    "updatedAt": 1793208912987
+  },
+  "milsani deutsche markenbutter": {
+   "name": "Milsani deutsche Markenbutter",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "kuehl": 1
+   },
+   "updatedAt": 1793209073246
   }
  },
  "purchases": {
@@ -4059,7 +4124,7 @@
    "id": "k-muy02tupwreamy",
    "date": "2026-10-08",
    "name": "Butter",
-   "detail": "",
+   "detail": "Milsani deutsche Markenbutter Sauerrahm",
    "cat": "kuehl",
    "qty": 2,
    "unit": "Pck.",
@@ -4070,7 +4135,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1791916821616,
+   "updatedAt": 1793209073261,
    "later": "2026-10-12"
   },
   "k-muy4a4d5k5z0fo": {
@@ -4680,7 +4745,7 @@
    "id": "k-mvhosiwe7q56cs",
    "date": "2026-10-22",
    "name": "Butter",
-   "detail": "",
+   "detail": "Milsani deutsche Markenbutter Sauerrahm",
    "cat": "kuehl",
    "qty": 1,
    "unit": "Pck.",
@@ -4691,7 +4756,7 @@
    "type": "normal",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1792736615306
+   "updatedAt": 1793209073261
   },
   "k-mvhpjh9ks45kpw": {
    "id": "k-mvhpjh9ks45kpw",
@@ -6040,6 +6105,20 @@
    },
    "deposit": null,
    "updatedAt": 1793208929176
+  },
+  "butter|milsani deutsche markenbutter sauerrahm": {
+   "name": "Butter",
+   "detail": "Milsani deutsche Markenbutter Sauerrahm",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793209073246
   }
  },
  "devices": {
