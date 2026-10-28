@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:13:08.372Z",
+ "savedAt": "2026-10-28T18:13:32.179Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2025,7 +2025,8 @@
    "detail": "",
    "cat": "vorrat",
    "unit": "Pck.",
-   "last": 1793021012072
+   "last": 1793211209257,
+   "deleted": true
   },
   "mettenden|": {
    "count": 1,
@@ -2171,6 +2172,14 @@
    "cat": "vorrat",
    "unit": "Pck.",
    "last": 1793211134474
+  },
+  "salz|bad reichenhall jodsalz": {
+   "count": 1,
+   "name": "Salz",
+   "detail": "Bad Reichenhall Jodsalz",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "last": 1793211209257
   }
  },
  "stars": {
