@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:47:42.917Z",
+ "savedAt": "2026-10-28T17:53:24.857Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1478,6 +1478,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793209660443
+  },
+  {
+   "id": "mvsexp6arirnam",
+   "name": "Geflügel-Paprikalyoner",
+   "detail": "Güldenhof",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "fleisch",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.89,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.2,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793210002354
   }
  ],
  "favs": {
@@ -1965,6 +1992,14 @@
    "cat": "suess",
    "unit": "Pck.",
    "last": 1793209660443
+  },
+  "geflügel-paprikalyoner|güldenhof": {
+   "count": 1,
+   "name": "Geflügel-Paprikalyoner",
+   "detail": "Güldenhof",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "last": 1793210002354
   }
  },
  "stars": {
@@ -2787,6 +2822,13 @@
    "cat": "kuehl",
    "unit": "Pck.",
    "updatedAt": 1793209373200
+  },
+  "geflügel-paprikalyoner": {
+   "name": "Geflügel-Paprikalyoner",
+   "variants": [],
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "updatedAt": 1793210002355
   }
  },
  "prices": {
@@ -4299,6 +4341,24 @@
    },
    "deposit": null,
    "updatedAt": 1793209660442
+  },
+  "geflügel-paprikalyoner|güldenhof|aldi|2026-10-28": {
+   "id": "geflügel-paprikalyoner|güldenhof|aldi|2026-10-28",
+   "key": "geflügel-paprikalyoner|güldenhof",
+   "name": "Geflügel-Paprikalyoner",
+   "detail": "Güldenhof",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 0.89,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210002354
   }
  },
  "brands": {
@@ -6576,6 +6636,20 @@
    },
    "deposit": null,
    "updatedAt": 1793209542591
+  },
+  "geflügel-paprikalyoner|güldenhof": {
+   "name": "Geflügel-Paprikalyoner",
+   "detail": "Güldenhof",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210002353
   }
  },
  "devices": {
