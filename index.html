@@ -541,7 +541,7 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
     <button class="btn" data-menu="scan"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="vertical-align:-4px"><path fill="currentColor" d="M2 5h2v14H2zm3 0h1v14H5zm2 0h2v14H7zm3 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h1v14h-1zm2 0h2v14h-2z"/></svg> Strichcode scannen<small>Packung scannen – Name, Marke und Größe werden ausgefüllt</small></button>
     <button class="btn" data-menu="read">📷 Angebot aus Bild lesen<small>Prospekt, Preisschild oder Bildschirmfoto</small></button>
     <button class="btn" data-menu="bon">🧾 Kassenbon einlesen<small>dm-eBon, EDEKA-App, Lidl Plus</small></button>
-    <button class="btn" data-menu="leergut">♻️ Leergut abgegeben<small>Pfandbon-Betrag gutschreiben</small></button>
+    <button class="btn" data-menu="leergut">♻️ Pfand &amp; Leergut<small>Leergut abgeben oder vorhandenes Pfand einbuchen</small></button>
   </div>
   <div class="row" style="margin-top:12px"><button class="btn" data-close>Abbrechen</button></div>
 </div>
@@ -627,14 +627,18 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
 
 <!-- Leergut -->
 <div class="sheet" id="lgSheet">
-  <h3>♻️ Leergut abgegeben</h3>
-  <div class="hint">Betrag vom Pfandbon eintragen. Er wird vom bezahlten Pfand abgezogen – so siehst du, was noch „im Keller steht“.</div>
+  <div class="seg" id="lgMode" style="display:flex;margin-bottom:10px"><button data-lgm="back" class="on" style="flex:1">♻️ Abgegeben</button><button data-lgm="stock" style="flex:1">📥 Einbuchen</button></div>
+  <h3 id="lgTitle">♻️ Leergut abgegeben</h3>
+  <div class="hint" id="lgHint"></div>
   <div class="hint" id="lgOpen" style="margin-top:6px;font-weight:600"></div>
-  <label>Betrag (Pfandbon)</label>
+  <label id="lgAmtLabel">Betrag (Pfandbon)</label>
   <input class="field pricefield" id="lgAmount" placeholder="€" inputmode="decimal" autocomplete="off">
+  <div class="chips wrap" id="lgQuick" style="padding-top:8px"></div>
+  <div id="lgShopBox">
   <label>Markt</label>
   <div class="chips wrap" id="lgShops" style="padding-top:0"></div>
   <input class="field" id="lgShop" placeholder="anderer Markt …" autocomplete="off" style="margin-top:8px">
+  </div>
   <label>Datum</label>
   <input class="field" id="lgDate" type="date">
   <label>Notiz (optional)</label>
@@ -682,9 +686,10 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
     <p>Marke, Markt und Größe bleiben auch ohne Preis gespeichert.</p>
   </details>
   <details><summary>♻️ Pfand &amp; Leergut</summary>
-    <p>Pfand, den du beim Einkauf bezahlst, wird bei den Einkäufen mitgezählt. Gibst du Flaschen zurück, trägst du den Pfandbon ein: 📷 → „♻️ Leergut abgegeben“ oder Preise → Einkäufe → „＋ Leergut“.</p>
+    <p>Pfand, den du beim Einkauf bezahlst, wird bei den Einkäufen mitgezählt. Gibst du Flaschen zurück, trägst du den Pfandbon ein: 📷 → „♻️ Pfand &amp; Leergut“ oder Preise → Einkäufe → „＋ Pfand“.</p>
     <p>Der Kasten <b>♻️ Pfand</b> zeigt dann: bezahlt · zurück · <b>offen</b> – also was noch im Keller steht. Wird der Pfandbon an der Kasse verrechnet, erkennt das Einlesen des Kassenbons die Leergut-Zeile von selbst.</p>
-    <p>Leergut-Einträge stehen bei „Einzeln“ mit ♻️ und lassen sich mit ✕ löschen.</p>
+    <p><b>📥 Vorhandenes einbuchen:</b> Flaschen und Kisten, die schon im Keller stehen, ohne Einkauf erfassen – im Pfand-Fenster oben auf „📥 Einbuchen“. Mit den Knöpfen zählen (Einweg 0,25 €, Mehrweg PET 0,15 €, Glas 0,08 €, Kasten 1,50 €) oder den Betrag direkt eintragen.</p>
+    <p>Diese Einträge stehen bei „Einzeln“ mit ♻️ bzw. 📥 und lassen sich mit ✕ löschen.</p>
   </details>
   <details><summary>📈 Preisverlauf &amp; Einkäufe</summary>
     <p><b>Preise → Verlauf:</b> Alle Preise je Artikel (Sorten als Chips). Filter nach Normal / Angebot / App mit günstigstem, Durchschnitts- und teuerstem Preis, Entwicklung je Markt mit ▲ teurer / ▼ günstiger.</p>
@@ -813,7 +818,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.50';
+const APP_VERSION = 'v1.51';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -3291,7 +3296,7 @@ function priceChart(list, shops) {
 /* ---------- Auswertung der Einkäufe ---------- */
 let priceView = 'verlauf';
 const pf = { year: null, month: '', day: '', shop: '', cat: '', group: 'artikel' };
-function isLg(p) { return !!p && p.kind === 'leergut'; }   // ♻️ Leergut-Rückgabe (Pfandbon) – steht bei den Einkäufen mit negativem Pfand
+function isLg(p) { return !!p && (p.kind === 'leergut' || p.kind === 'pfand'); }   // ♻️ Leergut zurück (negativ) bzw. 📥 vorhandenes Pfand eingebucht (positiv) – keine Artikel; ♻️ Leergut-Rückgabe (Pfandbon) – steht bei den Einkäufen mit negativem Pfand
 const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 function priceViewSeg() {
   return `<div class="seg" style="display:flex;margin-bottom:6px">${[['verlauf', '📈 Preisverlauf'], ['einkauf', '🧾 Einkäufe']].map(([v, l]) => `<button data-pview="${v}" class="${v === priceView ? 'on' : ''}" style="flex:1">${l}</button>`).join('')}</div>`;
@@ -3341,18 +3346,19 @@ function renderPurchases() {
   const rowsAll = filteredPurchases().sort((a, b) => b.date.localeCompare(a.date) || a.name.localeCompare(b.name, 'de'));
   const rows = rowsAll.filter(p => !isLg(p)), lgRows = rowsAll.filter(isLg);
   const sum = rows.reduce((t, p) => t + pTotal(p), 0), dep = rows.reduce((t, p) => t + pDep(p), 0);
-  const back = 0 - lgRows.reduce((t, p) => t + pDep(p), 0);
+  const back = 0 - lgRows.filter(p => p.kind === 'leergut').reduce((t, p) => t + pDep(p), 0), stockIn = lgRows.filter(p => p.kind === 'pfand').reduce((t, p) => t + pDep(p), 0);
   const noPrice = rows.filter(p => p.price == null).length, est = rows.some(p => p.est);
   const days = new Set(rows.map(p => p.date + '|' + p.shop)).size;
   html += `<div class="stats">
-    <div class="stat"><small>Ausgaben</small><b>${est ? '≈ ' : ''}${esc(fmtPrice(sum))}</b><small>${dep || back ? (Math.abs(dep - back) < 0.005 ? 'Pfand ausgeglichen' : (dep - back > 0 ? '+ ' : '− ') + esc(fmtPrice(Math.abs(dep - back))) + ' Pfand') : noPrice ? noPrice + ' ohne Preis' : '&nbsp;'}</small></div>
+    <div class="stat"><small>Ausgaben</small><b>${est ? '≈ ' : ''}${esc(fmtPrice(sum))}</b><small>${dep ? '+ ' + esc(fmtPrice(dep)) + ' Pfand' : noPrice ? noPrice + ' ohne Preis' : '&nbsp;'}</small></div>
     <div class="stat"><small>Menge</small><b>${rows.reduce((t, p) => t + (p.n || 1), 0)}×</b><small>${rows.length} Position${rows.length === 1 ? '' : 'en'}</small></div>
     <div class="stat"><small>Einkäufe</small><b>${days}</b><small>${days ? 'Ø ' + esc(fmtPrice(sum / days)) : '&nbsp;'}</small></div>
   </div>`;
   // ♻️ Pfand: bezahlt – zurück = offen; dazu der Gesamtstand über alle Einkäufe
-  const allDep = all.filter(p => !isLg(p)).reduce((t, p) => t + pDep(p), 0), allBack = 0 - all.filter(isLg).reduce((t, p) => t + pDep(p), 0);
+  const allOpen = pfandOpen(all), allAny = all.some(p => pDep(p));
+  const open = dep + stockIn - back;
   const filtered = pf.year || pf.month || pf.day || pf.shop || pf.cat;
-  html += `<div class="pfandbox"><div><b>♻️ Pfand</b>${dep || back ? `<span>bezahlt ${esc(fmtPrice(dep))} · zurück ${esc(fmtPrice(back))} · <b>${dep - back >= 0 ? 'offen' : 'mehr zurück'} ${esc(fmtPrice(Math.abs(dep - back)))}</b></span>` : '<span>in dieser Auswahl kein Pfand</span>'}${filtered && (allDep || allBack) ? `<span class="pmeta">Insgesamt noch offen: ${esc(fmtPrice(Math.max(0, allDep - allBack)))}</span>` : ''}</div><button class="btn" data-act="leergut">＋ Leergut</button></div>`;
+  html += `<div class="pfandbox"><div><b>♻️ Pfand</b>${dep || back || stockIn ? `<span>bezahlt ${esc(fmtPrice(dep))}${stockIn ? ' · eingebucht ' + esc(fmtPrice(stockIn)) : ''} · zurück ${esc(fmtPrice(back))} · <b>${open >= -0.004 ? 'offen' : 'mehr zurück'} ${esc(fmtPrice(Math.abs(open)))}</b></span>` : '<span>in dieser Auswahl kein Pfand</span>'}${filtered && allAny ? `<span class="pmeta">Insgesamt noch offen: ${esc(fmtPrice(Math.max(0, allOpen)))}</span>` : ''}</div><button class="btn" data-act="leergut">＋ Pfand</button></div>`;
   html += `<div class="seg pgroups" style="display:flex;margin-top:10px">${[['artikel', 'Artikel'], ['tag', 'Tag'], ['monat', 'Monat'], ['markt', 'Markt'], ['bereich', 'Bereich'], ['einzeln', 'Einzeln']].map(([v, l]) => `<button data-pgroup="${v}" class="${v === pf.group ? 'on' : ''}" style="flex:1;padding:6px 2px">${l}</button>`).join('')}</div>`;
   if (!rows.length && !(pf.group === 'einzeln' && lgRows.length)) html += '<div class="empty">Keine Einkäufe für diese Auswahl.</div>';
   else if (pf.group === 'einzeln') {
@@ -3378,29 +3384,60 @@ function renderPurchases() {
   $('priceMain').innerHTML = html;
 }
 function fmtDayLong(s) { return new Date(s + 'T12:00:00').toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' }); }
+function pfandOpen(list) { return list.reduce((t, p) => t + pDep(p), 0); }   // bezahlt + eingebucht − zurück
 function lgRowHtml(p) {
-  return `<div class="prow lgrow"><span class="pd">${esc(fmtDay(p.date))}${p.date.slice(0, 4) !== todayStr().slice(0, 4) ? p.date.slice(2, 4) : ''}</span><span class="ps">♻️ Leergut zurück<span class="pmeta">${esc([p.shop, p.detail].filter(Boolean).join(' · '))}</span></span><span class="pp lgamt">− ${esc(fmtPrice(-pDep(p)))}</span><button class="pdel" data-pudel="${esc(p.id)}" aria-label="löschen">✕</button></div>`;
+  const stock = p.kind === 'pfand';
+  return `<div class="prow lgrow"><span class="pd">${esc(fmtDay(p.date))}${p.date.slice(0, 4) !== todayStr().slice(0, 4) ? p.date.slice(2, 4) : ''}</span><span class="ps">${stock ? '📥 Pfand-Bestand eingebucht' : '♻️ Leergut zurück'}<span class="pmeta">${esc([p.shop === 'ohne Markt' ? '' : p.shop, p.detail].filter(Boolean).join(' · '))}</span></span><span class="pp ${stock ? '' : 'lgamt'}">${stock ? '+ ' + esc(fmtPrice(pDep(p))) : '− ' + esc(fmtPrice(-pDep(p)))}</span><button class="pdel" data-pudel="${esc(p.id)}" aria-label="löschen">✕</button></div>`;
 }
 /* ♻️ Leergut abgeben: Pfandbon-Betrag wird vom bezahlten Pfand abgezogen */
-function saveLeergut(amount, shop, date, note, id) {
+function saveLeergut(amount, shop, date, note, id, stock) {
   if (!(amount > 0)) return null;
   data.purchases = data.purchases || {};
-  id = id || 'lg-' + date + '-' + Date.now().toString(36);
-  data.purchases[id] = { id, kind: 'leergut', date, name: 'Leergut', detail: note || '', cat: 'getraenk', qty: 1, unit: '', n: 1,
-    shop: shop || 'ohne Markt', price: null, est: false, type: 'normal', pack: null, deposit: -Math.round(amount * 100) / 100, updatedAt: now() };
+  id = id || (stock ? 'pb-' : 'lg-') + date + '-' + Date.now().toString(36);
+  data.purchases[id] = { id, kind: stock ? 'pfand' : 'leergut', date, name: stock ? 'Pfand-Bestand' : 'Leergut', detail: note || '', cat: 'getraenk', qty: 1, unit: '', n: 1,
+    shop: shop || 'ohne Markt', price: null, est: false, type: 'normal', pack: null, deposit: (stock ? 1 : -1) * Math.round(amount * 100) / 100, updatedAt: now() };
   return data.purchases[id];
 }
-function openLeergut() {
+let lgMode = 'back', lgTally = {}, lgNoteAuto = true;
+const LG_QUICK = [['einweg', 'Einweg', 0.25], ['pet', 'Mehrweg PET', 0.15], ['glas', 'Glas', 0.08], ['kasten', 'Kasten', 1.5]];
+function openLeergut(mode) {
   closeSheets();
+  lgTally = {}; lgNoteAuto = true;
   $('lgAmount').value = ''; $('lgNote').value = ''; $('lgDate').value = todayStr();
   const last = purchaseList().filter(p => !isLg(p) && pDep(p) > 0).sort((a, b) => b.date.localeCompare(a.date))[0];
-  $('lgShop').value = last && last.shop !== 'ohne Markt' ? last.shop : '';
-  renderLgShops();
-  const all = purchaseList(), open = all.filter(p => !isLg(p)).reduce((t, p) => t + pDep(p), 0) + all.filter(isLg).reduce((t, p) => t + pDep(p), 0);
-  $('lgOpen').textContent = open > 0 ? 'Noch offen: ' + fmtPrice(open) + ' Pfand (alle Einkäufe)' : '';
+  $('lgShop').dataset.last = last && last.shop !== 'ohne Markt' ? last.shop : '';
+  setLgMode(mode || 'back');
+  const open = pfandOpen(purchaseList());
+  $('lgOpen').textContent = open > 0.004 ? 'Noch offen: ' + fmtPrice(open) + ' Pfand' : '';
   openSheet('lgSheet');
-  setTimeout(() => $('lgAmount').focus(), 250);
 }
+function setLgMode(m) {
+  lgMode = m;
+  const stock = m === 'stock';
+  Array.prototype.forEach.call($('lgMode').querySelectorAll('button'), b => b.classList.toggle('on', b.dataset.lgm === m));
+  $('lgTitle').textContent = stock ? '📥 Vorhandenes Pfand einbuchen' : '♻️ Leergut abgegeben';
+  $('lgHint').textContent = stock ? 'Flaschen und Kisten, die schon im Keller stehen – ohne Einkauf. Zählen mit den Knöpfen oder den Betrag direkt eintragen.' : 'Betrag vom Pfandbon eintragen. Er wird vom Pfand abgezogen – so siehst du, was noch „im Keller steht“.';
+  $('lgAmtLabel').textContent = stock ? 'Pfandwert' : 'Betrag (Pfandbon)';
+  $('lgSave').textContent = stock ? 'Einbuchen' : 'Gutschreiben';
+  $('lgShop').value = stock ? '' : ($('lgShop').dataset.last || '');
+  $('lgShopBox').style.display = stock ? 'none' : '';
+  renderLgShops(); renderLgQuick();
+}
+function renderLgQuick() {
+  $('lgQuick').innerHTML = LG_QUICK.map(([k, l, v]) => `<button type="button" class="chip" data-lgq="${k}">＋ ${l} ${fmtPrice(v)}${lgTally[k] ? ` <b>${lgTally[k]}×</b>` : ''}</button>`).join('')
+    + (Object.keys(lgTally).length ? '<button type="button" class="chip" data-lgq="reset">↺ neu zählen</button>' : '');
+}
+$('lgMode').addEventListener('click', e => { const b = e.target.closest('[data-lgm]'); if (b) setLgMode(b.dataset.lgm); });
+$('lgQuick').addEventListener('click', e => {
+  const b = e.target.closest('[data-lgq]'); if (!b) return;
+  if (b.dataset.lgq === 'reset') lgTally = {};
+  else lgTally[b.dataset.lgq] = (lgTally[b.dataset.lgq] || 0) + 1;
+  const sum = LG_QUICK.reduce((t, q) => t + (lgTally[q[0]] || 0) * q[2], 0);
+  $('lgAmount').value = sum ? fmtPriceInput(sum) : '';
+  if (lgNoteAuto) $('lgNote').value = LG_QUICK.filter(q => lgTally[q[0]]).map(q => lgTally[q[0]] + '× ' + q[1]).join(', ');
+  renderLgQuick();
+});
+$('lgNote').addEventListener('input', () => { lgNoteAuto = !$('lgNote').value; });
 function renderLgShops() {
   const cur = norm($('lgShop').value);
   const used = [...new Set(purchaseList().map(p => p.shop).filter(x => x && x !== 'ohne Markt'))];
@@ -3411,17 +3448,18 @@ $('lgShops').addEventListener('click', e => { const b = e.target.closest('[data-
 $('lgShop').addEventListener('input', renderLgShops);
 $('lgSave').onclick = () => {
   const amount = parsePrice($('lgAmount').value);
-  if (!(amount > 0)) { toast('Bitte den Betrag vom Pfandbon eintragen'); $('lgAmount').focus(); return; }
-  const p = saveLeergut(amount, $('lgShop').value.trim(), $('lgDate').value || todayStr(), $('lgNote').value.trim());
+  const stock = lgMode === 'stock';
+  if (!(amount > 0)) { toast(stock ? 'Bitte den Pfandwert eintragen oder zählen' : 'Bitte den Betrag vom Pfandbon eintragen'); $('lgAmount').focus(); return; }
+  const p = saveLeergut(amount, $('lgShop').value.trim(), $('lgDate').value || todayStr(), $('lgNote').value.trim(), null, stock);
   closeSheets(); commit();
-  toast('♻️ Leergut ' + fmtPrice(amount) + ' gutgeschrieben', () => { p.deleted = true; p.updatedAt = now(); commit(); });
+  toast(stock ? '📥 Pfand ' + fmtPrice(amount) + ' eingebucht' : '♻️ Leergut ' + fmtPrice(amount) + ' gutgeschrieben', () => { p.deleted = true; p.updatedAt = now(); commit(); });
 };
 function exportPurchasesCsv() {
   const rows = filteredPurchases().sort((a, b) => a.date.localeCompare(b.date));
   const num = v => v == null ? '' : String(Math.round(v * 100) / 100).replace('.', ',');
   const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
   const lines = [['Datum', 'Artikel', 'Bezeichnung', 'Bereich', 'Markt', 'Menge', 'Einheit', 'Anzahl', 'Einzelpreis', 'Summe', 'Pfand', 'Preisart', 'geschätzt'].join(';'),
-    ...rows.map(p => [p.date.split('-').reverse().join('.'), q(p.name), q(p.detail), q(catName(p.cat).replace(/^\S+\s/, '')), q(p.shop), p.qty, q(p.unit), p.n, num(p.price), num(p.price != null ? pTotal(p) : null), num(pDep(p) || null), isLg(p) ? 'Leergut' : p.type === 'normal' ? 'Normal' : p.type === 'app' ? 'App' : 'Angebot', p.est ? 'ja' : ''].join(';'))];
+    ...rows.map(p => [p.date.split('-').reverse().join('.'), q(p.name), q(p.detail), q(catName(p.cat).replace(/^\S+\s/, '')), q(p.shop), p.qty, q(p.unit), p.n, num(p.price), num(p.price != null ? pTotal(p) : null), num(pDep(p) || null), p.kind === 'pfand' ? 'Pfand-Bestand' : isLg(p) ? 'Leergut' : p.type === 'normal' ? 'Normal' : p.type === 'app' ? 'App' : 'Angebot', p.est ? 'ja' : ''].join(';'))];
   const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = 'einkaeufe' + (pf.day ? '-' + pf.day : (pf.year ? '-' + pf.year : '') + (pf.month ? '-' + pf.month : '')) + '.csv';
@@ -4489,6 +4527,12 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.51', '28.10.2026', [
+    'Neu: 📥 Vorhandenes Pfand einbuchen – Flaschen und Kisten im Keller ohne Einkauf erfassen',
+    'Zähl-Knöpfe: Einweg 0,25 €, Mehrweg PET 0,15 €, Glas 0,08 €, Kasten 1,50 € – Summe und Notiz füllen sich von selbst',
+    'Pfand-Kasten zeigt: bezahlt · eingebucht · zurück · offen',
+    'Knopf heißt jetzt „＋ Pfand“, im 📷-Menü „♻️ Pfand & Leergut“'
+  ]],
   ['v1.50', '28.10.2026', [
     'Einkäufe: Neuer Filter „Tag“ – einzelnen Einkaufstag wählen, z. B. zum Kontrollieren gegen den Kassenbon',
     'Einkäufe: Neue Gruppierung „Tag“ – jeder Einkauf (Tag + Markt) mit Summe und Pfand; antippen zeigt die Positionen',
