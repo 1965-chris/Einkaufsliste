@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:54:52.527Z",
+ "savedAt": "2026-10-28T17:55:46.076Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1532,6 +1532,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793210089681
+  },
+  {
+   "id": "mvsf0pxvamj4vo",
+   "name": "Hackfleisch",
+   "detail": "gemischt",
+   "qty": 500,
+   "unit": "g",
+   "cat": "fleisch",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 4.99,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.5,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793210143315
   }
  ],
  "favs": {
@@ -2035,6 +2062,14 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "last": 1793210089681
+  },
+  "hackfleisch|gemischt": {
+   "count": 1,
+   "name": "Hackfleisch",
+   "detail": "gemischt",
+   "cat": "fleisch",
+   "unit": "g",
+   "last": 1793210143315
   }
  },
  "stars": {
@@ -4419,6 +4454,24 @@
    },
    "deposit": null,
    "updatedAt": 1793210089681
+  },
+  "hackfleisch|gemischt|aldi|2026-10-28": {
+   "id": "hackfleisch|gemischt|aldi|2026-10-28",
+   "key": "hackfleisch|gemischt",
+   "name": "Hackfleisch",
+   "detail": "gemischt",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 4.99,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210143315
   }
  },
  "brands": {
@@ -6724,6 +6777,20 @@
    },
    "deposit": null,
    "updatedAt": 1793210089681
+  },
+  "hackfleisch|gemischt": {
+   "name": "Hackfleisch",
+   "detail": "gemischt",
+   "cat": "fleisch",
+   "unit": "g",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210143314
   }
  },
  "devices": {
