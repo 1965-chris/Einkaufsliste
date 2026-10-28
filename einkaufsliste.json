@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T11:52:19.211Z",
+ "savedAt": "2026-10-28T11:52:24.338Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1030,8 +1030,9 @@
    "note": "",
    "offer": null,
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793020039490
+   "checked": true,
+   "updatedAt": 1793188339893,
+   "checkedAt": 1793188339893
   },
   {
    "id": "mvp9uxvsub0ymv",
@@ -1068,8 +1069,9 @@
    "note": "",
    "offer": null,
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793021031378
+   "checked": true,
+   "updatedAt": 1793188341307,
+   "checkedAt": 1793188341307
   },
   {
    "id": "mvpagumziffne7",
