@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:12:17.143Z",
+ "savedAt": "2026-10-28T18:12:53.013Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -4668,9 +4668,13 @@
    "price": 3.59,
    "type": "normal",
    "special": false,
-   "pack": null,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
    "deposit": null,
-   "updatedAt": 1793211098614
+   "updatedAt": 1793211170319
   }
  },
  "brands": {
@@ -7418,9 +7422,13 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "shop": "ALDI",
-   "pack": null,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
    "deposit": null,
-   "updatedAt": 1793211098613
+   "updatedAt": 1793211170298
   }
  },
  "devices": {
