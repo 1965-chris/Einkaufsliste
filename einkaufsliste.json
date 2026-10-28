@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:03:52.648Z",
+ "savedAt": "2026-10-28T18:04:24.358Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -962,8 +962,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210302348,
-   "checkedAt": 1793188327072
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793188327072,
+   "deleted": true
   },
   {
    "id": "mvp9s4qm69a6c3",
@@ -990,8 +991,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793188322145,
-   "checkedAt": 1793188322145
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793188322145,
+   "deleted": true
   },
   {
    "id": "mvp9sx2a00y4mj",
@@ -1017,8 +1019,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793188336660,
-   "checkedAt": 1793188336660
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793188336660,
+   "deleted": true
   },
   {
    "id": "mvp9u4w2ngvxyb",
@@ -1045,8 +1048,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210428789,
-   "checkedAt": 1793188339893
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793188339893,
+   "deleted": true
   },
   {
    "id": "mvp9uxvsub0ymv",
@@ -1098,8 +1102,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793208929176,
-   "checkedAt": 1793188341307
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793188341307,
+   "deleted": true
   },
   {
    "id": "mvpagumziffne7",
@@ -1126,8 +1131,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210279023,
-   "checkedAt": 1793188329106
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793188329106,
+   "deleted": true
   },
   {
    "id": "mvpaj7o09kv4u7",
@@ -1318,8 +1324,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210630019,
-   "checkedAt": 1793210630019
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210630019,
+   "deleted": true
   },
   {
    "id": "mvsefikwjhovcy",
@@ -1342,8 +1349,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210627218,
-   "checkedAt": 1793210627218
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210627218,
+   "deleted": true
   },
   {
    "id": "mvsegtcfrizpij",
@@ -1366,8 +1374,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210621068,
-   "checkedAt": 1793210621068
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210621068,
+   "deleted": true
   },
   {
    "id": "mvseibao89os63",
@@ -1390,8 +1399,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210625838,
-   "checkedAt": 1793210625838
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210625838,
+   "deleted": true
   },
   {
    "id": "mvsek7ps6fj525",
@@ -1418,8 +1428,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210621680,
-   "checkedAt": 1793210621680
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210621680,
+   "deleted": true
   },
   {
    "id": "mvsenuf4evszhg",
@@ -1446,8 +1457,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210627997,
-   "checkedAt": 1793210627997
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210627997,
+   "deleted": true
   },
   {
    "id": "mvsepej2d1kwwi",
@@ -1474,8 +1486,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210624528,
-   "checkedAt": 1793210624528
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210624528,
+   "deleted": true
   },
   {
    "id": "mvseqdcrm4a8no",
@@ -1502,8 +1515,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210628710,
-   "checkedAt": 1793210628710
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210628710,
+   "deleted": true
   },
   {
    "id": "mvsexp6arirnam",
@@ -1530,8 +1544,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210623305,
-   "checkedAt": 1793210623305
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210623305,
+   "deleted": true
   },
   {
    "id": "mvsezkk1mmjxrk",
@@ -1558,8 +1573,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210625176,
-   "checkedAt": 1793210625176
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210625176,
+   "deleted": true
   },
   {
    "id": "mvsf0pxvamj4vo",
@@ -1586,8 +1602,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210623949,
-   "checkedAt": 1793210623949
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210623949,
+   "deleted": true
   },
   {
    "id": "mvsfasex5ewkth",
@@ -1614,8 +1631,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793210622489,
-   "checkedAt": 1793210622489
+   "updatedAt": 1793210661861,
+   "checkedAt": 1793210622489,
+   "deleted": true
   }
  ],
  "favs": {
@@ -5777,6 +5795,371 @@
    },
    "deposit": null,
    "updatedAt": 1793131276604
+  },
+  "k-mvp9rw6kk3noim": {
+   "id": "k-mvp9rw6kk3noim",
+   "date": "2026-10-28",
+   "name": "Frischei-Waffeln",
+   "detail": "meine Küchen Welt Frischei Waffeln",
+   "cat": "brot",
+   "qty": 2,
+   "unit": "Pck.",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 1.59,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvp9s4qm69a6c3": {
+   "id": "k-mvp9s4qm69a6c3",
+   "date": "2026-10-28",
+   "name": "Kartoffeln",
+   "detail": "festkochend",
+   "cat": "obst",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 2.49,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 2.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvp9sx2a00y4mj": {
+   "id": "k-mvp9sx2a00y4mj",
+   "date": "2026-10-28",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "cat": "vorrat",
+   "qty": 10,
+   "unit": "Pck.",
+   "n": 10,
+   "shop": "ALDI",
+   "price": 1.09,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 1
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvp9u4w2ngvxyb": {
+   "id": "k-mvp9u4w2ngvxyb",
+   "date": "2026-10-28",
+   "name": "Paniermehl",
+   "detail": "Goldähren",
+   "cat": "vorrat",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.69,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvpaezc83fzb9f": {
+   "id": "k-mvpaezc83fzb9f",
+   "date": "2026-10-28",
+   "name": "Salz",
+   "detail": "Bad Reichenhall Jodsalz",
+   "cat": "vorrat",
+   "qty": 2,
+   "unit": "Pck.",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 0.85,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvpagumziffne7": {
+   "id": "k-mvpagumziffne7",
+   "date": "2026-10-28",
+   "name": "Mettenden",
+   "detail": "Willms Schinkenmettwurst",
+   "cat": "fleisch",
+   "qty": 2,
+   "unit": "Pck.",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 3.59,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvse88yvsj3nxn": {
+   "id": "k-mvse88yvsj3nxn",
+   "date": "2026-10-28",
+   "name": "Toilettenpapier",
+   "detail": "Kokett 4-lagig",
+   "cat": "drogerie",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 4.85,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 10,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvsefikwjhovcy": {
+   "id": "k-mvsefikwjhovcy",
+   "date": "2026-10-28",
+   "name": "Mais",
+   "detail": "",
+   "cat": "vorrat",
+   "qty": 1,
+   "unit": "Dose",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 0.89,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvsegtcfrizpij": {
+   "id": "k-mvsegtcfrizpij",
+   "date": "2026-10-28",
+   "name": "Knoblauch",
+   "detail": "Frisch",
+   "cat": "obst",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.29,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvseibao89os63": {
+   "id": "k-mvseibao89os63",
+   "date": "2026-10-28",
+   "name": "Kidney Bohnen",
+   "detail": "",
+   "cat": "vorrat",
+   "qty": 2,
+   "unit": "Dose",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 0.69,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvsek7ps6fj525": {
+   "id": "k-mvsek7ps6fj525",
+   "date": "2026-10-28",
+   "name": "Sahneheringsfilet",
+   "detail": "Nadler",
+   "cat": "kuehl",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 2.79,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvsenuf4evszhg": {
+   "id": "k-mvsenuf4evszhg",
+   "date": "2026-10-28",
+   "name": "Tomatenmark",
+   "detail": "Kings Crown",
+   "cat": "vorrat",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 0.89,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvsepej2d1kwwi": {
+   "id": "k-mvsepej2d1kwwi",
+   "date": "2026-10-28",
+   "name": "Salami",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "cat": "fleisch",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.39,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvseqdcrm4a8no": {
+   "id": "k-mvseqdcrm4a8no",
+   "date": "2026-10-28",
+   "name": "Schokolade",
+   "detail": "Baumkuchspitzen Vollmilchschokolade",
+   "cat": "suess",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 2.79,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvsexp6arirnam": {
+   "id": "k-mvsexp6arirnam",
+   "date": "2026-10-28",
+   "name": "Geflügel-Paprikalyoner",
+   "detail": "Güldenhof",
+   "cat": "fleisch",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 0.89,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvsezkk1mmjxrk": {
+   "id": "k-mvsezkk1mmjxrk",
+   "date": "2026-10-28",
+   "name": "Schinkenlyoner",
+   "detail": "Güldenhof",
+   "cat": "fleisch",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 0.89,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvsf0pxvamj4vo": {
+   "id": "k-mvsf0pxvamj4vo",
+   "date": "2026-10-28",
+   "name": "Hackfleisch",
+   "detail": "gemischt",
+   "cat": "fleisch",
+   "qty": 500,
+   "unit": "g",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 4.99,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
+  },
+  "k-mvsfasex5ewkth": {
+   "id": "k-mvsfasex5ewkth",
+   "date": "2026-10-28",
+   "name": "Steinofen Baquette",
+   "detail": "Goldähren",
+   "cat": "brot",
+   "qty": 2,
+   "unit": "",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 1.19,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210661861
   }
  },
  "bonmap": {
