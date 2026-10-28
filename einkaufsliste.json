@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:41:27.505Z",
+ "savedAt": "2026-10-28T17:42:55.998Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1370,6 +1370,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793209284528
+  },
+  {
+   "id": "mvsek7ps6fj525",
+   "name": "Sahneheringsfilet",
+   "detail": "Nadler",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "kuehl",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 2.79,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.5,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793209373200
   }
  ],
  "favs": {
@@ -1825,6 +1852,14 @@
    "cat": "vorrat",
    "unit": "Dose",
    "last": 1793209284529
+  },
+  "sahneheringsfilet|nadler": {
+   "count": 1,
+   "name": "Sahneheringsfilet",
+   "detail": "Nadler",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "last": 1793209373200
   }
  },
  "stars": {
@@ -2641,6 +2676,13 @@
    "cat": "vorrat",
    "unit": "Dose",
    "updatedAt": 1793209284529
+  },
+  "sahneheringsfilet": {
+   "name": "Sahneheringsfilet",
+   "variants": [],
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "updatedAt": 1793209373200
   }
  },
  "prices": {
@@ -4081,6 +4123,24 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793209284528
+  },
+  "sahneheringsfilet|nadler|aldi|2026-10-28": {
+   "id": "sahneheringsfilet|nadler|aldi|2026-10-28",
+   "key": "sahneheringsfilet|nadler",
+   "name": "Sahneheringsfilet",
+   "detail": "Nadler",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 2.79,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793209373199
   }
  },
  "brands": {
@@ -4260,6 +4320,16 @@
     "kuehl": 1
    },
    "updatedAt": 1793209073246
+  },
+  "nadler": {
+   "name": "Nadler",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "kuehl": 1
+   },
+   "updatedAt": 1793209373199
   }
  },
  "purchases": {
@@ -6310,6 +6380,20 @@
    "pack": null,
    "deposit": null,
    "updatedAt": 1793209284528
+  },
+  "sahneheringsfilet|nadler": {
+   "name": "Sahneheringsfilet",
+   "detail": "Nadler",
+   "cat": "kuehl",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793209373199
   }
  },
  "devices": {
