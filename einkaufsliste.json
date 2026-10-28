@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:58:46.900Z",
+ "savedAt": "2026-10-28T18:00:31.522Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1023,15 +1023,29 @@
   {
    "id": "mvp9u4w2ngvxyb",
    "name": "Paniermehl",
-   "detail": "",
+   "detail": "Goldähren",
    "qty": 1,
    "unit": "Pck.",
    "cat": "vorrat",
    "note": "",
-   "offer": null,
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.69,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 1,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793188339893,
+   "updatedAt": 1793210428789,
    "checkedAt": 1793188339893
   },
   {
@@ -4517,6 +4531,24 @@
    },
    "deposit": null,
    "updatedAt": 1793210302348
+  },
+  "paniermehl|goldähren|aldi|2026-10-28": {
+   "id": "paniermehl|goldähren|aldi|2026-10-28",
+   "key": "paniermehl|goldähren",
+   "name": "Paniermehl",
+   "detail": "Goldähren",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 1.69,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210428789
   }
  },
  "brands": {
@@ -4631,9 +4663,10 @@
     "ALDI": 1
    },
    "cats": {
-    "brot": 1
+    "brot": 1,
+    "vorrat": 1
    },
-   "updatedAt": 1792307251776
+   "updatedAt": 1793210428789
   },
   "gut drei eichen": {
    "name": "Gut Drei Eichen",
@@ -6860,6 +6893,20 @@
    },
    "deposit": null,
    "updatedAt": 1793210279023
+  },
+  "paniermehl|goldähren": {
+   "name": "Paniermehl",
+   "detail": "Goldähren",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210428789
   }
  },
  "devices": {
