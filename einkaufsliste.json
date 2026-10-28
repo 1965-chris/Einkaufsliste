@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:01:33.914Z",
+ "savedAt": "2026-10-28T18:03:34.083Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1577,6 +1577,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793210143315
+  },
+  {
+   "id": "mvsfasex5ewkth",
+   "name": "Steinofen Baquette",
+   "detail": "Goldähren",
+   "qty": 2,
+   "unit": "",
+   "cat": "brot",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.19,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.25,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793210613081
   }
  ],
  "favs": {
@@ -2088,6 +2115,14 @@
    "cat": "fleisch",
    "unit": "g",
    "last": 1793210143315
+  },
+  "steinofen baquette|goldähren": {
+   "count": 1,
+   "name": "Steinofen Baquette",
+   "detail": "Goldähren",
+   "cat": "brot",
+   "unit": "",
+   "last": 1793210613081
   }
  },
  "stars": {
@@ -2929,6 +2964,13 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "updatedAt": 1793210089682
+  },
+  "steinofen baquette": {
+   "name": "Steinofen Baquette",
+   "variants": [],
+   "cat": "brot",
+   "unit": "",
+   "updatedAt": 1793210613082
   }
  },
  "prices": {
@@ -4549,6 +4591,24 @@
    },
    "deposit": null,
    "updatedAt": 1793210428789
+  },
+  "steinofen baquette|goldähren|aldi|2026-10-28": {
+   "id": "steinofen baquette|goldähren|aldi|2026-10-28",
+   "key": "steinofen baquette|goldähren",
+   "name": "Steinofen Baquette",
+   "detail": "Goldähren",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 1.19,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210613080
   }
  },
  "brands": {
@@ -6907,6 +6967,20 @@
    },
    "deposit": null,
    "updatedAt": 1793210428789
+  },
+  "steinofen baquette|goldähren": {
+   "name": "Steinofen Baquette",
+   "detail": "Goldähren",
+   "cat": "brot",
+   "unit": "",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.25,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793210613080
   }
  },
  "devices": {
