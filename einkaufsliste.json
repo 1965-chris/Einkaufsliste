@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:33:37.464Z",
+ "savedAt": "2026-10-28T17:35:15.811Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1062,15 +1062,29 @@
   {
    "id": "mvpaezc83fzb9f",
    "name": "Salz",
-   "detail": "Jodsalz",
+   "detail": "Bad Reichenhall Jodsalz",
    "qty": 1,
    "unit": "Pck.",
    "cat": "vorrat",
    "note": "",
-   "offer": null,
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.85,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.5,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793188341307,
+   "updatedAt": 1793208912987,
    "checkedAt": 1793188341307
   },
   {
@@ -3833,6 +3847,24 @@
    },
    "deposit": null,
    "updatedAt": 1793208814951
+  },
+  "salz|bad reichenhall jodsalz|aldi|2026-10-28": {
+   "id": "salz|bad reichenhall jodsalz|aldi|2026-10-28",
+   "key": "salz|bad reichenhall jodsalz",
+   "name": "Salz",
+   "detail": "Bad Reichenhall Jodsalz",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 0.85,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793208912987
   }
  },
  "brands": {
@@ -3992,6 +4024,16 @@
     "kaffee": 1
    },
    "updatedAt": 1793130996308
+  },
+  "bad reichenhall": {
+   "name": "Bad Reichenhall",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "vorrat": 1
+   },
+   "updatedAt": 1793208912987
   }
  },
  "purchases": {
@@ -5984,6 +6026,20 @@
    },
    "deposit": null,
    "updatedAt": 1793208814950
+  },
+  "salz|bad reichenhall jodsalz": {
+   "name": "Salz",
+   "detail": "Bad Reichenhall Jodsalz",
+   "cat": "vorrat",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793208912987
   }
  },
  "devices": {
