@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T18:12:53.013Z",
+ "savedAt": "2026-10-28T18:13:08.372Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -4442,9 +4442,13 @@
    "price": 1.29,
    "type": "normal",
    "special": false,
-   "pack": null,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
    "deposit": null,
-   "updatedAt": 1793209214607
+   "updatedAt": 1793211185587
   },
   "kidney bohnen||aldi|2026-10-28": {
    "id": "kidney bohnen||aldi|2026-10-28",
@@ -7290,9 +7294,13 @@
    "cat": "obst",
    "unit": "",
    "shop": "ALDI",
-   "pack": null,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
    "deposit": null,
-   "updatedAt": 1793209214607
+   "updatedAt": 1793211185565
   },
   "kidney bohnen|": {
    "name": "Kidney Bohnen",
