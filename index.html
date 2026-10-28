@@ -625,6 +625,23 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
   </div>
 </div>
 
+<!-- Einkauf bearbeiten -->
+<div class="sheet" id="puSheet">
+  <h3>✏️ Einkauf korrigieren</h3>
+  <div class="hint" id="puTitle" style="font-weight:600;font-size:15px"></div>
+  <div class="hint" id="puEst"></div>
+  <div class="offerrow"><div style="flex:1"><label>Datum</label><input class="field" id="puDate" type="date"></div><div style="width:90px"><label>Anzahl</label><input class="field" id="puN" type="number" inputmode="numeric" min="1"></div></div>
+  <label>Markt</label><input class="field" id="puShop" placeholder="Markt" autocomplete="off">
+  <div class="offerrow"><div style="flex:1"><label>Preis je Stück</label><input class="field pricefield" id="puPrice" placeholder="€" inputmode="decimal"></div><div style="flex:1"><label>Pfand je Stück</label><input class="field pricefield" id="puDep" placeholder="kein Pfand" inputmode="decimal"></div></div>
+  <label>Preisart</label><select class="field" id="puType"><option value="normal">Normal</option><option value="angebot">Angebot</option><option value="app">App</option></select>
+  <div class="hint">Ändert nur diesen Einkauf – Artikel und Preisverlauf bleiben wie sie sind.</div>
+  <div class="row">
+    <button class="btn danger" id="puDel">Löschen</button>
+    <button class="btn primary" id="puSave">Speichern</button>
+  </div>
+  <div class="row" style="margin-top:0"><button class="btn" data-close>Abbrechen</button></div>
+</div>
+
 <!-- Leergut -->
 <div class="sheet" id="lgSheet">
   <div class="seg" id="lgMode" style="display:flex;margin-bottom:10px"><button data-lgm="back" class="on" style="flex:1">♻️ Abgegeben</button><button data-lgm="stock" style="flex:1">📥 Einbuchen</button></div>
@@ -696,6 +713,7 @@ input,textarea,select,[contenteditable],.rawtext,.log{-webkit-user-select:text;u
     <p><b>Preise → 🧾 Einkäufe:</b> Was ihr gekauft habt – filterbar nach Jahr, Monat, Bereich und Markt, gruppiert nach Artikel, Monat, Markt, Bereich oder einzeln. „CSV“ exportiert für Excel.</p>
     <p><b>Tag:</b> Unter den Filtern „Alle Tage“ einen Einkaufstag wählen – gut zum Kontrollieren gegen den Kassenbon. Die Gruppierung „Tag“ zeigt jeden Einkauf (Tag + Markt) mit Summe; antippen zeigt die einzelnen Positionen.</p>
     <p>Hatte ein Einkauf keinen Preis, wird der erste später erfasste Preis genommen (markiert mit ≈).</p>
+    <p><b>Einkauf korrigieren:</b> Bei „Einzeln“ den Artikel antippen – Preis, Pfand, Anzahl, Markt und Datum dieses Einkaufs ändern oder löschen.</p>
   </details>
   <details><summary>🏷 Angebote</summary>
     <p>Hier stehen alle aktuellen Angebots- und App-Preise mit Zeitraum. Abgelaufene werden als „abgelaufen“ markiert.</p>
@@ -818,7 +836,7 @@ if (!Array.prototype.flat) Array.prototype.flat = function () { return [].concat
 if (!Array.prototype.flatMap) Array.prototype.flatMap = function (f) { return [].concat.apply([], this.map(f)); };
 
 'use strict';
-const APP_VERSION = 'v1.51';
+const APP_VERSION = 'v1.52';
 const DATA_FILE = 'einkaufsliste.json';
 const LS_DATA = 'ekl-data', LS_CFG = 'ekl-cfg', LS_LOG = 'ekl-log', LS_TAB = 'ekl-tab';
 const TOMBSTONE_DAYS = 30;
@@ -1474,9 +1492,23 @@ function archivePurchase(it, force = true, d = data) {
 function backfillPurchases(d = data) {
   let n = 0;
   (d.items || []).forEach(i => { if (i.deleted && i.checked && archivePurchase(i, false, d)) n++; });
-  return n + fillPurchasePrices(d);
+  return n + fillPurchasePrices(d) + fixPurchaseDeposits(d);
 }
 // Einkäufe ohne Preis: den ersten danach erfassten Preis übernehmen (gleicher Markt bevorzugt)
+// Einkäufe aus der Liste mit Pfand, obwohl der Artikel (inzwischen) gar keinen Pfand hat – z. B. Preis ins Pfand-Feld getippt und später korrigiert
+function fixPurchaseDeposits(d = data) {
+  let n = 0;
+  Object.values(d.purchases || {}).filter(p => !p.deleted && !isLg(p) && !p.depOk && String(p.id).indexOf('k-') === 0 && p.deposit > 0).forEach(p => {
+    const k = keyOf(p.name, p.detail);
+    const a = (d.arts || {})[k];
+    const pe = Object.values(d.prices || {}).filter(e => !e.deleted && e.key === k).sort((x, y) => y.date.localeCompare(x.date) || (y.updatedAt || 0) - (x.updatedAt || 0))[0];
+    const live = (d.items || []).concat(Object.values(d.favs || {})).filter(i => !i.deleted && keyOf(i.name, i.detail) === k && i.offer && i.offer.deposit > 0);
+    if ((a && !a.deleted && a.deposit > 0) || (pe && pe.deposit > 0) || live.length) return;
+    if (!a && !pe) return;   // nichts bekannt – lieber so lassen
+    p.deposit = null; p.updatedAt = now(); n++;
+  });
+  return n;
+}
 function fillPurchasePrices(d = data) {
   const open = Object.values(d.purchases || {}).filter(p => !p.deleted && p.price == null && !isLg(p));
   if (!open.length) return 0;
@@ -2592,7 +2624,12 @@ function updatePackInfo(px) {
   $(px + 'Packs').querySelectorAll('[data-pack]').forEach(b => { const k = PACKS.find(x => x.id === b.dataset.pack); b.classList.toggle('sel', !!(pack && k.n === pack.n && k.size === pack.size && packUnit(k) === u)); });
   const box = $(px + 'PackBox');
   if (pack || $(px + 'Deposit').value) box.open = true;
+  // Plausibilität: Pfand gibt es fast nur bei Getränken – und nie so hoch wie der Preis
+  const dep = parsePrice($(px + 'Deposit').value), catEl = px === 's' ? $('sCat') : null;
+  const odd = dep > 0 && ((catEl && catEl.value && catEl.value !== 'getraenk') || (price != null && dep >= price && dep >= 0.5));
+  if (odd) $(px + 'PackInfo').textContent += (l ? ' · ' : '') + '⚠︎ Pfand ' + fmtPrice(dep) + ' – stimmt das? Pfand gibt es meist nur bei Getränken.';
 }
+$('sCat').addEventListener('change', () => updatePackInfo('s'));
 function parseDecimal(s) { const n = parseFloat(String(s || '').replace(',', '.')); return isNaN(n) ? null : n; }
 ['s', 'p', 'r'].forEach(px => {
   $(px + 'Type').addEventListener('click', e => {
@@ -3362,7 +3399,7 @@ function renderPurchases() {
   html += `<div class="seg pgroups" style="display:flex;margin-top:10px">${[['artikel', 'Artikel'], ['tag', 'Tag'], ['monat', 'Monat'], ['markt', 'Markt'], ['bereich', 'Bereich'], ['einzeln', 'Einzeln']].map(([v, l]) => `<button data-pgroup="${v}" class="${v === pf.group ? 'on' : ''}" style="flex:1;padding:6px 2px">${l}</button>`).join('')}</div>`;
   if (!rows.length && !(pf.group === 'einzeln' && lgRows.length)) html += '<div class="empty">Keine Einkäufe für diese Auswahl.</div>';
   else if (pf.group === 'einzeln') {
-    html += `<section class="group"><div class="list">${rowsAll.map(p => isLg(p) ? lgRowHtml(p) : `<div class="prow"><span class="pd">${esc(fmtDay(p.date))}${p.date.slice(0, 4) !== todayStr().slice(0, 4) ? p.date.slice(2, 4) : ''}</span><span class="ps">${esc(p.name)}${p.type === 'angebot' ? '<span class="sp">Angebot</span>' : p.type === 'app' ? '<span class="sp app">📱 App</span>' : ''}<span class="pmeta">${esc([p.detail, p.shop, (p.qty > 1 || p.unit) ? qtyLabel(p) : ''].filter(Boolean).join(' · '))}</span></span><span class="pp">${p.price != null ? (p.est ? '<span class="est">≈</span> ' : '') + esc(fmtPrice(pTotal(p))) : '<span class="est">–</span>'}${p.n > 1 && p.price != null ? `<span class="pmeta">${p.n} × ${esc(fmtPrice(p.price))}</span>` : ''}</span><button class="pdel" data-pudel="${esc(p.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
+    html += `<section class="group"><div class="list">${rowsAll.map(p => isLg(p) ? lgRowHtml(p) : `<div class="prow"><span class="pd">${esc(fmtDay(p.date))}${p.date.slice(0, 4) !== todayStr().slice(0, 4) ? p.date.slice(2, 4) : ''}</span><span class="ps" data-pedit="${esc(p.id)}" style="cursor:pointer">${esc(p.name)}${p.type === 'angebot' ? '<span class="sp">Angebot</span>' : p.type === 'app' ? '<span class="sp app">📱 App</span>' : ''}<span class="pmeta">${esc([p.detail, p.shop, (p.qty > 1 || p.unit) ? qtyLabel(p) : ''].filter(Boolean).join(' · '))}${pDep(p) ? ' · + ' + esc(fmtPrice(pDep(p))) + ' Pfand' : ''}</span></span><span class="pp">${p.price != null ? (p.est ? '<span class="est">≈</span> ' : '') + esc(fmtPrice(pTotal(p))) : '<span class="est">–</span>'}${p.n > 1 && p.price != null ? `<span class="pmeta">${p.n} × ${esc(fmtPrice(p.price))}</span>` : ''}</span><button class="pdel" data-pudel="${esc(p.id)}" aria-label="löschen">✕</button></div>`).join('')}</div></section>`;
   } else {
     const keyFn = { artikel: p => norm(p.name), tag: p => p.date + '|' + p.shop, monat: p => p.date.slice(0, 7), markt: p => p.shop, bereich: p => p.cat }[pf.group];
     const groups = {};
@@ -3383,6 +3420,33 @@ function renderPurchases() {
   if (rows.length) html += '<button class="btn addprice" data-act="csv">⬇︎ Als Tabelle (CSV) speichern</button>';
   $('priceMain').innerHTML = html;
 }
+/* Einen Einkauf nachträglich korrigieren (Preis, Pfand, Anzahl, Markt, Datum) */
+let puEditId = null;
+function openPurchaseEdit(id) {
+  const p = data.purchases[id]; if (!p) return;
+  puEditId = id;
+  $('puTitle').textContent = p.name + (p.detail ? ' · ' + p.detail : '');
+  $('puDate').value = p.date; $('puShop').value = p.shop === 'ohne Markt' ? '' : p.shop;
+  $('puN').value = p.n || 1;
+  $('puPrice').value = p.price != null ? fmtPriceInput(p.price) : '';
+  $('puDep').value = p.deposit > 0 ? fmtPriceInput(p.deposit) : '';
+  $('puType').value = p.type || 'normal';
+  $('puEst').textContent = p.est ? '≈ Der Preis wurde geschätzt (aus dem Preisverlauf). Mit „Speichern“ gilt er als bestätigt.' : '';
+  openSheet('puSheet');
+}
+$('puSave').onclick = () => {
+  const p = data.purchases[puEditId]; if (!p) return closeSheets();
+  const price = parsePrice($('puPrice').value), dep = parsePrice($('puDep').value), n = Math.max(1, parseInt($('puN').value, 10) || 1);
+  if (!WEIGHT_UNITS.includes(p.unit) && p.n === p.qty) p.qty = n;
+  Object.assign(p, { date: $('puDate').value || p.date, shop: $('puShop').value.trim() || 'ohne Markt', n, price, est: false, type: $('puType').value,
+    deposit: dep > 0 ? dep : null, depOk: true, updatedAt: now() });
+  closeSheets(); commit(); toast('Einkauf korrigiert');
+};
+$('puDel').onclick = () => {
+  const p = data.purchases[puEditId]; if (!p) return closeSheets();
+  p.deleted = true; p.updatedAt = now(); closeSheets(); commit();
+  toast('Einkauf gelöscht', () => { p.deleted = false; p.updatedAt = now(); commit(); });
+};
 function fmtDayLong(s) { return new Date(s + 'T12:00:00').toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' }); }
 function pfandOpen(list) { return list.reduce((t, p) => t + pDep(p), 0); }   // bezahlt + eingebucht − zurück
 function lgRowHtml(p) {
@@ -3563,6 +3627,7 @@ $('priceMain').addEventListener('click', e => {
     if (pf.group === 'tag') { const d = k.slice(0, 10); pf.year = d.slice(0, 4); pf.month = d.slice(5, 7); pf.day = d; pf.shop = k.slice(11); pf.group = 'einzeln'; renderPrices(); window.scrollTo(0, 0); return; }
     if (pf.group === 'monat') { pf.year = k.slice(0, 4); pf.month = k.slice(5, 7); pf.day = ''; } else if (pf.group === 'markt') pf.shop = k; else if (pf.group === 'bereich') pf.cat = k;
     pf.group = 'artikel'; renderPrices(); window.scrollTo(0, 0); return; }
+  const pe2 = e.target.closest('[data-pedit]'); if (pe2) { openPurchaseEdit(pe2.dataset.pedit); return; }
   const pu = e.target.closest('[data-pudel]');
   if (pu) { const en = data.purchases[pu.dataset.pudel]; if (!en) return;
     en.deleted = true; en.updatedAt = now(); commit();
@@ -4527,6 +4592,12 @@ $('rApply').onclick = () => {
 
 /* ---------- Info & Versionen ---------- */
 const CHANGELOG = [
+  ['v1.52', '28.10.2026', [
+    'Fehler behoben: Einkäufe behielten falsches Pfand, wenn es beim Artikel später korrigiert wurde (z. B. Preis versehentlich ins Pfand-Feld getippt) – wird jetzt automatisch bereinigt',
+    'Warnung im Artikel-Fenster, wenn Pfand eingetragen ist, aber der Artikel kein Getränk ist oder das Pfand so hoch wie der Preis ist',
+    'Einkäufe → Einzeln: Artikel antippen zum Korrigieren (Preis, Pfand, Anzahl, Markt, Datum) oder Löschen',
+    'Bei „Einzeln“ steht das Pfand jetzt direkt an der Position'
+  ]],
   ['v1.51', '28.10.2026', [
     'Neu: 📥 Vorhandenes Pfand einbuchen – Flaschen und Kisten im Keller ohne Einkauf erfassen',
     'Zähl-Knöpfe: Einweg 0,25 €, Mehrweg PET 0,15 €, Glas 0,08 €, Kasten 1,50 € – Summe und Notiz füllen sich von selbst',
