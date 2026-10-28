@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.51",
- "savedAt": "2026-10-28T19:21:31.187Z",
+ "savedAt": "2026-10-28T19:22:32.057Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -6247,6 +6247,24 @@
    },
    "deposit": null,
    "updatedAt": 1793210661861
+  },
+  "lg-2026-10-28-mvsi4ba4": {
+   "id": "lg-2026-10-28-mvsi4ba4",
+   "kind": "leergut",
+   "date": "2026-10-28",
+   "name": "Leergut",
+   "detail": "",
+   "cat": "getraenk",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "ALDI",
+   "price": null,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": -1.5,
+   "updatedAt": 1793215349790
   }
  },
  "bonmap": {
