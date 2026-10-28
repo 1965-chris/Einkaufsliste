@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.49",
- "savedAt": "2026-10-28T17:58:25.011Z",
+ "savedAt": "2026-10-28T17:58:46.900Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1356,7 +1356,7 @@
    "id": "mvseibao89os63",
    "name": "Kidney Bohnen",
    "detail": "",
-   "qty": 1,
+   "qty": 2,
    "unit": "Dose",
    "cat": "vorrat",
    "note": "",
@@ -1373,7 +1373,7 @@
    },
    "forStock": false,
    "checked": false,
-   "updatedAt": 1793209284528
+   "updatedAt": 1793210324384
   },
   {
    "id": "mvsek7ps6fj525",
@@ -6775,7 +6775,7 @@
    "shop": "ALDI",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1793209284528
+   "updatedAt": 1793210324384
   },
   "sahneheringsfilet|nadler": {
    "name": "Sahneheringsfilet",
