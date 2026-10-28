@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-10-28T19:39:38.685Z",
+ "savedAt": "2026-10-28T19:40:56.882Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -6265,6 +6265,24 @@
    "pack": null,
    "deposit": -1.5,
    "updatedAt": 1793215349790
+  },
+  "pb-2026-10-28-mvsirzm2": {
+   "id": "pb-2026-10-28-mvsirzm2",
+   "kind": "pfand",
+   "date": "2026-10-28",
+   "name": "Pfand-Bestand",
+   "detail": "",
+   "cat": "getraenk",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "ohne Markt",
+   "price": null,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": 11.74,
+   "updatedAt": 1793216454410
   }
  },
  "bonmap": {
