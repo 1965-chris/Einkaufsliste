@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-01T09:04:58.616Z",
+ "savedAt": "2026-11-01T09:14:46.986Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -7579,6 +7579,18 @@
    "version": "v1.52",
    "lastSeen": 1793523898576,
    "updatedAt": 1793523898576
+  },
+  "dmvxm39f61gaqz": {
+   "firstSeen": 1793524486932,
+   "id": "dmvxm39f61gaqz",
+   "name": "Windows-PC",
+   "model": "Windows-PC",
+   "os": "Windows",
+   "browser": "Edge",
+   "app": "Homebildschirm-App",
+   "version": "v1.52",
+   "lastSeen": 1793524486932,
+   "updatedAt": 1793524486932
   }
  },
  "artDel": {
