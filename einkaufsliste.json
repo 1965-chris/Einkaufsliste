@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:39:47.779Z",
+ "savedAt": "2026-11-02T19:44:31.119Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3126,16 +3126,18 @@
    "variants": [
     "Kassler Minutensteaks",
     "Grobe Bratwurst vom Schwein",
-    "Hackfleisch gemischt"
+    "Hackfleisch gemischt",
+    "Hackfleisch gemischt klein"
    ],
    "cat": "fleisch",
    "unit": "Pck.",
    "varAdd": {
     "kassler minutensteaks": 1792736258130,
     "grobe bratwurst vom schwein": 1792736424084,
-    "hackfleisch gemischt": 1793648157855
+    "hackfleisch gemischt": 1793648157855,
+    "hackfleisch gemischt klein": 1793648668311
    },
-   "updatedAt": 1793648157855
+   "updatedAt": 1793648668311
   },
   "sauerkraut": {
    "name": "Sauerkraut",
@@ -5344,6 +5346,24 @@
    },
    "deposit": null,
    "updatedAt": 1793648328607
+  },
+  "fleisch|meine metzgerei hackfleisch gemischt klein|aldi|2026-11-02": {
+   "id": "fleisch|meine metzgerei hackfleisch gemischt klein|aldi|2026-11-02",
+   "key": "fleisch|meine metzgerei hackfleisch gemischt klein",
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Hackfleisch gemischt klein",
+   "date": "2026-11-02",
+   "shop": "ALDI",
+   "price": 4.99,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648668312
   }
  },
  "brands": {
@@ -8353,6 +8373,20 @@
    },
    "deposit": null,
    "updatedAt": 1793648328607
+  },
+  "fleisch|meine metzgerei hackfleisch gemischt klein": {
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Hackfleisch gemischt klein",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648668311
   }
  },
  "devices": {
