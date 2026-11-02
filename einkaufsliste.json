@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:30:16.167Z",
+ "savedAt": "2026-11-02T19:32:08.473Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3053,15 +3053,16 @@
   },
   "leberwurst": {
    "name": "Leberwurst",
-   "variants": [
-    "Aldi"
-   ],
+   "variants": [],
    "cat": "fleisch",
    "unit": "",
    "varAdd": {
     "aldi": 1792735693547
    },
-   "updatedAt": 1792735693547
+   "updatedAt": 1793647925783,
+   "varDel": {
+    "aldi": 1793647925783
+   }
   },
   "steak": {
    "name": "Steak",
@@ -3172,7 +3173,8 @@
     "Schinkenlyoner",
     "Koch-Hinterschinken",
     "Geflügel-Paprikalyoner",
-    "Herzhafte Edelsalami geräuchert"
+    "Herzhafte Edelsalami geräuchert",
+    "Leberwurst"
    ],
    "cat": "fleisch",
    "unit": "Pck.",
@@ -3182,9 +3184,10 @@
     "schinkenlyoner": 1793647609134,
     "koch-hinterschinken": 1793647685597,
     "geflügel-paprikalyoner": 1793647746786,
-    "herzhafte edelsalami geräuchert": 1793647808560
+    "herzhafte edelsalami geräuchert": 1793647808560,
+    "leberwurst": 1793647925784
    },
-   "updatedAt": 1793647808560
+   "updatedAt": 1793647925784
   },
   "käse": {
    "name": "Käse",
@@ -4290,7 +4293,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792736051662
+   "updatedAt": 1793647925783,
+   "deleted": true
   },
   "rahmspinat|all seasons|aldi|2026-10-23": {
    "id": "rahmspinat|all seasons|aldi|2026-10-23",
@@ -5226,6 +5230,24 @@
    },
    "deposit": null,
    "updatedAt": 1793647808560
+  },
+  "wurst|gut drei eichen leberwurst|aldi|2026-10-23": {
+   "id": "wurst|gut drei eichen leberwurst|aldi|2026-10-23",
+   "key": "wurst|gut drei eichen leberwurst",
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Leberwurst",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 1.29,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.175,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647925783
   }
  },
  "brands": {
@@ -6976,15 +6998,15 @@
    "updatedAt": 1792687316086
   },
   "4069365678336": {
-   "name": "Leberwurst",
-   "detail": "Aldi",
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Leberwurst",
    "cat": "fleisch",
    "pack": {
     "n": 1,
     "size": 0.175,
     "u": "kg"
    },
-   "updatedAt": 1792735693546
+   "updatedAt": 1793647925783
   },
   "4069365323854": {
    "name": "Fleisch",
@@ -7503,7 +7525,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792736051646
+   "updatedAt": 1793647925783,
+   "deleted": true
   },
   "steak|meine metzgerei kassler minutensteaks": {
    "name": "Steak",
@@ -8175,6 +8198,20 @@
    },
    "deposit": null,
    "updatedAt": 1793647808560
+  },
+  "wurst|gut drei eichen leberwurst": {
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Leberwurst",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.175,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647925783
   }
  },
  "devices": {
