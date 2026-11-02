@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:29:09.690Z",
+ "savedAt": "2026-11-02T19:29:34.200Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3273,10 +3273,11 @@
    "variants": [],
    "cat": "fleisch",
    "unit": "Pck.",
-   "updatedAt": 1793647746786,
+   "updatedAt": 1793647770297,
    "varDel": {
     "güldenhof": 1793647746786
-   }
+   },
+   "deleted": true
   },
   "schinkenlyoner": {
    "name": "Schinkenlyoner",
@@ -8188,6 +8189,10 @@
   "schinkenlyoner|": {
    "ts": 1793647642610,
    "updatedAt": 1793647642610
+  },
+  "geflügel-paprikalyoner|": {
+   "ts": 1793647770297,
+   "updatedAt": 1793647770297
   }
  },
  "stock": {
