@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T20:09:48.000Z",
+ "savedAt": "2026-11-02T20:10:17.169Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1894,6 +1894,33 @@
    "updatedAt": 1793648943451,
    "checkedAt": 1793648939292,
    "deleted": true
+  },
+  {
+   "id": "mvzp0z183zqvzn",
+   "name": "Pizz",
+   "detail": "Dr. Oetker Die Offenfrische Tomate Basilikum",
+   "qty": 2,
+   "unit": "",
+   "cat": "tk",
+   "note": "",
+   "offer": {
+    "shop": "EDEKA",
+    "price": 1.99,
+    "from": "2026-10-26",
+    "until": "2026-10-31",
+    "type": "app",
+    "special": true,
+    "pack": {
+     "n": 1,
+     "size": 1,
+     "u": "st"
+    },
+    "deposit": null,
+    "regular": 3.69
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793650214492
   }
  ],
  "favs": {
@@ -2536,6 +2563,14 @@
    "cat": "brot",
    "unit": "",
    "last": 1793648871667
+  },
+  "pizz|dr. oetker die offenfrische tomate basilikum": {
+   "count": 1,
+   "name": "Pizz",
+   "detail": "Dr. Oetker Die Offenfrische Tomate Basilikum",
+   "cat": "tk",
+   "unit": "",
+   "last": 1793650214492
   }
  },
  "stars": {
@@ -3466,6 +3501,18 @@
     "suppengrün": 1793647326244
    },
    "updatedAt": 1793647326244
+  },
+  "pizz": {
+   "name": "Pizz",
+   "variants": [
+    "Die Offenfrische Tomate Basilikum"
+   ],
+   "cat": "tk",
+   "unit": "",
+   "varAdd": {
+    "die offenfrische tomate basilikum": 1793650214493
+   },
+   "updatedAt": 1793650214493
   }
  },
  "prices": {
@@ -5516,6 +5563,43 @@
    },
    "deposit": null,
    "updatedAt": 1793648871667
+  },
+  "pizz|dr. oetker die offenfrische tomate basilikum|edeka|2026-10-26": {
+   "id": "pizz|dr. oetker die offenfrische tomate basilikum|edeka|2026-10-26",
+   "key": "pizz|dr. oetker die offenfrische tomate basilikum",
+   "name": "Pizz",
+   "detail": "Dr. Oetker Die Offenfrische Tomate Basilikum",
+   "date": "2026-10-26",
+   "shop": "EDEKA",
+   "price": 1.99,
+   "type": "app",
+   "special": true,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793650214491
+  },
+  "pizz|dr. oetker die offenfrische tomate basilikum|edeka|2026-10-26|statt": {
+   "id": "pizz|dr. oetker die offenfrische tomate basilikum|edeka|2026-10-26|statt",
+   "key": "pizz|dr. oetker die offenfrische tomate basilikum",
+   "name": "Pizz",
+   "detail": "Dr. Oetker Die Offenfrische Tomate Basilikum",
+   "date": "2026-10-26",
+   "shop": "EDEKA",
+   "price": 3.69,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "note": "Vergleichspreis",
+   "updatedAt": 1793650214491
   }
  },
  "brands": {
@@ -5766,6 +5850,16 @@
     "brot": 1
    },
    "updatedAt": 1793648871666
+  },
+  "dr. oetker": {
+   "name": "Dr. Oetker",
+   "shops": {
+    "EDEKA": 1
+   },
+   "cats": {
+    "tk": 1
+   },
+   "updatedAt": 1793650214490
   }
  },
  "purchases": {
@@ -8766,6 +8860,20 @@
    },
    "deposit": null,
    "updatedAt": 1793648871666
+  },
+  "pizz|dr. oetker die offenfrische tomate basilikum": {
+   "name": "Pizz",
+   "detail": "Dr. Oetker Die Offenfrische Tomate Basilikum",
+   "cat": "tk",
+   "unit": "",
+   "shop": "EDEKA",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793650214491
   }
  },
  "devices": {
