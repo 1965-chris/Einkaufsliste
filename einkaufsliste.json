@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:29:34.200Z",
+ "savedAt": "2026-11-02T19:30:11.107Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2305,7 +2305,8 @@
    "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
    "cat": "fleisch",
    "unit": "",
-   "last": 1793209615310
+   "last": 1793647808560,
+   "deleted": true
   },
   "schokolade|baumkuchspitzen vollmilchschokolade": {
    "count": 1,
@@ -2429,6 +2430,14 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "last": 1793647746785
+  },
+  "wurst|gut drei eichen herzhafte edelsalami geräuchert": {
+   "count": 1,
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "cat": "fleisch",
+   "unit": "",
+   "last": 1793647808560
   }
  },
  "stars": {
@@ -2671,14 +2680,15 @@
   },
   "salami": {
    "name": "Salami",
-   "variants": [
-    "Herzhafte Edelsalami geräuchert"
-   ],
+   "variants": [],
    "cat": "fleisch",
    "unit": "",
-   "updatedAt": 1792737321271,
+   "updatedAt": 1793647808560,
    "varAdd": {
     "herzhafte edelsalami geräuchert": 1792737321271
+   },
+   "varDel": {
+    "herzhafte edelsalami geräuchert": 1793647808560
    }
   },
   "sellerie": {
@@ -3160,7 +3170,8 @@
     "Schweinebraten",
     "Schinkenlyoner",
     "Koch-Hinterschinken",
-    "Geflügel-Paprikalyoner"
+    "Geflügel-Paprikalyoner",
+    "Herzhafte Edelsalami geräuchert"
    ],
    "cat": "fleisch",
    "unit": "Pck.",
@@ -3169,9 +3180,10 @@
     "schweinebraten": 1792737859536,
     "schinkenlyoner": 1793647609134,
     "koch-hinterschinken": 1793647685597,
-    "geflügel-paprikalyoner": 1793647746786
+    "geflügel-paprikalyoner": 1793647746786,
+    "herzhafte edelsalami geräuchert": 1793647808560
    },
-   "updatedAt": 1793647746786
+   "updatedAt": 1793647808560
   },
   "käse": {
    "name": "Käse",
@@ -4438,7 +4450,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792737584812
+   "updatedAt": 1793647808560,
+   "deleted": true
   },
   "schinken|gut drei eichen gut drei eichen koch-hinterschinken|aldi|2026-10-23": {
    "id": "schinken|gut drei eichen gut drei eichen koch-hinterschinken|aldi|2026-10-23",
@@ -4830,7 +4843,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793209601263
+   "updatedAt": 1793647808560,
+   "deleted": true
   },
   "schokolade|baumkuchspitzen vollmilchschokolade|aldi|2026-10-28": {
    "id": "schokolade|baumkuchspitzen vollmilchschokolade|aldi|2026-10-28",
@@ -5175,6 +5189,42 @@
    },
    "deposit": null,
    "updatedAt": 1793647746785
+  },
+  "wurst|gut drei eichen herzhafte edelsalami geräuchert|ohne markt|2026-10-23": {
+   "id": "wurst|gut drei eichen herzhafte edelsalami geräuchert|ohne markt|2026-10-23",
+   "key": "wurst|gut drei eichen herzhafte edelsalami geräuchert",
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "date": "2026-10-23",
+   "shop": "ohne Markt",
+   "price": 1.39,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647808560
+  },
+  "wurst|gut drei eichen herzhafte edelsalami geräuchert|aldi|2026-10-28": {
+   "id": "wurst|gut drei eichen herzhafte edelsalami geräuchert|aldi|2026-10-28",
+   "key": "wurst|gut drei eichen herzhafte edelsalami geräuchert",
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 1.39,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647808560
   }
  },
  "brands": {
@@ -6604,7 +6654,7 @@
   "k-mvsepej2d1kwwi": {
    "id": "k-mvsepej2d1kwwi",
    "date": "2026-10-28",
-   "name": "Salami",
+   "name": "Wurst",
    "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
    "cat": "fleisch",
    "qty": 1,
@@ -6620,7 +6670,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210661861
+   "updatedAt": 1793647808560
   },
   "k-mvseqdcrm4a8no": {
    "id": "k-mvseqdcrm4a8no",
@@ -7016,7 +7066,7 @@
    "updatedAt": 1792737859535
   },
   "4061458015219": {
-   "name": "Salami",
+   "name": "Wurst",
    "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
    "cat": "fleisch",
    "pack": {
@@ -7024,7 +7074,7 @@
     "size": 0.15,
     "u": "kg"
    },
-   "updatedAt": 1792737321271
+   "updatedAt": 1793647808560
   },
   "4061462417092": {
    "name": "Käse",
@@ -7656,7 +7706,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793209615289
+   "updatedAt": 1793647808560,
+   "deleted": true
   },
   "käse|meine käsetheke caverna dänischer schnittkäse": {
    "name": "Käse",
@@ -8109,6 +8160,20 @@
    },
    "deposit": null,
    "updatedAt": 1793647746785
+  },
+  "wurst|gut drei eichen herzhafte edelsalami geräuchert": {
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Herzhafte Edelsalami geräuchert",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.15,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647808560
   }
  },
  "devices": {
