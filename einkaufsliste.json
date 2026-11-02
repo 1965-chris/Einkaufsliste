@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T13:26:37.393Z",
+ "savedAt": "2026-11-02T13:26:49.067Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -7644,9 +7644,9 @@
    "detail": "Laktosefrei",
    "cat": "vorrat",
    "unit": "",
-   "qty": 0,
+   "qty": 7,
    "min": 4,
-   "updatedAt": 1792761383053
+   "updatedAt": 1793626006287
   },
   "tomaten (dose)|aldi tomaten gehackt": {
    "key": "tomaten (dose)|aldi tomaten gehackt",
