@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:15:40.124Z",
+ "savedAt": "2026-11-02T19:18:13.589Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1741,6 +1741,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793646937528
+  },
+  {
+   "id": "mvzn60o10vstur",
+   "name": "Bohnen",
+   "detail": "Kings Crown Brechbohnen",
+   "qty": 1,
+   "unit": "Glas",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": null,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.66,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793647090658
   }
  ],
  "favs": {
@@ -2124,7 +2151,8 @@
    "detail": "",
    "cat": "tk",
    "unit": "Pck.",
-   "last": 1793020077065
+   "last": 1793647090657,
+   "deleted": true
   },
   "salz|": {
    "count": 1,
@@ -2304,6 +2332,14 @@
    "cat": "getraenk",
    "unit": "Tray",
    "last": 1793646884395
+  },
+  "bohnen|kings crown brechbohnen": {
+   "count": 2,
+   "name": "Bohnen",
+   "detail": "Kings Crown Brechbohnen",
+   "cat": "vorrat",
+   "unit": "Glas",
+   "last": 1793647090658
   }
  },
  "stars": {
@@ -3063,10 +3099,15 @@
   },
   "bohnen": {
    "name": "Bohnen",
-   "variants": [],
-   "cat": "tk",
-   "unit": "Pck.",
-   "updatedAt": 1793021001060
+   "variants": [
+    "Brechbohnen"
+   ],
+   "cat": "vorrat",
+   "unit": "Glas",
+   "updatedAt": 1793647090657,
+   "varAdd": {
+    "brechbohnen": 1793647090657
+   }
   },
   "mettenden": {
    "name": "Mettenden",
@@ -7467,7 +7508,8 @@
    "shop": "",
    "pack": null,
    "deposit": null,
-   "updatedAt": 1793021001060
+   "updatedAt": 1793647090656,
+   "deleted": true
   },
   "salz|jodsalz": {
    "name": "Salz",
@@ -7758,6 +7800,20 @@
    },
    "deposit": 1.5,
    "updatedAt": 1793646884394
+  },
+  "bohnen|kings crown brechbohnen": {
+   "name": "Bohnen",
+   "detail": "Kings Crown Brechbohnen",
+   "cat": "vorrat",
+   "unit": "Glas",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.66,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647090656
   }
  },
  "devices": {
