@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:44:31.119Z",
+ "savedAt": "2026-11-02T19:45:24.679Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1799,7 +1799,7 @@
   {
    "id": "mvznd37071ybn5",
    "name": "Fleisch",
-   "detail": "Meine Metzgerei Hackfleisch gemischt",
+   "detail": "Meine Metzgerei Hackfleisch gemischt XXL",
    "qty": 800,
    "unit": "g",
    "cat": "fleisch",
@@ -1821,7 +1821,7 @@
    },
    "forStock": false,
    "checked": false,
-   "updatedAt": 1793648157854
+   "updatedAt": 1793648722162
   }
  ],
  "favs": {
@@ -2446,7 +2446,16 @@
    "detail": "Meine Metzgerei Hackfleisch gemischt",
    "cat": "fleisch",
    "unit": "g",
-   "last": 1793648156644
+   "last": 1793648712958,
+   "deleted": true
+  },
+  "fleisch|meine metzgerei hackfleisch gemischt xxl": {
+   "count": 2,
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Hackfleisch gemischt XXL",
+   "cat": "fleisch",
+   "unit": "g",
+   "last": 1793648712958
   }
  },
  "stars": {
@@ -3126,18 +3135,22 @@
    "variants": [
     "Kassler Minutensteaks",
     "Grobe Bratwurst vom Schwein",
-    "Hackfleisch gemischt",
-    "Hackfleisch gemischt klein"
+    "Hackfleisch gemischt klein",
+    "Hackfleisch gemischt XXL"
    ],
    "cat": "fleisch",
-   "unit": "Pck.",
+   "unit": "g",
    "varAdd": {
     "kassler minutensteaks": 1792736258130,
     "grobe bratwurst vom schwein": 1792736424084,
     "hackfleisch gemischt": 1793648157855,
-    "hackfleisch gemischt klein": 1793648668311
+    "hackfleisch gemischt klein": 1793648668311,
+    "hackfleisch gemischt xxl": 1793648722163
    },
-   "updatedAt": 1793648668311
+   "updatedAt": 1793648722163,
+   "varDel": {
+    "hackfleisch gemischt": 1793648712959
+   }
   },
   "sauerkraut": {
    "name": "Sauerkraut",
@@ -5290,7 +5303,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793648156644
+   "updatedAt": 1793648712958,
+   "deleted": true
   },
   "fleisch|meine metzgerei hackfleisch gemischt|aldi|2026-11-02": {
    "id": "fleisch|meine metzgerei hackfleisch gemischt|aldi|2026-11-02",
@@ -5308,7 +5322,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793648156644
+   "updatedAt": 1793648712958,
+   "deleted": true
   },
   "wurst|willms mettenden / schinkenmettwurst|aldi|2026-10-28": {
    "id": "wurst|willms mettenden / schinkenmettwurst|aldi|2026-10-28",
@@ -5364,6 +5379,42 @@
    },
    "deposit": null,
    "updatedAt": 1793648668312
+  },
+  "fleisch|meine metzgerei hackfleisch gemischt xxl|aldi|2026-10-28": {
+   "id": "fleisch|meine metzgerei hackfleisch gemischt xxl|aldi|2026-10-28",
+   "key": "fleisch|meine metzgerei hackfleisch gemischt xxl",
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Hackfleisch gemischt XXL",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 4.99,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648712958
+  },
+  "fleisch|meine metzgerei hackfleisch gemischt xxl|aldi|2026-11-02": {
+   "id": "fleisch|meine metzgerei hackfleisch gemischt xxl|aldi|2026-11-02",
+   "key": "fleisch|meine metzgerei hackfleisch gemischt xxl",
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Hackfleisch gemischt XXL",
+   "date": "2026-11-02",
+   "shop": "ALDI",
+   "price": 5.29,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648712958
   }
  },
  "brands": {
@@ -6878,7 +6929,7 @@
    "id": "k-mvsf0pxvamj4vo",
    "date": "2026-10-28",
    "name": "Fleisch",
-   "detail": "Meine Metzgerei Hackfleisch gemischt",
+   "detail": "Meine Metzgerei Hackfleisch gemischt XXL",
    "cat": "fleisch",
    "qty": 500,
    "unit": "g",
@@ -6893,7 +6944,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793648156644
+   "updatedAt": 1793648712958
   },
   "k-mvsfasex5ewkth": {
    "id": "k-mvsfasex5ewkth",
@@ -8343,7 +8394,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793648156644
+   "updatedAt": 1793648712958,
+   "deleted": true
   },
   "wurst|willms mettenden / schinkenmettwurst": {
    "name": "Wurst",
@@ -8387,6 +8439,20 @@
    },
    "deposit": null,
    "updatedAt": 1793648668311
+  },
+  "fleisch|meine metzgerei hackfleisch gemischt xxl": {
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Hackfleisch gemischt XXL",
+   "cat": "fleisch",
+   "unit": "g",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648712958
   }
  },
  "devices": {
