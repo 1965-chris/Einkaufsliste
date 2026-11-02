@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:47:54.626Z",
+ "savedAt": "2026-11-02T19:48:06.680Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1659,8 +1659,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793646773970
+   "checked": true,
+   "updatedAt": 1793648884064,
+   "checkedAt": 1793648884064
   },
   {
    "id": "mvzn1lij4w308a",
@@ -1685,8 +1686,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793646884395
+   "checked": true,
+   "updatedAt": 1793648882871,
+   "checkedAt": 1793648882871
   },
   {
    "id": "mvzn21v3ihkxe9",
@@ -1712,8 +1714,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793646905583
+   "checked": true,
+   "updatedAt": 1793648881925,
+   "checkedAt": 1793648881925
   },
   {
    "id": "mvzn2qig33q6x1",
@@ -1739,8 +1742,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793646937528
+   "checked": true,
+   "updatedAt": 1793648879556,
+   "checkedAt": 1793648879556
   },
   {
    "id": "mvzn60o10vstur",
@@ -1766,8 +1770,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793647090658
+   "checked": true,
+   "updatedAt": 1793648881115,
+   "checkedAt": 1793648881115
   },
   {
    "id": "mvznb2g3x3syvm",
@@ -1793,8 +1798,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793647326243
+   "checked": true,
+   "updatedAt": 1793648877329,
+   "checkedAt": 1793648877329
   },
   {
    "id": "mvznd37071ybn5",
@@ -1820,8 +1826,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793648722162
+   "checked": true,
+   "updatedAt": 1793648880350,
+   "checkedAt": 1793648880350
   },
   {
    "id": "mvzo86wj3roukc",
@@ -1847,8 +1854,9 @@
     "regular": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793648871667
+   "checked": true,
+   "updatedAt": 1793648878650,
+   "checkedAt": 1793648878650
   }
  ],
  "favs": {
