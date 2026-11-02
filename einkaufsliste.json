@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T20:12:52.941Z",
+ "savedAt": "2026-11-02T20:14:14.325Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -7459,6 +7459,24 @@
    },
    "deposit": null,
    "updatedAt": 1793650372628
+  },
+  "lg-2026-11-02-mvzp622g": {
+   "id": "lg-2026-11-02-mvzp622g",
+   "kind": "leergut",
+   "date": "2026-11-02",
+   "name": "Leergut",
+   "detail": "1× Glas",
+   "cat": "getraenk",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "EDEKA",
+   "price": null,
+   "est": false,
+   "type": "normal",
+   "pack": null,
+   "deposit": -0.08,
+   "updatedAt": 1793650451704
   }
  },
  "bonmap": {
