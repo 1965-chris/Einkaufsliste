@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:38:13.253Z",
+ "savedAt": "2026-11-02T19:38:51.206Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3187,7 +3187,7 @@
     "Geflügel-Paprikalyoner",
     "Herzhafte Edelsalami geräuchert",
     "Leberwurst",
-    "Mettenden / Schinkenmettwurst"
+    "Mettenden"
    ],
    "cat": "fleisch",
    "unit": "Pck.",
@@ -3199,9 +3199,13 @@
     "geflügel-paprikalyoner": 1793647746786,
     "herzhafte edelsalami geräuchert": 1793647808560,
     "leberwurst": 1793647925784,
-    "mettenden / schinkenmettwurst": 1793648222526
+    "mettenden / schinkenmettwurst": 1793648222526,
+    "mettenden": 1793648328607
    },
-   "updatedAt": 1793648222526
+   "updatedAt": 1793648328607,
+   "varDel": {
+    "mettenden / schinkenmettwurst": 1793648328607
+   }
   },
   "käse": {
    "name": "Käse",
@@ -5319,7 +5323,26 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793648222526
+   "updatedAt": 1793648328607,
+   "deleted": true
+  },
+  "wurst|willms mettenden|aldi|2026-10-28": {
+   "id": "wurst|willms mettenden|aldi|2026-10-28",
+   "key": "wurst|willms mettenden",
+   "name": "Wurst",
+   "detail": "Willms Mettenden",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 3.59,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648328607
   }
  },
  "brands": {
@@ -6615,7 +6638,7 @@
    "id": "k-mvpagumziffne7",
    "date": "2026-10-28",
    "name": "Wurst",
-   "detail": "Willms Mettenden / Schinkenmettwurst",
+   "detail": "Willms Mettenden",
    "cat": "fleisch",
    "qty": 2,
    "unit": "Pck.",
@@ -6630,7 +6653,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793648222526
+   "updatedAt": 1793648328607
   },
   "k-mvse88yvsj3nxn": {
    "id": "k-mvse88yvsj3nxn",
@@ -8313,7 +8336,22 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793648222526
+   "updatedAt": 1793648328607,
+   "deleted": true
+  },
+  "wurst|willms mettenden": {
+   "name": "Wurst",
+   "detail": "Willms Mettenden",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648328607
   }
  },
  "devices": {
