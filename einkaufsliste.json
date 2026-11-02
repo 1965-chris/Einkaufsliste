@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:23:43.266Z",
+ "savedAt": "2026-11-02T19:26:51.975Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2328,7 +2328,8 @@
    "detail": "Güldenhof",
    "cat": "fleisch",
    "unit": "Pck.",
-   "last": 1793210089681
+   "last": 1793647609134,
+   "deleted": true
   },
   "hackfleisch|gemischt": {
    "count": 2,
@@ -2402,6 +2403,14 @@
    "cat": "obst",
    "unit": "Pck.",
    "last": 1793647326243
+  },
+  "wurst|güldenhof schinkenlyoner": {
+   "count": 1,
+   "name": "Wurst",
+   "detail": "Güldenhof Schinkenlyoner",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "last": 1793647609134
   }
  },
  "stars": {
@@ -3130,15 +3139,17 @@
    "name": "Wurst",
    "variants": [
     "Puten Kochschinken",
-    "Schweinebraten"
+    "Schweinebraten",
+    "Schinkenlyoner"
    ],
    "cat": "fleisch",
    "unit": "Pck.",
    "varAdd": {
     "puten kochschinken": 1792737278959,
-    "schweinebraten": 1792737859536
+    "schweinebraten": 1792737859536,
+    "schinkenlyoner": 1793647609134
    },
-   "updatedAt": 1792740669916
+   "updatedAt": 1793647609134
   },
   "käse": {
    "name": "Käse",
@@ -3247,7 +3258,10 @@
    "variants": [],
    "cat": "fleisch",
    "unit": "Pck.",
-   "updatedAt": 1793210089682
+   "updatedAt": 1793647609134,
+   "varDel": {
+    "güldenhof": 1793647609134
+   }
   },
   "steinofen baquette": {
    "name": "Steinofen Baquette",
@@ -4842,7 +4856,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210089681
+   "updatedAt": 1793647609134,
+   "deleted": true
   },
   "hackfleisch|gemischt|aldi|2026-10-28": {
    "id": "hackfleisch|gemischt|aldi|2026-10-28",
@@ -5077,6 +5092,24 @@
    },
    "deposit": null,
    "updatedAt": 1793647420524
+  },
+  "wurst|güldenhof schinkenlyoner|aldi|2026-10-28": {
+   "id": "wurst|güldenhof schinkenlyoner|aldi|2026-10-28",
+   "key": "wurst|güldenhof schinkenlyoner",
+   "name": "Wurst",
+   "detail": "Güldenhof Schinkenlyoner",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 0.89,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647609134
   }
  },
  "brands": {
@@ -6569,8 +6602,8 @@
   "k-mvsezkk1mmjxrk": {
    "id": "k-mvsezkk1mmjxrk",
    "date": "2026-10-28",
-   "name": "Schinkenlyoner",
-   "detail": "Güldenhof",
+   "name": "Wurst",
+   "detail": "Güldenhof Schinkenlyoner",
    "cat": "fleisch",
    "qty": 1,
    "unit": "Pck.",
@@ -6585,7 +6618,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210661861
+   "updatedAt": 1793647609134
   },
   "k-mvsf0pxvamj4vo": {
    "id": "k-mvsf0pxvamj4vo",
@@ -7839,7 +7872,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210089681
+   "updatedAt": 1793647609134,
+   "deleted": true
   },
   "hackfleisch|gemischt": {
    "name": "Hackfleisch",
@@ -7966,6 +8000,20 @@
    },
    "deposit": null,
    "updatedAt": 1793647326242
+  },
+  "wurst|güldenhof schinkenlyoner": {
+   "name": "Wurst",
+   "detail": "Güldenhof Schinkenlyoner",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647609134
   }
  },
  "devices": {
