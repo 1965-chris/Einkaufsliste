@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:14:44.948Z",
+ "savedAt": "2026-11-02T19:15:08.173Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1687,6 +1687,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793646884395
+  },
+  {
+   "id": "mvzn21v3ihkxe9",
+   "name": "Family Cappuccino",
+   "detail": "Barissimo Family Cappuccino - Choco",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "kaffee",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 3.49,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.5,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793646905583
   }
  ],
  "favs": {
@@ -1998,12 +2025,12 @@
    "last": 1792489761182
   },
   "family cappuccino|barissimo family cappuccino - choco": {
-   "count": 1,
+   "count": 2,
    "name": "Family Cappuccino",
    "detail": "Barissimo Family Cappuccino - Choco",
    "cat": "kaffee",
    "unit": "Pck.",
-   "last": 1792489930085
+   "last": 1793646905583
   },
   "kartoffeln|festkochend": {
    "count": 2,
@@ -7040,7 +7067,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792735972594
+   "updatedAt": 1793646905558
   },
   "kartoffeln|festkochend": {
    "name": "Kartoffeln",
