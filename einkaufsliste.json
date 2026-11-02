@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:18:54.689Z",
+ "savedAt": "2026-11-02T19:22:08.820Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1768,6 +1768,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793647090658
+  },
+  {
+   "id": "mvznb2g3x3syvm",
+   "name": "Suppengemüse",
+   "detail": "Lose Ware Suppengrün",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "obst",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.99,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.8,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793647326243
   }
  ],
  "favs": {
@@ -2340,6 +2367,14 @@
    "cat": "vorrat",
    "unit": "Glas",
    "last": 1793647090658
+  },
+  "suppengemüse|lose ware suppengrün": {
+   "count": 1,
+   "name": "Suppengemüse",
+   "detail": "Lose Ware Suppengrün",
+   "cat": "obst",
+   "unit": "Pck.",
+   "last": 1793647326243
   }
  },
  "stars": {
@@ -3217,6 +3252,18 @@
     "medium": 1793646884395
    },
    "updatedAt": 1793646884395
+  },
+  "suppengemüse": {
+   "name": "Suppengemüse",
+   "variants": [
+    "Suppengrün"
+   ],
+   "cat": "obst",
+   "unit": "Pck.",
+   "varAdd": {
+    "suppengrün": 1793647326244
+   },
+   "updatedAt": 1793647326244
   }
  },
  "prices": {
@@ -4967,6 +5014,24 @@
    },
    "deposit": null,
    "updatedAt": 1793647132218
+  },
+  "suppengemüse|lose ware suppengrün|aldi|2026-11-02": {
+   "id": "suppengemüse|lose ware suppengrün|aldi|2026-11-02",
+   "key": "suppengemüse|lose ware suppengrün",
+   "name": "Suppengemüse",
+   "detail": "Lose Ware Suppengrün",
+   "date": "2026-11-02",
+   "shop": "ALDI",
+   "price": 1.99,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647326242
   }
  },
  "brands": {
@@ -5197,6 +5262,16 @@
     "getraenk": 1
    },
    "updatedAt": 1793646884394
+  },
+  "lose ware": {
+   "name": "Lose Ware",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "obst": 1
+   },
+   "updatedAt": 1793647326241
   }
  },
  "purchases": {
@@ -7832,6 +7907,20 @@
    },
    "deposit": null,
    "updatedAt": 1793647132195
+  },
+  "suppengemüse|lose ware suppengrün": {
+   "name": "Suppengemüse",
+   "detail": "Lose Ware Suppengrün",
+   "cat": "obst",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647326242
   }
  },
  "devices": {
