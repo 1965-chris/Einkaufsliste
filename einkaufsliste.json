@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:48:06.680Z",
+ "savedAt": "2026-11-02T19:48:58.591Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1857,6 +1857,33 @@
    "checked": true,
    "updatedAt": 1793648878650,
    "checkedAt": 1793648878650
+  },
+  {
+   "id": "mvzo9kmj2cs01n",
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "brot",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.19,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.56,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793648936107
   }
  ],
  "favs": {
@@ -2126,12 +2153,12 @@
    "deleted": true
   },
   "brötchen|goldähren sonntagsbrötchen": {
-   "count": 3,
+   "count": 4,
    "name": "Brötchen",
    "detail": "Goldähren Sonntagsbrötchen",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1792737237036
+   "last": 1793648936107
   },
   "brötchen|goldähren": {
    "count": 1,
@@ -7489,7 +7516,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792489646686
+   "updatedAt": 1793648936080
   },
   "brötchen|goldähren": {
    "name": "Brötchen",
