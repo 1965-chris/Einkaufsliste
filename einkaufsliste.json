@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:18:13.589Z",
+ "savedAt": "2026-11-02T19:18:54.689Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -4949,6 +4949,24 @@
    },
    "deposit": 1.5,
    "updatedAt": 1793646884395
+  },
+  "bohnen|kings crown brechbohnen|aldi|2026-11-02": {
+   "id": "bohnen|kings crown brechbohnen|aldi|2026-11-02",
+   "key": "bohnen|kings crown brechbohnen",
+   "name": "Bohnen",
+   "detail": "Kings Crown Brechbohnen",
+   "date": "2026-11-02",
+   "shop": "ALDI",
+   "price": 0.99,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.66,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647132218
   }
  },
  "brands": {
@@ -7813,7 +7831,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793647090656
+   "updatedAt": 1793647132195
   }
  },
  "devices": {
