@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:38:51.206Z",
+ "savedAt": "2026-11-02T19:39:04.351Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3243,13 +3243,14 @@
    "variants": [],
    "cat": "fleisch",
    "unit": "Pck.",
-   "updatedAt": 1793648222526,
+   "updatedAt": 1793648341807,
    "varAdd": {
     "schinkenmettwurst": 1793210279024
    },
    "varDel": {
     "schinkenmettwurst": 1793648222526
-   }
+   },
+   "deleted": true
   },
   "brechbohnen tk": {
    "name": "Brechbohnen TK",
@@ -8444,6 +8445,10 @@
   "leberwurst|": {
    "ts": 1793647930768,
    "updatedAt": 1793647930768
+  },
+  "mettenden|": {
+   "ts": 1793648341807,
+   "updatedAt": 1793648341807
   }
  },
  "stock": {
