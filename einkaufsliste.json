@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:27:25.129Z",
+ "savedAt": "2026-11-02T19:28:08.081Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2172,7 +2172,8 @@
    "detail": "Gut Drei Eichen Gut drei Eichen Koch-Hinterschinken",
    "cat": "fleisch",
    "unit": "Pck.",
-   "last": 1792736934365
+   "last": 1793647685597,
+   "deleted": true
   },
   "melita bella crema ganze bohnen|": {
    "count": 5,
@@ -2411,6 +2412,14 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "last": 1793647609134
+  },
+  "wurst|gut drei eichen koch-hinterschinken": {
+   "count": 1,
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Koch-Hinterschinken",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "last": 1793647685597
   }
  },
  "stars": {
@@ -3115,10 +3124,10 @@
    "varAdd": {
     "gut drei eichen koch-hinterschinken": 1792736934365
    },
-   "updatedAt": 1792738849420,
+   "updatedAt": 1793647685597,
    "varDel": {
     "koch-hinterschinken": 1792737906612,
-    "gut drei eichen koch-hinterschinken": 1792738849420
+    "gut drei eichen koch-hinterschinken": 1793647685597
    }
   },
   "wursz": {
@@ -3140,16 +3149,18 @@
    "variants": [
     "Puten Kochschinken",
     "Schweinebraten",
-    "Schinkenlyoner"
+    "Schinkenlyoner",
+    "Koch-Hinterschinken"
    ],
    "cat": "fleisch",
    "unit": "Pck.",
    "varAdd": {
     "puten kochschinken": 1792737278959,
     "schweinebraten": 1792737859536,
-    "schinkenlyoner": 1793647609134
+    "schinkenlyoner": 1793647609134,
+    "koch-hinterschinken": 1793647685597
    },
-   "updatedAt": 1793647609134
+   "updatedAt": 1793647685597
   },
   "käse": {
    "name": "Käse",
@@ -4430,7 +4441,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792737716350
+   "updatedAt": 1793647685597,
+   "deleted": true
   },
   "wurst|güldenhof puten kochschinken|aldi|2026-10-23": {
    "id": "wurst|güldenhof puten kochschinken|aldi|2026-10-23",
@@ -5111,6 +5123,24 @@
    },
    "deposit": null,
    "updatedAt": 1793647609134
+  },
+  "wurst|gut drei eichen koch-hinterschinken|aldi|2026-10-23": {
+   "id": "wurst|gut drei eichen koch-hinterschinken|aldi|2026-10-23",
+   "key": "wurst|gut drei eichen koch-hinterschinken",
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Koch-Hinterschinken",
+   "date": "2026-10-23",
+   "shop": "ALDI",
+   "price": 1.59,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647685597
   }
  },
  "brands": {
@@ -6121,8 +6151,8 @@
   "k-mvkla7kts9ulek": {
    "id": "k-mvkla7kts9ulek",
    "date": "2026-10-23",
-   "name": "Schinken",
-   "detail": "Gut Drei Eichen Gut drei Eichen Koch-Hinterschinken",
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Koch-Hinterschinken",
    "cat": "fleisch",
    "qty": 1,
    "unit": "Pck.",
@@ -6137,7 +6167,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792737801955
+   "updatedAt": 1793647685597
   },
   "k-mvky4frr6te8cy": {
    "id": "k-mvky4frr6te8cy",
@@ -6930,15 +6960,15 @@
    "updatedAt": 1792738950846
   },
   "4061459434866": {
-   "name": "Schinken",
-   "detail": "Gut Drei Eichen Gut drei Eichen Koch-Hinterschinken",
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Koch-Hinterschinken",
    "cat": "fleisch",
    "pack": {
     "n": 1,
     "size": 0.2,
     "u": "kg"
    },
-   "updatedAt": 1792736934364
+   "updatedAt": 1793647685597
   },
   "4069366050285": {
    "name": "Wurst",
@@ -7548,7 +7578,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792737716331
+   "updatedAt": 1793647685597,
+   "deleted": true
   },
   "wursz|gut drei eichen schweinebraten": {
    "name": "Wursz",
@@ -8015,6 +8046,20 @@
    },
    "deposit": null,
    "updatedAt": 1793647609134
+  },
+  "wurst|gut drei eichen koch-hinterschinken": {
+   "name": "Wurst",
+   "detail": "Gut Drei Eichen Koch-Hinterschinken",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647685597
   }
  },
  "devices": {
