@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:12:57.114Z",
+ "savedAt": "2026-11-02T19:14:44.948Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1661,6 +1661,32 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793646773970
+  },
+  {
+   "id": "mvzn1lij4w308a",
+   "name": "Mineralwasser",
+   "detail": "Miva Medium",
+   "qty": 1,
+   "unit": "Tray",
+   "cat": "getraenk",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.74,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 6,
+     "size": 1.5
+    },
+    "deposit": 1.5,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793646884395
   }
  ],
  "favs": {
@@ -2216,6 +2242,14 @@
    "cat": "tk",
    "unit": "Pck.",
    "last": 1793646773971
+  },
+  "mineralwasser|miva medium": {
+   "count": 1,
+   "name": "Mineralwasser",
+   "detail": "Miva Medium",
+   "cat": "getraenk",
+   "unit": "Tray",
+   "last": 1793646884395
   }
  },
  "stars": {
@@ -3076,6 +3110,18 @@
     "wellenschnitt pommesfritrs": 1793646773972
    },
    "updatedAt": 1793646773972
+  },
+  "mineralwasser": {
+   "name": "Mineralwasser",
+   "variants": [
+    "Medium"
+   ],
+   "cat": "getraenk",
+   "unit": "Tray",
+   "varAdd": {
+    "medium": 1793646884395
+   },
+   "updatedAt": 1793646884395
   }
  },
  "prices": {
@@ -4791,6 +4837,23 @@
    },
    "deposit": null,
    "updatedAt": 1793646773970
+  },
+  "mineralwasser|miva medium|aldi|2026-11-02": {
+   "id": "mineralwasser|miva medium|aldi|2026-11-02",
+   "key": "mineralwasser|miva medium",
+   "name": "Mineralwasser",
+   "detail": "Miva Medium",
+   "date": "2026-11-02",
+   "shop": "ALDI",
+   "price": 1.74,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 6,
+    "size": 1.5
+   },
+   "deposit": 1.5,
+   "updatedAt": 1793646884395
   }
  },
  "brands": {
@@ -5011,6 +5074,16 @@
     "tk": 1
    },
    "updatedAt": 1793646773967
+  },
+  "miva": {
+   "name": "Miva",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "getraenk": 1
+   },
+   "updatedAt": 1793646884394
   }
  },
  "purchases": {
@@ -7618,6 +7691,19 @@
    },
    "deposit": null,
    "updatedAt": 1793646773969
+  },
+  "mineralwasser|miva medium": {
+   "name": "Mineralwasser",
+   "detail": "Miva Medium",
+   "cat": "getraenk",
+   "unit": "Tray",
+   "shop": "ALDI",
+   "pack": {
+    "n": 6,
+    "size": 1.5
+   },
+   "deposit": 1.5,
+   "updatedAt": 1793646884394
   }
  },
  "devices": {
