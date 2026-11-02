@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:22:08.820Z",
+ "savedAt": "2026-11-02T19:23:43.266Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1795,6 +1795,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793647326243
+  },
+  {
+   "id": "mvznd37071ybn5",
+   "name": "Hackfleisch",
+   "detail": "gemischt",
+   "qty": 800,
+   "unit": "g",
+   "cat": "fleisch",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 5.29,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.8,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793647420524
   }
  ],
  "favs": {
@@ -2304,12 +2331,12 @@
    "last": 1793210089681
   },
   "hackfleisch|gemischt": {
-   "count": 1,
+   "count": 2,
    "name": "Hackfleisch",
    "detail": "gemischt",
    "cat": "fleisch",
    "unit": "g",
-   "last": 1793210143315
+   "last": 1793647420524
   },
   "steinofen baquette|goldähren": {
    "count": 1,
@@ -5032,6 +5059,24 @@
    },
    "deposit": null,
    "updatedAt": 1793647326242
+  },
+  "hackfleisch|gemischt|aldi|2026-11-02": {
+   "id": "hackfleisch|gemischt|aldi|2026-11-02",
+   "key": "hackfleisch|gemischt",
+   "name": "Hackfleisch",
+   "detail": "gemischt",
+   "date": "2026-11-02",
+   "shop": "ALDI",
+   "price": 5.29,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647420524
   }
  },
  "brands": {
@@ -7804,11 +7849,11 @@
    "shop": "ALDI",
    "pack": {
     "n": 1,
-    "size": 0.5,
+    "size": 0.8,
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210143314
+   "updatedAt": 1793647420523
   },
   "mettenden|willms schinkenmettwurst": {
    "name": "Mettenden",
