@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:45:48.222Z",
+ "savedAt": "2026-11-02T19:47:54.626Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1822,6 +1822,33 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1793648722162
+  },
+  {
+   "id": "mvzo86wj3roukc",
+   "name": "Brötchen",
+   "detail": "Frische Backtheke Dinkelknoten",
+   "qty": 1,
+   "unit": "",
+   "cat": "brot",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.79,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 1,
+     "u": "st"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793648871667
   }
  ],
  "favs": {
@@ -2456,6 +2483,14 @@
    "cat": "fleisch",
    "unit": "g",
    "last": 1793648712958
+  },
+  "brötchen|frische backtheke dinkelknoten": {
+   "count": 1,
+   "name": "Brötchen",
+   "detail": "Frische Backtheke Dinkelknoten",
+   "cat": "brot",
+   "unit": "",
+   "last": 1793648871667
   }
  },
  "stars": {
@@ -3011,16 +3046,18 @@
    "name": "Brötchen",
    "variants": [
     "Sonntagsbrötchen",
-    "Krüstchen"
+    "Krüstchen",
+    "Dinkelknoten"
    ],
    "cat": "brot",
    "unit": "Pck.",
    "varAdd": {
     "landbrötchen-roggenbrötchen": 1792307445066,
     "sonntagsbrötchen": 1792307251786,
-    "krüstchen": 1792307489550
+    "krüstchen": 1792307489550,
+    "dinkelknoten": 1793648871667
    },
-   "updatedAt": 1792307489550,
+   "updatedAt": 1793648871667,
    "varDel": {
     "landbrötchen-roggenbrötchen": 1792307445066,
     "goldähren": 1792307489550
@@ -5416,6 +5453,24 @@
    },
    "deposit": null,
    "updatedAt": 1793648712958
+  },
+  "brötchen|frische backtheke dinkelknoten|aldi|2026-11-02": {
+   "id": "brötchen|frische backtheke dinkelknoten|aldi|2026-11-02",
+   "key": "brötchen|frische backtheke dinkelknoten",
+   "name": "Brötchen",
+   "detail": "Frische Backtheke Dinkelknoten",
+   "date": "2026-11-02",
+   "shop": "ALDI",
+   "price": 1.79,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793648871667
   }
  },
  "brands": {
@@ -5656,6 +5711,16 @@
     "obst": 1
    },
    "updatedAt": 1793647326241
+  },
+  "frische backtheke": {
+   "name": "Frische Backtheke",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "brot": 1
+   },
+   "updatedAt": 1793648871666
   }
  },
  "purchases": {
@@ -8454,6 +8519,20 @@
    },
    "deposit": null,
    "updatedAt": 1793648712958
+  },
+  "brötchen|frische backtheke dinkelknoten": {
+   "name": "Brötchen",
+   "detail": "Frische Backtheke Dinkelknoten",
+   "cat": "brot",
+   "unit": "",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793648871666
   }
  },
  "devices": {
