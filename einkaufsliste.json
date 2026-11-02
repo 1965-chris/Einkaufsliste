@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T20:12:48.844Z",
+ "savedAt": "2026-11-02T20:12:52.941Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1919,8 +1919,10 @@
     "regular": 3.69
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1793650366252
+   "checked": true,
+   "updatedAt": 1793650372628,
+   "checkedAt": 1793650370149,
+   "deleted": true
   }
  ],
  "favs": {
@@ -7436,6 +7438,27 @@
    },
    "deposit": null,
    "updatedAt": 1793648943452
+  },
+  "k-mvzp0z183zqvzn": {
+   "id": "k-mvzp0z183zqvzn",
+   "date": "2026-11-02",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Tomate Basilikum",
+   "cat": "tk",
+   "qty": 2,
+   "unit": "",
+   "n": 2,
+   "shop": "EDEKA",
+   "price": 1.99,
+   "est": false,
+   "type": "app",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793650372628
   }
  },
  "bonmap": {
