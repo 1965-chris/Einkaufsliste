@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:09:26.149Z",
+ "savedAt": "2026-11-02T19:12:57.114Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1634,6 +1634,33 @@
    "updatedAt": 1793210661861,
    "checkedAt": 1793210622489,
    "deleted": true
+  },
+  {
+   "id": "mvzmz8b65fsngh",
+   "name": "Pommes",
+   "detail": "Meine Speisezeit Wellenschnitt Pommesfritrs",
+   "qty": 1,
+   "unit": "Pck.",
+   "cat": "tk",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.49,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 1,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1793646773970
   }
  ],
  "favs": {
@@ -2181,6 +2208,14 @@
    "cat": "vorrat",
    "unit": "Pck.",
    "last": 1793211209257
+  },
+  "pommes|meine speisezeit wellenschnitt pommesfritrs": {
+   "count": 1,
+   "name": "Pommes",
+   "detail": "Meine Speisezeit Wellenschnitt Pommesfritrs",
+   "cat": "tk",
+   "unit": "Pck.",
+   "last": 1793646773971
   }
  },
  "stars": {
@@ -3029,6 +3064,18 @@
    "cat": "brot",
    "unit": "",
    "updatedAt": 1793210613082
+  },
+  "pommes": {
+   "name": "Pommes",
+   "variants": [
+    "Wellenschnitt Pommesfritrs"
+   ],
+   "cat": "tk",
+   "unit": "Pck.",
+   "varAdd": {
+    "wellenschnitt pommesfritrs": 1793646773972
+   },
+   "updatedAt": 1793646773972
   }
  },
  "prices": {
@@ -4726,6 +4773,24 @@
    },
    "deposit": null,
    "updatedAt": 1793211273606
+  },
+  "pommes|meine speisezeit wellenschnitt pommesfritrs|aldi|2026-11-02": {
+   "id": "pommes|meine speisezeit wellenschnitt pommesfritrs|aldi|2026-11-02",
+   "key": "pommes|meine speisezeit wellenschnitt pommesfritrs",
+   "name": "Pommes",
+   "detail": "Meine Speisezeit Wellenschnitt Pommesfritrs",
+   "date": "2026-11-02",
+   "shop": "ALDI",
+   "price": 1.49,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793646773970
   }
  },
  "brands": {
@@ -4936,6 +5001,16 @@
     "fleisch": 1
    },
    "updatedAt": 1793210279023
+  },
+  "meine speisezeit": {
+   "name": "Meine Speisezeit",
+   "shops": {
+    "ALDI": 1
+   },
+   "cats": {
+    "tk": 1
+   },
+   "updatedAt": 1793646773967
   }
  },
  "purchases": {
@@ -7529,6 +7604,20 @@
    "deposit": null,
    "updatedAt": 1793211352408,
    "deleted": true
+  },
+  "pommes|meine speisezeit wellenschnitt pommesfritrs": {
+   "name": "Pommes",
+   "detail": "Meine Speisezeit Wellenschnitt Pommesfritrs",
+   "cat": "tk",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793646773969
   }
  },
  "devices": {
