@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:30:11.107Z",
+ "savedAt": "2026-11-02T19:30:16.167Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2683,13 +2683,14 @@
    "variants": [],
    "cat": "fleisch",
    "unit": "",
-   "updatedAt": 1793647808560,
+   "updatedAt": 1793647813563,
    "varAdd": {
     "herzhafte edelsalami geräuchert": 1792737321271
    },
    "varDel": {
     "herzhafte edelsalami geräuchert": 1793647808560
-   }
+   },
+   "deleted": true
   },
   "sellerie": {
    "name": "Sellerie",
@@ -8258,6 +8259,10 @@
   "geflügel-paprikalyoner|": {
    "ts": 1793647770297,
    "updatedAt": 1793647770297
+  },
+  "salami|": {
+   "ts": 1793647813563,
+   "updatedAt": 1793647813563
   }
  },
  "stock": {
