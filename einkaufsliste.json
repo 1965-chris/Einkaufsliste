@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:36:00.493Z",
+ "savedAt": "2026-11-02T19:37:05.362Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3186,7 +3186,8 @@
     "Koch-Hinterschinken",
     "Geflügel-Paprikalyoner",
     "Herzhafte Edelsalami geräuchert",
-    "Leberwurst"
+    "Leberwurst",
+    "Mettenden / Schinkenmettwurst"
    ],
    "cat": "fleisch",
    "unit": "Pck.",
@@ -3197,9 +3198,10 @@
     "koch-hinterschinken": 1793647685597,
     "geflügel-paprikalyoner": 1793647746786,
     "herzhafte edelsalami geräuchert": 1793647808560,
-    "leberwurst": 1793647925784
+    "leberwurst": 1793647925784,
+    "mettenden / schinkenmettwurst": 1793648222526
    },
-   "updatedAt": 1793647925784
+   "updatedAt": 1793648222526
   },
   "käse": {
    "name": "Käse",
@@ -3234,14 +3236,15 @@
   },
   "mettenden": {
    "name": "Mettenden",
-   "variants": [
-    "Schinkenmettwurst"
-   ],
+   "variants": [],
    "cat": "fleisch",
    "unit": "Pck.",
-   "updatedAt": 1793210279024,
+   "updatedAt": 1793648222526,
    "varAdd": {
     "schinkenmettwurst": 1793210279024
+   },
+   "varDel": {
+    "schinkenmettwurst": 1793648222526
    }
   },
   "brechbohnen tk": {
@@ -4954,7 +4957,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210279023
+   "updatedAt": 1793648222526,
+   "deleted": true
   },
   "frischei-waffeln|meine küchen welt frischei waffeln|aldi|2026-10-28": {
    "id": "frischei-waffeln|meine küchen welt frischei waffeln|aldi|2026-10-28",
@@ -5298,6 +5302,24 @@
    },
    "deposit": null,
    "updatedAt": 1793648156644
+  },
+  "wurst|willms mettenden / schinkenmettwurst|aldi|2026-10-28": {
+   "id": "wurst|willms mettenden / schinkenmettwurst|aldi|2026-10-28",
+   "key": "wurst|willms mettenden / schinkenmettwurst",
+   "name": "Wurst",
+   "detail": "Willms Mettenden / Schinkenmettwurst",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 3.59,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648222526
   }
  },
  "brands": {
@@ -6592,8 +6614,8 @@
   "k-mvpagumziffne7": {
    "id": "k-mvpagumziffne7",
    "date": "2026-10-28",
-   "name": "Mettenden",
-   "detail": "Willms Schinkenmettwurst",
+   "name": "Wurst",
+   "detail": "Willms Mettenden / Schinkenmettwurst",
    "cat": "fleisch",
    "qty": 2,
    "unit": "Pck.",
@@ -6608,7 +6630,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210661861
+   "updatedAt": 1793648222526
   },
   "k-mvse88yvsj3nxn": {
    "id": "k-mvse88yvsj3nxn",
@@ -8094,7 +8116,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210279023
+   "updatedAt": 1793648222526,
+   "deleted": true
   },
   "paniermehl|goldähren": {
    "name": "Paniermehl",
@@ -8277,6 +8300,20 @@
    },
    "deposit": null,
    "updatedAt": 1793648156644
+  },
+  "wurst|willms mettenden / schinkenmettwurst": {
+   "name": "Wurst",
+   "detail": "Willms Mettenden / Schinkenmettwurst",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648222526
   }
  },
  "devices": {
