@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:32:08.473Z",
+ "savedAt": "2026-11-02T19:32:14.800Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3059,10 +3059,11 @@
    "varAdd": {
     "aldi": 1792735693547
    },
-   "updatedAt": 1793647925783,
+   "updatedAt": 1793647930768,
    "varDel": {
     "aldi": 1793647925783
-   }
+   },
+   "deleted": true
   },
   "steak": {
    "name": "Steak",
@@ -8300,6 +8301,10 @@
   "salami|": {
    "ts": 1793647813563,
    "updatedAt": 1793647813563
+  },
+  "leberwurst|": {
+   "ts": 1793647930768,
+   "updatedAt": 1793647930768
   }
  },
  "stock": {
