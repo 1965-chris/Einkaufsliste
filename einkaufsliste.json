@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T20:10:17.169Z",
+ "savedAt": "2026-11-02T20:12:48.844Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1897,8 +1897,8 @@
   },
   {
    "id": "mvzp0z183zqvzn",
-   "name": "Pizz",
-   "detail": "Dr. Oetker Die Offenfrische Tomate Basilikum",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Tomate Basilikum",
    "qty": 2,
    "unit": "",
    "cat": "tk",
@@ -1920,7 +1920,7 @@
    },
    "forStock": false,
    "checked": false,
-   "updatedAt": 1793650214492
+   "updatedAt": 1793650366252
   }
  ],
  "favs": {
@@ -2805,11 +2805,15 @@
   "pizza": {
    "name": "Pizza",
    "variants": [
-    "Diavolo"
+    "Diavolo",
+    "Tomate Basilikum"
    ],
    "cat": "tk",
    "unit": "",
-   "updatedAt": 1791401935731
+   "updatedAt": 1793650366253,
+   "varAdd": {
+    "tomate basilikum": 1793650366253
+   }
   },
   "salami": {
    "name": "Salami",
@@ -5600,6 +5604,43 @@
    "deposit": null,
    "note": "Vergleichspreis",
    "updatedAt": 1793650214491
+  },
+  "pizza|dr. oetker die ofenfrische tomate basilikum|edeka|2026-10-26": {
+   "id": "pizza|dr. oetker die ofenfrische tomate basilikum|edeka|2026-10-26",
+   "key": "pizza|dr. oetker die ofenfrische tomate basilikum",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Tomate Basilikum",
+   "date": "2026-10-26",
+   "shop": "EDEKA",
+   "price": 1.99,
+   "type": "app",
+   "special": true,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793650366253
+  },
+  "pizza|dr. oetker die ofenfrische tomate basilikum|edeka|2026-10-26|statt": {
+   "id": "pizza|dr. oetker die ofenfrische tomate basilikum|edeka|2026-10-26|statt",
+   "key": "pizza|dr. oetker die ofenfrische tomate basilikum",
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Tomate Basilikum",
+   "date": "2026-10-26",
+   "shop": "EDEKA",
+   "price": 3.69,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "note": "Vergleichspreis",
+   "updatedAt": 1793650366253
   }
  },
  "brands": {
@@ -8874,6 +8915,20 @@
    },
    "deposit": null,
    "updatedAt": 1793650214491
+  },
+  "pizza|dr. oetker die ofenfrische tomate basilikum": {
+   "name": "Pizza",
+   "detail": "Dr. Oetker Die Ofenfrische Tomate Basilikum",
+   "cat": "tk",
+   "unit": "",
+   "shop": "EDEKA",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793650366252
   }
  },
  "devices": {
