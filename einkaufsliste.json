@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:49:02.167Z",
+ "savedAt": "2026-11-02T19:49:05.977Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -1660,8 +1660,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793648884064,
-   "checkedAt": 1793648884064
+   "updatedAt": 1793648943451,
+   "checkedAt": 1793648884064,
+   "deleted": true
   },
   {
    "id": "mvzn1lij4w308a",
@@ -1687,8 +1688,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793648882871,
-   "checkedAt": 1793648882871
+   "updatedAt": 1793648943451,
+   "checkedAt": 1793648882871,
+   "deleted": true
   },
   {
    "id": "mvzn21v3ihkxe9",
@@ -1715,8 +1717,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793648881925,
-   "checkedAt": 1793648881925
+   "updatedAt": 1793648943451,
+   "checkedAt": 1793648881925,
+   "deleted": true
   },
   {
    "id": "mvzn2qig33q6x1",
@@ -1743,8 +1746,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793648879556,
-   "checkedAt": 1793648879556
+   "updatedAt": 1793648943451,
+   "checkedAt": 1793648879556,
+   "deleted": true
   },
   {
    "id": "mvzn60o10vstur",
@@ -1771,8 +1775,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793648881115,
-   "checkedAt": 1793648881115
+   "updatedAt": 1793648943451,
+   "checkedAt": 1793648881115,
+   "deleted": true
   },
   {
    "id": "mvznb2g3x3syvm",
@@ -1799,8 +1804,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793648877329,
-   "checkedAt": 1793648877329
+   "updatedAt": 1793648943451,
+   "checkedAt": 1793648877329,
+   "deleted": true
   },
   {
    "id": "mvznd37071ybn5",
@@ -1827,8 +1833,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793648880350,
-   "checkedAt": 1793648880350
+   "updatedAt": 1793648943451,
+   "checkedAt": 1793648880350,
+   "deleted": true
   },
   {
    "id": "mvzo86wj3roukc",
@@ -1855,8 +1862,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793648878650,
-   "checkedAt": 1793648878650
+   "updatedAt": 1793648943451,
+   "checkedAt": 1793648878650,
+   "deleted": true
   },
   {
    "id": "mvzo9kmj2cs01n",
@@ -1883,8 +1891,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1793648939292,
-   "checkedAt": 1793648939292
+   "updatedAt": 1793648943451,
+   "checkedAt": 1793648939292,
+   "deleted": true
   }
  ],
  "favs": {
@@ -7104,6 +7113,194 @@
    "pack": null,
    "deposit": 11.74,
    "updatedAt": 1793216454410
+  },
+  "k-mvzmz8b65fsngh": {
+   "id": "k-mvzmz8b65fsngh",
+   "date": "2026-11-02",
+   "name": "Pommes",
+   "detail": "Meine Speisezeit Wellenschnitt Pommesfritrs",
+   "cat": "tk",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.49,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648943452
+  },
+  "k-mvzn1lij4w308a": {
+   "id": "k-mvzn1lij4w308a",
+   "date": "2026-11-02",
+   "name": "Mineralwasser",
+   "detail": "Miva Medium",
+   "cat": "getraenk",
+   "qty": 1,
+   "unit": "Tray",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.74,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 6,
+    "size": 1.5
+   },
+   "deposit": 1.5,
+   "updatedAt": 1793648943452
+  },
+  "k-mvzn21v3ihkxe9": {
+   "id": "k-mvzn21v3ihkxe9",
+   "date": "2026-11-02",
+   "name": "Family Cappuccino",
+   "detail": "Barissimo Family Cappuccino - Choco",
+   "cat": "kaffee",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 3.49,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648943452
+  },
+  "k-mvzn2qig33q6x1": {
+   "id": "k-mvzn2qig33q6x1",
+   "date": "2026-11-02",
+   "name": "Brötchen",
+   "detail": "Goldähren Krüstchen",
+   "cat": "brot",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.79,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.48,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648943452
+  },
+  "k-mvzn60o10vstur": {
+   "id": "k-mvzn60o10vstur",
+   "date": "2026-11-02",
+   "name": "Bohnen",
+   "detail": "Kings Crown Brechbohnen",
+   "cat": "vorrat",
+   "qty": 1,
+   "unit": "Glas",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 0.99,
+   "est": true,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.66,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648943452
+  },
+  "k-mvznb2g3x3syvm": {
+   "id": "k-mvznb2g3x3syvm",
+   "date": "2026-11-02",
+   "name": "Suppengemüse",
+   "detail": "Lose Ware Suppengrün",
+   "cat": "obst",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.99,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648943452
+  },
+  "k-mvznd37071ybn5": {
+   "id": "k-mvznd37071ybn5",
+   "date": "2026-11-02",
+   "name": "Fleisch",
+   "detail": "Meine Metzgerei Hackfleisch gemischt XXL",
+   "cat": "fleisch",
+   "qty": 800,
+   "unit": "g",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 5.29,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.8,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648943452
+  },
+  "k-mvzo86wj3roukc": {
+   "id": "k-mvzo86wj3roukc",
+   "date": "2026-11-02",
+   "name": "Brötchen",
+   "detail": "Frische Backtheke Dinkelknoten",
+   "cat": "brot",
+   "qty": 1,
+   "unit": "",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.79,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 1,
+    "u": "st"
+   },
+   "deposit": null,
+   "updatedAt": 1793648943452
+  },
+  "k-mvzo9kmj2cs01n": {
+   "id": "k-mvzo9kmj2cs01n",
+   "date": "2026-11-02",
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "cat": "brot",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.19,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.56,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793648943452
   }
  },
  "bonmap": {
