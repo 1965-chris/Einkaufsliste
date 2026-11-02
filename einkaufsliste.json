@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:28:08.081Z",
+ "savedAt": "2026-11-02T19:29:09.690Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -2321,7 +2321,8 @@
    "detail": "Güldenhof",
    "cat": "fleisch",
    "unit": "Pck.",
-   "last": 1793210002354
+   "last": 1793647746785,
+   "deleted": true
   },
   "schinkenlyoner|güldenhof": {
    "count": 1,
@@ -2420,6 +2421,14 @@
    "cat": "fleisch",
    "unit": "Pck.",
    "last": 1793647685597
+  },
+  "wurst|güldenhof geflügel-paprikalyoner": {
+   "count": 1,
+   "name": "Wurst",
+   "detail": "Güldenhof Geflügel-Paprikalyoner",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "last": 1793647746785
   }
  },
  "stars": {
@@ -3150,7 +3159,8 @@
     "Puten Kochschinken",
     "Schweinebraten",
     "Schinkenlyoner",
-    "Koch-Hinterschinken"
+    "Koch-Hinterschinken",
+    "Geflügel-Paprikalyoner"
    ],
    "cat": "fleisch",
    "unit": "Pck.",
@@ -3158,9 +3168,10 @@
     "puten kochschinken": 1792737278959,
     "schweinebraten": 1792737859536,
     "schinkenlyoner": 1793647609134,
-    "koch-hinterschinken": 1793647685597
+    "koch-hinterschinken": 1793647685597,
+    "geflügel-paprikalyoner": 1793647746786
    },
-   "updatedAt": 1793647685597
+   "updatedAt": 1793647746786
   },
   "käse": {
    "name": "Käse",
@@ -3262,7 +3273,10 @@
    "variants": [],
    "cat": "fleisch",
    "unit": "Pck.",
-   "updatedAt": 1793210002355
+   "updatedAt": 1793647746786,
+   "varDel": {
+    "güldenhof": 1793647746786
+   }
   },
   "schinkenlyoner": {
    "name": "Schinkenlyoner",
@@ -4851,7 +4865,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210002354
+   "updatedAt": 1793647746785,
+   "deleted": true
   },
   "schinkenlyoner|güldenhof|aldi|2026-10-28": {
    "id": "schinkenlyoner|güldenhof|aldi|2026-10-28",
@@ -5141,6 +5156,24 @@
    },
    "deposit": null,
    "updatedAt": 1793647685597
+  },
+  "wurst|güldenhof geflügel-paprikalyoner|aldi|2026-10-28": {
+   "id": "wurst|güldenhof geflügel-paprikalyoner|aldi|2026-10-28",
+   "key": "wurst|güldenhof geflügel-paprikalyoner",
+   "name": "Wurst",
+   "detail": "Güldenhof Geflügel-Paprikalyoner",
+   "date": "2026-10-28",
+   "shop": "ALDI",
+   "price": 0.89,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647746785
   }
  },
  "brands": {
@@ -6612,8 +6645,8 @@
   "k-mvsexp6arirnam": {
    "id": "k-mvsexp6arirnam",
    "date": "2026-10-28",
-   "name": "Geflügel-Paprikalyoner",
-   "detail": "Güldenhof",
+   "name": "Wurst",
+   "detail": "Güldenhof Geflügel-Paprikalyoner",
    "cat": "fleisch",
    "qty": 1,
    "unit": "Pck.",
@@ -6628,7 +6661,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210661861
+   "updatedAt": 1793647746785
   },
   "k-mvsezkk1mmjxrk": {
    "id": "k-mvsezkk1mmjxrk",
@@ -7890,7 +7923,8 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793210002353
+   "updatedAt": 1793647746785,
+   "deleted": true
   },
   "schinkenlyoner|güldenhof": {
    "name": "Schinkenlyoner",
@@ -8060,6 +8094,20 @@
    },
    "deposit": null,
    "updatedAt": 1793647685597
+  },
+  "wurst|güldenhof geflügel-paprikalyoner": {
+   "name": "Wurst",
+   "detail": "Güldenhof Geflügel-Paprikalyoner",
+   "cat": "fleisch",
+   "unit": "Pck.",
+   "shop": "ALDI",
+   "pack": {
+    "n": 1,
+    "size": 0.2,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1793647746785
   }
  },
  "devices": {
