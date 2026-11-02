@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-02T19:37:05.362Z",
+ "savedAt": "2026-11-02T19:38:13.253Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -8229,7 +8229,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1793647609134
+   "updatedAt": 1793648290764
   },
   "wurst|gut drei eichen koch-hinterschinken": {
    "name": "Wurst",
