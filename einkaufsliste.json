@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-03T20:15:11.678Z",
+ "savedAt": "2026-11-03T20:22:48.657Z",
  "items": [
   {
    "id": "muxyqy0rf0vqk2",
@@ -3490,11 +3490,11 @@
     "Medium"
    ],
    "cat": "getraenk",
-   "unit": "Tray",
+   "unit": "",
    "varAdd": {
     "medium": 1793646884395
    },
-   "updatedAt": 1793646884395
+   "updatedAt": 1793737366059
   },
   "suppengemüse": {
    "name": "Suppengemüse",
@@ -9118,6 +9118,16 @@
    "qty": 0,
    "min": 0,
    "updatedAt": 1792762315673
+  },
+  "mineralwasser|miva medium": {
+   "key": "mineralwasser|miva medium",
+   "name": "Mineralwasser",
+   "detail": "Miva Medium",
+   "cat": "getraenk",
+   "unit": "",
+   "qty": 1,
+   "min": 1,
+   "updatedAt": 1793737366059
   }
  }
 }
