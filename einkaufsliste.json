@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-07T20:15:26.168Z",
+ "savedAt": "2026-11-07T20:15:30.181Z",
  "items": [
   {
    "id": "muy4a4d5k5z0fo",
@@ -8953,9 +8953,9 @@
    "detail": "Miva Medium",
    "cat": "getraenk",
    "unit": "",
-   "qty": 2,
+   "qty": 0,
    "min": 0,
-   "updatedAt": 1794082523783
+   "updatedAt": 1794082528063
   }
  }
 }
