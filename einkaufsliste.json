@@ -1,53 +1,8 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-05T17:24:42.337Z",
+ "savedAt": "2026-11-07T20:15:11.909Z",
  "items": [
-  {
-   "id": "muxyqy0rf0vqk2",
-   "name": "Melita Barista Ganze Bohnen",
-   "qty": 1,
-   "cat": "vorrat",
-   "note": "",
-   "checked": true,
-   "updatedAt": 1791368849834,
-   "deleted": true
-  },
-  {
-   "id": "muxyrhcc23trl4",
-   "name": "Melita Barista Ganze Bohnen",
-   "qty": 1,
-   "cat": "vorrat",
-   "note": "",
-   "checked": false,
-   "updatedAt": 1791369944353,
-   "deleted": true
-  },
-  {
-   "id": "muxzehzyijaonw",
-   "name": "Kaffee",
-   "detail": "ganze Bohne",
-   "qty": 1,
-   "unit": "Pck.",
-   "cat": "kaffee",
-   "note": "Melita Café Crema",
-   "checked": false,
-   "updatedAt": 1791369990667,
-   "deleted": true
-  },
-  {
-   "id": "muy02tupwreamy",
-   "name": "Butter",
-   "detail": "",
-   "qty": 2,
-   "unit": "Pck.",
-   "cat": "kuehl",
-   "note": "",
-   "checked": true,
-   "updatedAt": 1791450296310,
-   "offer": null,
-   "deleted": true
-  },
   {
    "id": "muy4a4d5k5z0fo",
    "name": "Coca Cola",
@@ -110,97 +65,6 @@
    },
    "checked": true,
    "updatedAt": 1791529814998,
-   "deleted": true
-  },
-  {
-   "id": "muyo5rk7znkq3g",
-   "name": "Salami",
-   "detail": "",
-   "qty": 1,
-   "unit": "",
-   "cat": "fleisch",
-   "note": "",
-   "offer": null,
-   "checked": true,
-   "updatedAt": 1791412685492,
-   "deleted": true
-  },
-  {
-   "id": "muyo98bmktmzmg",
-   "name": "Sellerie",
-   "detail": "",
-   "qty": 1,
-   "unit": "",
-   "cat": "sonst",
-   "note": "",
-   "offer": null,
-   "checked": true,
-   "updatedAt": 1791412685492,
-   "deleted": true
-  },
-  {
-   "id": "muyo99fe7bwlhm",
-   "name": "Kakao",
-   "detail": "",
-   "qty": 1,
-   "unit": "Pck.",
-   "cat": "kaffee",
-   "note": "",
-   "offer": null,
-   "checked": true,
-   "updatedAt": 1791412685492,
-   "deleted": true
-  },
-  {
-   "id": "muyoupjoperrgw",
-   "name": "Schinken",
-   "detail": "",
-   "qty": 1,
-   "unit": "Pck.",
-   "cat": "fleisch",
-   "note": "",
-   "offer": null,
-   "checked": true,
-   "updatedAt": 1791412685492,
-   "deleted": true
-  },
-  {
-   "id": "muyouqf0b24oro",
-   "name": "Tomatenmark",
-   "detail": "",
-   "qty": 2,
-   "unit": "",
-   "cat": "obst",
-   "note": "",
-   "offer": null,
-   "checked": true,
-   "updatedAt": 1791448771873,
-   "deleted": true
-  },
-  {
-   "id": "muzccqqcwyw4lw",
-   "name": "Toilettenpapier",
-   "detail": "",
-   "qty": 1,
-   "unit": "Pck.",
-   "cat": "drogerie",
-   "note": "",
-   "offer": null,
-   "checked": false,
-   "updatedAt": 1791452165525,
-   "deleted": true
-  },
-  {
-   "id": "muzce6pn1exufe",
-   "name": "Toilettenpapier",
-   "detail": "",
-   "qty": 1,
-   "unit": "Pck.",
-   "cat": "drogerie",
-   "note": "",
-   "offer": null,
-   "checked": false,
-   "updatedAt": 1791452599144,
    "deleted": true
   },
   {
@@ -1929,7 +1793,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1793899476162,
+   "last": 1794082510998,
    "cat": "vorrat",
    "deleted": true
   },
@@ -3522,42 +3386,6 @@
   }
  },
  "prices": {
-  "pizza|thunfisch|aldi|2026-10-08": {
-   "id": "pizza|thunfisch|aldi|2026-10-08",
-   "key": "pizza|thunfisch",
-   "name": "Pizza",
-   "detail": "Thunfisch",
-   "date": "2026-10-08",
-   "shop": "ALDI",
-   "price": 1.79,
-   "special": true,
-   "updatedAt": 1791448748567,
-   "deleted": true
-  },
-  "coca cola||lidl|2026-10-08": {
-   "id": "coca cola||lidl|2026-10-08",
-   "key": "coca cola|",
-   "name": "Coca Cola",
-   "detail": "",
-   "date": "2026-10-08",
-   "shop": "Lidl",
-   "price": 5.94,
-   "special": true,
-   "updatedAt": 1791448725263,
-   "deleted": true
-  },
-  "pizza|diavolo|aldi|2026-10-08": {
-   "id": "pizza|diavolo|aldi|2026-10-08",
-   "key": "pizza|diavolo",
-   "name": "Pizza",
-   "detail": "Diavolo",
-   "date": "2026-10-08",
-   "shop": "ALDI",
-   "price": 1.79,
-   "special": true,
-   "updatedAt": 1791448757168,
-   "deleted": true
-  },
   "pizza|diavolo|aldi|2026-10-12": {
    "id": "pizza|diavolo|aldi|2026-10-12",
    "key": "pizza|diavolo",
@@ -8982,8 +8810,8 @@
    "browser": "Safari",
    "app": "Homebildschirm-App",
    "version": "v1.52",
-   "lastSeen": 1793736904873,
-   "updatedAt": 1793736904873
+   "lastSeen": 1794082511884,
+   "updatedAt": 1794082511884
   },
   "dmvin2gqiezawm": {
    "firstSeen": 1792618999868,
