@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-08T09:29:11.692Z",
+ "savedAt": "2026-11-08T09:29:17.673Z",
  "items": [
   {
    "id": "muy4a4d5k5z0fo",
@@ -1753,7 +1753,7 @@
    "id": "mw7mrn26ehlv0y",
    "name": "Brötchen",
    "detail": "Goldähren Krüstchen",
-   "qty": 1,
+   "qty": 2,
    "unit": "Pck.",
    "cat": "brot",
    "note": "",
@@ -1771,7 +1771,7 @@
    },
    "forStock": false,
    "checked": false,
-   "updatedAt": 1794130149246
+   "updatedAt": 1794130155308
   }
  ],
  "favs": {
@@ -2067,12 +2067,12 @@
    "deleted": true
   },
   "brötchen|goldähren krüstchen": {
-   "count": 4,
+   "count": 5,
    "name": "Brötchen",
    "detail": "Goldähren Krüstchen",
    "cat": "brot",
    "unit": "Pck.",
-   "last": 1794130149246
+   "last": 1794130155309
   },
   "salzbutter|milsani": {
    "count": 1,
