@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-07T20:15:30.181Z",
+ "savedAt": "2026-11-08T09:26:23.543Z",
  "items": [
   {
    "id": "muy4a4d5k5z0fo",
@@ -27,71 +27,6 @@
     "deposit": 1.5,
     "regular": 7.14
    },
-   "deleted": true
-  },
-  {
-   "id": "muyif7njm5syew",
-   "name": "Pizza",
-   "detail": "Thunfisch",
-   "qty": 2,
-   "unit": "",
-   "cat": "tk",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.79,
-    "from": "2026-10-12",
-    "until": "2026-10-17",
-    "special": true
-   },
-   "checked": true,
-   "updatedAt": 1791529814998,
-   "deleted": true
-  },
-  {
-   "id": "muyigk1e3ltp6h",
-   "name": "Pizza",
-   "detail": "Diavolo",
-   "qty": 2,
-   "unit": "",
-   "cat": "tk",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.79,
-    "from": "2026-10-12",
-    "until": "2026-10-17",
-    "special": true
-   },
-   "checked": true,
-   "updatedAt": 1791529814998,
-   "deleted": true
-  },
-  {
-   "id": "mv01n4x0751ump",
-   "name": "Joghurt",
-   "detail": "Landliebe versch. Sorten",
-   "qty": 1,
-   "unit": "Becher",
-   "cat": "kuehl",
-   "note": "",
-   "offer": {
-    "shop": "EDEKA",
-    "price": 0.49,
-    "from": "2026-10-05",
-    "until": "2026-10-10",
-    "type": "angebot",
-    "special": true,
-    "pack": {
-     "n": 1,
-     "size": 0.15,
-     "u": "kg"
-    },
-    "deposit": null,
-    "regular": 0.79
-   },
-   "checked": true,
-   "updatedAt": 1791494633997,
    "deleted": true
   },
   {
@@ -1793,7 +1728,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1794082510998,
+   "last": 1794129982387,
    "cat": "vorrat",
    "deleted": true
   },
@@ -3386,30 +3321,6 @@
   }
  },
  "prices": {
-  "pizza|diavolo|aldi|2026-10-12": {
-   "id": "pizza|diavolo|aldi|2026-10-12",
-   "key": "pizza|diavolo",
-   "name": "Pizza",
-   "detail": "Diavolo",
-   "date": "2026-10-12",
-   "shop": "ALDI",
-   "price": 1.79,
-   "special": true,
-   "updatedAt": 1791535708730,
-   "deleted": true
-  },
-  "pizza|thunfisch|aldi|2026-10-12": {
-   "id": "pizza|thunfisch|aldi|2026-10-12",
-   "key": "pizza|thunfisch",
-   "name": "Pizza",
-   "detail": "Thunfisch",
-   "date": "2026-10-12",
-   "shop": "ALDI",
-   "price": 1.79,
-   "special": true,
-   "updatedAt": 1791535714409,
-   "deleted": true
-  },
   "coca cola||lidl|2026-10-12": {
    "id": "coca cola||lidl|2026-10-12",
    "key": "coca cola|",
@@ -8810,8 +8721,8 @@
    "browser": "Safari",
    "app": "Homebildschirm-App",
    "version": "v1.52",
-   "lastSeen": 1794082511884,
-   "updatedAt": 1794082511884
+   "lastSeen": 1794129983507,
+   "updatedAt": 1794129983507
   },
   "dmvin2gqiezawm": {
    "firstSeen": 1792618999868,
