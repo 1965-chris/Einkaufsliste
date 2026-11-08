@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-08T09:26:23.543Z",
+ "savedAt": "2026-11-08T09:27:38.732Z",
  "items": [
   {
    "id": "muy4a4d5k5z0fo",
@@ -1722,6 +1722,32 @@
    "updatedAt": 1793650372628,
    "checkedAt": 1793650370149,
    "deleted": true
+  },
+  {
+   "id": "mw7mpnijaugw9s",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "qty": 20,
+   "unit": "",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.79,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 1
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1794130056524
   }
  ],
  "favs": {
@@ -1929,12 +1955,12 @@
    "deleted": true
   },
   "h-milch 1,5%|laktosefrei": {
-   "count": 11,
+   "count": 12,
    "name": "H-Milch 1,5%",
    "detail": "Laktosefrei",
    "cat": "vorrat",
-   "unit": "Pck.",
-   "last": 1793019982690
+   "unit": "",
+   "last": 1794130056524
   },
   "slipeinlagen|extra lang": {
    "count": 1,
@@ -2742,11 +2768,11 @@
     "Laktosefrei"
    ],
    "cat": "vorrat",
-   "unit": "Pck.",
+   "unit": "",
    "varAdd": {
     "laktosefrei": 1791835551769
    },
-   "updatedAt": 1793019982689
+   "updatedAt": 1794130056523
   },
   "slipeinlagen": {
    "name": "Slipeinlagen",
@@ -5382,6 +5408,23 @@
    "deposit": null,
    "note": "Vergleichspreis",
    "updatedAt": 1793650366253
+  },
+  "h-milch 1,5%|laktosefrei|aldi|2026-11-08": {
+   "id": "h-milch 1,5%|laktosefrei|aldi|2026-11-08",
+   "key": "h-milch 1,5%|laktosefrei",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "date": "2026-11-08",
+   "shop": "ALDI",
+   "price": 0.79,
+   "type": "normal",
+   "special": false,
+   "pack": {
+    "n": 1,
+    "size": 1
+   },
+   "deposit": null,
+   "updatedAt": 1794130056523
   }
  },
  "brands": {
@@ -8173,14 +8216,14 @@
    "name": "H-Milch 1,5%",
    "detail": "Laktosefrei",
    "cat": "vorrat",
-   "unit": "Pck.",
+   "unit": "",
    "shop": "ALDI",
    "pack": {
     "n": 1,
     "size": 1
    },
    "deposit": null,
-   "updatedAt": 1793020986921
+   "updatedAt": 1794130056487
   },
   "paniermehl|": {
    "name": "Paniermehl",
