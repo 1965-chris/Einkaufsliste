@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-08T13:34:19.575Z",
+ "savedAt": "2026-11-08T13:34:45.046Z",
  "items": [
   {
    "id": "muy4a4d5k5z0fo",
@@ -1846,6 +1846,33 @@
    "forStock": true,
    "checked": false,
    "updatedAt": 1794130229934
+  },
+  {
+   "id": "mw7vjfbnk4nzdv",
+   "name": "Spagethi",
+   "detail": "",
+   "qty": 2,
+   "unit": "",
+   "cat": "vorrat",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 0.69,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 1,
+     "size": 0.5,
+     "u": "kg"
+    },
+    "deposit": null,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1794144882515
   }
  ],
  "favs": {
@@ -2495,6 +2522,14 @@
    "cat": "tk",
    "unit": "",
    "last": 1793650214492
+  },
+  "spagethi|": {
+   "count": 1,
+   "name": "Spagethi",
+   "detail": "",
+   "cat": "vorrat",
+   "unit": "",
+   "last": 1794144882516
   }
  },
  "stars": {
@@ -7987,7 +8022,7 @@
     "u": "kg"
    },
    "deposit": null,
-   "updatedAt": 1792740646609
+   "updatedAt": 1794144882443
   },
   "family cappuccino|barissimo family cappuccino - choco": {
    "name": "Family Cappuccino",
