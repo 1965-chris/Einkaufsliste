@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-08T09:29:30.792Z",
+ "savedAt": "2026-11-08T09:30:27.545Z",
  "items": [
   {
    "id": "muy4a4d5k5z0fo",
@@ -1820,6 +1820,32 @@
    "forStock": false,
    "checked": false,
    "updatedAt": 1794130169258
+  },
+  {
+   "id": "mw7mt9jycqfie5",
+   "name": "Mineralwasser",
+   "detail": "Miva Medium",
+   "qty": 2,
+   "unit": "Tray",
+   "cat": "getraenk",
+   "note": "",
+   "offer": {
+    "shop": "ALDI",
+    "price": 1.74,
+    "from": "",
+    "until": "",
+    "type": "normal",
+    "special": false,
+    "pack": {
+     "n": 6,
+     "size": 1.5
+    },
+    "deposit": 1.5,
+    "regular": null
+   },
+   "forStock": false,
+   "checked": false,
+   "updatedAt": 1794130225054
   }
  ],
  "favs": {
@@ -2382,12 +2408,12 @@
    "last": 1793646773971
   },
   "mineralwasser|miva medium": {
-   "count": 1,
+   "count": 2,
    "name": "Mineralwasser",
    "detail": "Miva Medium",
    "cat": "getraenk",
    "unit": "Tray",
-   "last": 1793646884395
+   "last": 1794130225054
   },
   "bohnen|kings crown brechbohnen": {
    "count": 2,
@@ -3387,11 +3413,11 @@
     "Medium"
    ],
    "cat": "getraenk",
-   "unit": "",
+   "unit": "Tray",
    "varAdd": {
     "medium": 1793646884395
    },
-   "updatedAt": 1793737366059
+   "updatedAt": 1794130225054
   },
   "suppengemüse": {
    "name": "Suppengemüse",
@@ -8646,7 +8672,7 @@
     "size": 1.5
    },
    "deposit": 1.5,
-   "updatedAt": 1793646884394
+   "updatedAt": 1794130225021
   },
   "bohnen|kings crown brechbohnen": {
    "name": "Bohnen",
