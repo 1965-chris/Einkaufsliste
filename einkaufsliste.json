@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-10T14:35:10.819Z",
+ "savedAt": "2026-11-10T14:35:15.660Z",
  "items": [
   {
    "id": "muy4a4d5k5z0fo",
@@ -1822,8 +1822,9 @@
     "deposit": null
    },
    "forStock": false,
-   "checked": false,
-   "updatedAt": 1794130169258
+   "checked": true,
+   "updatedAt": 1794321313307,
+   "checkedAt": 1794321313307
   },
   {
    "id": "mw7mt9jycqfie5",
