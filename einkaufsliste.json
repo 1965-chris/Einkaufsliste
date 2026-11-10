@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-10T14:32:58.958Z",
+ "savedAt": "2026-11-10T14:33:06.799Z",
  "items": [
   {
    "id": "muy4a4d5k5z0fo",
@@ -1846,8 +1846,10 @@
     "regular": null
    },
    "forStock": true,
-   "checked": false,
-   "updatedAt": 1794130229934
+   "checked": true,
+   "updatedAt": 1794321184399,
+   "checkedAt": 1794321184399,
+   "stockAdded": 2
   },
   {
    "id": "mw7vjfbnk4nzdv",
@@ -9077,9 +9079,9 @@
    "detail": "Miva Medium",
    "cat": "getraenk",
    "unit": "",
-   "qty": 0,
+   "qty": 2,
    "min": 0,
-   "updatedAt": 1794082528063
+   "updatedAt": 1794321184399
   }
  }
 }
