@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-11T03:57:16.927Z",
+ "savedAt": "2026-11-11T03:57:23.721Z",
  "items": [
   {
    "id": "muy4a4d5k5z0fo",
@@ -1747,9 +1747,10 @@
    },
    "forStock": true,
    "checked": true,
-   "updatedAt": 1794369436398,
+   "updatedAt": 1794369441431,
    "checkedAt": 1794369436398,
-   "stockAdded": 30
+   "stockAdded": 30,
+   "deleted": true
   },
   {
    "id": "mw7mrn26ehlv0y",
@@ -1773,8 +1774,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1794321303107,
-   "checkedAt": 1794321303107
+   "updatedAt": 1794369441431,
+   "checkedAt": 1794321303107,
+   "deleted": true
   },
   {
    "id": "mw7mrwd7ezlh41",
@@ -1798,8 +1800,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1794321308404,
-   "checkedAt": 1794321308404
+   "updatedAt": 1794369441431,
+   "checkedAt": 1794321308404,
+   "deleted": true
   },
   {
    "id": "mw7mrytk41x7l1",
@@ -1823,8 +1826,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1794321313307,
-   "checkedAt": 1794321313307
+   "updatedAt": 1794369441431,
+   "checkedAt": 1794321313307,
+   "deleted": true
   },
   {
    "id": "mw7mt9jycqfie5",
@@ -1850,9 +1854,10 @@
    },
    "forStock": true,
    "checked": true,
-   "updatedAt": 1794321184399,
+   "updatedAt": 1794369441431,
    "checkedAt": 1794321184399,
-   "stockAdded": 2
+   "stockAdded": 2,
+   "deleted": true
   },
   {
    "id": "mw7vjfbnk4nzdv",
@@ -1879,8 +1884,9 @@
    },
    "forStock": false,
    "checked": true,
-   "updatedAt": 1794321187582,
-   "checkedAt": 1794321187582
+   "updatedAt": 1794369441431,
+   "checkedAt": 1794321187582,
+   "deleted": true
   }
  ],
  "favs": {
@@ -7435,6 +7441,130 @@
    "pack": null,
    "deposit": -0.08,
    "updatedAt": 1793650451704
+  },
+  "k-mw7mpnijaugw9s": {
+   "id": "k-mw7mpnijaugw9s",
+   "date": "2026-11-11",
+   "name": "H-Milch 1,5%",
+   "detail": "Laktosefrei",
+   "cat": "vorrat",
+   "qty": 30,
+   "unit": "",
+   "n": 30,
+   "shop": "ALDI",
+   "price": 0.79,
+   "est": false,
+   "type": "angebot",
+   "pack": {
+    "n": 1,
+    "size": 1
+   },
+   "deposit": null,
+   "updatedAt": 1794369441432
+  },
+  "k-mw7mrn26ehlv0y": {
+   "id": "k-mw7mrn26ehlv0y",
+   "date": "2026-11-10",
+   "name": "Brötchen",
+   "detail": "Goldähren Krüstchen",
+   "cat": "brot",
+   "qty": 2,
+   "unit": "Pck.",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 1.79,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.48,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1794369441432
+  },
+  "k-mw7mrwd7ezlh41": {
+   "id": "k-mw7mrwd7ezlh41",
+   "date": "2026-11-10",
+   "name": "Brötchen",
+   "detail": "Goldähren Landbrötchen-Roggenbrötchen",
+   "cat": "brot",
+   "qty": 1,
+   "unit": "Pck.",
+   "n": 1,
+   "shop": "ALDI",
+   "price": 1.29,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.56,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1794369441432
+  },
+  "k-mw7mrytk41x7l1": {
+   "id": "k-mw7mrytk41x7l1",
+   "date": "2026-11-10",
+   "name": "Brötchen",
+   "detail": "Goldähren Sonntagsbrötchen",
+   "cat": "brot",
+   "qty": 3,
+   "unit": "Pck.",
+   "n": 3,
+   "shop": "ALDI",
+   "price": 1.19,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.56,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1794369441432
+  },
+  "k-mw7mt9jycqfie5": {
+   "id": "k-mw7mt9jycqfie5",
+   "date": "2026-11-10",
+   "name": "Mineralwasser",
+   "detail": "Miva Medium",
+   "cat": "getraenk",
+   "qty": 2,
+   "unit": "Tray",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 1.74,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 6,
+    "size": 1.5
+   },
+   "deposit": 1.5,
+   "updatedAt": 1794369441432
+  },
+  "k-mw7vjfbnk4nzdv": {
+   "id": "k-mw7vjfbnk4nzdv",
+   "date": "2026-11-10",
+   "name": "Spagethi",
+   "detail": "",
+   "cat": "vorrat",
+   "qty": 2,
+   "unit": "",
+   "n": 2,
+   "shop": "ALDI",
+   "price": 0.69,
+   "est": false,
+   "type": "normal",
+   "pack": {
+    "n": 1,
+    "size": 0.5,
+    "u": "kg"
+   },
+   "deposit": null,
+   "updatedAt": 1794369441432
   }
  },
  "bonmap": {
