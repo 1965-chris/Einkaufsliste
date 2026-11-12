@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-12T21:00:58.193Z",
+ "savedAt": "2026-11-12T21:01:05.929Z",
  "items": [
   {
    "id": "mv0mloapt9ka72",
@@ -8845,9 +8845,9 @@
    "detail": "",
    "cat": "vorrat",
    "unit": "Pck.",
-   "qty": 7,
+   "qty": 5,
    "min": 2,
-   "updatedAt": 1793131301845
+   "updatedAt": 1794517263396
   },
   "h-milch 1,5%|laktosefrei": {
    "key": "h-milch 1,5%|laktosefrei",
