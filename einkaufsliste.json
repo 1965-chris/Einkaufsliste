@@ -1,57 +1,8 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-11T03:57:30.632Z",
+ "savedAt": "2026-11-12T21:00:58.193Z",
  "items": [
-  {
-   "id": "muy4a4d5k5z0fo",
-   "name": "Coca Cola",
-   "detail": "",
-   "qty": 4,
-   "unit": "Tray",
-   "cat": "getraenk",
-   "note": "",
-   "checked": true,
-   "updatedAt": 1791831994319,
-   "offer": {
-    "shop": "Lidl",
-    "price": 5.94,
-    "from": "2026-10-12",
-    "until": "2026-10-17",
-    "type": "app",
-    "special": true,
-    "pack": {
-     "n": 6,
-     "size": 1.25
-    },
-    "deposit": 1.5,
-    "regular": 7.14
-   },
-   "deleted": true
-  },
-  {
-   "id": "mv02uawa8rm1uc",
-   "name": "Küchenrolle",
-   "detail": "KOKETT 3-lagig 4 Rollen a 64 Blatt",
-   "qty": 2,
-   "unit": "Pck.",
-   "cat": "drogerie",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.95,
-    "from": "2026-10-12",
-    "until": "2026-10-17",
-    "type": "angebot",
-    "special": true,
-    "pack": null,
-    "deposit": null,
-    "regular": 2.65
-   },
-   "checked": true,
-   "updatedAt": 1791831994319,
-   "deleted": true
-  },
   {
    "id": "mv0mloapt9ka72",
    "name": "Pizza",
@@ -120,280 +71,6 @@
    "checked": true,
    "updatedAt": 1792243640728,
    "checkedAt": 1792243634948,
-   "deleted": true
-  },
-  {
-   "id": "mv2z3tgnae8qqi",
-   "name": "Pudding",
-   "detail": "Milsani Schoko mit Sahnehaube",
-   "qty": 3,
-   "unit": "Becher",
-   "cat": "kuehl",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 0.39,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": {
-     "n": 1,
-     "size": 0.2,
-     "u": "kg"
-    },
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791831994319,
-   "deleted": true
-  },
-  {
-   "id": "mv5h2n2zwd7nbt",
-   "name": "Gehackte Tomaten",
-   "detail": "Kings Criwn",
-   "qty": 2,
-   "unit": "",
-   "cat": "obst",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": null,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": null,
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791831994319,
-   "deleted": true
-  },
-  {
-   "id": "mv5hc4kfazbl05",
-   "name": "Balsamico Essig",
-   "detail": "Cucina",
-   "qty": 1,
-   "unit": "",
-   "cat": "vorrat",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": null,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": null,
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791831994319,
-   "deleted": true
-  },
-  {
-   "id": "mv5hg7obvxhqk0",
-   "name": "Taschentücher",
-   "detail": "Kokett Taschentücher BoxBadezimmer",
-   "qty": 1,
-   "unit": "Pck.",
-   "cat": "drogerie",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 0.85,
-    "from": "",
-    "until": "",
-    "type": "angebot",
-    "special": true,
-    "pack": null,
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791831994319,
-   "deleted": true
-  },
-  {
-   "id": "mv5omgbcpbgrc3",
-   "name": "H-Milch 1,5%",
-   "detail": "Laktosefrei",
-   "qty": 10,
-   "unit": "l",
-   "cat": "kuehl",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.09,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": {
-     "n": 1,
-     "size": 1
-    },
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791836107705,
-   "checkedAt": 1791835699728,
-   "deleted": true
-  },
-  {
-   "id": "mv5oovrjxjc1mb",
-   "name": "Slipeinlagen",
-   "detail": "Extra Lang",
-   "qty": 1,
-   "unit": "",
-   "cat": "drogerie",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 0.99,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": null,
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791836107705,
-   "checkedAt": 1791835702361,
-   "deleted": true
-  },
-  {
-   "id": "mv5orvyh3uyoa2",
-   "name": "Sonntagsbrötchen",
-   "detail": "",
-   "qty": 2,
-   "unit": "Pck.",
-   "cat": "brot",
-   "note": "9 Stck",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.19,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": null,
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791836107705,
-   "checkedAt": 1791836015748,
-   "deleted": true
-  },
-  {
-   "id": "mv5ot8kist7s7u",
-   "name": "Landbrötchen",
-   "detail": "Roggenbrötchen",
-   "qty": 1,
-   "unit": "Pck.",
-   "cat": "brot",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.29,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": null,
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791836107705,
-   "checkedAt": 1791836016680,
-   "deleted": true
-  },
-  {
-   "id": "mv5ouyazgqgn4u",
-   "name": "Krüstchen",
-   "detail": "",
-   "qty": 2,
-   "unit": "Pck.",
-   "cat": "brot",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.79,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": null,
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791836107705,
-   "checkedAt": 1791836017466,
-   "deleted": true
-  },
-  {
-   "id": "mv5oy27b3kglza",
-   "name": "Fleischsalat",
-   "detail": "",
-   "qty": 1,
-   "unit": "Pck.",
-   "cat": "kuehl",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.65,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": {
-     "n": 1,
-     "size": 0.4,
-     "u": "kg"
-    },
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791836107705,
-   "checkedAt": 1791836102385,
-   "deleted": true
-  },
-  {
-   "id": "mv5p0rnj5p1u4t",
-   "name": "H-Milch 1,5%",
-   "detail": "Laktosefrei",
-   "qty": 9,
-   "unit": "Pck.",
-   "cat": "kuehl",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.09,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": {
-     "n": 1,
-     "size": 1
-    },
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1791836294400,
-   "checkedAt": 1791836292116,
    "deleted": true
   },
   {
@@ -1893,7 +1570,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1794369390491,
+   "last": 1794517256913,
    "cat": "vorrat",
    "deleted": true
   },
@@ -3714,21 +3391,6 @@
    },
    "deposit": null,
    "updatedAt": 1791833928405
-  },
-  "taschentücher|kokett taschentücher badezimmer|aldi|2026-10-12": {
-   "id": "taschentücher|kokett taschentücher badezimmer|aldi|2026-10-12",
-   "key": "taschentücher|kokett taschentücher badezimmer",
-   "name": "Taschentücher",
-   "detail": "Kokett Taschentücher Badezimmer",
-   "date": "2026-10-12",
-   "shop": "ALDI",
-   "price": 0.85,
-   "type": "angebot",
-   "special": true,
-   "pack": null,
-   "deposit": null,
-   "updatedAt": 1791833961818,
-   "deleted": true
   },
   "taschentücher|kokett taschentücher boxbadezimmer|aldi|2026-10-12": {
    "id": "taschentücher|kokett taschentücher boxbadezimmer|aldi|2026-10-12",
@@ -9070,8 +8732,8 @@
    "browser": "Safari",
    "app": "Homebildschirm-App",
    "version": "v1.52",
-   "lastSeen": 1794369391470,
-   "updatedAt": 1794369391470
+   "lastSeen": 1794517258156,
+   "updatedAt": 1794517258156
   },
   "dmvin2gqiezawm": {
    "firstSeen": 1792618999868,
