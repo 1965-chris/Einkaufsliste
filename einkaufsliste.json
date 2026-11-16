@@ -1,7 +1,7 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-15T13:21:23.429Z",
+ "savedAt": "2026-11-16T15:47:18.462Z",
  "items": [
   {
    "id": "mv0mloapt9ka72",
@@ -47,30 +47,6 @@
    },
    "checked": false,
    "updatedAt": 1792306955129,
-   "deleted": true
-  },
-  {
-   "id": "mv0q5wru9p7oxa",
-   "name": "Salzbutter",
-   "detail": "Milsani",
-   "qty": 1,
-   "unit": "",
-   "cat": "kuehl",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.29,
-    "from": "",
-    "until": "",
-    "type": "normal",
-    "special": false,
-    "pack": null,
-    "deposit": null,
-    "regular": null
-   },
-   "checked": true,
-   "updatedAt": 1792243640728,
-   "checkedAt": 1792243634948,
    "deleted": true
   },
   {
@@ -1570,7 +1546,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1794748882491,
+   "last": 1794844037389,
    "cat": "vorrat",
    "deleted": true
   },
@@ -8768,8 +8744,8 @@
    "browser": "Safari",
    "app": "Homebildschirm-App",
    "version": "v1.52",
-   "lastSeen": 1794748883375,
-   "updatedAt": 1794748883375
+   "lastSeen": 1794844038405,
+   "updatedAt": 1794844038405
   },
   "dmvxm39f61gaqz": {
    "firstSeen": 1793524486932,
