@@ -1,54 +1,8 @@
 {
  "app": "Einkaufsliste",
  "version": "v1.52",
- "savedAt": "2026-11-16T18:48:49.883Z",
+ "savedAt": "2026-11-17T13:27:17.742Z",
  "items": [
-  {
-   "id": "mv0mloapt9ka72",
-   "name": "Pizza",
-   "detail": "Dr. Oetker Die Ofenfrische Thunfisch",
-   "qty": 2,
-   "unit": "",
-   "cat": "tk",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.79,
-    "from": "2026-10-12",
-    "until": "2026-10-17",
-    "type": "angebot",
-    "special": true,
-    "pack": null,
-    "deposit": null,
-    "regular": 3.69
-   },
-   "checked": false,
-   "updatedAt": 1792306960964,
-   "deleted": true
-  },
-  {
-   "id": "mv0mlqemr04mjq",
-   "name": "Pizza",
-   "detail": "Dr. Oetker Die Ofenfrische Diavolo",
-   "qty": 2,
-   "unit": "",
-   "cat": "tk",
-   "note": "",
-   "offer": {
-    "shop": "ALDI",
-    "price": 1.79,
-    "from": "2026-10-12",
-    "until": "2026-10-17",
-    "type": "angebot",
-    "special": true,
-    "pack": null,
-    "deposit": null,
-    "regular": 3.69
-   },
-   "checked": false,
-   "updatedAt": 1792306955129,
-   "deleted": true
-  },
   {
    "id": "mvgi1pooid5pv3",
    "name": "Brötchen",
@@ -1546,7 +1500,7 @@
   "melita barista ganze bohnen": {
    "name": "Melita Barista Ganze Bohnen",
    "count": 2,
-   "last": 1794854916901,
+   "last": 1794922036439,
    "cat": "vorrat",
    "deleted": true
   },
@@ -3486,21 +3440,6 @@
    "deposit": null,
    "updatedAt": 1791835308558
   },
-  "tomatenmark||ohne markt|2026-10-12": {
-   "id": "tomatenmark||ohne markt|2026-10-12",
-   "key": "tomatenmark|",
-   "name": "Tomatenmark",
-   "detail": "",
-   "date": "2026-10-12",
-   "shop": "ohne Markt",
-   "price": 0.89,
-   "type": "normal",
-   "special": false,
-   "pack": null,
-   "deposit": null,
-   "updatedAt": 1792309308595,
-   "deleted": true
-  },
   "h-milch 1,5%|laktosefrei|aldi|2026-10-12": {
    "id": "h-milch 1,5%|laktosefrei|aldi|2026-10-12",
    "key": "h-milch 1,5%|laktosefrei",
@@ -3517,66 +3456,6 @@
    },
    "deposit": null,
    "updatedAt": 1791835551768
-  },
-  "slipeinlagen|extra lang|aldi|2026-10-12": {
-   "id": "slipeinlagen|extra lang|aldi|2026-10-12",
-   "key": "slipeinlagen|extra lang",
-   "name": "Slipeinlagen",
-   "detail": "Extra Lang",
-   "date": "2026-10-12",
-   "shop": "ALDI",
-   "price": 0.99,
-   "type": "normal",
-   "special": false,
-   "pack": null,
-   "deposit": null,
-   "updatedAt": 1792309433581,
-   "deleted": true
-  },
-  "sonntagsbrötchen||aldi|2026-10-12": {
-   "id": "sonntagsbrötchen||aldi|2026-10-12",
-   "key": "sonntagsbrötchen|",
-   "name": "Sonntagsbrötchen",
-   "detail": "",
-   "date": "2026-10-12",
-   "shop": "ALDI",
-   "price": 1.19,
-   "type": "normal",
-   "special": false,
-   "pack": null,
-   "deposit": null,
-   "updatedAt": 1792307251786,
-   "deleted": true
-  },
-  "landbrötchen|roggenbrötchen|aldi|2026-10-12": {
-   "id": "landbrötchen|roggenbrötchen|aldi|2026-10-12",
-   "key": "landbrötchen|roggenbrötchen",
-   "name": "Landbrötchen",
-   "detail": "Roggenbrötchen",
-   "date": "2026-10-12",
-   "shop": "ALDI",
-   "price": 1.29,
-   "type": "normal",
-   "special": false,
-   "pack": null,
-   "deposit": null,
-   "updatedAt": 1792307157391,
-   "deleted": true
-  },
-  "krüstchen||aldi|2026-10-12": {
-   "id": "krüstchen||aldi|2026-10-12",
-   "key": "krüstchen|",
-   "name": "Krüstchen",
-   "detail": "",
-   "date": "2026-10-12",
-   "shop": "ALDI",
-   "price": 1.79,
-   "type": "normal",
-   "special": false,
-   "pack": null,
-   "deposit": null,
-   "updatedAt": 1792307382331,
-   "deleted": true
   },
   "fleischsalat||aldi|2026-10-12": {
    "id": "fleischsalat||aldi|2026-10-12",
@@ -3673,40 +3552,6 @@
    "deposit": null,
    "updatedAt": 1792253298592
   },
-  "brötchen|landbrötchen-roggenbrötchen|aldi|2026-10-12": {
-   "id": "brötchen|landbrötchen-roggenbrötchen|aldi|2026-10-12",
-   "key": "brötchen|landbrötchen-roggenbrötchen",
-   "name": "Brötchen",
-   "detail": "Landbrötchen-Roggenbrötchen",
-   "date": "2026-10-12",
-   "shop": "ALDI",
-   "price": 1.29,
-   "type": "normal",
-   "special": false,
-   "pack": null,
-   "deposit": null,
-   "updatedAt": 1792307445065,
-   "deleted": true
-  },
-  "brötchen|landbrötchen-roggenbrötchen|aldi|2026-10-18": {
-   "id": "brötchen|landbrötchen-roggenbrötchen|aldi|2026-10-18",
-   "key": "brötchen|landbrötchen-roggenbrötchen",
-   "name": "Brötchen",
-   "detail": "Landbrötchen-Roggenbrötchen",
-   "date": "2026-10-18",
-   "shop": "ALDI",
-   "price": 1.29,
-   "type": "normal",
-   "special": false,
-   "pack": {
-    "n": 1,
-    "size": 0.56,
-    "u": "kg"
-   },
-   "deposit": null,
-   "updatedAt": 1792307445065,
-   "deleted": true
-  },
   "brötchen|goldähren sonntagsbrötchen|aldi|2026-10-12": {
    "id": "brötchen|goldähren sonntagsbrötchen|aldi|2026-10-12",
    "key": "brötchen|goldähren sonntagsbrötchen",
@@ -3738,40 +3583,6 @@
    },
    "deposit": null,
    "updatedAt": 1792307251787
-  },
-  "brötchen|goldähren|aldi|2026-10-12": {
-   "id": "brötchen|goldähren|aldi|2026-10-12",
-   "key": "brötchen|goldähren",
-   "name": "Brötchen",
-   "detail": "Goldähren",
-   "date": "2026-10-12",
-   "shop": "ALDI",
-   "price": 1.79,
-   "type": "normal",
-   "special": false,
-   "pack": null,
-   "deposit": null,
-   "updatedAt": 1792307489550,
-   "deleted": true
-  },
-  "brötchen|goldähren|aldi|2026-10-18": {
-   "id": "brötchen|goldähren|aldi|2026-10-18",
-   "key": "brötchen|goldähren",
-   "name": "Brötchen",
-   "detail": "Goldähren",
-   "date": "2026-10-18",
-   "shop": "ALDI",
-   "price": 1.79,
-   "type": "normal",
-   "special": false,
-   "pack": {
-    "n": 1,
-    "size": 0.48,
-    "u": "kg"
-   },
-   "deposit": null,
-   "updatedAt": 1792307489550,
-   "deleted": true
   },
   "brötchen|goldähren landbrötchen-roggenbrötchen|aldi|2026-10-12": {
    "id": "brötchen|goldähren landbrötchen-roggenbrötchen|aldi|2026-10-12",
@@ -8708,8 +8519,8 @@
    "browser": "Safari",
    "app": "Homebildschirm-App",
    "version": "v1.52",
-   "lastSeen": 1794854917736,
-   "updatedAt": 1794854917736
+   "lastSeen": 1794922037727,
+   "updatedAt": 1794922037727
   },
   "dmvin2gqiezawm": {
    "firstSeen": 1792618999868,
